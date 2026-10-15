@@ -1,0 +1,20 @@
+{
+  "round": "historical_joint_v2_step_diagnostic",
+  "files": {
+    "diagnose_history_update_step.py": {
+      "previous_sha256": null,
+      "new_sha256": "69540d2a2df2d7b8661b1c91be4c5b2a62264230857690fc595ad754f7043ae5"
+    },
+    "tests/incremental/test_history_update_step.py": {
+      "previous_sha256": null,
+      "new_sha256": "85a964ae9c66a1024ffce249a1ab5ca8da383d713853fcbd6e738fc84ec9b762"
+    }
+  },
+  "dependencies": {
+    "history_aware_update_v2.py": "5ca561fb8987c5e571d8edd03389bc585913e7afe09c444d7ec2b1504cbf0ef0",
+    "gensid/historical_incremental_content.py": "7a07d7eba84f4cba62e5aa5f1cbaa4534fd6fc84564d4cf65ae9771b10e9a2eb",
+    "gensid/trainer.py": "8c1117847552fb73a95f52743969c5413f65c799bf0cbe63bc69f183f7b4391d",
+    "gensid/plain_incremental_content.py": "33b9f7249f4175bfbceb478d56c8108656d1e393e2b8f6bb2b349a882ffd49e2",
+    "genrec/historical_damage.py": "33cbbbba261f0f25761e9994b0a6358b2ae628c109a7a26ef7cb38cf0cb55079"
+  }
+}

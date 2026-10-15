@@ -1,0 +1,13 @@
+{
+  "round": "collapse_diagnostic",
+  "files": {
+    "diagnose_historical_collapse.py": {
+      "previous_sha256": null,
+      "new_sha256": "e972e5dd460e21fe960d7e0552663223704770bf57469e8bbd41cf7fb163a907"
+    },
+    "tests/incremental/test_collapse_diagnostic.py": {
+      "previous_sha256": null,
+      "new_sha256": "c06588643b26219973f7df7dd0af648c18a1e949c89a45de43929e5b3dfe96c4"
+    }
+  }
+}

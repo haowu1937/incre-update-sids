@@ -1,0 +1,26 @@
+{
+  "round": "round11",
+  "inputs": "synthetic_only",
+  "tests_run": 10,
+  "execution_status": "passed",
+  "actual_models": "existing repository RQ-VAE and TIGER/T5",
+  "identity_reencoding": "per-query Delta NLL and KL exactly zero",
+  "preservation": "old labels, teacher-forcing prefixes, availability masks and frozen weights",
+  "suffix_allocator": "old reservations retained; unchanged prefixes keep slots; fixed capacity; unique full SIDs",
+  "sample_cohorts": "user-disjoint and deterministic",
+  "metric_checks": "paired means, positive parts, user-cluster CI and complete ranking denominators",
+  "source_checks": "old NLL/ranking reproduced; input artifact corruption and wrong selected model rejected",
+  "CLI_checked": "complete loss and ranking run, actual frozen model, 10 total/5 eligible synthetic validation queries",
+  "installation": "3 new files; repeat installation writes 0; all installed tests passed",
+  "python310_syntax": "passed",
+  "environment": {
+    "python": "3.12.14",
+    "torch": "2.6.0+cpu",
+    "numpy": "2.3.5",
+    "transformers": "4.56.1",
+    "sklearn": "1.8.0"
+  },
+  "real_Beauty_E1_status": "not_run_locally",
+  "GPU_status": "not_run_locally",
+  "historical_aware_training_status": "not_run"
+}

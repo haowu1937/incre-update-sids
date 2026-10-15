@@ -1,0 +1,407 @@
+--- /dev/null
++++ b/genrec/temporal_graphs.py
+@@ -0,0 +1,136 @@
++"""Build stage-specific graphs through the repository InteractionGraphBuilder."""
++import json
++import platform
++import time
++from pathlib import Path
++
++from genrec.temporal_graph_inputs import file_sha256
++
++
++def _json(path):
++    return json.loads(Path(path).read_text(encoding='utf-8'))
++
++
++def load_verified_graph(directory):
++    """Restore a complete graph only after payload checksum validation."""
++    from gensid.graph_aware_sid.graph_utils import InteractionGraphBuilder
++    directory = Path(directory)
++    manifest = _json(directory / 'graph_manifest.json')
++    required = {'meta.json', 'graph_df.parquet', 'node_map.parquet', 'pyg_data.pt'}
++    if set(manifest['files_sha256']) != required:
++        raise ValueError('Incomplete graph manifest')
++    for name, expected in manifest['files_sha256'].items():
++        if file_sha256(directory / name) != expected:
++            raise ValueError(f'Graph checksum mismatch: {name}')
++    builder = InteractionGraphBuilder.from_dump(str(directory))
++    if builder.node_map['item_id'].to_list() != manifest['global_item_ids']:
++        raise ValueError('Graph global item order differs from manifest')
++    if builder.node_map['node_id'].to_list() != list(range(len(manifest['global_item_ids']))):
++        raise ValueError('Graph node IDs must be contiguous local IDs')
++    if builder.pyg_data.num_nodes != len(manifest['global_item_ids']):
++        raise ValueError('Graph node count mismatch')
++    return builder
++
++
++def prepare_graphs(graph_inputs_dir, output):
++    # Lazy imports keep the CLI/help separate from graph kernels.
++    import polars as pl
++    import torch
++    from gensid.graph_aware_sid.graph_utils import InteractionGraphBuilder
++    started = time.perf_counter()
++    graph_inputs_dir, output = Path(graph_inputs_dir).resolve(), Path(output).resolve()
++    pending = output.with_name(output.name + '.incomplete')
++    if output.exists() or pending.exists():
++        raise FileExistsError('Use a new output directory')
++    source = _json(graph_inputs_dir / 'summary.json')
++    if source.get('execution_status') != 'completed' or source.get('stage') != 'E0_graph_input_preparation':
++        raise ValueError('Expected completed Round 4 graph inputs')
++    required = {f'{stage}/{name}' for stage in ('base', 'update')
++                for name in ('observed_events.jsonl', 'user_sequences.jsonl', 'item_nodes.json', 'registry.json')}
++    if not required.issubset(source['artifact_files_sha256']):
++        raise ValueError('Incomplete Round 4 manifest')
++    for name in sorted(required):
++        if file_sha256(graph_inputs_dir / name) != source['artifact_files_sha256'][name]:
++            raise ValueError(f'Input checksum mismatch: {name}')
++    stats = {}
++    builders = {}
++    for stage in ('base', 'update'):
++        nodes = _json(graph_inputs_dir / stage / 'item_nodes.json')
++        ids = [n['gensid_global_item_id'] for n in nodes]
++        if ids != sorted(set(ids)) or any(i < 0 for i in ids):
++            raise ValueError('Invalid catalog global IDs')
++        if [n['graph_local_item_id'] for n in nodes] != list(range(len(ids))):
++            raise ValueError('Catalog local node order mismatch')
++        rows = [json.loads(line) for line in
++                (graph_inputs_dir / stage / 'observed_events.jsonl').read_text().splitlines()]
++        expected = source['stages'][stage]
++        if len(rows) != expected['event_count'] or len(ids) != expected['catalog_size']:
++            raise ValueError('Stage input count mismatch')
++        for r in rows:
++            local = r['graph_local_item_id']
++            if local < 0 or local >= len(nodes) or nodes[local]['gensid_global_item_id'] != r['gensid_global_item_id']:
++                raise ValueError('Event global/local map mismatch')
++            if nodes[local]['raw_item_id'] != r['item']:
++                raise ValueError('Raw item round trip mismatch')
++            lo, hi = expected['lower_timestamp_inclusive'], expected['upper_timestamp_exclusive']
++            if (lo is not None and r['timestamp'] < lo) or r['timestamp'] >= hi:
++                raise ValueError('Event outside training window')
++        df = pl.DataFrame({'user_id': [r['gr_user_id'] for r in rows],
++                           'item_id': [r['gensid_global_item_id'] for r in rows],
++                           'ts': [r['timestamp'] for r in rows]})
++        builder = InteractionGraphBuilder(interactions_df=df, skip_n_last=0,
++            graph_type='adjacent_cooc', graph_building_kwargs={'strict_timestamp_groups': True},
++            make_undirected=True, add_identity_features=False, all_item_ids=ids)
++        if builder.node_map['item_id'].to_list() != ids:
++            raise ValueError('Builder changed catalog order')
++        degree = torch.zeros(len(ids), dtype=torch.float)
++        ei, ew = builder.pyg_data.edge_index, builder.pyg_data.edge_weight
++        if ew.numel():
++            degree.scatter_add_(0, ei[0], ew)
++        unique_user_times = df.select(['user_id', 'ts']).unique().height
++        stats[stage] = dict(num_nodes=len(ids),
++            directed_edges_before_symmetrization=builder.graph_df.height,
++            directed_edges_after_symmetrization=int(ei.shape[1]),
++            isolated_nodes=int((degree == 0).sum()),
++            nodes_without_window_interactions=expected['nodes_without_window_interactions'],
++            interactions=len(rows), duplicate_user_timestamp_events=len(rows)-unique_user_times,
++            total_directed_edge_weight=float(ew.sum()))
++        builders[stage] = builder
++    pending.mkdir(parents=True, exist_ok=False)
++    def write(path, value):
++        path.write_text(json.dumps(value, indent=2, allow_nan=False) + '\n')
++    for stage, builder in builders.items():
++        directory = pending / stage
++        builder.dump(str(directory))
++        graph_manifest = dict(stage=stage, protocol_sha256=source['protocol_sha256'],
++            input_events_sha256=source['artifact_files_sha256'][f'{stage}/observed_events.jsonl'],
++            catalog_sha256=source['artifact_files_sha256'][f'{stage}/item_nodes.json'],
++            global_item_ids=builder.node_map['item_id'].to_list(),
++            graph_policy='all event pairs between consecutive distinct per-user timestamp groups',
++            same_timestamp_edges=False, repeat_event_multiplicity=True,
++            directed_counts_then_undirected_sum=True, skip_n_last=0,
++            files_sha256={p.name: file_sha256(p) for p in sorted(directory.iterdir())})
++        write(directory / 'graph_manifest.json', graph_manifest)
++        restored = load_verified_graph(directory)
++        for attr in ('edge_index', 'edge_weight', 'x'):
++            if not torch.equal(getattr(builder.pyg_data, attr), getattr(restored.pyg_data, attr)):
++                raise ValueError('Graph dump/reload tensor mismatch')
++    result = dict(stage='E0_graph_construction', execution_status='completed', stages=stats,
++        protocol_sha256=source['protocol_sha256'], graph_inputs_dir=str(graph_inputs_dir),
++        graph_type='adjacent_cooc', strict_timestamp_groups=True, make_undirected=True,
++        self_pairs_between_distinct_timestamp_groups='preserved',
++        graph_dump_reload_verified=True, graph_features='degree placeholder; not content embeddings',
++        appnp_status='not_run', feature_extraction_status='not_run', training_status='not_run',
++        E0_full_status='not_run', E1_status='not_run', python=platform.python_version(),
++        torch_version=torch.__version__, polars_version=pl.__version__)
++    root = Path(__file__).resolve().parents[1]
++    result['source_files_sha256'] = {name: file_sha256(root / name) for name in (
++        'gensid/graph_aware_sid/graph_utils.py', 'genrec/temporal_graphs.py', 'prepare_incremental_graphs.py')}
++    result['artifact_files_sha256'] = {str(p.relative_to(pending)): file_sha256(p)
++        for p in sorted(pending.rglob('*')) if p.is_file()}
++    result['runtime_seconds'] = time.perf_counter() - started
++    write(pending / 'summary.json', result)
++    if output.exists():
++        raise FileExistsError('Output created concurrently')
++    pending.rename(output)
++    return result
+--- a/gensid/graph_aware_sid/graph_utils.py
++++ b/gensid/graph_aware_sid/graph_utils.py
+@@ -6,7 +6,6 @@
+ import torch
+ from scipy.sparse.linalg import eigsh
+ from torch import Tensor
+-from torch_cluster import random_walk
+ from torch_geometric.data import Data
+ from torch_geometric.nn.conv import MessagePassing
+ from torch_geometric.nn.conv.gcn_conv import gcn_norm
+@@ -20,9 +19,11 @@
+     with open(os.path.join(path), "r") as f:
+         inters = json.load(f)
+ 
++    if skip_n_last is not None and (isinstance(skip_n_last, bool) or not isinstance(skip_n_last, int) or skip_n_last < 0):
++        raise ValueError("skip_n_last must be a non-negative integer or None")
+     mask = np.zeros(num_items, dtype=bool)
+     for items in inters.values():
+-        seq = items if skip_n_last is None else items[:-skip_n_last]
++        seq = items if skip_n_last in (None, 0) else items[:-skip_n_last]
+         for item in seq:
+             item = int(item)
+             if item < 0 or item >= num_items:
+@@ -97,6 +98,8 @@
+     if missing:
+         raise ValueError(f"df is missing columns: {missing}")
+ 
++    from torch_cluster import random_walk
++
+     torch.manual_seed(seed)
+     np.random.seed(seed)
+ 
+@@ -261,7 +264,7 @@
+     return out
+ 
+ 
+-def build_adjacent_cooccurrence_graph(df: pl.DataFrame) -> pl.DataFrame:
++def build_adjacent_cooccurrence_graph(df: pl.DataFrame, strict_timestamp_groups: bool = False) -> pl.DataFrame:
+     """
+     Build a directed co-occurrence graph from sequential data using adjacent pairs only.
+ 
+@@ -276,6 +279,19 @@
+         - dst
+         - weight
+     """
++    if strict_timestamp_groups:
++        # All event pairs between consecutive distinct time groups. No order
++        # is invented within a simultaneous group; repeated events count.
++        groups = (df.sort(["user_id", "ts", "item_id"])
++                  .group_by(["user_id", "ts"], maintain_order=True)
++                  .agg(pl.col("item_id").alias("src")))
++        pairs = (groups.with_columns(pl.col("src").shift(-1).over("user_id").alias("dst"))
++                 .filter(pl.col("dst").is_not_null())
++                 .explode("src").explode("dst"))
++        return (pairs.group_by(["src", "dst"])
++                .agg(pl.len().cast(pl.Float64).alias("weight"))
++                .sort(["src", "dst"]))
++
+     df = df.sort(["user_id", "ts"])
+ 
+     out = (
+@@ -844,6 +860,7 @@
+         load_path=None,
+         num_items=None,
+         all_item_ids=None,
++        interactions_df=None,
+     ):
+         self.interactions_path = interactions_path
+         self.graph_type = graph_type
+@@ -862,10 +879,17 @@
+             self._load(load_path)
+             return
+ 
+-        if interactions_path is None:
+-            raise ValueError("Either interactions_path or load_path must be provided")
+-
+-        df = self._load_interactions(interactions_path, skip_n_last=skip_n_last)
++        if interactions_df is not None:
++            if skip_n_last not in (None, 0):
++                raise ValueError("Stage-filtered interactions_df requires skip_n_last=0 or None")
++            missing = {"user_id", "item_id", "ts"} - set(interactions_df.columns)
++            if missing:
++                raise ValueError(f"interactions_df missing columns: {missing}")
++            df = interactions_df.select(["user_id", "ts", "item_id"])
++        else:
++            if interactions_path is None:
++                raise ValueError("Provide interactions_path, interactions_df or load_path")
++            df = self._load_interactions(interactions_path, skip_n_last=skip_n_last)
+ 
+         if graph_type == "windowed":
+             self.graph_df = build_windowed_cooccurrence_graph(df, **self.graph_building_kwargs)
+@@ -889,7 +913,9 @@
+         with open(os.path.join(path), "r") as f:
+             inters = json.load(f)
+ 
+-        if skip_n_last is None:
++        if skip_n_last is not None and (isinstance(skip_n_last, bool) or not isinstance(skip_n_last, int) or skip_n_last < 0):
++            raise ValueError("skip_n_last must be a non-negative integer or None")
++        if skip_n_last in (None, 0):
+             rows = [(user, item, pos) for user, items in inters.items() for pos, item in enumerate(items)]
+         else:
+             rows = [
+@@ -910,6 +936,7 @@
+             "make_undirected": self.make_undirected,
+             "add_identity_features": self.add_identity_features,
+             "num_items": self.num_items,
++            "all_item_ids": self.all_item_ids,
+         }
+ 
+         with open(os.path.join(save_dir, "meta.json"), "w") as f:
+@@ -957,6 +984,7 @@
+         self.make_undirected = meta["make_undirected"]
+         self.add_identity_features = meta["add_identity_features"]
+         self.num_items = meta.get("num_items")
++        self.all_item_ids = meta.get("all_item_ids")
+ 
+         self.graph_df = pl.read_parquet(graph_df_path)
+         self.node_map = pl.read_parquet(node_map_path).sort("node_id")
+--- /dev/null
++++ b/prepare_incremental_graphs.py
+@@ -0,0 +1,10 @@
++import argparse
++import json
++from genrec.temporal_graphs import prepare_graphs
++
++if __name__ == '__main__':
++    parser = argparse.ArgumentParser(description='Build stage-specific graphs with the existing gensid builder')
++    parser.add_argument('--graph-inputs-dir', required=True)
++    parser.add_argument('--output', required=True)
++    args = parser.parse_args()
++    print(json.dumps(prepare_graphs(args.graph_inputs_dir, args.output), indent=2))
+--- /dev/null
++++ b/tests/incremental/test_temporal_round5.py
+@@ -0,0 +1,134 @@
++"""Graph integration checks; synthetic data only, no encoder download."""
++import argparse
++import json
++import sys
++import tempfile
++import unittest
++from pathlib import Path
++
++ROOT = Path(__file__).resolve().parents[2]
++sys.path.insert(0, str(ROOT))
++import polars as pl
++import torch
++from gensid.graph_aware_sid.graph_utils import InteractionGraphBuilder, load_train_item_mask
++from genrec.temporal_graph_inputs import file_sha256
++from genrec.temporal_graphs import load_verified_graph, prepare_graphs
++
++
++class Checks(unittest.TestCase):
++    def setUp(self):
++        self.tmp = tempfile.TemporaryDirectory()
++        self.addCleanup(self.tmp.cleanup)
++        self.root = Path(self.tmp.name)
++        self.inter = self.root / 'inter.json'
++        self.inter.write_text(json.dumps({'u': [2, 7, 11]}))
++
++    def build(self, pairs=None):
++        pairs = pairs or [(1, 2, 10), (1, 7, 10), (1, 11, 20)]
++        df = pl.DataFrame(pairs, schema=['user_id', 'item_id', 'ts'], orient='row')
++        return InteractionGraphBuilder(interactions_df=df, skip_n_last=0,
++            graph_building_kwargs={'strict_timestamp_groups': True},
++            all_item_ids=[2, 7, 11])
++
++    def fixture(self):
++        source = self.root / 'inputs'
++        source.mkdir()
++        hashes, stats = {}, {}
++        for stage in ('base', 'update'):
++            directory = source / stage
++            directory.mkdir()
++            nodes = [dict(raw_item_id=raw, gensid_global_item_id=g,
++                          graph_local_item_id=i, gr_item_id=g+1)
++                     for i, (raw, g) in enumerate([('a', 2), ('b', 7), ('c', 11)])]
++            rows = [dict(item=raw, timestamp=t, gr_user_id=1,
++                         gensid_global_item_id=g, graph_local_item_id=i)
++                    for i, (raw, g, t) in enumerate([('a', 2, 10), ('b', 7, 20)])]
++            (directory / 'observed_events.jsonl').write_text(''.join(json.dumps(r)+'\n' for r in rows))
++            for name, obj in (('item_nodes.json', nodes), ('registry.json', {})):
++                (directory / name).write_text(json.dumps(obj))
++            (directory / 'user_sequences.jsonl').write_text('{}\n')
++            for path in directory.iterdir():
++                hashes[str(path.relative_to(source))] = file_sha256(path)
++            stats[stage] = dict(event_count=2, catalog_size=3,
++                nodes_without_window_interactions=1,
++                lower_timestamp_inclusive=None, upper_timestamp_exclusive=30)
++        (source / 'summary.json').write_text(json.dumps(dict(
++            execution_status='completed', stage='E0_graph_input_preparation',
++            protocol_sha256='synthetic', artifact_files_sha256=hashes, stages=stats)))
++        return source
++
++    def test_zero_none_and_positive_truncation(self):
++        for skip in (0, None):
++            self.assertEqual(load_train_item_mask(self.inter, 12, skip).tolist(), [2, 7, 11])
++        self.assertEqual(load_train_item_mask(self.inter, 12, 1).tolist(), [2, 7])
++        with self.assertRaises(ValueError):
++            load_train_item_mask(self.inter, 12, -1)
++
++    def test_legacy_builder_zero_and_none_preserve_all_events(self):
++        for skip in (0, None):
++            builder = InteractionGraphBuilder(interactions_path=str(self.inter),
++                skip_n_last=skip, all_item_ids=[2, 7, 11])
++            self.assertEqual(builder.graph_df.height, 2)
++        builder = InteractionGraphBuilder(interactions_path=str(self.inter),
++            skip_n_last=1, all_item_ids=[2, 7, 11])
++        self.assertEqual(builder.graph_df.height, 1)
++
++    def test_simultaneous_group_has_no_internal_edges(self):
++        builder = self.build()
++        edges = {(r['src'], r['dst']): r['weight'] for r in builder.graph_df.to_dicts()}
++        self.assertEqual(edges, {(2, 11): 1.0, (7, 11): 1.0})
++
++    def test_repeat_multiplicity_preserved(self):
++        builder = self.build([(1, 2, 10), (1, 2, 10), (1, 7, 20)])
++        self.assertEqual(builder.graph_df.to_dicts(), [{'src': 2, 'dst': 7, 'weight': 2.0}])
++
++    def test_noncontiguous_mapping_and_single_timestamp_isolation(self):
++        builder = self.build([(1, 2, 10), (1, 7, 10), (2, 11, 20)])
++        self.assertEqual(builder.node_map['item_id'].to_list(), [2, 7, 11])
++        self.assertEqual(builder.node_map['node_id'].to_list(), [0, 1, 2])
++        self.assertEqual(builder.pyg_data.num_nodes, 3)
++        self.assertEqual(builder.pyg_data.edge_index.shape, (2, 0))
++
++    def test_pre_filtered_dataframe_rejects_extra_truncation(self):
++        df = pl.DataFrame({'user_id': [1], 'item_id': [2], 'ts': [10]})
++        with self.assertRaises(ValueError):
++            InteractionGraphBuilder(interactions_df=df, skip_n_last=2, all_item_ids=[2])
++
++    def test_export_reload_checksums_and_no_overwrite(self):
++        source = self.fixture()
++        output = self.root / 'out'
++        result = prepare_graphs(source, output)
++        self.assertEqual(result['stages']['update']['isolated_nodes'], 1)
++        self.assertTrue(result['graph_dump_reload_verified'])
++        restored = load_verified_graph(output / 'base')
++        self.assertTrue(torch.equal(restored.pyg_data.edge_index,
++                                     torch.tensor([[0, 1], [1, 0]])))
++        self.assertEqual(restored.all_item_ids, [2, 7, 11])
++        self.assertEqual(result['training_status'], 'not_run')
++        with self.assertRaises(FileExistsError):
++            prepare_graphs(source, output)
++        with (output / 'base/pyg_data.pt').open('ab') as handle:
++            handle.write(b'tampered')
++        with self.assertRaisesRegex(ValueError, 'checksum'):
++            load_verified_graph(output / 'base')
++
++    def test_modified_stage_input_rejected_before_output(self):
++        source = self.fixture()
++        with (source / 'update/observed_events.jsonl').open('a') as handle:
++            handle.write('{}\n')
++        with self.assertRaisesRegex(ValueError, 'checksum'):
++            prepare_graphs(source, self.root / 'out')
++        self.assertFalse((self.root / 'out').exists())
++
++
++if __name__ == '__main__':
++    parser = argparse.ArgumentParser()
++    parser.add_argument('--output', required=True)
++    args = parser.parse_args()
++    output = Path(args.output)
++    output.mkdir(parents=True, exist_ok=False)
++    result = unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Checks))
++    (output / 'checks.json').write_text(json.dumps(dict(round='round5', inputs='synthetic_only',
++        tests_run=result.testsRun, execution_status='passed' if result.wasSuccessful() else 'failed',
++        E0_full_status='not_run', E1_status='not_run'), indent=2)+'\n')
++    sys.exit(0 if result.wasSuccessful() else 1)

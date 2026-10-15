@@ -1,0 +1,28 @@
+execution_status = completed | steps = 100 | rho = 0.1
+same_base = True | encoder_unchanged_both = True
+same_content_optimizer_and_sampler = True | same_compute = False
+full_anchor_train_queries = 4096 | holdout_used = False | ranking_evaluated = False
+historical_accepts = 47 | content_fallbacks = 53 | identical = 1
+local_guard_passed = True | independent_Plain_dominance_guaranteed = False
+historical_rejection_reasons = {'historical_hard_H_not_lower': 53}
+arm positive_damage mean_delta_NLL RQ_MSE
+plain 0.087290558 0.012048275 0.000107154205
+ungated 0.0974458815 0.0211492668 0.000107348371
+hard_gated 0.100405086 0.0258141797 0.000107224885
+gated_minus_plain_positive_damage = 0.013114528 | training_cluster_CI95 = [0.0064845951531457445, 0.01889409760138107]
+gated_minus_plain_mean_NLL = 0.0137659046 | RQ_MSE_difference = 7.06800419e-08
+gated_unique_codes = 10813 | max_bucket = 31 | CB_used = 38/225/193
+median_step_seconds = 16.4666322
+step content_candidate_H historical_candidate_H selected selected_H
+10 0.0759638238 0.0763916555 content 0.0759638238
+20 0.0845341014 0.0847927736 content 0.0845341014
+30 0.0879982671 0.0881319062 content 0.0879982671
+40 0.091059833 0.0913495455 content 0.091059833
+50 0.0854749245 0.0856705225 content 0.0854749245
+60 0.0918660798 0.0919189848 content 0.0918660798
+70 0.0938191572 0.0937840054 historical 0.0937840054
+80 0.0880875833 0.0880628751 historical 0.0880628751
+90 0.101123932 0.101358912 content 0.101123932
+100 0.101026453 0.100405086 historical 0.100405086
+Candidate content_H is local to the gated trajectory; it is not the independent Plain trajectory.
+Training-only diagnostic; no held-out improvement claim.

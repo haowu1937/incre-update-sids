@@ -1,0 +1,23 @@
+execution_status = completed | steps = 100 | rho = 0.1
+same_base = True | encoder_unchanged_both = True
+same_content_optimizer_and_sampler = True | same_compute = False
+anchor_train_queries = 4096 | holdout_used = False | ranking_evaluated = False
+arm positive_damage mean_delta_NLL RQ_MSE unique_codes max_bucket CB_used
+plain 0.087290558 0.012048275 0.0001071542054 10798 28 39/224/192
+history_aware 0.0974458815 0.0211492668 0.0001073483713 10821 24 39/230/197
+history_aware_minus_plain_positive_damage = 0.0101553234
+training_user_cluster_CI95 = [0.003551269233713368, 0.0166640292959023]
+history_aware_minus_plain_mean_NLL = 0.00910099177
+history_aware_minus_plain_RQ_MSE = 1.9416595e-07
+step plain_H_after history_H_after
+10 0.078103217 0.0775279275
+20 0.0859735197 0.0852162531
+30 0.0865287988 0.0876556229
+40 0.0905751602 0.0861436069
+50 0.087410412 0.0958479961
+60 0.0893859447 0.0922964641
+70 0.089446768 0.0901522468
+80 0.0935961397 0.0867845946
+90 0.0947740321 0.0901972289
+100 0.087290558 0.0974458815
+Training diagnostic only; no held-out improvement claim.

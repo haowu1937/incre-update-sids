@@ -1,0 +1,592 @@
+diff --git a/genrec/temporal.py b/genrec/temporal.py
+new file mode 100644
+--- /dev/null
++++ b/genrec/temporal.py
+@@ -0,0 +1,281 @@
++"""Temporal helpers for the existing genrec dataset pipeline.
++
++This module has no model, graph or text-encoder dependency. It consumes the
++four-column tuples returned by AmazonReviews2014._load_reviews and emits
++causal rows compatible with the repository's history-plus-target convention.
++Training integration is deliberately a later handoff round.
++"""
++
++import ast
++import copy
++import gzip
++import hashlib
++import json
++import math
++from collections import defaultdict
++from datetime import datetime, timezone
++from itertools import groupby
++from numbers import Integral, Real
++
++
++STAGES = ("base_train", "base_val", "update_train", "update_val", "future_test")
++CATALOG_REFERENCE = {
++    "base_train": "base_train",
++    "base_val": "base_train",
++    "update_train": "update_train",
++    "update_val": "update_train",
++    "future_test": "update",
++}
++
++
++def parse_record(line):
++    """Parse JSON or a legacy Python literal, without executing source."""
++    if isinstance(line, bytes):
++        line = line.decode("utf-8")
++    try:
++        record = json.loads(line)
++    except json.JSONDecodeError:
++        try:
++            record = ast.literal_eval(line)
++        except (ValueError, SyntaxError) as exc:
++            raise ValueError("Record must be JSON or a Python literal") from exc
++    if not isinstance(record, dict):
++        raise ValueError("Record must be an object/dict")
++    return record
++
++
++def iter_gzip_records(path):
++    """Read UTF-8 gzip records; errors identify the file and line number."""
++    with gzip.open(path, "rt", encoding="utf-8") as handle:
++        for line_number, line in enumerate(handle, 1):
++            if not line.strip():
++                continue
++            try:
++                yield parse_record(line)
++            except (ValueError, UnicodeError) as exc:
++                raise ValueError(f"Invalid record at {path}:{line_number}") from exc
++
++
++def _digest(value):
++    encoded = json.dumps(value, sort_keys=True, ensure_ascii=False,
++                         separators=(",", ":"), allow_nan=False).encode("utf-8")
++    return hashlib.sha256(encoded).hexdigest()
++
++
++def reviews_from_sequences(all_seqs):
++    """Adapt existing all_seqs raw IDs and actual timestamps to review tuples."""
++    result = []
++    for user, sequence in all_seqs.items():
++        items = sequence["item"]
++        times = sequence["time"]
++        ratings = sequence.get("rating", [None] * len(items))
++        if len(items) != len(times) or len(items) != len(ratings):
++            raise ValueError(f"Sequence columns have different lengths for {user!r}")
++        result.extend(zip([user] * len(items), items, times, ratings))
++    return result
++
++
++def normalize_reviews(reviews, duplicate_policy="drop_exact"):
++    """Preserve repeats; exact duplicates mean equal user/item/time/rating.
++
++    Review text is not used to define an implicit interaction. With
++    keep_exact, duplicate events get distinct deterministic occurrence IDs.
++    """
++    if duplicate_policy not in ("drop_exact", "keep_exact"):
++        raise ValueError("duplicate_policy must be drop_exact or keep_exact")
++    checked = []
++    for row in reviews:
++        if len(row) != 4:
++            raise ValueError("Each review must contain user, item, timestamp, rating")
++        user, item, timestamp, rating = row
++        if any(not isinstance(value, str) or not value or value == "[PAD]"
++               for value in (user, item)):
++            raise ValueError("Raw user/item IDs must be nonempty strings other than [PAD]")
++        if isinstance(timestamp, bool) or not isinstance(timestamp, Integral):
++            raise ValueError("Timestamps must be integer UNIX seconds")
++        timestamp = int(timestamp)
++        try:
++            datetime.fromtimestamp(timestamp, timezone.utc)
++        except (ValueError, OverflowError, OSError) as exc:
++            raise ValueError("Timestamp is outside the supported UTC range") from exc
++        if rating is not None:
++            if isinstance(rating, bool) or not isinstance(rating, Real):
++                raise ValueError("Ratings must be numeric or None")
++            rating = float(rating)
++            if not math.isfinite(rating):
++                raise ValueError("Ratings must be finite")
++        checked.append((user, item, timestamp, rating))
++    checked.sort(key=lambda row: (row[2], row[0], row[1],
++                                 (row[3] is not None, row[3] or 0.0)))
++    occurrences = defaultdict(int)
++    events = []
++    duplicates = 0
++    for row in checked:
++        occurrence = occurrences[row]
++        occurrences[row] += 1
++        if occurrence:
++            duplicates += 1
++            if duplicate_policy == "drop_exact":
++                continue
++        user, item, timestamp, rating = row
++        events.append({"user": user, "item": item, "timestamp": timestamp,
++                       "rating": rating, "sample_id": _digest([*row, occurrence])})
++    if not events:
++        raise ValueError("No interactions remain")
++    return events, {"input_events": len(checked), "retained_events": len(events),
++                    "exact_duplicates_observed": duplicates,
++                    "exact_duplicates_removed": duplicates if duplicate_policy == "drop_exact" else 0,
++                    "duplicate_policy": duplicate_policy,
++                    "repeat_item_policy": "preserve",
++                    "rating_threshold": None}
++
++
++def _nearest_edge(edges, desired):
++    if not edges:
++        raise ValueError("No timestamp boundary can produce nonempty windows")
++    return min(edges, key=lambda index: (abs(index - desired), index))
++
++
++def temporal_boundaries(events):
++    """Choose 60/80% edges, then late-10% validation within each window.
++
++    Ties select the earlier edge. Reserve at least two timestamp groups for
++    each base/update window and one for future test, so every stage is nonempty.
++    """
++    n_events = len(events)
++    if not n_events:
++        raise ValueError("No interactions supplied")
++    if any(events[i]["timestamp"] > events[i + 1]["timestamp"]
++           for i in range(n_events - 1)):
++        raise ValueError("Events must be sorted by timestamp")
++    starts = [0] + [i for i in range(1, n_events)
++                    if events[i - 1]["timestamp"] != events[i]["timestamp"]] + [n_events]
++    groups = len(starts) - 1
++    if groups < 5:
++        raise ValueError("At least five distinct timestamps are required for five nonempty stages")
++    base_end = _nearest_edge(starts[2:groups - 2], 0.6 * n_events)
++    base_group = starts.index(base_end)
++    update_end = _nearest_edge(starts[base_group + 2:groups], 0.8 * n_events)
++    base_train_end = _nearest_edge([i for i in starts if 0 < i < base_end],
++                                   0.9 * base_end)
++    update_train_end = _nearest_edge([i for i in starts if base_end < i < update_end],
++                                     base_end + 0.9 * (update_end - base_end))
++    return {"base_train_end": base_train_end, "base_end": base_end,
++            "update_train_end": update_train_end, "update_end": update_end,
++            "total": n_events}
++
++
++def registry_snapshots(events, boundaries):
++    """Append observed identities; never include future-only identities."""
++    registry = {"user2id": {"[PAD]": 0}, "item2id": {"[PAD]": 0},
++                "id2user": ["[PAD]"], "id2item": ["[PAD]"]}
++    endpoints = {
++        boundaries["base_train_end"]: "base_train",
++        boundaries["base_end"]: "base",
++        boundaries["update_train_end"]: "update_train",
++        boundaries["update_end"]: "update",
++    }
++    snapshots = {}
++    for count, event in enumerate(events[:boundaries["update_end"]], 1):
++        for kind in ("user", "item"):
++            raw_id = event[kind]
++            forward, reverse = registry[f"{kind}2id"], registry[f"id2{kind}"]
++            if raw_id not in forward:
++                forward[raw_id] = len(reverse)
++                reverse.append(raw_id)
++        if count in endpoints:
++            snapshots[endpoints[count]] = copy.deepcopy(registry)
++    return snapshots
++
++
++def build_temporal_protocol(reviews, max_history=50, duplicate_policy="drop_exact"):
++    """Prepare raw causal rows and catalog flags, without running any model.
++
++    item_seq is history followed by exactly one target, matching the existing
++    _tokenize_once convention. The current train tokenizer expands prefixes;
++    these rows MUST NOT be fed to it until explicit-example mode is delivered.
++    Catalog flags keep unservable targets/history visible rather than dropping
++    them silently. Their model-input policy is wired in the next round.
++    """
++    if isinstance(max_history, bool) or not isinstance(max_history, Integral) or max_history < 1:
++        raise ValueError("max_history must be a positive integer")
++    events, preprocessing = normalize_reviews(reviews, duplicate_policy)
++    boundaries = temporal_boundaries(events)
++    registries = registry_snapshots(events, boundaries)
++    edges = [0, boundaries["base_train_end"], boundaries["base_end"],
++             boundaries["update_train_end"], boundaries["update_end"], len(events)]
++    stage_at = [stage for stage, start, end in zip(STAGES, edges, edges[1:])
++                for _ in range(start, end)]
++    rows = {stage: [] for stage in STAGES}
++    excluded = {stage: 0 for stage in STAGES}
++    histories = defaultdict(list)
++    indexed = enumerate(events)
++    for _, same_time in groupby(indexed, key=lambda pair: pair[1]["timestamp"]):
++        group = list(same_time)
++        for index, event in group:
++            stage = stage_at[index]
++            history = histories[event["user"]][-max_history:]
++            if not history:
++                excluded[stage] += 1
++                continue
++            catalog_version = CATALOG_REFERENCE[stage]
++            catalog = registries[catalog_version]["item2id"]
++            sequence = [*history, event]
++            rows[stage].append({
++                "user": event["user"],
++                "item_seq": [entry["item"] for entry in sequence],
++                "time_seq": [entry["timestamp"] for entry in sequence],
++                "rating_seq": [entry["rating"] for entry in sequence],
++                "sample_id": event["sample_id"], "target_time": event["timestamp"],
++                "catalog_version": catalog_version,
++                "target_servable": event["item"] in catalog,
++                "history_available": [entry["item"] in catalog for entry in history],
++            })
++        # Simultaneous interactions are appended only after every target at this
++        # timestamp has been formed. Equal-time history order is deterministic.
++        for _, event in group:
++            history = histories[event["user"]]
++            history.append(event)
++            if len(history) > max_history:
++                del history[:-max_history]
++    empty_stages = [stage for stage in STAGES if not rows[stage]]
++    if empty_stages:
++        raise ValueError(f"No eligible causal examples in stages: {empty_stages}")
++    windows = {}
++    for stage, start, end in zip(STAGES, edges, edges[1:]):
++        first = events[start]["timestamp"]
++        last = events[end - 1]["timestamp"]
++        targets = rows[stage]
++        windows[stage] = {
++            "event_count": end - start,
++            "first_timestamp": first, "last_timestamp": last,
++            "first_utc": datetime.fromtimestamp(first, timezone.utc).isoformat(),
++            "last_utc": datetime.fromtimestamp(last, timezone.utc).isoformat(),
++            "example_count": len(targets), "excluded_empty_history": excluded[stage],
++            "unservable_targets": sum(not row["target_servable"] for row in targets),
++            "examples_with_unavailable_history": sum(not all(row["history_available"]) for row in targets),
++        }
++    manifest = {
++        "schema_version": 1, "protocol": "global_temporal_60_20_20_no_refit",
++        "normalized_interactions_sha256": _digest(events),
++        "max_history": int(max_history), "preprocessing": preprocessing,
++        "boundaries": boundaries, "windows": windows,
++        "cutoffs_exclusive": {
++            key: events[boundaries[f"{key}_end"]]["timestamp"]
++            for key in ("base_train", "base", "update_train", "update")
++        },
++        "fraction_deviation": {
++            "base": boundaries["base_end"] / len(events) - 0.6,
++            "update_end": boundaries["update_end"] / len(events) - 0.8,
++            "base_validation": (boundaries["base_end"] - boundaries["base_train_end"]) / boundaries["base_end"] - 0.1,
++            "update_validation": (boundaries["update_end"] - boundaries["update_train_end"]) / (boundaries["update_end"] - boundaries["base_end"]) - 0.1,
++        },
++        "catalog_reference": CATALOG_REFERENCE.copy(),
++        "catalog_sizes": {key: len(value["item2id"]) - 1 for key, value in registries.items()},
++        "same_timestamp_policy": "exclude_all_simultaneous_events_from_history",
++        "history_protocol": "offline_prequential_raw_history_with_availability_flags",
++        "validation_refit": False,
++        "training_integration": "not_provided_in_round1",
++    }
++    manifest["protocol_sha256"] = _digest(manifest)
++    return {"manifest": manifest, "registries": registries, "examples": rows}
+diff --git a/genrec/datasets/AmazonReviews2014/dataset.py b/genrec/datasets/AmazonReviews2014/dataset.py
+--- a/genrec/datasets/AmazonReviews2014/dataset.py
++++ b/genrec/datasets/AmazonReviews2014/dataset.py
+@@ -6,6 +6,7 @@
+ from typing import Optional
+ 
+ from genrec.dataset import AbstractDataset
++from genrec.temporal import iter_gzip_records
+ from genrec.utils import download_file, clean_text
+ 
+ 
+@@ -105,10 +106,7 @@
+         Yields:
+             object: Each line of the gzipped file, parsed as a dict.
+         """
+-        g = gzip.open(path, 'r')
+-        for l in g:
+-            l = l.replace(b'true', b'True').replace(b'false', b'False')
+-            yield eval(l)
++        yield from iter_gzip_records(path)
+ 
+     def _load_reviews(self, path: str) -> list:
+         """
+diff --git a/tests/incremental/test_temporal_round1.py b/tests/incremental/test_temporal_round1.py
+new file mode 100644
+--- /dev/null
++++ b/tests/incremental/test_temporal_round1.py
+@@ -0,0 +1,278 @@
++"""CPU-only Round 1 tests. All observations use synthetic fixtures."""
++
++import argparse
++import ast
++import gzip
++import hashlib
++import json
++import pathlib
++import random
++import subprocess
++import sys
++import tempfile
++import unittest
++
++
++ROOT = pathlib.Path(__file__).resolve().parents[2]
++sys.path.insert(0, str(ROOT))
++
++from genrec.temporal import (  # noqa: E402
++    STAGES, build_temporal_protocol, iter_gzip_records,
++    normalize_reviews, parse_record, reviews_from_sequences, temporal_boundaries,
++)
++
++
++def fixture():
++    events = []
++    for i in range(100):
++        item = ("A", "B", "C", "D")[i % 4]
++        if i == 65:
++            item = "NEW"
++        if i in (85, 86):
++            item = "FUTURE_ONLY"
++        events.append((f"u{i % 3}", item, 1000 + i // 2, 5))
++    return events
++
++
++class TemporalTests(unittest.TestCase):
++    def setUp(self):
++        self.protocol = build_temporal_protocol(fixture(), max_history=5)
++
++    def test_strict_causality_and_history_cap(self):
++        for rows in self.protocol["examples"].values():
++            for row in rows:
++                self.assertGreaterEqual(len(row["item_seq"]), 2)
++                self.assertLessEqual(len(row["item_seq"]), 6)
++                self.assertTrue(all(t < row["target_time"] for t in row["time_seq"][:-1]))
++                self.assertEqual(row["target_time"], row["time_seq"][-1])
++                self.assertEqual(len(row["item_seq"]), len(row["rating_seq"]))
++
++    def test_timestamp_windows_do_not_overlap(self):
++        windows = self.protocol["manifest"]["windows"]
++        for previous, current in zip(STAGES, STAGES[1:]):
++            self.assertLess(windows[previous]["last_timestamp"], windows[current]["first_timestamp"])
++        self.assertEqual(sum(w["event_count"] for w in windows.values()), 100)
++
++    def test_expected_cutoffs_and_validation_sizes(self):
++        self.assertEqual(self.protocol["manifest"]["boundaries"], {
++            "base_train_end": 54, "base_end": 60,
++            "update_train_end": 78, "update_end": 80, "total": 100,
++        })
++        self.assertFalse(self.protocol["manifest"]["validation_refit"])
++
++    def test_simultaneous_events_are_not_history(self):
++        events = fixture() + [("same_user", "X", 1010, 5),
++                              ("same_user", "Y", 1010, 5),
++                              ("same_user", "Z", 1011, 5)]
++        result = build_temporal_protocol(events)
++        rows = [row for values in result["examples"].values() for row in values
++                if row["user"] == "same_user"]
++        self.assertEqual(len(rows), 1)
++        self.assertEqual(rows[0]["item_seq"], ["X", "Y", "Z"])
++        self.assertEqual(rows[0]["time_seq"], [1010, 1010, 1011])
++
++    def test_each_retained_event_is_accounted_for_once(self):
++        manifest = self.protocol["manifest"]
++        total_rows = 0
++        sample_ids = []
++        for stage in STAGES:
++            window = manifest["windows"][stage]
++            rows = self.protocol["examples"][stage]
++            self.assertEqual(len(rows) + window["excluded_empty_history"], window["event_count"])
++            total_rows += len(rows)
++            sample_ids.extend(row["sample_id"] for row in rows)
++        self.assertEqual(len(set(sample_ids)), total_rows)
++
++    def test_stage_registries_exclude_future_ids(self):
++        registries = self.protocol["registries"]
++        self.assertNotIn("NEW", registries["base"]["item2id"])
++        self.assertIn("NEW", registries["update"]["item2id"])
++        for registry in registries.values():
++            self.assertNotIn("FUTURE_ONLY", registry["item2id"])
++            self.assertEqual(registry["item2id"]["[PAD]"], 0)
++
++    def test_registry_ids_and_raw_round_trips_are_stable(self):
++        registries = self.protocol["registries"]
++        for old_name, new_name in zip(("base_train", "base", "update_train"),
++                                      ("base", "update_train", "update")):
++            for kind in ("user", "item"):
++                old = registries[old_name][f"{kind}2id"]
++                new = registries[new_name][f"{kind}2id"]
++                for raw_id, old_id in old.items():
++                    self.assertEqual(new[raw_id], old_id)
++        for registry in registries.values():
++            for raw_id, gr_id in registry["item2id"].items():
++                self.assertEqual(registry["id2item"][gr_id], raw_id)
++                if gr_id:
++                    global_id = gr_id - 1
++                    self.assertEqual(registry["id2item"][global_id + 1], raw_id)
++
++    def test_unservable_targets_and_history_are_retained_and_counted(self):
++        rows = self.protocol["examples"]["future_test"]
++        self.assertEqual(sum(not row["target_servable"] for row in rows), 2)
++        self.assertEqual(self.protocol["manifest"]["windows"]["future_test"]["unservable_targets"], 2)
++        self.assertTrue(any(not all(row["history_available"]) for row in rows))
++
++    def test_exact_duplicates_and_repeats(self):
++        reviews = [("u", "A", 1, 5), ("u", "A", 1, 5), ("u", "A", 2, 5)]
++        events, stats = normalize_reviews(reviews)
++        self.assertEqual(len(events), 2)
++        self.assertEqual(stats["exact_duplicates_removed"], 1)
++        events, stats = normalize_reviews(reviews, "keep_exact")
++        self.assertEqual(len(events), 3)
++        self.assertEqual(len({event["sample_id"] for event in events}), 3)
++        self.assertEqual(stats["exact_duplicates_removed"], 0)
++
++    def test_deterministic_input_order(self):
++        reviews = fixture()
++        random.Random(42).shuffle(reviews)
++        self.assertEqual(self.protocol, build_temporal_protocol(reviews, max_history=5))
++
++    def test_reject_empty_coarse_and_invalid_inputs(self):
++        for reviews in ([], [("u", "A", i, 5) for i in range(4)]):
++            with self.assertRaises(ValueError):
++                build_temporal_protocol(reviews)
++        for timestamp in (True, 1.5, "123"):
++            with self.assertRaises(ValueError):
++                normalize_reviews([("u", "A", timestamp, 5)])
++        with self.assertRaises(ValueError):
++            normalize_reviews([("u", "A", 1, float("nan"))])
++        with self.assertRaises(ValueError):
++            build_temporal_protocol(fixture(), max_history=0)
++
++    def test_reject_unsorted_boundaries(self):
++        events, _ = normalize_reviews(fixture())
++        with self.assertRaises(ValueError):
++            temporal_boundaries(list(reversed(events)))
++
++    def test_reject_empty_causal_splits(self):
++        events = [(f"unique_user_{i}", "A", 1000 + i, 5) for i in range(100)]
++        with self.assertRaisesRegex(ValueError, "No eligible causal examples"):
++            build_temporal_protocol(events)
++
++    def test_boundaries_move_to_timestamp_edges(self):
++        events = fixture() + [("extra_user", f"extra_{i}", 1030, 5) for i in range(11)]
++        protocol = build_temporal_protocol(events)
++        windows = protocol["manifest"]["windows"]
++        for left, right in zip(STAGES, STAGES[1:]):
++            self.assertLess(windows[left]["last_timestamp"], windows[right]["first_timestamp"])
++        self.assertNotEqual(protocol["manifest"]["fraction_deviation"]["base"], 0)
++
++    def test_existing_sequence_adapter_preserves_times(self):
++        self.assertEqual(reviews_from_sequences({"u": {
++            "item": ["A", "B"], "time": [10, 20], "rating": [4, 5]
++        }}), [("u", "A", 10, 4), ("u", "B", 20, 5)])
++        with self.assertRaises(ValueError):
++            reviews_from_sequences({"u": {"item": ["A"], "time": []}})
++
++
++class ParserTests(unittest.TestCase):
++    def test_json_and_legacy_literals_preserve_text(self):
++        self.assertEqual(parse_record('{"title":"true false", "flag":true}'),
++                         {"title": "true false", "flag": True})
++        self.assertEqual(parse_record("{'asin':'A', 'flag':False, 'value':None}"),
++                         {"asin": "A", "flag": False, "value": None})
++        with self.assertRaises(ValueError):
++            parse_record("[1, 2]")
++
++    def test_parser_rejects_executable_expression(self):
++        with tempfile.TemporaryDirectory() as directory:
++            marker = pathlib.Path(directory) / "executed"
++            payload = f"__import__('pathlib').Path({str(marker)!r}).write_text('bad')"
++            with self.assertRaises(ValueError):
++                parse_record(payload)
++            self.assertFalse(marker.exists())
++
++    def test_gzip_records_include_line_context(self):
++        with tempfile.TemporaryDirectory() as directory:
++            path = pathlib.Path(directory) / "reviews.json.gz"
++            with gzip.open(path, "wt", encoding="utf-8") as handle:
++                handle.write('{"asin":"A"}\n\ninvalid_record\n')
++            reader = iter_gzip_records(path)
++            self.assertEqual(next(reader), {"asin": "A"})
++            with self.assertRaisesRegex(ValueError, r"reviews\.json\.gz:3"):
++                next(reader)
++
++    def test_actual_amazon_parser_method_uses_safe_reader(self):
++        # Compile the actual patched method without importing optional project
++        # dependencies. This exercises its body, not a copied implementation.
++        source = ROOT / "genrec/datasets/AmazonReviews2014/dataset.py"
++        tree = ast.parse(source.read_text(encoding="utf-8"))
++        klass = next(node for node in tree.body if isinstance(node, ast.ClassDef)
++                     and node.name == "AmazonReviews2014")
++        method = next(node for node in klass.body if isinstance(node, ast.FunctionDef)
++                      and node.name == "_parse_gz")
++        imported = any(isinstance(node, ast.ImportFrom) and node.module == "genrec.temporal"
++                       and any(alias.name == "iter_gzip_records" for alias in node.names)
++                       for node in tree.body)
++        self.assertTrue(imported)
++        self.assertFalse(any(isinstance(node, ast.Call) and isinstance(node.func, ast.Name)
++                             and node.func.id == "eval" for node in ast.walk(method)))
++        namespace = {"iter_gzip_records": iter_gzip_records}
++        code = compile(ast.fix_missing_locations(ast.Module(body=[method], type_ignores=[])),
++                       str(source), "exec")
++        exec(code, namespace)
++        with tempfile.TemporaryDirectory() as directory:
++            path = pathlib.Path(directory) / "legacy.json.gz"
++            with gzip.open(path, "wt", encoding="utf-8") as handle:
++                handle.write("{'asin': 'A', 'title': 'true false'}\n")
++            self.assertEqual(list(namespace["_parse_gz"](None, str(path))),
++                             [{"asin": "A", "title": "true false"}])
++
++
++class EvidenceResult(unittest.TextTestResult):
++    def __init__(self, *args, **kwargs):
++        super().__init__(*args, **kwargs)
++        self.records = []
++
++    def addSuccess(self, test):
++        super().addSuccess(test)
++        self.records.append({"test": test.id(), "status": "passed"})
++
++    def addFailure(self, test, err):
++        super().addFailure(test, err)
++        self.records.append({"test": test.id(), "status": "failed"})
++
++    def addError(self, test, err):
++        super().addError(test, err)
++        self.records.append({"test": test.id(), "status": "error"})
++
++
++if __name__ == "__main__":
++    parser = argparse.ArgumentParser()
++    parser.add_argument("--output", required=True, help="New evidence directory; never overwrite an existing run")
++    args = parser.parse_args()
++    output = pathlib.Path(args.output)
++    output.mkdir(parents=True, exist_ok=False)
++    suite = unittest.defaultTestLoader.loadTestsFromModule(sys.modules[__name__])
++    result = unittest.TextTestRunner(verbosity=2, resultclass=EvidenceResult).run(suite)
++    config = {"fixture": "round1_fixture_v1", "seed": 42, "max_history": 5,
++              "duplicate_policy": "drop_exact"}
++    try:
++        commit = subprocess.run(["git", "rev-parse", "HEAD"], cwd=ROOT,
++                                text=True, capture_output=True, check=True,
++                                timeout=10).stdout.strip()
++    except (OSError, subprocess.SubprocessError):
++        commit = "not_available"
++    source_paths = ("genrec/temporal.py", "genrec/datasets/AmazonReviews2014/dataset.py",
++                    "tests/incremental/test_temporal_round1.py")
++    source_hashes = {path: hashlib.sha256((ROOT / path).read_bytes()).hexdigest()
++                     for path in source_paths}
++    summary = {"run_id": output.name, "round": "round1", "stage": "E0_subset",
++               "inputs": "synthetic_only", "environment": sys.version,
++               "seed": 42, "source_sha": commit, "source_files_sha256": source_hashes,
++               "resolved_config": config,
++               "resolved_config_sha256": hashlib.sha256(
++                   json.dumps(config, sort_keys=True).encode("utf-8")).hexdigest(),
++               "execution_status": "passed" if result.wasSuccessful() else "failed",
++               "tests_run": result.testsRun, "tests": result.records,
++               "beauty_status": "not_run", "E0_full_status": "not_run",
++               "E1_status": "not_run", "runtime": "not_measured",
++               "memory": "not_measured"}
++    (output / "checks.json").write_text(json.dumps(summary, indent=2) + "\n", encoding="utf-8")
++    if result.wasSuccessful():
++        artifact = build_temporal_protocol(fixture(), max_history=5)
++        (output / "synthetic_protocol.json").write_text(
++            json.dumps(artifact, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
++    print(f"Evidence: {output / 'checks.json'}", flush=True)
++    raise SystemExit(0 if result.wasSuccessful() else 1)

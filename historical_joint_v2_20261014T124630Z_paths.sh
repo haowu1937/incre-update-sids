@@ -1,0 +1,5 @@
+E1_DIR=results/incremental/Beauty/historical_damage_20261009T142825Z
+HA_RUN_ID=historical_joint_v2_20261014T124630Z
+HA_SMOKE_DIR=ckpt/incremental/Beauty/historical_joint_v2_20261014T124630Z_smoke
+HA_RQVAE_DIR=ckpt/incremental/Beauty/historical_joint_v2_20261014T124630Z_1000
+HA_EVAL_DIR=results/incremental/Beauty/historical_joint_v2_20261014T124630Z_evaluation

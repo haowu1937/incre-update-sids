@@ -1,0 +1,6 @@
+WS_PREVIOUS_ROOT=results/incremental/Beauty/paired_seeds_20261015T135505Z
+WS_E1_DIR=results/incremental/Beauty/historical_damage_20261009T142825Z
+WS_WORKERS=3
+WS_DEVICE=0
+WS_RUN_ID=weight_sweep_20261015T161912Z
+WS_OUTPUT=results/incremental/Beauty/weight_sweep_20261015T161912Z

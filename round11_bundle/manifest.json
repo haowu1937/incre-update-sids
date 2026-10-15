@@ -1,0 +1,17 @@
+{
+  "round": "round11",
+  "files": {
+    "genrec/historical_damage.py": {
+      "previous_sha256": null,
+      "new_sha256": "33cbbbba261f0f25761e9994b0a6358b2ae628c109a7a26ef7cb38cf0cb55079"
+    },
+    "measure_historical_damage.py": {
+      "previous_sha256": null,
+      "new_sha256": "9b695700f5a67434d3fbadc9730bca1ee9294436a344c0730f8864459604bfda"
+    },
+    "tests/incremental/test_historical_damage_round11.py": {
+      "previous_sha256": null,
+      "new_sha256": "4098ddce36320ee5bc9fb042a45f7160e2eb43517678a21fdced2bd45c46e8c0"
+    }
+  }
+}

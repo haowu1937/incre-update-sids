@@ -1,0 +1,174 @@
+--- a/genrec/dataset.py
++++ b/genrec/dataset.py
+@@ -132,6 +132,43 @@
+             datasets[split] = Dataset.from_dict(datasets[split])
+         return datasets
+ 
++    def prepare_temporal_stage(self, reviews, stage="base"):
++        """Explicit raw-review adapter; does not reuse legacy processed caches.
++
++        Returns existing HF Dataset splits and stores raw diagnostic metadata
++        separately. Model-ready SID/catalog encoding is a later stage.
++        """
++        import copy
++        from genrec.temporal import build_temporal_protocol
++
++        if stage not in ("base", "update"):
++            raise ValueError("stage must be base or update")
++        if not self.config.get("explicit_causal_examples", False):
++            raise ValueError("Set explicit_causal_examples=True before temporal preparation")
++        if self.config.get("n_user_tokens", 0) != 0:
++            raise ValueError("Temporal mode currently requires n_user_tokens=0 for unseen users")
++        protocol = build_temporal_protocol(
++            reviews,
++            max_history=self.config["max_item_seq_len"],
++            duplicate_policy=self.config.get("duplicate_policy", "drop_exact"),
++        )
++        self.temporal_protocol = protocol
++        self.id_mapping = copy.deepcopy(protocol["registries"][stage])
++        names = {"train": f"{stage}_train", "val": f"{stage}_val"}
++        if stage == "update":
++            names["test"] = "future_test"
++        self.temporal_metadata = {}
++        splits = {}
++        for split, name in names.items():
++            raw = protocol["examples"][name]
++            self.temporal_metadata[split] = copy.deepcopy(raw)
++            splits[split] = Dataset.from_list([
++                {"user": row["user"], "item_seq": row["item_seq"]}
++                for row in raw
++            ])
++        self.split_data = splits
++        return splits
++
+     def split(self):
+         """
+         Split the dataset into train, validation, and test sets based on the specified split strategy.
+--- a/genrec/tokenizer.py
++++ b/genrec/tokenizer.py
+@@ -347,6 +347,9 @@
+         """
+         max_item_seq_len = self.config['max_item_seq_len']
+ 
++        if len(example['item_seq']) < 2:
++            raise ValueError('A causal example needs history and one target')
++
+         # input_ids
+         input_ids = []
+         if self.n_user_tokens > 0:
+@@ -355,12 +358,14 @@
+         for item in example['item_seq'][:-1][-max_item_seq_len:]:
+             input_ids.extend(self._token_single_item(item))
+         input_ids.append(self.eos_token)
+-        input_ids.extend([self.padding_token] * (self.max_token_seq_len - len(input_ids)))
+-
+-        # attention_mask
+-        item_seq_len = min(len(example['item_seq'][:-1]), max_item_seq_len)
+-        attention_mask = [1] * (self.n_digit * item_seq_len + 2)
+-        attention_mask.extend([0] * (self.max_token_seq_len - len(attention_mask)))
++        active_length = len(input_ids)
++        if active_length > self.max_token_seq_len:
++            raise ValueError('Encoded input exceeds configured token length')
++        input_ids.extend([self.padding_token] * (self.max_token_seq_len - active_length))
++
++        # Derive the mask from actual tokens, including optional user token.
++        attention_mask = [1] * active_length
++        attention_mask.extend([0] * (self.max_token_seq_len - active_length))
+ 
+         # labels
+         labels = list(self._token_single_item(example['item_seq'][-1])) + [self.eos_token]
+@@ -381,7 +386,7 @@
+             user = examples['user'][i]
+             item_seq = examples['item_seq'][i]
+ 
+-            if split == 'train':
++            if split == 'train' and not self.config.get('explicit_causal_examples', False):
+                 # Generate multiple training samples from one sequence
+                 n_return_examples = len(item_seq) - 1
+                 for j in range(n_return_examples):
+--- /dev/null
++++ b/tests/incremental/test_temporal_round2.py
+@@ -0,0 +1,83 @@
++"""CPU synthetic checks using real dataset/tokenizer modules; no model download."""
++import argparse
++import hashlib
++import json
++import sys
++import unittest
++from pathlib import Path
++from types import SimpleNamespace
++
++ROOT = Path(__file__).resolve().parents[2]
++sys.path.insert(0, str(ROOT))
++from genrec.dataset import AbstractDataset
++from genrec.tokenizer import EncoderDecoderTokenizerMixin
++
++class FixtureTokenizer(EncoderDecoderTokenizerMixin):
++    n_digit = 2
++    eos_token = 99
++    padding_token = 0
++    item2tokens = {"a": (1, 11), "b": (2, 12), "c": (3, 13), "d": (4, 14)}
++    def __init__(self, explicit=True, users=0):
++        self.config = {"max_item_seq_len": 2, "explicit_causal_examples": explicit}
++        self.n_user_tokens = users
++    def _token_single_user(self, user):
++        return 80
++
++class Checks(unittest.TestCase):
++    def batch(self):
++        return {"user": ["u"], "item_seq": [["a", "b", "c", "d"]]}
++    def test_explicit_one_target(self):
++        out=FixtureTokenizer().tokenize_function(self.batch(), "train")
++        self.assertEqual(out['input_ids'], [[2,12,3,13,99]])
++        self.assertEqual(out['labels'], [[4,14,99]])
++    def test_legacy_prefixes(self):
++        out=FixtureTokenizer(False).tokenize_function(self.batch(), "train")
++        self.assertEqual(len(out['labels']),3)
++        self.assertEqual(out['labels'],[[2,12,99],[3,13,99],[4,14,99]])
++    def test_masks_with_and_without_user(self):
++        for users in (0, 4):
++            tok=FixtureTokenizer(users=users)
++            ids,mask,_=tok._tokenize_once({'user':'u','item_seq':['a','b']})
++            self.assertEqual(len(ids),tok.max_token_seq_len)
++            self.assertEqual(len(mask),len(ids))
++            self.assertEqual(mask,[int(x!=0) for x in ids])
++    def test_eval_same_single_example(self):
++        tok=FixtureTokenizer()
++        self.assertEqual(tok.tokenize_function(self.batch(),'train'),tok.tokenize_function(self.batch(),'val'))
++    def test_empty_history_rejected(self):
++        with self.assertRaises(ValueError):
++            FixtureTokenizer()._tokenize_once({'user':'u','item_seq':['a']})
++    def reviews(self):
++        return [('u', 'abcd'[i%4], i, None) for i in range(1,101)]
++    def dataset(self):
++        return AbstractDataset({'max_item_seq_len':2,'explicit_causal_examples':True,'n_user_tokens':0})
++    def test_stage_adapter_and_metadata(self):
++        ds=self.dataset(); splits=ds.prepare_temporal_stage(self.reviews(),'base')
++        self.assertEqual(set(splits),{'train','val'})
++        self.assertEqual(set(splits['train'].column_names),{'user','item_seq'})
++        for split,data in splits.items():
++            self.assertEqual(len(data),len(ds.temporal_metadata[split]))
++            batch=data[:]; out=FixtureTokenizer().tokenize_function(batch,split)
++            self.assertEqual(len(out['labels']),len(data))
++        self.assertIs(ds.split(),splits)
++    def test_update_future_and_identity(self):
++        ds=self.dataset(); ds.prepare_temporal_stage(self.reviews(),'base'); ids=ds.item2id.copy()
++        out=ds.prepare_temporal_stage(self.reviews(),'update')
++        self.assertEqual(set(out),{'train','val','test'})
++        self.assertEqual(ds.item2id,ids)
++        self.assertTrue(all(x['target_servable'] for x in ds.temporal_metadata['test']))
++    def test_adapter_guards(self):
++        ds=self.dataset()
++        with self.assertRaises(ValueError): ds.prepare_temporal_stage(self.reviews(),'future')
++        ds.config['explicit_causal_examples']=False
++        with self.assertRaises(ValueError): ds.prepare_temporal_stage(self.reviews())
++        ds.config.update(explicit_causal_examples=True,n_user_tokens=8)
++        with self.assertRaises(ValueError): ds.prepare_temporal_stage(self.reviews())
++
++if __name__=='__main__':
++    parser=argparse.ArgumentParser(); parser.add_argument('--output',required=True); args=parser.parse_args()
++    dest=Path(args.output); dest.mkdir(parents=True,exist_ok=False)
++    result=unittest.TextTestRunner(verbosity=2).run(unittest.defaultTestLoader.loadTestsFromTestCase(Checks))
++    payload={'round':'round2','inputs':'synthetic_only','execution_status':'passed' if result.wasSuccessful() else 'failed','tests_run':result.testsRun,'python':sys.version,'source_files_sha256':{p:hashlib.sha256((ROOT/p).read_bytes()).hexdigest() for p in ('genrec/dataset.py','genrec/tokenizer.py','genrec/temporal.py')},'E0_full_status':'not_run','E1_status':'not_run'}
++    (dest/'checks.json').write_text(json.dumps(payload,indent=2))
++    sys.exit(0 if result.wasSuccessful() else 1)

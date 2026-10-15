@@ -1,0 +1,672 @@
+diff --git a/gensid/incremental_content.py b/gensid/incremental_content.py
+new file mode 100644
+--- /dev/null
++++ b/gensid/incremental_content.py
+@@ -0,0 +1,304 @@
++"""Verified Base-only orchestration of the repository RQVAE and Trainer."""
++import argparse
++from collections import Counter
++import hashlib
++import json
++import os
++from pathlib import Path
++import platform
++import random
++import time
++
++import numpy as np
++import sklearn
++import torch
++
++from gensid.models.rqvae import RQVAE
++from gensid.trainer import Trainer
++
++SOURCE_FILES = ['gensid/incremental_content.py', 'gensid/trainer.py',
++    'gensid/models/rqvae.py', 'gensid/models/rq.py', 'gensid/models/vq.py',
++    'gensid/models/layers.py', 'train_incremental_rqvae.py']
++
++
++def implementation_binding():
++    root = Path(__file__).resolve().parents[1]
++    return dict(source_files_sha256={name: sha256(root/name) for name in SOURCE_FILES},
++        package_versions=dict(torch=torch.__version__, numpy=np.__version__, sklearn=sklearn.__version__))
++
++
++def sha256(path):
++    digest = hashlib.sha256()
++    with Path(path).open('rb') as handle:
++        for block in iter(lambda: handle.read(1024 * 1024), b''):
++            digest.update(block)
++    return digest.hexdigest()
++
++
++def read_json(path):
++    return json.loads(Path(path).read_text(encoding='utf-8'))
++
++
++def write_json(path, value):
++    Path(path).write_text(json.dumps(value, indent=2, ensure_ascii=False) + '\n', encoding='utf-8')
++
++
++def load_base_features(directory):
++    directory = Path(directory).resolve()
++    summary = read_json(directory / 'summary.json')
++    if (summary.get('stage') != 'E0_fixed_content_embeddings'
++            or summary.get('execution_status') != 'completed'
++            or summary.get('graph_used') is not False):
++        raise ValueError('Expected completed fixed-content embedding artifacts')
++    names = ['base_train/' + x for x in ('embeddings.npy', 'feature_rows.json', 'registry.json')]
++    hashes = {}
++    for name in names:
++        hashes[name] = sha256(directory / name)
++        if hashes[name] != summary['artifact_files_sha256'].get(name):
++            raise ValueError('Base artifact checksum mismatch: ' + name)
++    values = np.load(directory / names[0], allow_pickle=False)
++    rows, registry = read_json(directory / names[1]), read_json(directory / names[2])
++    ids, mapping = registry['id2item'], registry['item2id']
++    if (not ids or ids[0] != '[PAD]' or len(mapping) != len(ids)
++            or any(mapping.get(raw) != i for i, raw in enumerate(ids))):
++        raise ValueError('Registry raw-ID round trip mismatch')
++    if (values.ndim != 2 or values.dtype != np.float32 or not np.isfinite(values).all()
++            or len(values) == 0 or len(rows) != len(values) or len(ids) != len(values) + 1
++            or list(values.shape) != summary['stages']['base_train']['shape']):
++        raise ValueError('Invalid Base feature shape, type, values or row count')
++    for i, row in enumerate(rows):
++        expected = dict(raw_item_id=ids[i+1], gr_item_id=i+1,
++                        gensid_global_item_id=i, feature_row=i)
++        if row != expected:
++            raise ValueError('Feature row / item ID contract mismatch')
++    binding = dict(protocol_sha256=summary['protocol_sha256'],
++                   feature_summary_sha256=sha256(directory / 'summary.json'),
++                   base_artifact_files_sha256=hashes)
++    return torch.from_numpy(values), rows, binding
++
++
++def seed_all(seed):
++    random.seed(seed)
++    np.random.seed(seed)
++    torch.manual_seed(seed)
++    if torch.cuda.is_available():
++        torch.cuda.manual_seed_all(seed)
++    torch.backends.cudnn.benchmark = False
++    torch.backends.cudnn.deterministic = True
++    torch.backends.cuda.matmul.allow_tf32 = False
++    torch.backends.cudnn.allow_tf32 = False
++    torch.use_deterministic_algorithms(True)
++
++
++def rng_state():
++    return dict(python=random.getstate(), numpy=np.random.get_state(),
++                torch=torch.get_rng_state(),
++                cuda=torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None)
++
++
++def restore_rng(state):
++    random.setstate(state['python'])
++    np.random.set_state(state['numpy'])
++    torch.set_rng_state(state['torch'])
++    if state['cuda'] is not None:
++        torch.cuda.set_rng_state_all(state['cuda'])
++
++
++def build_model(config):
++    model = RQVAE(**config['model'])
++    for layer in model.rq.vq_layers:
++        layer.initialization_method = 'kmeans'
++    return model
++
++
++def build_trainer(model, config, output):
++    args = argparse.Namespace(disable_sk=True, lr=config['lr'], learner='adamw',
++        weight_decay=config['weight_decay'], epochs=1, eval_step=1,
++        device=config['device'], ckpt_dir=str(output), saved_model_dir='.', compile=False,
++        graph_encoder=False, batch_size=config['batch_size'], plain_reconstruction=True,
++        max_cluster_level=2, num_emb_list=config['model']['num_emb_list'], disable_tensorboard=True)
++    return Trainer(args, model)
++
++
++@torch.no_grad()
++def evaluate(model, features, batch_size):
++    model.eval()
++    device = next(model.parameters()).device
++    totals = np.zeros(3, dtype=np.float64)
++    assignments = []
++    for start in range(0, len(features), batch_size):
++        data = features[start:start+batch_size].to(device)
++        out, rq_loss, indices, dense, codes, residuals = model(data, None, use_sk=False)
++        total, aux, recon, quant = model.compute_loss(out, rq_loss, None, dense,
++            dense_out_codebooks=codes, x_res_list=residuals, xs=data)
++        totals += np.asarray([float(total), float(recon), float(quant)]) * len(data)
++        assignments.append(indices.cpu().numpy())
++    if not np.isfinite(totals).all():
++        raise ValueError('Nonfinite tokenizer evaluation')
++    return dict(zip(('total_loss', 'reconstruction_loss', 'quantization_loss'),
++                    (totals / len(features)).tolist())), np.concatenate(assignments)
++
++
++def collision_stats(indices, capacities):
++    if indices.ndim != 2 or indices.shape[1] != len(capacities):
++        raise ValueError('Incorrect semantic code length')
++    for level, cap in enumerate(capacities):
++        if np.any(indices[:, level] < 0) or np.any(indices[:, level] >= cap):
++            raise ValueError('Codeword ID out of bounds')
++    buckets = Counter(map(tuple, indices.tolist()))
++    n = len(indices)
++    return dict(items=n, unique_semantic_codes=len(buckets),
++        duplicate_assignment_fraction=1-len(buckets)/n,
++        items_in_collision_buckets=sum(v for v in buckets.values() if v > 1),
++        maximum_collision_bucket=max(buckets.values()),
++        codebooks=[dict(capacity=cap, used=int(len(np.unique(indices[:, i]))))
++                   for i, cap in enumerate(capacities)])
++
++
++def save_checkpoint(path, trainer, config, binding, state, initial_metrics):
++    pending = Path(str(path) + '.tmp')
++    torch.save(dict(format='incremental_base_rqvae_v1', config=config, binding=binding,
++        args=vars(trainer.args), state_dict=trainer.model.state_dict(),
++        optimizer=trainer.optimizer.state_dict(), sampler_state=state, rng_state=rng_state(),
++        initial_metrics=initial_metrics), pending)
++    os.replace(pending, path)
++
++
++def load_checkpoint(path):
++    # Only load trusted checkpoints created by this entry point. Optimizer/RNG
++    # state requires the full serializer rather than the weights-only loader.
++    result = torch.load(path, map_location='cpu', weights_only=False)
++    if result.get('format') != 'incremental_base_rqvae_v1':
++        raise ValueError('Unsupported checkpoint format')
++    return result
++
++
++def run(args):
++    started = time.perf_counter()
++    output = Path(args.output).resolve()
++    if output.exists():
++        raise FileExistsError('Refusing to overwrite output: ' + str(output))
++    if args.max_steps < 1 or min(args.batch_size, args.init_samples, args.kmeans_iters,
++                                  args.log_every, args.save_every, args.eval_batch_size) < 1:
++        raise ValueError('Step, batch, initialization and interval values must be positive')
++    if (not np.isfinite(args.lr) or args.lr <= 0 or not np.isfinite(args.weight_decay)
++            or args.weight_decay < 0 or not np.isfinite(args.quant_loss_weight)
++            or args.quant_loss_weight < 0 or args.seed < 0 or args.seed >= 2**32
++            or args.e_dim < 1 or len(args.num_emb_list) != 3
++            or any(v < 1 for v in args.num_emb_list + args.layers)):
++        raise ValueError('Invalid optimizer/model/seed configuration; exactly three codebooks required')
++    device = torch.device(args.device)
++    if device.type not in ('cuda', 'cpu'):
++        raise ValueError('Only CPU and CUDA devices supported')
++    if device.type == 'cuda' and not torch.cuda.is_available():
++        raise RuntimeError('CUDA requested but unavailable')
++    features, rows, binding = load_base_features(args.features_dir)
++    binding.update(implementation_binding())
++    if min(args.init_samples, len(features)) < max(args.num_emb_list):
++        raise ValueError('Initialization sample count is smaller than codebook capacity')
++    config = dict(device=str(device), seed=args.seed, batch_size=args.batch_size,
++        lr=args.lr, weight_decay=args.weight_decay, init_samples=args.init_samples,
++        initialization='repository_layers_kmeans_base_only',
++        model=dict(in_dim=features.shape[1], e_dim=args.e_dim, layers=args.layers,
++            num_emb_list=args.num_emb_list, dropout_prob=0.0, bn=False, loss_type='mse',
++            quant_loss_weight=args.quant_loss_weight, kmeans_init=True,
++            kmeans_iters=args.kmeans_iters, sk_epsilons=[0.0]*3, sk_iters=1,
++            use_cf_loss=False, alpha=0.0, alpha_codebook=0.0, alpha_graph_cluster=0.0))
++    checkpoint = load_checkpoint(args.resume) if args.resume else None
++    if checkpoint and (checkpoint['config'] != config or checkpoint['binding'] != binding):
++        raise ValueError('Resume requires identical data, source, packages, model, optimizer, seed, batch size and device')
++    if checkpoint and checkpoint['sampler_state']['step'] > args.max_steps:
++        raise ValueError('Checkpoint exceeds target step budget')
++    seed_all(args.seed)
++    model = build_model(config)
++    output.mkdir(parents=True)
++    write_json(output / 'config.json', dict(config=config, binding=binding, command=vars(args)))
++    trainer = build_trainer(model, config, output)
++    state = None
++    if checkpoint:
++        model.load_state_dict(checkpoint['state_dict'])
++        trainer.optimizer.load_state_dict(checkpoint['optimizer'])
++        state = checkpoint['sampler_state']
++        restore_rng(checkpoint['rng_state'])
++        initial_metrics = checkpoint['initial_metrics']
++        print('Restored checkpoint at step ' + str(state['step']), flush=True)
++    else:
++        sample_generator = torch.Generator().manual_seed(args.seed)
++        selected = torch.randperm(len(features), generator=sample_generator)[:args.init_samples]
++        print('Initializing three codebooks on Base-only sample: ' + str(len(selected)), flush=True)
++        model.eval()
++        with torch.no_grad():
++            model.vq_initialization(features[selected].to(device), use_sk=False)
++        initial_metrics, _ = evaluate(model, features, args.eval_batch_size)
++        print(json.dumps(dict(stage='initial_train_catalog_metrics', **initial_metrics)), flush=True)
++    if not all(layer.initted for layer in model.rq.vq_layers):
++        raise ValueError('Checkpoint contains uninitialized codebooks')
++    with (output / 'metrics.jsonl').open('w', encoding='utf-8') as log:
++        def on_step(current, metrics):
++            log.write(json.dumps(metrics) + '\n')
++            log.flush()
++            if current['step'] == 1 or current['step'] % args.log_every == 0:
++                print(json.dumps(metrics), flush=True)
++            if current['step'] % args.save_every == 0:
++                save_checkpoint(output / 'last.pth', trainer, config, binding, current, initial_metrics)
++        state = trainer.fit_steps(features, torch.arange(len(features)), args.max_steps,
++                                  args.batch_size, args.seed, state, on_step)
++    save_checkpoint(output / 'last.pth', trainer, config, binding, state, initial_metrics)
++    final_metrics, indices = evaluate(model, features, args.eval_batch_size)
++    restored = build_model(config).to(device)
++    restored.load_state_dict(load_checkpoint(output / 'last.pth')['state_dict'])
++    _, reloaded_indices = evaluate(restored, features, args.eval_batch_size)
++    if not np.array_equal(indices, reloaded_indices):
++        raise ValueError('Checkpoint reload changed semantic assignments')
++    stats = collision_stats(indices, args.num_emb_list)
++    with (output / 'semantic_assignments.jsonl').open('w', encoding='utf-8') as handle:
++        for row, codes in zip(rows, indices.tolist()):
++            handle.write(json.dumps(dict(**row, semantic_code=codes)) + '\n')
++    result = dict(stage='E0_base_content_rqvae', execution_status='completed',
++        features_dir=str(Path(args.features_dir).resolve()), output=str(output),
++        protocol_sha256=binding['protocol_sha256'], binding=binding,
++        training_catalog='base_train', graph_used=False, cf_loss_used=False, sinkhorn_used=False,
++        feature_normalization='unchanged', projection='none', training_items=len(features),
++        feature_dim=features.shape[1], config=config, optimizer_steps=state['step'],
++        processed_examples=state['processed_examples'], sampler_epochs_started=state['epoch'],
++        resume_from=str(Path(args.resume).resolve()) if args.resume else None,
++        checkpoint_selection='last_at_fixed_optimizer_step_budget',
++        initial_train_catalog_metrics=initial_metrics, final_train_catalog_metrics=final_metrics,
++        validation_status='not_run', collision_statistics=stats,
++        sid_export='three raw zero-based semantic codes; collisions retained',
++        collision_suffix_status='not_created', recommendation_training_status='not_run',
++        checkpoint_reload_assignments_equal=True, E0_full_status='not_run', E1_status='not_run',
++        python=platform.python_version(), torch=torch.__version__,
++        numpy=np.__version__, device=str(device),
++        device_name=torch.cuda.get_device_name(device) if device.type == 'cuda' else 'cpu',
++        source_files_sha256=binding['source_files_sha256'],
++        package_versions=binding['package_versions'],
++        artifact_files_sha256={name: sha256(output/name) for name in
++            ('config.json', 'last.pth', 'metrics.jsonl', 'semantic_assignments.jsonl')},
++        runtime_seconds=time.perf_counter()-started)
++    write_json(output / 'summary.json', result)
++    trainer.tb_writer.close()
++    return result
++
++
++def parser():
++    result = argparse.ArgumentParser(description=__doc__)
++    result.add_argument('--features-dir', required=True)
++    result.add_argument('--output', required=True)
++    result.add_argument('--device', default='cuda')
++    result.add_argument('--resume', help='Trusted last.pth from this entry point')
++    result.add_argument('--max-steps', type=int, default=1000, help='Total optimizer steps, including resumed steps')
++    result.add_argument('--batch-size', type=int, default=256)
++    result.add_argument('--lr', type=float, default=1e-3)
++    result.add_argument('--weight-decay', type=float, default=0.0)
++    result.add_argument('--seed', type=int, default=2026)
++    result.add_argument('--num-emb-list', type=int, nargs='+', default=[256, 256, 256])
++    result.add_argument('--e-dim', type=int, default=32)
++    result.add_argument('--layers', type=int, nargs='+', default=[512, 256, 128, 64])
++    result.add_argument('--quant-loss-weight', type=float, default=0.25)
++    result.add_argument('--kmeans-iters', type=int, default=50)
++    result.add_argument('--init-samples', type=int, default=4096)
++    result.add_argument('--eval-batch-size', type=int, default=256)
++    result.add_argument('--save-every', type=int, default=100)
++    result.add_argument('--log-every', type=int, default=50)
++    return result
+diff --git a/gensid/models/rqvae.py b/gensid/models/rqvae.py
+--- a/gensid/models/rqvae.py
++++ b/gensid/models/rqvae.py
+@@ -2,7 +2,6 @@
+ from torch import nn
+ from torch.nn import functional as F
+ from gensid.models.layers import MLPLayers
+-from gensid.models.graph_encoder import GNNFusionEncoder
+ from gensid.models.rq import ResidualVectorQuantizer
+ 
+ 
+@@ -280,6 +279,8 @@
+     ):
+         super().__init__()
+ 
++        from gensid.models.graph_encoder import GNNFusionEncoder
++
+         # Graph fusion encoder
+         self.graph_encoder = GNNFusionEncoder(
+             conv_type=gnn_conv_type,
+diff --git a/gensid/models/vq.py b/gensid/models/vq.py
+--- a/gensid/models/vq.py
++++ b/gensid/models/vq.py
+@@ -17,6 +17,8 @@
+         self.sk_epsilon = sk_epsilon
+         self.sk_iters = sk_iters
+ 
++        self.register_buffer("_initialized", torch.tensor(False))
++        self.initialization_method = "legacy_constrained"
+         self.embedding = nn.Embedding(self.n_e, self.e_dim)
+         if not kmeans_init:
+             self.initted = True
+@@ -24,6 +26,24 @@
+         else:
+             self.initted = False
+             self.embedding.weight.data.zero_()
++
++    @property
++    def initted(self):
++        return bool(self._initialized.item())
++
++    @initted.setter
++    def initted(self, value):
++        self._initialized.fill_(bool(value))
++
++    def _load_from_state_dict(self, state_dict, prefix, local_metadata, strict,
++                              missing_keys, unexpected_keys, error_msgs):
++        # Legacy learned checkpoints had only embedding weights. Treat them
++        # as initialized so a warm start never discards their learned values.
++        key = prefix + "_initialized"
++        if key not in state_dict and prefix + "embedding.weight" in state_dict:
++            state_dict[key] = torch.tensor(True)
++        super()._load_from_state_dict(state_dict, prefix, local_metadata, strict,
++                                     missing_keys, unexpected_keys, error_msgs)
+ 
+     def get_codebook(self):
+         return self.embedding.weight
+@@ -43,7 +63,14 @@
+         #     self.n_e,
+         #     self.kmeans_iters,
+         # )
+-        centers, _ = self.constrained_km(data, 256)
++        if len(data) < self.n_e:
++            raise ValueError("Initialization needs at least one sample per codeword")
++        if self.initialization_method == "kmeans":
++            centers = kmeans(data, self.n_e, self.kmeans_iters)
++        elif self.initialization_method == "legacy_constrained":
++            centers, _ = self.constrained_km(data, self.n_e)
++        else:
++            raise ValueError("Unknown codebook initialization method")
+         self.embedding.weight.data.copy_(centers)
+         self.initted = True
+ 
+diff --git a/gensid/trainer.py b/gensid/trainer.py
+--- a/gensid/trainer.py
++++ b/gensid/trainer.py
+@@ -5,7 +5,6 @@
+ from time import time
+ from torch import optim
+ from tqdm import tqdm
+-from torch.utils.tensorboard import SummaryWriter
+ 
+ from gensid.utils import ensure_dir, set_color, get_local_time
+ import os
+@@ -52,7 +51,12 @@
+             logging.info("PLAIN SEMANTIC RECONSTRUCTION set")
+ 
+         # TensorBoard
+-        self.tb_writer = SummaryWriter(log_dir=os.path.join(self.ckpt_dir, "tensorboard"))
++        if getattr(args, "disable_tensorboard", False):
++            from types import SimpleNamespace
++            self.tb_writer = SimpleNamespace(add_scalar=lambda *a, **kw: None, close=lambda: None)
++        else:
++            from torch.utils.tensorboard import SummaryWriter
++            self.tb_writer = SummaryWriter(log_dir=os.path.join(self.ckpt_dir, "tensorboard"))
+ 
+         self.max_cluster_level = args.max_cluster_level
+         if self.max_cluster_level is None:
+@@ -85,8 +89,8 @@
+         return optimizer
+ 
+     def _check_nan(self, loss):
+-        if torch.isnan(loss):
+-            raise ValueError("Training loss is nan")
++        if not torch.isfinite(loss):
++            raise ValueError("Training loss is nonfinite")
+ 
+     def _calculate_unused_codebooks(self, used_codebooks):
+         unused_codebooks = []
+@@ -203,7 +207,7 @@
+                     data, graph_data, self.labels, self.use_sk
+                 )
+             else:
+-                out, rq_loss, indices, dense_out, dense_out_codebooks, x_res_list = self.model(data, self.labels)
++                out, rq_loss, indices, dense_out, dense_out_codebooks, x_res_list = self.model(data, self.labels, use_sk=self.use_sk)
+ 
+             for codebook_idx in range(indices.shape[-1]):
+                 used_codebooks[codebook_idx].update(indices[:, codebook_idx].detach().cpu().tolist())
+@@ -390,3 +394,57 @@
+ 
+         self._set_trained_flag(ckpt_file=self.best_collision_ckpt)
+         return self.best_loss, self.best_collision_rate
++
++    def fit_steps(self, features, global_ids, max_steps, batch_size, seed,
++                  state=None, on_step=None):
++        """Opt-in pure-content training with exact, resumable optimizer steps.
++
++        Initialization, artifact checks and checkpoint writing are orchestrated
++        by gensid.incremental_content. Existing epoch fit remains available.
++        """
++        if self.graph_encoder or not self.plain_reconstruction or self.use_sk:
++            raise ValueError("fit_steps requires pure content, plain reconstruction and disable_sk")
++        if max_steps < 1 or batch_size < 1 or len(features) == 0:
++            raise ValueError("Invalid step budget/batch size or empty features")
++        generator = torch.Generator(device="cpu")
++        generator.manual_seed(seed)
++        state = state or {"step": 0, "cursor": 0, "order": None,
++                          "epoch": 0, "processed_examples": 0}
++        state = dict(state)
++        if "generator_state" in state:
++            generator.set_state(state["generator_state"])
++        if state["step"] > max_steps:
++            raise ValueError("Resume checkpoint exceeds requested target steps")
++        n = len(features)
++        self.model.train()
++        while state["step"] < max_steps:
++            if state["order"] is None or state["cursor"] == n:
++                state["order"] = torch.randperm(n, generator=generator)
++                state["cursor"] = 0
++                state["epoch"] += 1
++            end = min(n, state["cursor"] + batch_size)
++            selected = state["order"][state["cursor"]:end]
++            data = features[selected].to(self.device)
++            ids = global_ids[selected].to(self.device)
++            self.optimizer.zero_grad(set_to_none=True)
++            out, rq_loss, indices, dense, codes, residuals = self.model(data, None, use_sk=False)
++            loss, aux, recon, quant = self.model.compute_loss(out, rq_loss, ids, dense,
++                dense_out_codebooks=codes, x_res_list=residuals, xs=data)
++            self._check_nan(loss)
++            loss.backward()
++            if any(p.grad is not None and not torch.isfinite(p.grad).all()
++                   for p in self.model.parameters()):
++                raise ValueError("Nonfinite tokenizer gradient")
++            self.optimizer.step()
++            state["cursor"] = end
++            state["step"] += 1
++            state["processed_examples"] += len(selected)
++            state["generator_state"] = generator.get_state()
++            metrics = {"step": state["step"], "epoch": state["epoch"],
++                "processed_examples": state["processed_examples"],
++                "total_loss": float(loss.detach()), "reconstruction_loss": float(recon),
++                "quantization_loss": float(quant.detach()),
++                "aux_loss": float(aux) if torch.is_tensor(aux) else aux}
++            if on_step is not None:
++                on_step(state, metrics)
++        return state
+diff --git a/tests/incremental/test_rqvae_round7.py b/tests/incremental/test_rqvae_round7.py
+new file mode 100644
+--- /dev/null
++++ b/tests/incremental/test_rqvae_round7.py
+@@ -0,0 +1,169 @@
++"""Synthetic-only CPU checks; no claim of completed Beauty experiments."""
++import contextlib
++import io
++import json
++from pathlib import Path
++import sys
++import tempfile
++import unittest
++from unittest.mock import patch
++
++sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
++import numpy as np
++import torch
++from gensid.incremental_content import (build_model, collision_stats, evaluate,
++    load_base_features, load_checkpoint, parser, run, sha256, write_json)
++
++torch.set_num_threads(1)
++
++
++class Checks(unittest.TestCase):
++    def setUp(self):
++        self.tmp = tempfile.TemporaryDirectory()
++        self.root = Path(self.tmp.name)
++        self.features = self.root / 'features'
++        stage = self.features / 'base_train'
++        stage.mkdir(parents=True)
++        # Structured but nontrivial features make reconstruction improvements observable.
++        rng = np.random.default_rng(19)
++        values = rng.normal(0.25, 0.1, (33, 8)).astype(np.float32)
++        np.save(stage / 'embeddings.npy', values)
++        raw = ['[PAD]'] + ['item_' + str(i) for i in range(len(values))]
++        write_json(stage / 'registry.json', dict(id2item=raw, item2id={x:i for i,x in enumerate(raw)}))
++        write_json(stage / 'feature_rows.json', [dict(raw_item_id=x, gr_item_id=i+1,
++            gensid_global_item_id=i, feature_row=i) for i,x in enumerate(raw[1:])])
++        self.summary = dict(stage='E0_fixed_content_embeddings', execution_status='completed',
++            graph_used=False, protocol_sha256='synthetic_protocol_only',
++            stages=dict(base_train=dict(shape=[33,8])), artifact_files_sha256={
++                'base_train/'+name: sha256(stage/name) for name in
++                ('embeddings.npy','feature_rows.json','registry.json')})
++        write_json(self.features / 'summary.json', self.summary)
++
++    def tearDown(self):
++        self.tmp.cleanup()
++
++    def args(self, name, steps=8, resume=None):
++        args = parser().parse_args(['--features-dir', str(self.features), '--output', str(self.root/name),
++            '--device','cpu','--max-steps',str(steps),'--batch-size','8','--lr','0.01',
++            '--num-emb-list','4','4','4','--e-dim','4','--layers','16','8',
++            '--init-samples','33','--kmeans-iters','5','--eval-batch-size','8',
++            '--save-every','4','--log-every','100'])
++        args.resume = str(resume) if resume else None
++        return args
++
++    def execute(self, args):
++        with contextlib.redirect_stdout(io.StringIO()):
++            return run(args)
++
++    def test_no_graph_import_and_base_only(self):
++        values, rows, _ = load_base_features(self.features)
++        self.assertEqual(values.shape, (33,8))
++        self.assertNotIn('gensid.models.graph_encoder', sys.modules)
++        self.assertFalse((self.features/'update_train').exists())
++
++    def test_bad_input_fails_before_output(self):
++        with (self.features/'base_train/embeddings.npy').open('ab') as handle:
++            handle.write(b'changed')
++        args = self.args('invalid')
++        with self.assertRaisesRegex(ValueError, 'checksum'):
++            self.execute(args)
++        self.assertFalse(Path(args.output).exists())
++
++    def test_invalid_id_even_with_updated_hash(self):
++        path = self.features/'base_train/feature_rows.json'
++        rows = json.loads(path.read_text())
++        rows[2]['gensid_global_item_id'] = 0
++        write_json(path, rows)
++        self.summary['artifact_files_sha256']['base_train/feature_rows.json'] = sha256(path)
++        write_json(self.features/'summary.json',self.summary)
++        with self.assertRaisesRegex(ValueError, 'ID contract'):
++            load_base_features(self.features)
++
++    def test_exact_steps_export_and_reload(self):
++        result = self.execute(self.args('exact',7))
++        # One epoch: 8+8+8+8+1, next two batches: 16.
++        self.assertEqual(result['optimizer_steps'],7)
++        self.assertEqual(result['processed_examples'],49)
++        self.assertTrue(result['checkpoint_reload_assignments_equal'])
++        self.assertEqual(result['E0_full_status'],'not_run')
++        self.assertEqual(result['collision_suffix_status'],'not_created')
++        rows = [json.loads(x) for x in (self.root/'exact/semantic_assignments.jsonl').read_text().splitlines()]
++        self.assertEqual(len(rows),33)
++        self.assertTrue(all(len(x['semantic_code']) == 3 for x in rows))
++        self.assertEqual(rows[3]['raw_item_id'],'item_3')
++        self.assertTrue(all(0 <= code < 4 for row in rows for code in row['semantic_code']))
++        model = build_model(result['config'])
++        model.load_state_dict(load_checkpoint(self.root/'exact/last.pth')['state_dict'])
++        with patch.object(model.rq.vq_layers[0], 'init_emb', side_effect=AssertionError('reinitialized')):
++            values,_,_ = load_base_features(self.features)
++            model.train()
++            model(values,None,use_sk=False)
++
++    def test_resume_matches_uninterrupted(self):
++        full = self.execute(self.args('full',12))
++        self.execute(self.args('part',4))
++        resumed = self.execute(self.args('resume',12,self.root/'part/last.pth'))
++        a,b = (load_checkpoint(self.root/name/'last.pth') for name in ('full','resume'))
++        for key,value in a['state_dict'].items():
++            self.assertTrue(torch.equal(value,b['state_dict'][key]), key)
++        for key,state in a['optimizer']['state'].items():
++            for field,value in state.items():
++                other = b['optimizer']['state'][key][field]
++                self.assertTrue(torch.equal(value,other) if torch.is_tensor(value) else value == other)
++        self.assertEqual(full['processed_examples'],resumed['processed_examples'])
++        self.assertEqual((self.root/'full/semantic_assignments.jsonl').read_bytes(),
++                         (self.root/'resume/semantic_assignments.jsonl').read_bytes())
++
++    def test_reconstruction_improves_and_gradients_finite(self):
++        result = self.execute(self.args('learn',100))
++        self.assertLess(result['final_train_catalog_metrics']['reconstruction_loss'],
++                        result['initial_train_catalog_metrics']['reconstruction_loss'])
++        model = build_model(result['config'])
++        model.load_state_dict(load_checkpoint(self.root/'learn/last.pth')['state_dict'])
++        x,_,_ = load_base_features(self.features)
++        model.train()
++        out,q,idx,dense,codes,residuals = model(x,None,use_sk=False)
++        loss,*_ = model.compute_loss(out,q,None,dense,dense_out_codebooks=codes,x_res_list=residuals,xs=x)
++        loss.backward()
++        for parameter in model.encoder.parameters():
++            self.assertIsNotNone(parameter.grad)
++            self.assertTrue(torch.isfinite(parameter.grad).all())
++        for level in model.rq.vq_layers:
++            self.assertIsNotNone(level.embedding.weight.grad)
++            self.assertTrue(torch.isfinite(level.embedding.weight.grad).all())
++
++    def test_legacy_checkpoint_initialization_flags(self):
++        result = self.execute(self.args('legacy',4))
++        saved = load_checkpoint(self.root/'legacy/last.pth')['state_dict']
++        legacy = {k:v for k,v in saved.items() if not k.endswith('_initialized')}
++        model = build_model(result['config'])
++        model.load_state_dict(legacy,strict=True)
++        self.assertTrue(all(layer.initted for layer in model.rq.vq_layers))
++
++    def test_no_overwrite_resume_binding_and_budget(self):
++        self.execute(self.args('part',4))
++        with self.assertRaises(FileExistsError):
++            self.execute(self.args('part',4))
++        args = self.args('changed',8,self.root/'part/last.pth')
++        args.batch_size = 9
++        with self.assertRaisesRegex(ValueError, 'identical'):
++            self.execute(args)
++        self.assertFalse(Path(args.output).exists())
++        with self.assertRaisesRegex(ValueError, 'budget'):
++            self.execute(self.args('short',2,self.root/'part/last.pth'))
++
++    def test_collisions_are_retained_and_bounded(self):
++        result = collision_stats(np.array([[0,1,2],[0,1,2],[1,1,2]]),[4,4,4])
++        self.assertEqual(result['unique_semantic_codes'],2)
++        self.assertEqual(result['maximum_collision_bucket'],2)
++        self.assertEqual(result['items_in_collision_buckets'],2)
++        with self.assertRaisesRegex(ValueError,'bounds'):
++            collision_stats(np.array([[0,1,4]]),[4,4,4])
++
++
++if __name__ == '__main__':
++    result = unittest.main(verbosity=2,exit=False).result
++    print(json.dumps(dict(round='round7', inputs='synthetic_only', tests_run=result.testsRun,
++        execution_status='passed' if result.wasSuccessful() else 'failed',
++        E0_full_status='not_run', E1_status='not_run'),indent=2))
++    sys.exit(0 if result.wasSuccessful() else 1)
+diff --git a/train_incremental_rqvae.py b/train_incremental_rqvae.py
+new file mode 100644
+--- /dev/null
++++ b/train_incremental_rqvae.py
+@@ -0,0 +1,8 @@
++"""Train the Base content RQ-VAE without graph imports or future-item data."""
++import os
++os.environ.setdefault('CUBLAS_WORKSPACE_CONFIG', ':4096:8')
++import json
++from gensid.incremental_content import parser, run
++
++if __name__ == '__main__':
++    print(json.dumps(run(parser().parse_args()), indent=2), flush=True)

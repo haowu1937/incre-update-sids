@@ -1,0 +1,27 @@
+__pycache__
+cache
+logs
+results
+tensorboard
+ckpt
+.vscode
+# Local experiment artifacts
+*.py[cod]
+.cache/
+checkpoints/
+outputs/
+wandb/
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.npy
+*.npz
+.env
+
+*.zip
+
+# Runtime logs and local backups
+*.log
+/round9_backups/
+/round12_suffix_fix_backups/

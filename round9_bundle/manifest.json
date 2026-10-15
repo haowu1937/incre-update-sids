@@ -1,0 +1,25 @@
+{
+  "round": "round9",
+  "files": {
+    "genrec/models/TIGER/model.py": {
+      "previous_sha256": "437be23e5496c2077a6d2008420b89bf3764fbafb3593a71f0bf81535ebba166",
+      "new_sha256": "143e938d40664510cb5c5fd1c3dea7d67df43537fefa847082ba1d2dce416fbb"
+    },
+    "genrec/temporal_tiger.py": {
+      "previous_sha256": null,
+      "new_sha256": "5e53d5eed2c012f543993ed0464fd52bd6d8ca167a5250348874a361766f02cb"
+    },
+    "genrec/trainer.py": {
+      "previous_sha256": "7a7678ec7fa1a5be8937321560fbca19a544f506b542829f833cc1e53b2c1e83",
+      "new_sha256": "1c0dc9ab64dc870d6ac0da93c9d1bc24dabac8e24ec36ac1c266a80820f74745"
+    },
+    "tests/incremental/test_temporal_tiger_round9.py": {
+      "previous_sha256": null,
+      "new_sha256": "2aa038d00ebcd8b9de6810bc9c8fe1268ccad4bac5ea1435b56a262c6b4a76c9"
+    },
+    "train_incremental_tiger.py": {
+      "previous_sha256": null,
+      "new_sha256": "b61156d7104bc281b659a80ab05efb07dc76ecc6816bb88c1e28d21b4e2b78bd"
+    }
+  }
+}

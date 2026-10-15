@@ -1,0 +1,17 @@
+{
+  "round": "round10",
+  "files": {
+    "gensid/plain_incremental_content.py": {
+      "previous_sha256": null,
+      "new_sha256": "33b9f7249f4175bfbceb478d56c8108656d1e393e2b8f6bb2b349a882ffd49e2"
+    },
+    "tests/incremental/test_plain_update_rqvae_round10.py": {
+      "previous_sha256": null,
+      "new_sha256": "c47f7f8829ef445be2e2eeca73cf35bec98ec91296d5df97c8fd18c7110ba203"
+    },
+    "train_plain_incremental_rqvae.py": {
+      "previous_sha256": null,
+      "new_sha256": "dc2ee5425be804d80e46da41ade221ed717dac2da6ed48353dbb625975e68b6f"
+    }
+  }
+}

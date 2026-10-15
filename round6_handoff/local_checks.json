@@ -1,0 +1,9 @@
+{
+  "round": "round6",
+  "inputs": "synthetic_only_fake_encoder",
+  "tests_run": 12,
+  "execution_status": "passed",
+  "real_encoder_status": "not_run",
+  "E0_full_status": "not_run",
+  "E1_status": "not_run"
+}

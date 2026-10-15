@@ -1,0 +1,774 @@
+--- a/genrec/models/TIGER/model.py
++++ b/genrec/models/TIGER/model.py
+@@ -84,7 +84,8 @@
+         outputs = self.t5(**batch)
+         return outputs
+ 
+-    def generate(self, batch: dict, n_return_sequences: int = 1, return_scores: bool = False):
++    def generate(self, batch: dict, n_return_sequences: int = 1, return_scores: bool = False,
++                 prefix_allowed_tokens_fn=None):
+         """
+         Generates sequences using beam search algorithm.
+ 
+@@ -99,6 +100,10 @@
+         n_digit = self.tokenizer.n_digit
+         num_beams = self.config['num_beams']
+         batch_size = batch['input_ids'].shape[0]
++        generation_options = {}
++        if prefix_allowed_tokens_fn is not None:
++            generation_options = dict(prefix_allowed_tokens_fn=prefix_allowed_tokens_fn,
++                length_penalty=0.0, do_sample=False, early_stopping=False)
+ 
+         with torch.no_grad():
+             outputs = self.t5.generate(
+@@ -110,6 +115,7 @@
+                 return_dict_in_generate=True,
+                 output_scores=True,
+                 use_cache=True,
++                **generation_options,
+             )
+ 
+         # 1. Process Sequences
+@@ -123,6 +129,8 @@
+         pred_tokens = sequences[:, :, 1:1+n_digit]
+ 
+         out = {'preds': pred_tokens}
++        if prefix_allowed_tokens_fn is not None:
++            out['sequences'] = sequences
+         if self.maybe_duplicates:
+             out['collision_cnts'] = torch.tensor(
+                 [[self.sid_collisions.get(tuple(ki), 1) for ki in topk] for topk in pred_tokens.cpu().numpy().tolist()],
+@@ -136,4 +144,4 @@
+             scores = outputs.sequences_scores.reshape(batch_size, n_return_sequences)
+             out['scores'] = scores
+         
+-        return out+        return out
+--- /dev/null
++++ b/genrec/temporal_tiger.py
+@@ -0,0 +1,412 @@
++"""Train the repository TIGER on frozen temporal SIDs; no feature/SID refitting."""
++import argparse
++import copy
++import hashlib
++import importlib.metadata
++import json
++import os
++from pathlib import Path
++import platform
++import random
++import time
++
++import numpy as np
++import torch
++from torch.nn import functional as F
++
++from genrec.frozen_sid_tokenizer import FrozenSIDTokenizer
++from genrec.models.TIGER.model import TIGER
++from genrec.temporal_sids import (read_json, read_jsonl, sha256, validate_registry,
++                                 verify_files, write_json)
++from genrec.trainer import Trainer
++
++SOURCE_FILES = ['genrec/temporal_tiger.py', 'train_incremental_tiger.py',
++    'genrec/trainer.py', 'genrec/models/TIGER/model.py', 'genrec/evaluator.py',
++    'genrec/model.py', 'genrec/frozen_sid_tokenizer.py', 'genrec/tokenizer.py',
++    'genrec/temporal_sids.py']
++MODEL_DEFAULTS = dict(num_layers=4, num_decoder_layers=4, d_model=128, d_ff=1024,
++    num_heads=6, d_kv=64, dropout_rate=0.1, activation_function='relu',
++    feed_forward_proj='relu')
++
++
++def seed_all(seed):
++    random.seed(seed)
++    np.random.seed(seed)
++    torch.manual_seed(seed)
++    if torch.cuda.is_available():
++        torch.cuda.manual_seed_all(seed)
++    torch.use_deterministic_algorithms(True)
++    torch.backends.cudnn.benchmark = False
++    torch.backends.cuda.matmul.allow_tf32 = False
++    torch.backends.cudnn.allow_tf32 = False
++
++
++def rng_state():
++    return dict(python=random.getstate(), numpy=np.random.get_state(),
++        torch=torch.get_rng_state(),
++        cuda=torch.cuda.get_rng_state_all() if torch.cuda.is_available() else None)
++
++
++def restore_rng(state):
++    random.setstate(state['python'])
++    np.random.set_state(state['numpy'])
++    torch.set_rng_state(state['torch'])
++    if state['cuda'] is not None:
++        torch.cuda.set_rng_state_all(state['cuda'])
++
++
++def load_sids(directory, expected_checkpoint=None):
++    """Verify all frozen artifacts and cross-check tensor rows against the audits."""
++    directory = Path(directory)
++    summary = read_json(directory/'summary.json')
++    if (summary.get('stage') != 'E0_base_frozen_sid_preparation'
++            or summary.get('execution_status') != 'completed'
++            or summary.get('rqvae_frozen') is not True
++            or summary.get('rqvae_training_performed') is not False
++            or summary.get('old_full_sids_unchanged_on_deployment_extension') is not True):
++        raise ValueError('Expected completed frozen Base SID preparation')
++    if expected_checkpoint and summary['rqvae_checkpoint_sha256'] != expected_checkpoint:
++        raise ValueError('Unexpected frozen RQ-VAE checkpoint')
++    verify_files(directory, summary, list(summary['artifact_files_sha256']))
++    contract = read_json(directory/'tokenizer_contract.json')
++    if (contract != summary['tokenizer_contract'] or contract['semantic_codebooks'] != 3
++            or contract['collision_suffix_digits'] != 1 or contract['n_digit'] != 4
++            or contract['n_user_tokens'] != 0 or contract['padding_token'] != 0
++            or contract['label_length'] != 5
++            or any(contract['serving_catalog_reference'][s] != 'base_train'
++                   for s in ('base_train', 'base_val'))):
++        raise ValueError('Unsupported frozen tokenizer contract or validation catalog')
++    mapping = read_json(directory/'base_train/item2tokens.json')
++    registry = read_json(directory/'base_train/registry.json')
++    validate_registry(registry)
++    if set(mapping) != set(registry['id2item'][1:]):
++        raise ValueError('SID/registry item membership mismatch')
++    tokenizer = FrozenSIDTokenizer(mapping, contract['codebook_capacities'], contract['max_history'])
++    for key in ('vocab_size', 'max_token_seq_len'):
++        if getattr(tokenizer, key) != contract[key]:
++            raise ValueError('Tokenizer size mismatch')
++    if tokenizer.eos_token != contract['eos_token']:
++        raise ValueError('EOS mismatch')
++    if len(mapping) != summary['catalogs']['base_train']['items']:
++        raise ValueError('Training catalog size mismatch')
++    legal_sids = set(tokenizer.item2tokens.values())
++    arrays, audits = {}, {}
++    for split in ('base_train', 'base_val'):
++        with np.load(directory/'tiger'/(split+'.npz'), allow_pickle=False) as file:
++            values = {k: file[k] for k in file.files}
++        audit = read_jsonl(directory/'tiger'/(split+'_audit.jsonl'))
++        report = summary['tiger_splits'][split]
++        n = len(values['labels'])
++        if (set(values) != {'input_ids', 'attention_mask', 'labels',
++                           'source_rows', 'target_global_item_ids'}
++                or len(audit) != report['all_examples'] or n != report['encoded_examples']
++                or values['input_ids'].shape != (n, tokenizer.max_token_seq_len)
++                or values['attention_mask'].shape != values['input_ids'].shape
++                or values['labels'].shape != (n, 5)
++                or values['source_rows'].shape != (n,)
++                or values['target_global_item_ids'].shape != (n,)
++                or n == 0 or any(v.dtype.kind not in 'iu' for v in values.values())
++                or not np.array_equal(values['attention_mask'], values['input_ids'] != 0)
++                or np.any(values['input_ids'] >= tokenizer.vocab_size)
++                or np.any(values['input_ids'] < 0)):
++            raise ValueError('Malformed frozen tensors/counts/masks: '+split)
++        source_rows = []
++        sample_ids = set()
++        for i, row in enumerate(audit):
++            if (row['source_row'] != i or row['sample_id'] in sample_ids
++                    or row['catalog_version'] != 'base_train'
++                    or row['target_servable'] != (row['target_raw_item_id'] in mapping)):
++                raise ValueError('Audit sample/catalog mismatch')
++            sample_ids.add(row['sample_id'])
++            if row['target_servable']:
++                j = len(source_rows)
++                raw = row['target_raw_item_id']
++                source_rows.append(i)
++                if (row['tensor_row'] != j or values['target_global_item_ids'][j]
++                        != registry['item2id'][raw]-1
++                        or values['labels'][j].tolist() != [*mapping[raw], tokenizer.eos_token]):
++                    raise ValueError('Audit/target/label row mismatch')
++                ids = values['input_ids'][j]
++                eos = np.flatnonzero(ids == tokenizer.eos_token)
++                if (len(eos) != 1 or eos[0] % 4 or np.any(ids[eos[0]+1:] != 0)):
++                    raise ValueError('Missing/misplaced history EOS or trailing padding')
++                missing = 0
++                for block in ids[:eos[0]].reshape(-1, 4):
++                    if np.all(block == 0):
++                        missing += 1
++                    elif tuple(block.tolist()) not in legal_sids:
++                        raise ValueError('History item outside eligible SID catalog')
++                if (missing != row['unavailable_history_events']
++                        or row['all_history_unavailable'] != (missing == eos[0]//4)):
++                    raise ValueError('Unavailable history mask/audit mismatch')
++            elif row['tensor_row'] is not None:
++                raise ValueError('Unavailable target unexpectedly has a labeled tensor')
++        if (source_rows != values['source_rows'].tolist()
++                or len(audit)-n != report['targets_outside_frozen_catalog']
++                or split == 'base_train' and (n != len(audit)
++                    or any(r['unavailable_history_events'] for r in audit))):
++            raise ValueError('Audit denominator/source indices mismatch')
++        arrays[split], audits[split] = values, audit
++    return summary, tokenizer, arrays, audits
++
++
++def make_batch(arrays, indices, device):
++    """Remove trailing padding only; preserve unavailable history positions."""
++    ids = arrays['input_ids'][indices]
++    mask = arrays['attention_mask'][indices]
++    active = np.flatnonzero(np.any(mask, axis=0))
++    if not len(active):
++        raise ValueError('Empty attention mask, including EOS')
++    end = int(active[-1])+1
++    return dict(input_ids=torch.as_tensor(ids[:, :end].astype(np.int64), device=device),
++        attention_mask=torch.as_tensor(mask[:, :end].astype(np.int64), device=device),
++        labels=torch.as_tensor(arrays['labels'][indices].astype(np.int64), device=device))
++
++
++def probe_rows(audit, size, seed):
++    # Select from ALL queries, including unavailable targets, without popularity stratification.
++    ranked = sorted(range(len(audit)), key=lambda i: hashlib.sha256(
++        (str(seed)+':'+str(audit[i]['sample_id'])).encode()).hexdigest())
++    return sorted(ranked[:min(size, len(audit))])
++
++
++def catalog_prefix(tokenizer):
++    def callback(batch_id, prefix):
++        try:
++            return tokenizer.allowed_next_tokens(prefix.tolist())
++        except ValueError:
++            # Beam search may create inactive, -inf beams when a trie level has
++            # fewer children than num_beams. Terminate them; validate every final beam.
++            return [tokenizer.eos_token]
++    return callback
++
++
++@torch.no_grad()
++def evaluate(trainer, tokenizer, arrays, audit, source_indices, device, batch_size,
++             progress=True):
++    """Repository metrics, with unavailable targets counted as misses in full ranking."""
++    from tqdm import tqdm
++    before_rng, was_training = rng_state(), trainer.model.training
++    trainer.model.eval()
++    chosen = [audit[i]['tensor_row'] for i in source_indices if audit[i]['target_servable']]
++    sums = {f'{metric}@{k}': 0.0 for metric in trainer.config['metrics'] for k in trainer.config['topk']}
++    nll_sum = 0.0
++    legal = set(tokenizer.item2tokens.values())
++    maxk = trainer.evaluator.maxk
++    iterator = range(0, len(chosen), batch_size)
++    if progress:
++        iterator = tqdm(iterator, desc='Base validation', unit='batch')
++    try:
++        for start in iterator:
++            indices = np.asarray(chosen[start:start+batch_size])
++            batch = make_batch(arrays, indices, device)
++            output = trainer.model(batch)
++            losses = F.cross_entropy(output.logits.transpose(1, 2), batch['labels'], reduction='none')
++            nll_sum += float(losses.sum())
++            predicted = trainer.model.generate(batch, n_return_sequences=maxk, return_scores=True,
++                                                prefix_allowed_tokens_fn=catalog_prefix(tokenizer))
++            preds = predicted['preds'].cpu().tolist()
++            sequences = predicted['sequences']
++            if (sequences.shape[-1] != 6 or torch.any(sequences[:, :, 0] != 0)
++                    or torch.any(sequences[:, :, -1] != tokenizer.eos_token)
++                    or not torch.isfinite(predicted['scores']).all()
++                    or any(len({tuple(x) for x in row}) != maxk
++                           or any(tuple(x) not in legal for x in row) for row in preds)):
++                raise ValueError('Invalid, duplicate, non-finite or ineligible final ranking beam')
++            metrics = trainer.evaluator.calculate_metrics(predicted, batch['labels'])
++            for key, value in metrics.items():
++                sums[key] += float(value.sum())
++    finally:
++        trainer.model.train(was_training)
++        restore_rng(before_rng)
++    total, available = len(source_indices), len(chosen)
++    if total == 0:
++        raise ValueError('Empty evaluation query set')
++    return dict(all_queries=total, servable_queries=available,
++        unavailable_targets=total-available, decoded_queries=available,
++        full_denominator={k: v/total for k, v in sums.items()},
++        conditional_on_servable={k: v/available if available else None for k, v in sums.items()},
++        mean_sequence_nll_servable=nll_sum/available if available else None,
++        mean_token_ce_servable=nll_sum/(available*5) if available else None,
++        ranking_catalog='base_train', invalid_predictions=0,
++        seen_item_filter=False, decoding='catalog_prefix_beam_search', num_beams=trainer.config['num_beams'])
++
++
++def cpu_state(model):
++    return {key: value.detach().cpu().clone() for key, value in model.state_dict().items()}
++
++
++def run(args):
++    started = time.perf_counter()
++    if args.max_steps < 1 or any(getattr(args, k) < 1 for k in
++            ('batch_size', 'eval_batch_size', 'probe_size', 'eval_every', 'log_every', 'save_every')):
++        raise ValueError('Steps, intervals and batch sizes must be positive')
++    if args.lr <= 0 or args.weight_decay < 0 or args.warmup_steps < 0:
++        raise ValueError('Invalid optimizer settings')
++    output = Path(args.output).resolve()
++    if output.exists():
++        raise FileExistsError('Refusing to overwrite output: '+str(output))
++    sid_dir = Path(args.sid_dir).resolve()
++    summary, tokenizer, arrays, audits = load_sids(sid_dir, args.expected_rqvae_sha256)
++    if (not args.topk or min(args.topk) < 1 or len(set(args.topk)) != len(args.topk)
++            or args.num_beams < max(args.topk) or args.num_beams < 2
++            or len(tokenizer.item2tokens) < max(args.topk)):
++        raise ValueError('Invalid top-k/beam count or insufficient eligible catalog')
++    model_config = dict(MODEL_DEFAULTS)
++    if args.model_config:
++        overrides = read_json(Path(args.model_config))
++        if set(overrides)-set(MODEL_DEFAULTS):
++            raise ValueError('Unknown model configuration override')
++        model_config.update(overrides)
++    config = dict(model_config, lr=args.lr, weight_decay=args.weight_decay,
++        batch_size=args.batch_size, warmup_steps=args.warmup_steps, scheduler='constant_with_warmup',
++        max_grad_norm=1.0, seed=args.seed, device=args.device, precision='float32',
++        num_beams=args.num_beams, topk=sorted(args.topk), metrics=['recall', 'ndcg'],
++        probe_size=args.probe_size, eval_batch_size=args.eval_batch_size, eval_every=args.eval_every,
++        checkpoint_selection='best_probe_full_denominator_ndcg@'+str(max(args.topk)),
++        trailing_padding='trim_only_after_last_active_position')
++    root = Path(__file__).resolve().parents[1]
++    versions = {name: importlib.metadata.version(name) for name in ('torch', 'numpy', 'transformers')}
++    selected_rows = probe_rows(audits['base_val'], args.probe_size, args.seed)
++    binding = dict(protocol_sha256=summary['protocol_sha256'],
++        rqvae_checkpoint_sha256=summary['rqvae_checkpoint_sha256'],
++        sid_summary_sha256=sha256(sid_dir/'summary.json'),
++        sid_artifact_files_sha256=summary['artifact_files_sha256'],
++        tokenizer_contract=summary['tokenizer_contract'],
++        source_files_sha256={name: sha256(root/name) for name in SOURCE_FILES},
++        package_versions=versions, python=platform.python_version(),
++        probe_source_rows=selected_rows)
++    device = torch.device(args.device)
++    if device.type == 'cuda' and not torch.cuda.is_available():
++        raise RuntimeError('Requested CUDA device is unavailable')
++    seed_all(args.seed)
++    if device.type == 'cuda':
++        torch.cuda.reset_peak_memory_stats(device)
++    model = TIGER(config, None, tokenizer).to(device)
++    trainer = Trainer.for_temporal(config, model, tokenizer)
++    generator = torch.Generator().manual_seed(args.seed+1)
++    sampler = dict(order=None, cursor=0, optimizer_steps=0, processed_examples=0, epochs_started=0)
++    best_state, best_metrics, best_step = None, None, None
++    history = []
++    if args.resume_from:
++        checkpoint = torch.load(args.resume_from, map_location='cpu', weights_only=False)
++        if (checkpoint.get('format') != 'incremental_base_tiger_v1'
++                or checkpoint['binding'] != binding or checkpoint['config'] != config):
++            raise ValueError('Resume source/data/config/package binding mismatch')
++        if checkpoint['sampler']['optimizer_steps'] >= args.max_steps:
++            raise ValueError('Resume target must exceed completed optimizer steps')
++        model.load_state_dict(checkpoint['state_dict'])
++        trainer.optimizer.load_state_dict(checkpoint['optimizer'])
++        trainer.scheduler.load_state_dict(checkpoint['scheduler'])
++        sampler = checkpoint['sampler']
++        generator.set_state(checkpoint['generator'])
++        best_state, best_metrics, best_step = (checkpoint[k] for k in ('best_state_dict', 'best_metrics', 'best_step'))
++        history = checkpoint['validation_history']
++        restore_rng(checkpoint['rng'])
++    output.mkdir(parents=True)
++    write_json(output/'config.json', config)
++    write_json(output/'probe.json', [dict(source_row=i, sample_id=audits['base_val'][i]['sample_id'])
++                                     for i in selected_rows])
++    initial_step = sampler['optimizer_steps']
++    metric_key = 'ndcg@'+str(max(args.topk))
++
++    def save_last():
++        payload = dict(format='incremental_base_tiger_v1', config=config, binding=binding,
++            state_dict=cpu_state(model), optimizer=trainer.optimizer.state_dict(),
++            scheduler=trainer.scheduler.state_dict(), sampler=copy.deepcopy(sampler),
++            generator=generator.get_state(), rng=rng_state(), best_state_dict=best_state,
++            best_metrics=best_metrics, best_step=best_step, validation_history=history)
++        temp = output/'last.pth.tmp'
++        torch.save(payload, temp)
++        os.replace(temp, output/'last.pth')
++
++    def on_step(loss, grad_norm):
++        nonlocal best_state, best_metrics, best_step
++        step = sampler['optimizer_steps']
++        with (output/'train_metrics.jsonl').open('a') as handle:
++            handle.write(json.dumps(dict(step=step, loss=loss, gradient_norm=grad_norm,
++                lr=trainer.optimizer.param_groups[0]['lr']), allow_nan=False)+'\n')
++        if step % args.log_every == 0 or step == initial_step+1 or step == args.max_steps:
++            elapsed = time.perf_counter()-started
++            print(f'TIGER step {step}/{args.max_steps} | token CE {loss:.6f} | '
++                  f'lr {trainer.optimizer.param_groups[0]["lr"]:.6g} | elapsed {elapsed:.1f}s', flush=True)
++        if step % args.eval_every == 0 or step == args.max_steps:
++            results = evaluate(trainer, tokenizer, arrays['base_val'], audits['base_val'],
++                               selected_rows, device, args.eval_batch_size)
++            history.append(dict(step=step, metrics=results))
++            if best_metrics is None or results['full_denominator'][metric_key] > best_metrics['full_denominator'][metric_key]:
++                best_state, best_metrics, best_step = cpu_state(model), results, step
++            print('Validation probe: '+json.dumps(dict(step=step, best_step=best_step,
++                metrics=results), allow_nan=False), flush=True)
++        if step % args.save_every == 0 or step == args.max_steps:
++            save_last()
++
++    print(f'TIGER ready | {len(arrays["base_train"]["labels"])} train queries | '
++          f'{len(tokenizer.item2tokens)} eligible items | {model.n_parameters}', flush=True)
++    trainer.fit_steps(arrays['base_train'], sampler, generator, args.max_steps,
++        lambda a, i: make_batch(a, i, device), on_step)
++    # Export the selected model independently of current training state for E1 reuse.
++    torch.save(dict(format='incremental_base_tiger_selected_v1', state_dict=best_state,
++        config=config, binding=binding, optimizer_step=best_step,
++        validation_probe=best_metrics), output/'best.pth')
++    selected = torch.load(output/'best.pth', map_location='cpu', weights_only=False)
++    model.load_state_dict(selected['state_dict'])
++    reload_equal = all(torch.equal(value.cpu(), selected['state_dict'][key])
++                       for key, value in model.state_dict().items())
++    final_validation = None
++    if not args.smoke:
++        final_validation = evaluate(trainer, tokenizer, arrays['base_val'], audits['base_val'],
++            list(range(len(audits['base_val']))), device, args.eval_batch_size)
++        write_json(output/'base_validation.json', final_validation)
++    report = dict(stage='E0_base_content_TIGER', execution_status='completed',
++        sid_dir=str(sid_dir), output=str(output), protocol_sha256=summary['protocol_sha256'],
++        rqvae_checkpoint_sha256=summary['rqvae_checkpoint_sha256'], config=config, binding=binding,
++        model_implementation='repository genrec.models.TIGER.model.TIGER',
++        model_initialization='random T5Config; no pretrained model/tokenizer download',
++        parameters=sum(p.numel() for p in model.parameters()), optimizer_steps=sampler['optimizer_steps'],
++        steps_this_run=sampler['optimizer_steps']-initial_step,
++        processed_examples=sampler['processed_examples'], sampler_epochs_started=sampler['epochs_started'],
++        resume_from=str(Path(args.resume_from).resolve()) if args.resume_from else None,
++        checkpoint_selection=config['checkpoint_selection'], best_optimizer_step=best_step,
++        best_validation_probe=best_metrics, validation_probe_queries=len(selected_rows),
++        full_base_validation=final_validation, selected_checkpoint_reload_equal=reload_equal,
++        training_catalog='base_train', ranking_catalog='base_train',
++        eligible_items=len(tokenizer.item2tokens), graph_used=False, rqvae_frozen=True,
++        sid_refit=False, content_encoder_finetuning=False, update_training_status='not_run',
++        future_test_status='not_run', E0_base_end_to_end_status='not_run' if args.smoke else 'completed',
++        E0_full_status='not_run', E1_status='not_run', execution_mode='smoke' if args.smoke else 'full_base_validation',
++        python=platform.python_version(), package_versions=versions,
++        device=str(device), device_name=torch.cuda.get_device_name(device) if device.type == 'cuda' else 'cpu',
++        peak_cuda_allocated_bytes=torch.cuda.max_memory_allocated(device) if device.type == 'cuda' else None,
++        peak_cuda_reserved_bytes=torch.cuda.max_memory_reserved(device) if device.type == 'cuda' else None,
++        memory_scope='this process, model construction through final validation; excludes other processes',
++        runtime_seconds=time.perf_counter()-started,
++        artifact_files_sha256={p.name:sha256(p) for p in output.iterdir() if p.is_file()})
++    write_json(output/'summary.json', report)
++    print(json.dumps(report, ensure_ascii=False, indent=2, allow_nan=False), flush=True)
++    return report
++
++
++def parser():
++    p = argparse.ArgumentParser(description=__doc__)
++    p.add_argument('--sid-dir', required=True)
++    p.add_argument('--output', required=True)
++    p.add_argument('--expected-rqvae-sha256')
++    p.add_argument('--device', default='cuda')
++    p.add_argument('--seed', type=int, default=2026)
++    p.add_argument('--batch-size', type=int, default=128)
++    p.add_argument('--eval-batch-size', type=int, default=16)
++    p.add_argument('--max-steps', type=int, default=5000)
++    p.add_argument('--lr', type=float, default=0.003)
++    p.add_argument('--weight-decay', type=float, default=0.05)
++    p.add_argument('--warmup-steps', type=int, default=200)
++    p.add_argument('--probe-size', type=int, default=512)
++    p.add_argument('--eval-every', type=int, default=500)
++    p.add_argument('--log-every', type=int, default=25)
++    p.add_argument('--save-every', type=int, default=250)
++    p.add_argument('--num-beams', type=int, default=20)
++    p.add_argument('--topk', type=int, nargs='+', default=[5, 10])
++    p.add_argument('--resume-from')
++    p.add_argument('--model-config', help='Optional JSON model architecture overrides for synthetic checks')
++    p.add_argument('--smoke', action='store_true', help='Run probe evaluation, defer full Base validation')
++    return p
+--- a/genrec/trainer.py
++++ b/genrec/trainer.py
+@@ -151,6 +151,46 @@
+                     break
+         self.log(f'Best epoch: {best_epoch}, Best val score: {best_val_score}')
+         return best_epoch, best_val_score
++
++    @classmethod
++    def for_temporal(cls, config, model, tokenizer):
++        """Single-device, opt-in fixed-step training of the same repository model."""
++        trainer = cls.__new__(cls)
++        trainer.config, trainer.model = config, model
++        trainer.evaluator = Evaluator(config, tokenizer)
++        trainer.optimizer = AdamW(model.parameters(), lr=config['lr'],
++                                  weight_decay=config['weight_decay'])
++        # A budget-independent schedule permits exact smoke -> full continuation.
++        trainer.scheduler = get_scheduler('constant_with_warmup', trainer.optimizer,
++                                         num_warmup_steps=config['warmup_steps'])
++        return trainer
++
++    def fit_steps(self, arrays, sampler, generator, target_steps, make_batch, on_step):
++        """Continue sampler/optimizer state and stop at exactly target_steps."""
++        count = len(arrays['labels'])
++        self.model.train()
++        while sampler['optimizer_steps'] < target_steps:
++            if sampler['order'] is None or sampler['cursor'] == count:
++                sampler['order'] = torch.randperm(count, generator=generator)
++                sampler['cursor'] = 0
++                sampler['epochs_started'] += 1
++            end = min(sampler['cursor'] + self.config['batch_size'], count)
++            indices = sampler['order'][sampler['cursor']:end].numpy()
++            batch = make_batch(arrays, indices)
++            self.optimizer.zero_grad(set_to_none=True)
++            loss = self.model(batch).loss
++            if not torch.isfinite(loss):
++                raise FloatingPointError('Non-finite TIGER training loss')
++            loss.backward()
++            norm = clip_grad_norm_(self.model.parameters(), self.config['max_grad_norm'])
++            if not torch.isfinite(norm):
++                raise FloatingPointError('Non-finite TIGER gradient norm')
++            self.optimizer.step()
++            self.scheduler.step()
++            sampler['cursor'] = end
++            sampler['optimizer_steps'] += 1
++            sampler['processed_examples'] += len(indices)
++            on_step(float(loss.detach()), float(norm))
+     
+     
+     @staticmethod
+--- /dev/null
++++ b/tests/incremental/test_temporal_tiger_round9.py
+@@ -0,0 +1,248 @@
++"""Synthetic checks with the actual repository RQ-VAE and TIGER/T5."""
++import contextlib
++import copy
++import importlib.util
++import io
++import json
++import os
++from pathlib import Path
++import shutil
++import sys
++import tempfile
++import unittest
++
++os.environ.setdefault('USE_TF', '0')
++os.environ.setdefault('USE_FLAX', '0')
++os.environ.setdefault('HF_HUB_OFFLINE', '1')
++os.environ.setdefault('TRANSFORMERS_OFFLINE', '1')
++ROOT = Path(__file__).resolve().parents[2]
++sys.path.insert(0, str(ROOT))
++
++import numpy as np
++import torch
++from genrec.frozen_sid_tokenizer import FrozenSIDTokenizer
++from genrec.models.TIGER.model import TIGER
++from genrec.temporal_sids import export_base_sids, read_json, sha256, write_json
++from genrec.temporal_tiger import (MODEL_DEFAULTS, catalog_prefix, evaluate, load_sids,
++    make_batch, parser, probe_rows, rng_state, run, seed_all)
++from genrec.trainer import Trainer
++
++torch.set_num_threads(1)
++TINY = dict(num_layers=1, num_decoder_layers=1, d_model=16, d_ff=32,
++            num_heads=2, d_kv=8, dropout_rate=0.2)
++
++
++class Checks(unittest.TestCase):
++    @classmethod
++    def setUpClass(cls):
++        spec = importlib.util.spec_from_file_location('round8_fixture',
++            ROOT/'tests/incremental/test_temporal_sids_round8.py')
++        module = importlib.util.module_from_spec(spec)
++        spec.loader.exec_module(module)
++        cls.previous = module.Checks
++        cls.previous.setUpClass()
++        cls.fixture = tempfile.TemporaryDirectory()
++        cls.sid_dir = Path(cls.fixture.name)/'sids'
++        root = Path(cls.previous.fixture.name)
++        with contextlib.redirect_stdout(io.StringIO()):
++            export_base_sids(root/'protocol', root/'features', root/'rqvae', cls.sid_dir,
++                             device='cpu', suffix_capacity=16)
++
++    @classmethod
++    def tearDownClass(cls):
++        cls.fixture.cleanup()
++        cls.previous.tearDownClass()
++
++    def setUp(self):
++        self.tmp = tempfile.TemporaryDirectory()
++        self.root = Path(self.tmp.name)
++        self.sid = self.root/'sids'
++        shutil.copytree(self.sid_dir, self.sid)
++        write_json(self.root/'tiny.json', TINY)
++
++    def tearDown(self):
++        self.tmp.cleanup()
++
++    def args(self, name, steps=4, resume=None, smoke=True):
++        values = ['--sid-dir', str(self.sid), '--output', str(self.root/name),
++            '--device', 'cpu', '--batch-size', '8', '--eval-batch-size', '3',
++            '--max-steps', str(steps), '--warmup-steps', '2', '--probe-size', '10',
++            '--eval-every', '100', '--save-every', '2', '--log-every', '2',
++            '--num-beams', '4', '--topk', '1', '3', '--model-config', str(self.root/'tiny.json')]
++        if resume:
++            values += ['--resume-from', str(resume)]
++        if smoke:
++            values += ['--smoke']
++        return parser().parse_args(values)
++
++    def train(self, *args, **kwargs):
++        with contextlib.redirect_stdout(io.StringIO()):
++            return run(self.args(*args, **kwargs))
++
++    def trainer(self, tokenizer):
++        config = dict(MODEL_DEFAULTS, **TINY, lr=0.003, weight_decay=0.05,
++                      batch_size=8, warmup_steps=2, max_grad_norm=1.0,
++                      num_beams=4, topk=[1, 3], metrics=['recall', 'ndcg'])
++        return Trainer.for_temporal(config, TIGER(config, None, tokenizer), tokenizer)
++
++    def rehash(self, name):
++        summary = read_json(self.sid/'summary.json')
++        summary['artifact_files_sha256'][name] = sha256(self.sid/name)
++        write_json(self.sid/'summary.json', summary)
++
++    def test_verified_row_targets_masks_and_cold_denominator(self):
++        summary, tokenizer, arrays, audits = load_sids(self.sid)
++        self.assertEqual(len(arrays['base_train']['labels']), 81)
++        self.assertEqual(len(audits['base_val']), 10)
++        self.assertEqual(sum(not r['target_servable'] for r in audits['base_val']), 5)
++        batch = make_batch(arrays['base_val'], np.arange(5), 'cpu')
++        self.assertEqual(batch['input_ids'].dtype, torch.long)
++        self.assertTrue(torch.equal(batch['attention_mask'].bool(), batch['input_ids'] != 0))
++        self.assertEqual(tokenizer.n_user_tokens, 0)
++
++    def test_actual_t5_training_resume_is_exact_with_dropout(self):
++        self.train('continuous', 8)
++        self.train('partial', 3)
++        resumed = self.train('resumed', 8, self.root/'partial/last.pth')
++        a = torch.load(self.root/'continuous/last.pth', weights_only=False)
++        b = torch.load(self.root/'resumed/last.pth', weights_only=False)
++        self.assertEqual(a['sampler']['processed_examples'], b['sampler']['processed_examples'])
++        self.assertEqual(a['sampler']['cursor'], b['sampler']['cursor'])
++        self.assertTrue(torch.equal(a['sampler']['order'], b['sampler']['order']))
++        self.assertTrue(torch.equal(a['rng']['torch'], b['rng']['torch']))
++        self.assertEqual(a['scheduler'], b['scheduler'])
++        for key in a['state_dict']:
++            self.assertTrue(torch.equal(a['state_dict'][key], b['state_dict'][key]), key)
++        for key, state in a['optimizer']['state'].items():
++            for field, value in state.items():
++                self.assertTrue(torch.equal(value, b['optimizer']['state'][key][field]))
++        self.assertEqual(resumed['steps_this_run'], 5)
++
++    def test_real_constrained_beams_remain_legal_through_single_branch_levels(self):
++        # Only one first/second/third token: inactive beams must never escape the catalog.
++        tokenizer = FrozenSIDTokenizer({str(i): [1, 3, 5, 7+i] for i in range(8)}, [2, 2, 2, 8], 2)
++        trainer = self.trainer(tokenizer)
++        ids, mask, label = tokenizer._tokenize_once(dict(item_seq=['0', '1']))
++        batch = dict(input_ids=torch.tensor([ids]), attention_mask=torch.tensor([mask]),
++                     labels=torch.tensor([label]))
++        trainer.model.eval()
++        preds = trainer.model.generate(batch, 3, True, catalog_prefix(tokenizer))
++        self.assertTrue(torch.isfinite(preds['scores']).all())
++        values = [tuple(v) for v in preds['preds'][0].tolist()]
++        self.assertEqual(len(set(values)), 3)
++        self.assertTrue(set(values).issubset(set(tokenizer.item2tokens.values())))
++        self.assertEqual(preds['sequences'].shape, (1, 3, 6))
++        self.assertTrue(torch.all(preds['sequences'][:, :, -1] == tokenizer.eos_token))
++
++    def test_production_architecture_vocab_and_masked_history_positions(self):
++        tokenizer = FrozenSIDTokenizer({str(i): [1, 257, 513, 769+i] for i in range(26)},
++                                      [256]*4, 50)
++        config = dict(MODEL_DEFAULTS, num_beams=20)
++        model = TIGER(config, None, tokenizer)
++        ids, mask, label = tokenizer._tokenize_once(dict(item_seq=['0', 'outside', '1', '2']))
++        arrays = dict(input_ids=np.asarray([ids], dtype=np.int32),
++                      attention_mask=np.asarray([mask], dtype=np.uint8),
++                      labels=np.asarray([label], dtype=np.int32))
++        trimmed = make_batch(arrays, np.arange(1), 'cpu')
++        self.assertEqual(trimmed['input_ids'].shape, (1, 13))
++        self.assertTrue(torch.all(trimmed['input_ids'][:, 4:8] == 0))
++        self.assertTrue(torch.all(trimmed['attention_mask'][:, 4:8] == 0))
++        self.assertEqual(model.t5.config.vocab_size, 1026)
++        model.eval()
++        with torch.no_grad():
++            compact = model(trimmed).logits
++            full = model(dict(input_ids=torch.tensor([ids]), attention_mask=torch.tensor([mask]),
++                              labels=torch.tensor([label]))).logits
++            self.assertTrue(torch.allclose(compact, full, atol=2e-6, rtol=2e-6))
++            preds = model.generate(trimmed, 10, True, catalog_prefix(tokenizer))
++        self.assertEqual(len({tuple(x) for x in preds['preds'][0].tolist()}), 10)
++        self.assertTrue(torch.isfinite(preds['scores']).all())
++        model.train()
++        loss = model(trimmed).loss
++        loss.backward()
++        self.assertTrue(torch.isfinite(loss))
++        self.assertTrue(any(p.grad is not None and bool(torch.any(p.grad != 0)) for p in model.parameters()))
++
++    def test_repository_metrics_full_and_conditional_and_rng_preserved(self):
++        _, tok, arrays, audit = load_sids(self.sid)
++        seed_all(40)
++        trainer = self.trainer(tok)
++        before = rng_state()
++        results = evaluate(trainer, tok, arrays['base_val'], audit['base_val'],
++                           list(range(10)), 'cpu', 3, progress=False)
++        self.assertTrue(torch.equal(before['torch'], rng_state()['torch']))
++        self.assertTrue(trainer.model.training)
++        self.assertEqual(results['unavailable_targets'], 5)
++        self.assertEqual(results['decoded_queries'], 5)
++        for key in results['full_denominator']:
++            self.assertAlmostEqual(results['full_denominator'][key],
++                                   results['conditional_on_servable'][key]*0.5)
++        self.assertEqual(results['invalid_predictions'], 0)
++
++    def test_full_validation_selected_reload_hashes_and_status(self):
++        report = self.train('full', 4, smoke=False)
++        self.assertTrue(report['selected_checkpoint_reload_equal'])
++        self.assertEqual(report['full_base_validation']['all_queries'], 10)
++        self.assertEqual(report['E0_base_end_to_end_status'], 'completed')
++        self.assertEqual(report['E0_full_status'], 'not_run')
++        self.assertEqual(report['E1_status'], 'not_run')
++        for name, digest in report['artifact_files_sha256'].items():
++            self.assertEqual(sha256(self.root/'full'/name), digest)
++        selected = torch.load(self.root/'full/best.pth', weights_only=False)
++        self.assertEqual(selected['optimizer_step'], report['best_optimizer_step'])
++        _, tok, arrays, _ = load_sids(self.sid)
++        model = self.trainer(tok).model
++        model.load_state_dict(selected['state_dict'])
++        model.eval()
++        batch = make_batch(arrays['base_val'], np.arange(2), 'cpu')
++        with torch.no_grad():
++            first = model(batch).logits.clone()
++            model.load_state_dict(torch.load(self.root/'full/best.pth', weights_only=False)['state_dict'])
++            self.assertTrue(torch.equal(first, model(batch).logits))
++
++    def test_corruption_and_bad_config_fail_before_output(self):
++        with (self.sid/'tiger/base_train.npz').open('ab') as handle:
++            handle.write(b'corrupt')
++        with self.assertRaisesRegex(ValueError, 'checksum'):
++            self.train('bad')
++        self.assertFalse((self.root/'bad').exists())
++
++    def test_rehashed_wrong_labels_still_fail(self):
++        with np.load(self.sid/'tiger/base_train.npz') as file:
++            values = {key: file[key] for key in file.files}
++        values['labels'][0, 0] = 999
++        np.savez_compressed(self.sid/'tiger/base_train.npz', **values)
++        self.rehash('tiger/base_train.npz')
++        with self.assertRaisesRegex(ValueError, 'label row mismatch'):
++            self.train('bad')
++        self.assertFalse((self.root/'bad').exists())
++
++    def test_resume_rejects_changed_config_and_no_overwrite(self):
++        self.train('partial', 2)
++        args = self.args('changed', 4, self.root/'partial/last.pth')
++        args.lr = 0.002
++        with self.assertRaisesRegex(ValueError, 'binding mismatch'):
++            run(args)
++        self.assertFalse((self.root/'changed').exists())
++        with self.assertRaises(FileExistsError):
++            self.train('partial', 4)
++
++    def test_probe_selection_is_deterministic_and_includes_cold_queries(self):
++        _, _, _, audit = load_sids(self.sid)
++        selected = probe_rows(audit['base_val'], 10, 2026)
++        self.assertEqual(selected, list(range(10)))
++        self.assertEqual(probe_rows(audit['base_val'], 6, 7), probe_rows(audit['base_val'], 6, 7))
++        self.assertNotEqual(probe_rows(audit['base_val'], 6, 7), probe_rows(audit['base_val'], 6, 8))
++
++    def test_actual_t5_learns_synthetic_train_examples(self):
++        self.train('learn', 60)
++        values = [json.loads(line)['loss'] for line in (self.root/'learn/train_metrics.jsonl').read_text().splitlines()]
++        self.assertLess(np.mean(values[-10:]), np.mean(values[:10])*0.75)
++
++
++if __name__ == '__main__':
++    result = unittest.main(verbosity=2, exit=False).result
++    print(json.dumps(dict(round='round9', inputs='synthetic_only', tests_run=result.testsRun,
++        execution_status='passed' if result.wasSuccessful() else 'failed',
++        E0_full_status='not_run', E1_status='not_run'), indent=2))
++    raise SystemExit(0 if result.wasSuccessful() else 1)
+--- /dev/null
++++ b/train_incremental_tiger.py
+@@ -0,0 +1,11 @@
++"""Fixed-step Base content-SID TIGER training with strict temporal evaluation."""
++import os
++
++os.environ.setdefault('CUBLAS_WORKSPACE_CONFIG', ':4096:8')
++os.environ.setdefault('USE_TF', '0')
++os.environ.setdefault('USE_FLAX', '0')
++
++from genrec.temporal_tiger import parser, run
++
++if __name__ == '__main__':
++    run(parser().parse_args())

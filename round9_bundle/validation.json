@@ -1,0 +1,24 @@
+{
+  "round": "round9",
+  "inputs": "synthetic_only",
+  "tests_run": 11,
+  "execution_status": "passed",
+  "actual_model": "repository TIGER/T5; repository RQ-VAE fixture",
+  "local_environment": {
+    "python": "3.12.14",
+    "torch": "2.6.0+cpu",
+    "transformers": "4.56.1",
+    "numpy": "2.3.5"
+  },
+  "exact_resume_checked": "8 continuous steps vs 3 + 5 resumed, dropout 0.2; state/optimizer/scheduler/RNG equal",
+  "production_architecture_checked": "repository default T5; vocab 1026, max length 201; forward/backward and legal unique top10 beams",
+  "cli_smoke_steps": 3,
+  "cli_resumed_total_steps": 8,
+  "full_validation_checked": "synthetic 10 queries, including 5 unavailable targets",
+  "gpu_status": "not_run_locally",
+  "real_Beauty_training_status": "not_run_locally",
+  "E0_full_status": "not_run",
+  "E1_status": "not_run",
+  "installer_checked": "clean Round8 checkout; 5 installed; repeat installs 0 files; all 11 tests pass",
+  "legacy_TIGER_regression": "same weights: forward logits and unconstrained generation outputs exactly unchanged"
+}
