@@ -4,6 +4,14 @@ Status: code provided; real Beauty/Llama GPU inference has **not** been run by
 the developer. Hao runs it on his Linux GPU server. No RQ-VAE, SID or recommender
 training is included in this change. Existing T5 features remain unchanged.
 
+User result update (2026-10-16): Hao reports the complete export at
+`cache/incremental/Beauty/llama7b_features_20261016T132127Z/`, with all three
+expected 4096-dimensional catalogs, no missing/nonfinite/zero vectors and
+identical shared rows. Skip the inference smoke and re-encoding for this run.
+Its actual encoding commit, runtime and peak memory have not been supplied in
+this update. A separate 50-step Base RQ-VAE pilot is prepared, not yet run;
+`report_content_rqvae.py` reports Base-only scale and mean-predictor baselines.
+
 ## Definition and scope
 
 `prepare_incremental_llama.py` follows the public Mitigating notebook:

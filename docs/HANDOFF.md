@@ -1,6 +1,22 @@
 # 项目交接：History-aware SID Incremental Update
 
-## 0. 2026-10-16 迁移核对结束；接入Llama特征提交
+## 0. 2026-10-16 Llama完整特征已完成；独立Base试训准备
+
+**用户回传的已完成产物**：`cache/incremental/Beauty/llama7b_features_20261016T132127Z/`。本地冻结Llama7B从title、首条categories路径、description编码，最后一层隐藏状态，1024 tokens截断/补齐，padding清零后sum/1024，模型FP16、pooling float32，输出float32/4096维，无L2归一化、降维或微调。用户明确报告完整性通过：BaseTrain10924×4096、UpdateTrain11707×4096、Update部署11775×4096；无缺失、非有限或全零向量，共享物品跨阶段向量完全一致。商品仅统一编码一次。当前用户提供的事实足以跳过smoke与重编码；编码时的实际Git SHA、完整summary/hash、总耗时与峰值显存未在本条回传，不补填。
+
+**代码同步**：进一步发现feature分支提交`6e8de385e10fa3ee506b04acd8a2423a4a4f8e60`（父6d69252），仅新增`verify_incremental_embeddings.py`。已读完并合入持续分支；保留与`339bf6fa990430d5962699af17138fa7a0f64b2e`两条历史。该脚本检查protocol/row-map/hash/finite/nonzero/shared-prefix，用户已经报告过这些检查通过，本轮不要求再运行。原Llama编码、temporal/content、训练实现和RESEARCH_SPEC均不修改。
+
+**下一项最小任务（code_provided/not_run）**：新建独立Llama Base RQ-VAE，只在`base_train`10924项上fresh训练50步。实际入口`train_incremental_rqvae.py`→`gensid.incremental_content.run`→repository `RQVAE`/`Trainer.fit_steps`。`in_dim=features.shape[1]`，因此自动适配4096维，无需修改源码或加入投影。沿用原recipe：layers512/256/128/64，e_dim32，3×256，外层quant_loss_weight0.25、内部commitment沿用0.25，Base kmeans一次（4096样本、50iters），AdamW lr0.001/wd0、batch256、seed2026、无BN/dropout/CF/graph/Sinkhorn，原始向量不变。新的输入/输出层维度和特征会改变参数初始化及输入尺度，不能称为与旧T5共享Base或严格encoder-only消融。输出全新目录、每25步保存、每10步日志；不从旧T5 checkpoint加载，不训练TIGER/History-aware。
+
+该50步只是新增表示的可行性pilot，不替换现有T5主实验，不定义完整Llama对照方案。当前没有Llama RQ-VAE运行结果，更没有兼容性/排序收益结论。RESEARCH_SPEC不更新为已完成新路线；后续若用户执行并决定扩大，记录该确认后再安排累计1000/5000、SID和新teacher。
+
+**新增`report_content_rqvae.py`**：只读取BaseTrain特征，chunked float64计算L2 norm分位数、zero predictor MSE、Base均值向量predictor MSE；不读取Update/Future向量、不归一化或拟合推荐模型。可读取与同一feature-summary绑定的Base RQ-VAE摘要，报告initial/final MSE、相对initial及mean predictor的改善、码本使用/碰撞和checkpoint reload一致性。MSE由原训练入口的全BaseTrain评估提供，本工具不加载checkpoint独立重算。输入尺度不同，不能直接以T5与Llama原始MSE大小判断表示优劣；均值基线也不是推荐质量指标。
+
+本地NumPy解析例验证通过（已知zero MSE=11、mean MSE=1、分块、零方差、绑定报告比较、拒绝覆盖及错绑定）；CLI help和diff通过。云端无PyTorch，不能运行RQ-VAE模型检查或真实Beauty训练。服务器执行命令及准确交付SHA见本轮回复；命令记录commit、参数、seed、feature/run路径、train.log和compact；无冲突强制清理。
+
+**需回传**：新report的compact（含norm分布、MSE/ratio、codebook统计及reload标志），异常则train.log最后100行。若50步有限、重构较初始化下降且无明显坍缩，可讨论从该checkpoint延长累计预算；50步未超过mean baseline本身不证明失败。出现nonfinite或坍缩时先检查原始尺度/损失/初始化，不自动归一化、改学习率、扩大容量或进入history训练。现有全量embedding与旧结果均保留。
+
+## 0.1 迁移核对结束；接入Llama特征提交（历史记录）
 
 **新的用户执行证据**：`results/incremental/Beauty/cuda_startup_check_20261016T131826Z_PIdjP4`，按交付`vibe-dev@8ef11cfc60cedb99c58e8e5b81866a352013d261`执行。6项测试在服务器通过（0.120s）；归档元数据链`metadata_consistent`，fix记录SHA256=`08cd9f9138afe5e8053123e11659d5cc21d34dd72777690829821300d3ef3613`；plan只有controller source hash变化，engine未变。15组比较中14组History H更高。真实`cuda:0` probe passed，进入engine前CUDA已初始化，seed2026，单张量值1.0；torch2.6.0+cu118、CUDA runtime11.8、Tesla V100-SXM2-32GB。未训练、未加载checkpoint。用户重复贴出的两份相同JSON是同一run的打印，不记作两次独立验证。
 
@@ -18,7 +34,7 @@
 
 **本轮下一步**：若还未有真实编码结果，按交付命令执行2项smoke（FP16、SDPA、1024、batch1，独立输出）；回传测试末尾和compact/traceback。若已有全量结果，则直接回传原compact及其输出目录。只有输入身份、维度、有限非零向量、显存和实际速度得到验证后再安排全量编码/新Base训练；新Base训练与公平对照协议须另行说明，不能据新embedding推断会解决历史损伤负结果。
 
-## 0.1 服务器核对回传与CUDA修复接入（历史记录）
+## 0.2 服务器核对回传与CUDA修复接入（历史记录）
 
 **用户实际回传**：2026-10-16，`source_audit_20261016T105113Z_v4eZXM`。8项合成测试在服务器通过（1.299s）；收集器`collected`、`training_started=False`。运行前branch=`main`、HEAD=`2fb3426615ec0033dd6b65734593075f7e8380e0`、工作区clean。相对迁移基准e1a4cf4，41个静态/绑定源码中2项不同：`fix_history_weight_cuda_startup.py`与`run_history_weight_sweep.py`。来源声明对原工作区mismatch=0，15组比较全部找到、14组History H更高，历史sweep completed、selected_rho=None、CUDA修复记录1份、issues=0。随后服务器已切换`vibe-dev@cbe6761b7441f3eadef6e92c7cf19e7808adace3`。
 
@@ -43,7 +59,7 @@ python -u -B scripts/check_history_cuda_startup.py \
 
 完整安全fetch/switch命令以本轮交付回复为准。需回传6项测试末尾及新compact（异常时含child.log）。成功标准为metadata_consistent、startup passed、initialized_at_engine_entry=true、tensor_value=1、training_started=false。这只确认元数据/文件一致性和启动路径，不验证历史GPU逐bit重现。通过后结束本项迁移核对并进入负结果的机制分析/下一项最小实验设计；不自动重跑rho、选holdout或运行E3。若失败，按具体记录/hash或CUDA traceback定位，不重复训练。
 
-## 0.2 2026-10-16 首轮接管开发（历史记录）
+## 0.3 2026-10-16 首轮接管开发（历史记录）
 
 用户已授权采用持续工作分支`vibe-dev`开发并提交；本节覆盖旧交接轮的“只整理文档”限制，不更改研究协议。已实际读取三份附件，并clone开发仓库。GitHub与本地均核实`main=e1a4cf42f40a67fd750e80ae7c3d0e9549eb0188`；核实时无其他远端分支，现已从该SHA创建`vibe-dev`。本轮提交的准确SHA以Git提交记录及交付回复为准，不在文件中写入自引用SHA。
 
@@ -66,7 +82,7 @@ python -u -B scripts/check_history_cuda_startup.py \
 
 **下一步判断**：先读原始plan、三seed preflight、12组新增训练摘要、修复记录和源码diff。若差异仅为有记录的启动bootstrap且其余绑定及终点一致，记录这一有限的一致性结论，并单独决定如何固化修复。若engine/绑定/plan不一致，定位具体字段和时间链；缺项只索取相关产物。不迁移旧checkpoint、不改写旧plan、不扩大rho扫描。最新负结论仍仅来自下文已回传U结果；本轮没有新增实验结论。
 
-## 0.3 迁移交接时的状态（历史记录）
+## 0.4 迁移交接时的状态（历史记录）
 
 更新日期：2026-10-16。仓库 <https://github.com/haowu1937/incre-update-sids>，本次迁移基准 `main@e1a4cf42f40a67fd750e80ae7c3d0e9549eb0188`。本次已通过 GitHub 读取 commit、目录树及关键源码；读取时 main 指向该 commit。
 
