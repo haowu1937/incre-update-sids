@@ -2,6 +2,12 @@
 
 ## 0. 2026-10-16 Llama完整特征已完成；独立Base试训准备
 
+**最新执行反馈（同步阻塞，非训练错误）**：用户尝试上一轮命令时，服务器仍在`run/llama7b-embeddings@6d692529e38a6c17c2f2aaf558fb86828dec7f89`，唯一status为`?? verify_incremental_embeddings.py`。命令按保护规则在同步前停止，本次50步训练未启动。不能把此反馈当作RQ-VAE失败或通过。用户首行还出现混杂的粘贴文本，不能据此推断后续命令已经执行。
+
+**本轮修复交付**：新增`scripts/run_llama_base_pilot.sh <准确交付SHA>`，可先从fetch到的commit用`git show`提取到临时文件再执行，不要求先checkout。它只豁免唯一已知未跟踪文件`verify_incremental_embeddings.py`：必须是普通非symlink文件，且与交付commit中该文件逐字一致；将原副本移动到Git忽略的全新`results/incremental/Beauty/local_verifier_backup_<UTC>_<随机后缀>/`，记录原branch/commit/hash并保留目标副本，再安全切换/fast-forward到`vibe-dev`。不同内容、其他改动或本地vibe-dev分叉/领先均保留现场并停止，不stash/reset/clean/强推。canonical verifier由checkout恢复，原run分支保留。当前仓库verifier SHA256为`bce1d5a93115a76aaabca1022011c63fc2f8a1ba0dec9ce53cf10fa2fb59d691`，服务器未跟踪文件是否相同须现场cmp，不能预先宣称一致。
+
+同步成功后脚本激活frec-gpu，执行轻量CLI检查，再运行下文同一50步pilot及报告；数据路径、seed、超参数和训练源码均不变。独立run保存commit、`run_command.sh`、路径、train.log和报告。`--sync-only`仅供同步测试，不加载ML栈。5项临时Git仓库合成检查（相同文件、不同文件、额外改动、vibe-dev分叉、clean）通过；Bash语法与diff通过。真实服务器同步修复和pilot仍为code_provided/not_run。通过短启动命令替代长粘贴；若cmp不同，回传打印的两份hash，不重复训练。
+
 **用户回传的已完成产物**：`cache/incremental/Beauty/llama7b_features_20261016T132127Z/`。本地冻结Llama7B从title、首条categories路径、description编码，最后一层隐藏状态，1024 tokens截断/补齐，padding清零后sum/1024，模型FP16、pooling float32，输出float32/4096维，无L2归一化、降维或微调。用户明确报告完整性通过：BaseTrain10924×4096、UpdateTrain11707×4096、Update部署11775×4096；无缺失、非有限或全零向量，共享物品跨阶段向量完全一致。商品仅统一编码一次。当前用户提供的事实足以跳过smoke与重编码；编码时的实际Git SHA、完整summary/hash、总耗时与峰值显存未在本条回传，不补填。
 
 **代码同步**：进一步发现feature分支提交`6e8de385e10fa3ee506b04acd8a2423a4a4f8e60`（父6d69252），仅新增`verify_incremental_embeddings.py`。已读完并合入持续分支；保留与`339bf6fa990430d5962699af17138fa7a0f64b2e`两条历史。该脚本检查protocol/row-map/hash/finite/nonzero/shared-prefix，用户已经报告过这些检查通过，本轮不要求再运行。原Llama编码、temporal/content、训练实现和RESEARCH_SPEC均不修改。
