@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-# Fresh Base pilot: three hidden layers and a 64-dimensional quantization space.
-# Usage: bash scripts/run_llama_base_3hidden_e64.sh FEATURES_DIR [TOTAL_STEPS]
+# Base pilot: three hidden layers and a 64-dimensional quantization space.
+# Usage: bash scripts/run_llama_base_3hidden_e64.sh FEATURES_DIR [TOTAL_STEPS [RESUME_CHECKPOINT]]
 set -euo pipefail
 
-[[ $# -ge 1 && $# -le 2 ]] || {
-  echo 'Usage: bash scripts/run_llama_base_3hidden_e64.sh FEATURES_DIR [TOTAL_STEPS]'
+[[ $# -ge 1 && $# -le 3 ]] || {
+  echo 'Usage: bash scripts/run_llama_base_3hidden_e64.sh FEATURES_DIR [TOTAL_STEPS [RESUME_CHECKPOINT]]'
   exit 1
 }
 FEATURES_DIR=$1
 TOTAL_STEPS=${2:-50}
+RESUME_CHECKPOINT=${3:-}
 [[ $TOTAL_STEPS =~ ^[1-9][0-9]*$ ]] || {
   echo 'TOTAL_STEPS must be a positive integer.'
   exit 1
@@ -20,6 +21,9 @@ cd "$(git rev-parse --show-toplevel)"
 }
 test -f "$FEATURES_DIR/summary.json"
 test -f "$FEATURES_DIR/base_train/embeddings.npy"
+if [[ -n $RESUME_CHECKPOINT ]]; then
+  test -f "$RESUME_CHECKPOINT"
+fi
 git diff --check
 
 export USE_TF=0 USE_FLAX=0 OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1
@@ -30,8 +34,8 @@ BASE_DIR="ckpt/incremental/Beauty/$(basename "$RUN")_${TOTAL_STEPS}"
 git rev-parse HEAD > "$RUN/commit.txt"
 git branch --show-current > "$RUN/branch.txt"
 cp -- scripts/run_llama_base_3hidden_e64.sh "$RUN/run_command.sh"
-printf 'FEATURES_DIR=%s\nBASE_DIR=%s\nTOTAL_STEPS=%s\nSEED=2026\n' \
-  "$FEATURES_DIR" "$BASE_DIR" "$TOTAL_STEPS" > "$RUN/paths.txt"
+printf 'FEATURES_DIR=%s\nBASE_DIR=%s\nTOTAL_STEPS=%s\nSEED=2026\nRESUME_CHECKPOINT=%s\n' \
+  "$FEATURES_DIR" "$BASE_DIR" "$TOTAL_STEPS" "$RESUME_CHECKPOINT" > "$RUN/paths.txt"
 
 TRAIN=(python -u -B train_incremental_rqvae.py
   --features-dir "$FEATURES_DIR" --output "$BASE_DIR"
@@ -40,6 +44,9 @@ TRAIN=(python -u -B train_incremental_rqvae.py
   --num-emb-list 256 256 256 --e-dim 64 --layers 512 256 128
   --quant-loss-weight 0.25 --kmeans-iters 50 --init-samples 4096
   --eval-batch-size 256 --save-every 25 --log-every 10)
+if [[ -n $RESUME_CHECKPOINT ]]; then
+  TRAIN+=(--resume "$RESUME_CHECKPOINT")
+fi
 printf '%q ' "${TRAIN[@]}" > "$RUN/train_command.sh"
 printf '\n' >> "$RUN/train_command.sh"
 printf 'Training log: %s/train.log\n' "$RUN"
