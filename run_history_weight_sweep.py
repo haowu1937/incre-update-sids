@@ -107,7 +107,14 @@ def command(args, log):
     with log.open('w') as handle:
         with PROCESS_LOCK:
             if ABORT.is_set():raise RuntimeError('Another seed failed; remaining jobs cancelled')
-            process = subprocess.Popen([sys.executable, '-u', '-B', str(ENGINE), *map(str,args)],
+            launch = [sys.executable, '-u', '-B', str(ENGINE), *map(str,args)]
+            # reset_peak_memory_stats does not initialize CUDA for an explicit
+            # device index. Initialize in this child before loading the unchanged
+            # engine; its seed_all still runs before any model construction.
+            if '--device' in args and str(args[args.index('--device')+1]).startswith('cuda'):
+                bootstrap = "import os,runpy,sys\nos.environ.setdefault('CUBLAS_WORKSPACE_CONFIG', ':4096:8')\nimport torch\nengine=sys.argv.pop(1)\nvalue=sys.argv[sys.argv.index('--device')+1]\ntorch.cuda.set_device(torch.device(value))\ntorch.cuda.init()\nrunpy.run_path(engine,run_name='__main__')\n"
+                launch = [sys.executable, '-u', '-B', '-c', bootstrap, str(ENGINE), *map(str,args)]
+            process = subprocess.Popen(launch,
                 stdout=handle, stderr=subprocess.STDOUT, env=env, start_new_session=True)
             ACTIVE.add(process)
         try:

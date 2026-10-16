@@ -1,6 +1,31 @@
 # 项目交接：History-aware SID Incremental Update
 
-## 0. 2026-10-16 接管开发：只读源码与证据核对
+## 0. 2026-10-16 服务器核对回传与CUDA修复接入
+
+**用户实际回传**：2026-10-16，`source_audit_20261016T105113Z_v4eZXM`。8项合成测试在服务器通过（1.299s）；收集器`collected`、`training_started=False`。运行前branch=`main`、HEAD=`2fb3426615ec0033dd6b65734593075f7e8380e0`、工作区clean。相对迁移基准e1a4cf4，41个静态/绑定源码中2项不同：`fix_history_weight_cuda_startup.py`与`run_history_weight_sweep.py`。来源声明对原工作区mismatch=0，15组比较全部找到、14组History H更高，历史sweep completed、selected_rho=None、CUDA修复记录1份、issues=0。随后服务器已切换`vibe-dev@cbe6761b7441f3eadef6e92c7cf19e7808adace3`。
+
+原始证据仍在服务器：`results/incremental/Beauty/source_audit_20261016T105113Z_v4eZXM/report/report.json`及同名run的`.tar.gz`。本轮用户只粘贴compact，未上传archive；不能声称云端已直接审阅原始fix记录、运行元数据或独立重算权重/指标。compact没有暴露来源冲突，足以继续核对公开代码并接入已经存在的修复。
+
+**新增源码证据**：已fetch并逐项检查main提交`2fb3426615ec0033dd6b65734593075f7e8380e0`（message=`add cuda fix`）。相对e1a4cf4共4个文件：controller仅增加CUDA子进程bootstrap，另外是修复安装脚本及修复前controller/plan备份。engine及内容/历史算法文件没有变化。controller的新SHA256=`1cc112fcab6e2c582ac219c71305e3844f3b69d888e15a1342cb0a17a9c4e7fa`；engine仍为`096b8b500446ea2057aa6d75e2f59b80ca55c85842c73c4f6260d77c9d80879a`。备份路径为`cuda_startup_fix_backups/20261015T165206566101Z/`，备份plan仍记录旧controller SHA256，符合修复脚本的备份流程。
+
+**本轮实现**：将上述main提交合入持续分支`vibe-dev`，保留两条历史的提交祖先；不写入main。controller与main修复版逐字相同；不重新实现bootstrap、不改engine、不重新运行安装脚本或改写旧plan。此前`cbe6761`源自e1a4cf4，用户切换到它后controller会回到未修复版本；本轮交付恢复修复版，避免后续使用时版本倒退。commit SHA以本轮交付及Git记录为准。
+
+新增`scripts/check_history_cuda_startup.py`，从已保存的审计副本检查关键文件checksum、单个fix记录、修复前备份plan/修复后plan的哈希链、仅controller hash变化、归档源码及15个终点的一致性。验证通过才经真实controller.command启动一个临时probe（仅在当前进程替换ENGINE指针，finally恢复，磁盘engine不变）。probe在入口确认CUDA已初始化，固定seed=2026，reset显存统计并分配1个float张量；不加载模型/数据/checkpoint、不训练、不调用sweep.run。保存commit、源码hash、参数、child.log、config/summary/compact；新输出目录拒绝覆盖。若记录链不一致则在启动CUDA前失败。
+
+新增`tests/incremental/test_history_weight_cuda_startup.py`共6项。检查修复版controller/原engine的固定hash、独立子进程的CUDA初始化顺序及CPU直接启动、seed/CLI传递、失败日志与ENGINE指针恢复、fix链及归档篡改拒绝。使用fake torch完成云端检查，6项本地通过；这不是V100验证。原有8项来源测试的服务器通过来自用户回传。新增真实CUDA probe为code_provided/not_run，需用户执行。RESEARCH_SPEC未修改。
+
+**本轮服务器命令接口**（在准确交付SHA、frec-gpu下；输出用全新`$CHECK_OUTPUT`）：
+
+```bash
+python -B tests/incremental/test_history_weight_cuda_startup.py
+python -u -B scripts/check_history_cuda_startup.py \
+  --audit-report results/incremental/Beauty/source_audit_20261016T105113Z_v4eZXM/report/report.json \
+  --output "$CHECK_OUTPUT" --device cuda:0 --seed 2026
+```
+
+完整安全fetch/switch命令以本轮交付回复为准。需回传6项测试末尾及新compact（异常时含child.log）。成功标准为metadata_consistent、startup passed、initialized_at_engine_entry=true、tensor_value=1、training_started=false。这只确认元数据/文件一致性和启动路径，不验证历史GPU逐bit重现。通过后结束本项迁移核对并进入负结果的机制分析/下一项最小实验设计；不自动重跑rho、选holdout或运行E3。若失败，按具体记录/hash或CUDA traceback定位，不重复训练。
+
+## 0.1 2026-10-16 首轮接管开发（历史记录）
 
 用户已授权采用持续工作分支`vibe-dev`开发并提交；本节覆盖旧交接轮的“只整理文档”限制，不更改研究协议。已实际读取三份附件，并clone开发仓库。GitHub与本地均核实`main=e1a4cf42f40a67fd750e80ae7c3d0e9549eb0188`；核实时无其他远端分支，现已从该SHA创建`vibe-dev`。本轮提交的准确SHA以Git提交记录及交付回复为准，不在文件中写入自引用SHA。
 
@@ -23,7 +48,7 @@
 
 **下一步判断**：先读原始plan、三seed preflight、12组新增训练摘要、修复记录和源码diff。若差异仅为有记录的启动bootstrap且其余绑定及终点一致，记录这一有限的一致性结论，并单独决定如何固化修复。若engine/绑定/plan不一致，定位具体字段和时间链；缺项只索取相关产物。不迁移旧checkpoint、不改写旧plan、不扩大rho扫描。最新负结论仍仅来自下文已回传U结果；本轮没有新增实验结论。
 
-## 0.1 迁移交接时的状态（历史记录）
+## 0.2 迁移交接时的状态（历史记录）
 
 更新日期：2026-10-16。仓库 <https://github.com/haowu1937/incre-update-sids>，本次迁移基准 `main@e1a4cf42f40a67fd750e80ae7c3d0e9549eb0188`。本次已通过 GitHub 读取 commit、目录树及关键源码；读取时 main 指向该 commit。
 
