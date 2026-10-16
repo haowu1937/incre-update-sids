@@ -1,6 +1,24 @@
 # 项目交接：History-aware SID Incremental Update
 
-## 0. 2026-10-16 服务器核对回传与CUDA修复接入
+## 0. 2026-10-16 迁移核对结束；接入Llama特征提交
+
+**新的用户执行证据**：`results/incremental/Beauty/cuda_startup_check_20261016T131826Z_PIdjP4`，按交付`vibe-dev@8ef11cfc60cedb99c58e8e5b81866a352013d261`执行。6项测试在服务器通过（0.120s）；归档元数据链`metadata_consistent`，fix记录SHA256=`08cd9f9138afe5e8053123e11659d5cc21d34dd72777690829821300d3ef3613`；plan只有controller source hash变化，engine未变。15组比较中14组History H更高。真实`cuda:0` probe passed，进入engine前CUDA已初始化，seed2026，单张量值1.0；torch2.6.0+cu118、CUDA runtime11.8、Tesla V100-SXM2-32GB。未训练、未加载checkpoint。用户重复贴出的两份相同JSON是同一run的打印，不记作两次独立验证。
+
+**关闭事项**：迁移来源/启动修复的一致性核对在所声明的文件/元数据与启动路径范围内完成；不再重复旧扫描或启动probe。原始权重/历史GPU逐bit执行和指标重算仍不在验证范围内。这是工程结论，没有新增推荐质量或History-aware收益结论。
+
+**用户最新代码**：找到并实际读取feature分支`feature/llama7b-temporal-embeddings`的提交`6d692529e38a6c17c2f2aaf558fb86828dec7f89`（父提交2fb3426），新增`prepare_incremental_llama.py`、`docs/LLAMA_EMBEDDINGS.md`、`tests/incremental/test_llama_content.py`。本轮将其合入持续分支`vibe-dev`，保留feature与8ef11cf两条提交历史，不写入main。原encoder文件及其source-bound依赖`genrec/temporal.py`、`genrec/temporal_content.py`与feature提交逐字相同；不改变可能存在的编码断点绑定。
+
+代码复用用户已有Beauty protocol/content/raw reviews及本地`/home/shared/huggingface/llama-7b`，不重切数据，不下载权重。按现有registry保持BaseTrain10924、UpdateTrain11707、Update部署11775项和原ID顺序；共享编码后按前缀导出，排除future-only物品。输出4096维float32；模型默认FP16、SDPA、长度1024，padding置零后除以固定长度1024，无额外归一化/投影。已实际读取作者notebook `<https://github.com/iskbaga/semantic-id-alignment/blob/main/notebooks/AmazonBeautyDownload.ipynb>`，blob确认为`20f09c2d081b8ddc7b7825d43ff3bf626e879521`，核实title/categories/description文本格式及固定长度pooling。FP16/SDPA及本地checkpoint身份/时间切分差异仍按LLAMA文档披露，不宣称逐bit复现作者结果。
+
+**新增最小验证**：独立`check_incremental_llama.py`，默认只推理2项、seed2026，沿用上述输入校验、local backend和pooling；输出到新的results目录，记录当前commit、source/model/input hashes、样本维度/范数/显存/耗时。仅生成`llama_content_smoke_v1`样本结果，不能作为`E0_fixed_content_embeddings`训练输入。拒绝覆盖或使用`--resume`；不会写入原全量编码的output或`.incomplete`。首次检查仍需hash全部模型分片并加载完整7B模型，不能把这段等待说成两条文本的推理耗时。全量源入口不变。
+
+本地检查：两份`test_llama*.py`共15项，14项合成检查通过；1项tiny真实后端测试因云端缺少torch/transformers而跳过。新增4项验证样本输出不冒充完整特征、拒绝覆盖、保留已有partial目录及错误日志保留；CLI help、diff检查通过。Llama7B/V100推理、全量编码是否完成尚无本会话用户证据，不能标completed；若用户已完成，先接收其原compact，不重复加载模型或编码。
+
+**研究边界**：Llama实现还改变了文本字段/格式、长度和pooling，不能称作仅替换encoder的严格消融。旧T5 checkpoint和结果仍是独立路线；不能将768维Base RQ-VAE直接接4096维特征，也不能复用其SID/TIGER/anchor绑定。是否用Llama重新开展完整Base/Update对照尚未作为研究决策确认，RESEARCH_SPEC不变。先前提出的训练日志只读分析仍停留在方案，未实现/未交付。
+
+**本轮下一步**：若还未有真实编码结果，按交付命令执行2项smoke（FP16、SDPA、1024、batch1，独立输出）；回传测试末尾和compact/traceback。若已有全量结果，则直接回传原compact及其输出目录。只有输入身份、维度、有限非零向量、显存和实际速度得到验证后再安排全量编码/新Base训练；新Base训练与公平对照协议须另行说明，不能据新embedding推断会解决历史损伤负结果。
+
+## 0.1 服务器核对回传与CUDA修复接入（历史记录）
 
 **用户实际回传**：2026-10-16，`source_audit_20261016T105113Z_v4eZXM`。8项合成测试在服务器通过（1.299s）；收集器`collected`、`training_started=False`。运行前branch=`main`、HEAD=`2fb3426615ec0033dd6b65734593075f7e8380e0`、工作区clean。相对迁移基准e1a4cf4，41个静态/绑定源码中2项不同：`fix_history_weight_cuda_startup.py`与`run_history_weight_sweep.py`。来源声明对原工作区mismatch=0，15组比较全部找到、14组History H更高，历史sweep completed、selected_rho=None、CUDA修复记录1份、issues=0。随后服务器已切换`vibe-dev@cbe6761b7441f3eadef6e92c7cf19e7808adace3`。
 
@@ -25,7 +43,7 @@ python -u -B scripts/check_history_cuda_startup.py \
 
 完整安全fetch/switch命令以本轮交付回复为准。需回传6项测试末尾及新compact（异常时含child.log）。成功标准为metadata_consistent、startup passed、initialized_at_engine_entry=true、tensor_value=1、training_started=false。这只确认元数据/文件一致性和启动路径，不验证历史GPU逐bit重现。通过后结束本项迁移核对并进入负结果的机制分析/下一项最小实验设计；不自动重跑rho、选holdout或运行E3。若失败，按具体记录/hash或CUDA traceback定位，不重复训练。
 
-## 0.1 2026-10-16 首轮接管开发（历史记录）
+## 0.2 2026-10-16 首轮接管开发（历史记录）
 
 用户已授权采用持续工作分支`vibe-dev`开发并提交；本节覆盖旧交接轮的“只整理文档”限制，不更改研究协议。已实际读取三份附件，并clone开发仓库。GitHub与本地均核实`main=e1a4cf42f40a67fd750e80ae7c3d0e9549eb0188`；核实时无其他远端分支，现已从该SHA创建`vibe-dev`。本轮提交的准确SHA以Git提交记录及交付回复为准，不在文件中写入自引用SHA。
 
@@ -48,7 +66,7 @@ python -u -B scripts/check_history_cuda_startup.py \
 
 **下一步判断**：先读原始plan、三seed preflight、12组新增训练摘要、修复记录和源码diff。若差异仅为有记录的启动bootstrap且其余绑定及终点一致，记录这一有限的一致性结论，并单独决定如何固化修复。若engine/绑定/plan不一致，定位具体字段和时间链；缺项只索取相关产物。不迁移旧checkpoint、不改写旧plan、不扩大rho扫描。最新负结论仍仅来自下文已回传U结果；本轮没有新增实验结论。
 
-## 0.2 迁移交接时的状态（历史记录）
+## 0.3 迁移交接时的状态（历史记录）
 
 更新日期：2026-10-16。仓库 <https://github.com/haowu1937/incre-update-sids>，本次迁移基准 `main@e1a4cf42f40a67fd750e80ae7c3d0e9549eb0188`。本次已通过 GitHub 读取 commit、目录树及关键源码；读取时 main 指向该 commit。
 

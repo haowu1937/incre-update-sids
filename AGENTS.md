@@ -4,7 +4,7 @@
 
 先阅读 [docs/HANDOFF.md](docs/HANDOFF.md) 的最新状态，再读 [docs/RESEARCH_SPEC.md](docs/RESEARCH_SPEC.md)。迁移基准为 `main@e1a4cf42f40a67fd750e80ae7c3d0e9549eb0188`；开始工作时核实实际HEAD、工作区差异及相关目录规则。
 
-最新rho扫描已经完成且未获稳定训练损伤收益。服务器来源核对已回传：15组结果、14组更差、零source claim mismatch；运行前main为`2fb3426615ec0033dd6b65734593075f7e8380e0`。已将该main的CUDA子进程启动修复接入`vibe-dev`，训练engine保持原字节。当前只需验证原始fix/plan记录链和最小CUDA启动，不重复扫描或继续加权重。原始证据包尚未直接回传，不能把compact等同独立审阅完整产物。2026-10-16用户已授权接管开发；先前“只整理交接文档”的轮次已结束。
+迁移来源与CUDA启动核对已结束：2026-10-16用户回传metadata_consistent和真实V100启动passed，见HANDOFF最新状态。旧rho扫描15组中14组训练H更差，保留负结果，不重复扫描或启动核对。用户新增Llama特征提交`6d692529e38a6c17c2f2aaf558fb86828dec7f89`现已接入`vibe-dev`；原编码及其两项依赖保持字节不变。当前下一项为少量Llama推理验证或接收已有完整编码结果；不默认改用Llama训练、不覆盖T5产物、不破坏原`.incomplete`续跑绑定。原始权重与历史GPU逐bit执行没有独立复核。2026-10-16用户已授权接管开发；先前“只整理交接文档”的轮次已结束。
 
 ## 分工与Git交付
 
