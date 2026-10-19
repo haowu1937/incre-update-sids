@@ -16,7 +16,7 @@
 | Plain anchor 与冻结 TIGER 排名 | completed，用户回传 | anchor_train、anchor_holdout、Base validation 的配对 NLL 和 Base 排名 |
 | Base/Plain 冻结 TIGER 的 Future ranking | completed，用户回传 | 相同 Update 部署目录；Plain 的 Recall@10 / NDCG@10 相对低 85.34% / 89.05% |
 | Base/Plain Update TIGER 微调后的 Future ranking | completed，用户回传 | 各训练 2000 步、均选 step 500；Plain 的 Recall@10 / NDCG@10 相对低 19.47% / 16.13% |
-| History-aware RQ-VAE + 同口径评估 | 已交付，待执行 | Base/Plain Future 已完成；History-aware 尚未收到执行结果 |
+| History-aware RQ-VAE + 同口径评估 | failed / 预算未完成，用户回传 | full SID 训练至少完成 400 步，随后 suffix 容量耗尽；最终 anchor、排名与 Future 未运行 |
 
 当前结论：
 
@@ -24,7 +24,7 @@
 2. 固定旧 target 和冻结旧 TIGER 后，Plain 的 anchor_holdout 平均序列 ΔNLL 为 +0.235389，用户聚类 bootstrap 95% 区间为 [0.207473, 0.264948]；正部损伤 H 为 0.331016。本轮观察到了历史输入重编码损伤。
 3. Base validation 的 Recall@10 从 1.936466% 降至 1.533943%（相对下降 20.79%），NDCG@10 从 0.01079385 降至 0.00779528（相对下降 27.78%）。这是冻结 TIGER、旧 target 地址下的兼容性排名结果。
 4. 保留旧 history suffix 后，anchor_holdout 平均 ΔNLL 仍为 +0.189471，H 为 0.283439，损伤仍存在。该条件是输入诊断，不是可部署的完整 SID 映射；不能将两个条件的差直接当作可加的 suffix 因果贡献。
-5. 本轮 History-aware 的收益尚未验证。1000 步是当前配对预算，不是已证明收敛或最优的上限。
+5. 本轮 History-aware 以 1000 步、λ=0.001 启动，至少完成 400 步后因新版本 suffix 容量耗尽中止，未形成完整 anchor/holdout 评估。该异常证明当时完整 SID 分配不可行，不足以证明码本完全坍缩；收益尚未验证。1000 步仍是配对预算，不是已证明收敛或最优的上限。
 6. 四组 Future 结果已回传：相同覆盖率 80.555149% 下，Plain 冻结 TIGER 的 Recall@10 为 0.099447%，低于 Base 的 0.678581%；配对微调后为 0.979847%，仍低于 Base 的 1.216766%。微调缩小了差距，本轮尚未观察到 Plain 码本更新带来的 Future 排名收益。详见第 5 节，不与固定旧 target 的历史诊断混用。
 
 ## 2. 固定设置与评价口径
@@ -196,9 +196,11 @@ Anchor 两组 history_changed_fraction 均为 0.99462890625；Base validation �
 - 6 项模拟启动检查通过：新建、显式 resume、检查失败停止、运行失败后保留并续跑、dirty workspace、缺失输入。模拟不加载真实 Torch 模型。
 - 新增 4 项 real tiny TIGER 合成测试：四组真实模型训练/解码、带 dropout 的中断精确恢复且 Future 延后、resume 绑定和结果校验、Future 中断后复用已锁定模型与已完成预测。上游 E1/RQ context 使用合成 stub，TIGER/Trainer/指标计算使用真实实现。云端缺少 PyTorch，尚未执行这 4 项；服务器启动脚本先运行它们，通过后才开始 Beauty 流程。
 - 新输出拒绝覆盖；显式 resume 绑定相同源码、数据、配置和预算，可复用已完成的训练/评估，并为每次尝试保留独立日志。原 Base/Plain RQ-VAE、TIGER checkpoint 保留并复核 hash。
-- 本次服务器流程已越过启动前合成检查并完成四组 Beauty 评估；尚未单独回传 checks.log，不把云端未运行的 real tiny TIGER 检查冒称为云端通过。真实结果以第 5.3 节的服务器 compact 为证据，History-aware 尚无执行结果。
+- 本次服务器流程已越过启动前合成检查并完成四组 Beauty 评估；尚未单独回传 checks.log，不把云端未运行的 real tiny TIGER 检查冒称为云端通过。真实 Future 结果以第 5.3 节的服务器 compact 为证据；History-aware 的中止另记于第 6.2 节。
 
-## 6. 已准备的配对 History-aware（Future 已完成，待执行）
+## 6. 配对 History-aware（full SID 训练中止，最终 anchor 评估未运行）
+
+### 6.1 预设实验及启动流程
 
 本轮明确使用已有标量历史惩罚入口 `train_historical_incremental_rqvae.py`，目标为 `RQ loss + 0.001 × H`。固定 λ=0.001、temperature=0.1、anchor minibatch=32，训练 history 条件显式指定 `new_full_sid`。这是本轮预设配置，尚未验证是最优权重；不根据已查看的 holdout 选择 λ。
 
@@ -218,7 +220,31 @@ Anchor 两组 history_changed_fraction 均为 0.99462890625；Base validation �
 
 小于 1000 步的 partial run 可保存和恢复，但不运行不同预算的最终配对排名。完整 SID 导出或配对核对失败时停止后续评估并保留日志，不扩充 suffix 容量或绕过校验。
 
-本轮云端检查：Bash 语法、3 个嵌入 Python 块语法及 8 项模拟启动场景通过，覆盖完整流程、partial/resume、模型检查失败、训练失败、采样器不一致、评估失败、预算/权重/Plain 排名预检和 dirty workspace/产物保留。模拟使用 fake torch 与真实 CLI parser；不等于真实 RQ-VAE/TIGER 或 GPU 检查。云端缺少 PyTorch，真实模型合成检查由上述服务器启动流程执行；本轮尚未有 History-aware 的服务器结果。
+交付阶段的云端检查：Bash 语法、3 个嵌入 Python 块语法及 8 项模拟启动场景通过，覆盖完整流程、partial/resume、模型检查失败、训练失败、采样器不一致、评估失败、预算/权重/Plain 排名预检和 dirty workspace/产物保留。模拟使用 fake torch 与真实 CLI parser；不等于真实 RQ-VAE/TIGER 或 GPU 检查。云端缺少 PyTorch，真实模型合成检查由服务器启动流程执行。本轮服务器训练中止见下节，不将交付检查当作实验完成。
+
+### 6.2 实际执行：suffix 容量耗尽
+
+2026-10-19 用户回传训练日志与 traceback：run=`llama_history_aware_20261019T155320Z_Yk6Nlc`，11707 个内容物品、4096 条 training anchors、λ=0.001、temperature=0.1、anchor batch=32、condition=`new_full_sid`，目标 Update 步数 1000。训练已越过启动检查与旧 anchor NLL 缓存；最后回传的周期日志为 step 400，随后在 `HistoryPenalty.input_embeds` → `versioned_suffixes` 抛出 `ValueError: New-version collision suffix capacity exhausted`。这次明确有训练异常，不能仅归为 SSH 断开或终端输出丢失。
+
+以下为用户已贴出的训练 minibatch 里程碑。RQ、重构和量化损失来自当步内容 batch；H 来自当步 32 条 anchor。分配容量统计在该步参数更新前计算，不是同一步更新后的完整目录评估。
+
+| 已完成步数 | 当步重构 MSE | 当步量化损失 | 当步 H | 加权历史项 λH | 最大当前碰撞桶 | 最大所需 suffix 槽位 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 0.003124332521 | 0.009211765602 | 0.000000000000 | 0.000000000000 | 55 | 55 |
+| 100 | 0.003842768725 | 0.012881316245 | 0.119086772203 | 0.000119086772 | 52 | 60 |
+| 225 | 0.004056828097 | 0.064984902740 | 0.670326828957 | 0.000670326829 | 108 | 108 |
+| 350 | 0.003523970023 | 0.032825231552 | 0.401989817619 | 0.000401989818 | 131 | 131 |
+| 400 | 0.003486433532 | 0.029009586200 | 0.280607461929 | 0.000280607462 | 102 | 102 |
+
+Step 400 的 processed_examples=101848，anchor_sampler_epoch=4，anchor_changed_history_fraction=1.0；合成梯度范数为 encoder=0.033068541437、decoder=0.003261050209、codebooks=0.007837447338。这些是总目标的梯度范数，没有分别记录 RQ/历史梯度，不能据其数值或 λH 占比认定具体梯度机制。
+
+分配规则是对每个 semantic prefix 保留 Base 已占用地址，再为当前改变 prefix 的旧物品和新物品追加 suffix。因此所需槽位为该 prefix 的旧保留槽宽加当前迁入/新增数，可能大于当前物品桶大小。每次使用固定的 Base registry 重建，不是跨 optimizer steps 永久累积已用槽位。异常只能确认失败时至少一个 prefix 需要超过固定 256 个槽位；失败快照的实际桶大小、unique codes、逐层码本利用率未保存到所贴日志，不能将其记作“完全坍缩”。
+
+`metrics.jsonl` 每个成功 optimizer step 均写入并 flush，终端每 25 步打印；精确的最后成功步和失败尝试步仍待服务器回传该文件末行。代码每 50 步保存 `last.pth`，按现有周期日志推断最近定期保存点应为 step 400；尚未读取该 checkpoint 核实，不将推断当作恢复状态证据。异常发生在当次 backward/optimizer.step 之前；本次路径直接退出，没有生成最终训练 summary、失败快照或成功回滚记录。
+
+本次 1000 步训练、最终完整 SID 导出、最终配对检查、完整 anchor_train/anchor_holdout、Base validation 排名及 History-aware Future 均未完成。不能将当步 32-query H 与 Plain 的完整 4096-query holdout H 比较，也不能用未完成预算的轨迹判断相同步数收益。训练可行性和容量失败需作为负结果保留；目前既没有 History-aware 胜于 Plain 的证据，也没有完整配对评估证明其更差。
+
+本轮仅补充失败记录，不改变 source-bound 训练实现、suffix 容量或已有映射，也不自动重跑、改 λ 或换成 old-suffix 条件。接下来先只读核对 `metrics.jsonl`、`last.pth` 和运行元数据；容量或优化策略的修复应作为单独说明的后续变体。
 
 ## 7. 产物与身份索引
 
@@ -242,6 +268,9 @@ Anchor 两组 history_changed_fraction 均为 0.99462890625；Base validation �
 | 四组 Future 指标与逐 query 明细 | `results/incremental/Beauty/llama_future_20261019T142547Z_OQS0aL/evaluation/{base,plain}_{frozen,finetuned}.json`；对应 `*_queries.jsonl` 与 `*.sha256.json` |
 | Future 启动检查和运行日志 | `results/incremental/Beauty/llama_future_20261019T142547Z_OQS0aL/attempt_20261019T142547Z_IpXMsA/{checks,evaluate}.log` |
 | Future 报告片段 | `results/incremental/Beauty/llama_future_20261019T142547Z_OQS0aL/evaluation/experiment_report_fragment.md` |
+| History-aware 中止 run | `results/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc`；`train.log`、`paths.txt`、`commit.txt` |
+| History-aware partial checkpoint / 逐步日志 | `ckpt/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc_1000/last.pth`、同目录 `metrics.jsonl`；实际保存步数待核实 |
+| History-aware 最终评估（未运行） | `results/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc/evaluation` 为预设输出路径，不视作已生成有效结果 |
 
 已回传 SHA256：
 
@@ -269,4 +298,4 @@ Anchor 两组 history_changed_fraction 均为 0.99462890625；Base validation �
 
 每次收到服务器实验结果后更新本文件并提交 `vibe-dev`：追加设置、状态、关键指标、结论、失败、产物路径、checkpoint/source 身份、耗时和证据范围。保留旧结果及负结果；缺失字段写未知或 not_run，不填零，不把预期结果标 completed。
 
-固定模型的兼容性评估、推荐模型微调后的验证、Future test 分开记录。第 5 节的两种 Future 流程及四组实际结果已回传并记录；History-aware 仍待服务器执行结果。Future 仅用于最终评估，不用于权重、训练长度或 checkpoint 选择。
+固定模型的兼容性评估、推荐模型微调后的验证、Future test 分开记录。第 5 节的两种 Future 流程及四组实际结果已回传并记录；History-aware full SID 训练已中止，最终 anchor、排名和 Future 结果仍缺失。Future 仅用于最终评估，不用于权重、训练长度或 checkpoint 选择。
