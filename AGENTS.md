@@ -41,4 +41,4 @@
 
 命令从`/home/hao/frec/graph-informed-sids-web`执行，使用已验证的`frec-gpu`；保持`set -o pipefail`，耗时实验写文件日志并提供compact摘要。历史手工文件均放项目根目录，不用Downloads路径。
 
-更新HANDOFF的最新状态与证据索引；研究规格发生已确认变化时同步RESEARCH_SPEC。未获得用户回传前保持code_provided/not_run，不把预期当结果。只有用户请求新实验时才准备相应运行步骤；“只分析”或“只文档”期间不启动训练。
+用户最新约定（2026-10-19）：每次收到实验执行结果后，更新根目录 `experiment_report.md` 并提交到 `vibe-dev`，记录实验设置、最新指标、关键结论、产物路径及证据边界；保留此前结果，区分冻结模型的兼容性排名与推荐模型微调/Future 指标。按用户要求不更新 HANDOFF 文件。研究规格发生已确认变化时再同步 RESEARCH_SPEC。未获得用户回传前保持 code_provided/not_run，不把预期当结果。只有用户请求新实验时才准备相应运行步骤；“只分析”或“只文档”期间不启动训练。
