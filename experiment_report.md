@@ -14,8 +14,9 @@
 | Base TIGER | completed，用户回传 | 累计 5000 步，选中 step 4500，完整 Base validation 已评估 |
 | Plain RQ-VAE Update | completed，用户回传 | 累计 1000 Update 步；父 checkpoint 保留、重载检查通过 |
 | Plain anchor 与冻结 TIGER 排名 | completed，用户回传 | anchor_train、anchor_holdout、Base validation 的配对 NLL 和 Base 排名 |
-| History-aware RQ-VAE + 同口径评估 | code_provided / not_run | 本轮交付训练、配对核对和评估启动脚本，尚无本轮服务器结果 |
-| Update TIGER 微调与 Future ranking | not_run | 当前报告没有微调后或 Future 指标 |
+| Base/Plain 冻结 TIGER 的 Future ranking | code_provided / 未获服务器执行结果 | 当前优先任务，新增独立评估入口；实际指标尚未回传 |
+| Base/Plain Update TIGER 微调后的 Future ranking | code_provided / 未获服务器执行结果 | 同一 Base TIGER 配对微调，仅用 Update validation 选 checkpoint |
+| History-aware RQ-VAE + 同口径评估 | 已交付，暂缓 | 尚未收到执行结果；用户要求先完成上述两种 Future 评估 |
 
 当前结论：
 
@@ -24,6 +25,7 @@
 3. Base validation 的 Recall@10 从 1.936466% 降至 1.533943%（相对下降 20.79%），NDCG@10 从 0.01079385 降至 0.00779528（相对下降 27.78%）。这是冻结 TIGER、旧 target 地址下的兼容性排名结果。
 4. 保留旧 history suffix 后，anchor_holdout 平均 ΔNLL 仍为 +0.189471，H 为 0.283439，损伤仍存在。该条件是输入诊断，不是可部署的完整 SID 映射；不能将两个条件的差直接当作可加的 suffix 因果贡献。
 5. 本轮 History-aware 的收益尚未验证。1000 步是当前配对预算，不是已证明收敛或最优的上限。
+6. 用户已明确要求补齐冻结 TIGER 和 Update 微调后两种 Future 结果。以下 Future 章节区分待执行设置与真实结果；当前没有 Future 数字，不以 Base validation 替代。
 
 ## 2. 固定设置与评价口径
 
@@ -108,7 +110,54 @@ Anchor 两组 history_changed_fraction 均为 0.99462890625；Base validation �
 
 本次完整 Plain E1（含两条件损失和 old/new 排名）运行 578.002 秒，CUDA peak allocated=1124896768 bytes、reserved=2097152000 bytes。
 
-## 5. 下一项：配对 History-aware，code_provided / not_run
+## 5. 当前优先：Base/Plain 的两种 Future evaluation
+
+用户于 2026-10-19 确认：冻结 TIGER 直接测试与在 Update 上微调后测试均执行并记录，完成后再进行 History-aware。入口为 `evaluate_incremental_future.py`，启动脚本为 `scripts/run_llama_future.sh`。当前状态为 code_provided，尚无服务器实际 Future 评估结果。
+
+### 5.1 对照与时间边界
+
+- 两个 tokenizer arm：`base` 保持 Base RQ-VAE 权重冻结，只为已观察的 Update 新物品追加 SID；`plain` 使用已完成的 1000 步 Plain RQ-VAE。RQ-VAE 和 Llama 均不再训练。
+- Base control 会扩展到相同的 Update 部署目录，不能把这行结果称作原始 11179-item Base 部署快照。这样可在相同候选物品和覆盖率下比较 tokenizer 更新的影响。
+- Update train 和 Update validation 使用 11707-item 训练目录。仅 Future 使用 11775-item 部署目录，包含 Update validation 首见的 68 项；它们不参与 TIGER 参数训练或 validation ranking。
+- Base 扩展保留已有完整 SID；Plain 扩展复用版本化分配器，预留旧 Base 地址，再为新增物品分配 suffix。不会复用已经离开的旧地址，且不会重编号 11707 项已测映射。
+- 此处 history 和 target 同时使用本组当前完整 SID，候选目录也使用当前映射。这是端到端 Future 排名，不是第 4 节固定旧 target 的 history-only 诊断。
+- Future 保持协议中的 prequential 历史：可使用严格早于 target 的已发生事件，但 future-only 物品保持目录外，其历史位置为四个 PAD、attention=0。模型、映射、目录不会随 Future 事件更新。
+- 按现有协议，Future 有 34189 条 queries，目录外 target 为 6648；代码在运行时重新核对 manifest/availability。所有 target 均保留在完整分母中，可服务指标另报。
+
+### 5.2 TIGER 微调和 checkpoint 选择
+
+- 两组均从已选中的同一个 Base TIGER（Base step 4500）开始；分别使用各自 RQ 映射同步编码 Update history 与 target。新建 AdamW，不继承 Base TIGER optimizer 动量。
+- 当前预设每组最多 2000 个 TIGER Update 步，batch_size=128、lr=0.003、weight_decay=0.05、warmup=200、constant_with_warmup、max_grad_norm=1、seed=2026。该预算沿用原 E3 计划，不根据 Future 调整。
+- 在步数 [0,100,250,500,1000,2000] 上评估固定 512-query Update validation probe；按 full-denominator NDCG@10 选 checkpoint，平局保留最早一步。Step 0 也可被选中，表示微调没有在该选择指标上改善。
+- 两组选中模型另行评估完整 Update validation。对实际 checkpoint 的 optimizer 参数组、sampler order/cursor/generator、处理样本数和训练预算进行配对核对。
+- 只有两组均已选定并写入 `selection_locked.json`，才解析 Future 样本并运行 Future 推理。Future 不用于选择 lr、预算、tokenizer、权重或 checkpoint。
+- 冻结条件直接加载 Base TIGER；微调条件加载各组 Update validation 选中的 TIGER。四种条件统一 beam=20，Recall/NDCG@5/@10/@20，seen_item_filter=false。
+
+### 5.3 Future 结果表（等待服务器回传）
+
+| Tokenizer | TIGER 状态 | 选中 Update 步数 | Future Recall@10 | Future Recall@20 | Future NDCG@10 | Future NDCG@20 | 状态 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | --- |
+| Base RQ 冻结并扩展目录 | 冻结 Base TIGER | 0 | — | — | — | — | not_run / 未回传 |
+| Plain RQ 更新 1000 步 | 冻结 Base TIGER | 0 | — | — | — | — | not_run / 未回传 |
+| Base RQ 冻结并扩展目录 | Update 微调后选中 | 待定 | — | — | — | — | not_run / 未回传 |
+| Plain RQ 更新 1000 步 | Update 微调后选中 | 待定 | — | — | — | — | not_run / 未回传 |
+
+结果将同时记录完整分母、可服务分母、覆盖率、old/new target 组别与固定低频切片。组别按 Base train / Base validation 首见 / Update train 首见 / Update validation 首见 / Future-only 区分；低频切片使用 Update train 可形成因果样本的 target 次数，阈值为 5，不使用 Future 频次。保存逐 query 指标和 NLL，后续切片无需重新生成预测。
+
+Future 两组 target 地址随映射变化，主比较为同一 raw item 任务的 Recall/NDCG；不把跨映射 NLL 大小直接解释为推荐质量。第 4 节固定旧 target 的 anchor NLL 仍保留其单独的历史损伤含义。
+
+运行成功后生成 `experiment_report_fragment.md`，包含服务器实际四组结果表。收到 compact/fragment 后，将实际数字和关键结论更新并提交本报告；当前不填零或推测值。
+
+### 5.4 工程检查与证据范围
+
+- 云端新增 8 项协议检查通过：时序/同时刻排除、样本去重、registry 前缀、可用性 mask、Future-only 不入目录、旧 suffix 槽位预留、完整/可服务分母和切片。
+- 已有 temporal round1 的 19 项检查通过；Bash 和新增 Python 语法检查通过。
+- 6 项模拟启动检查通过：新建、显式 resume、检查失败停止、运行失败后保留并续跑、dirty workspace、缺失输入。模拟不加载真实 Torch 模型。
+- 新增 4 项 real tiny TIGER 合成测试：四组真实模型训练/解码、带 dropout 的中断精确恢复且 Future 延后、resume 绑定和结果校验、Future 中断后复用已锁定模型与已完成预测。上游 E1/RQ context 使用合成 stub，TIGER/Trainer/指标计算使用真实实现。云端缺少 PyTorch，尚未执行这 4 项；服务器启动脚本先运行它们，通过后才开始 Beauty 流程。
+- 新输出拒绝覆盖；显式 resume 绑定相同源码、数据、配置和预算，可复用已完成的训练/评估，并为每次尝试保留独立日志。原 Base/Plain RQ-VAE、TIGER checkpoint 保留并复核 hash。
+- 尚无真实 Future 指标，不能据实现或合成测试判断 Plain 是否有 Future 收益，也不能在此阶段比较 History-aware。
+
+## 6. 已准备的配对 History-aware（暂缓，先完成 Future）
 
 本轮明确使用已有标量历史惩罚入口 `train_historical_incremental_rqvae.py`，目标为 `RQ loss + 0.001 × H`。固定 λ=0.001、temperature=0.1、anchor minibatch=32，训练 history 条件显式指定 `new_full_sid`。这是本轮预设配置，尚未验证是最优权重；不根据已查看的 holdout 选择 λ。
 
@@ -128,7 +177,7 @@ Anchor 两组 history_changed_fraction 均为 0.99462890625；Base validation �
 
 本轮云端检查：Bash 语法、3 个嵌入 Python 块语法及 8 项模拟启动场景通过，覆盖完整流程、partial/resume、模型检查失败、训练失败、采样器不一致、评估失败、预算/权重/Plain 排名预检和 dirty workspace/产物保留。模拟使用 fake torch 与真实 CLI parser；不等于真实 RQ-VAE/TIGER 或 GPU 检查。云端缺少 PyTorch，真实模型合成检查由上述服务器启动流程执行；本轮尚未有 History-aware 的服务器结果。
 
-## 6. 产物与身份索引
+## 7. 产物与身份索引
 
 以下路径相对服务器项目根目录；云端未读取这些服务器文件。
 
@@ -159,10 +208,12 @@ Anchor 两组 history_changed_fraction 均为 0.99462890625；Base validation �
 - Base TIGER 启动：`ad57e414e5ca52a3412275e07d7067509cfc4154`。
 - Plain Update 启动：`039d09cc67f815bb4ee82f4fc25d3546982780f4`。
 - Plain E1 启动：`ce6214090ea635835fed4bee89dcb645a8570a06`。
+- 首次持续实验报告与 History-aware 启动：`271e7b9071106fdfd52666c2caa0199d8f6dab18`。
+- 两种 Future 评估实现：以本文件所在 Git 历史中的 Future 交付及回复记录为准。
 - 本轮 History-aware 启动和报告提交：以本文件所在 Git commit 及交付回复为准，避免自引用 SHA。
 
-## 7. 持续更新规则
+## 8. 持续更新规则
 
 每次收到服务器实验结果后更新本文件并提交 `vibe-dev`：追加设置、状态、关键指标、结论、失败、产物路径、checkpoint/source 身份、耗时和证据范围。保留旧结果及负结果；缺失字段写未知或 not_run，不填零，不把预期结果标 completed。
 
-固定模型的兼容性评估、推荐模型微调后的验证、Future test 分开记录。后续两组若进行 Update TIGER 微调，应从同一 Base TIGER、使用各自新映射同步编码 history/target，并使用相同训练预算与 Update validation 选择规则；Future 仅用于最终评估，不用于权重、训练长度或 checkpoint 选择。本轮没有执行该阶段。
+固定模型的兼容性评估、推荐模型微调后的验证、Future test 分开记录。用户已要求执行第 5 节的两种 Future 流程；目前代码已交付，实际训练/评估结果仍待服务器回传。Future 仅用于最终评估，不用于权重、训练长度或 checkpoint 选择。
