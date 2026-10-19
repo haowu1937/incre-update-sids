@@ -1,5 +1,9 @@
 # 项目协作规则
 
+## 当前优先任务（2026-10-19，用户最新指令）
+
+先补齐 Llama Base/Plain 的 Future evaluation，History-aware 暂缓。用户确认冻结 TIGER 直接测试和 Update 微调后测试两种都评估并记录。当前状态以根目录 `experiment_report.md` 为准；下文早期 Llama pilot 的 not_run 描述为历史状态。Base RQ-VAE 保持冻结并为已观察 Update 物品追加 SID，Plain 使用已完成的 1000 步 checkpoint；两组采用相同 Update 部署目录，history/target 使用各组自己的完整 SID。TIGER 从同一 Base checkpoint 配对微调，仅用 Update validation 选择；两组选定 checkpoint 后才能运行 Future 推理。真实 Future 指标须等待服务器回传，不将本地协议检查或 code_provided 当作完成结果。
+
 ## 先读与当前任务
 
 先阅读 [docs/HANDOFF.md](docs/HANDOFF.md) 的最新状态，再读 [docs/RESEARCH_SPEC.md](docs/RESEARCH_SPEC.md)。迁移基准为 `main@e1a4cf42f40a67fd750e80ae7c3d0e9549eb0188`；开始工作时核实实际HEAD、工作区差异及相关目录规则。
