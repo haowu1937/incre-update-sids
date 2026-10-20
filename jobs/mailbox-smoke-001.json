@@ -6,14 +6,22 @@
   "request_sha256": "cd8ac99b7791e4e76afeca0c194112c201d5afb72ab7fce922620da6783443c5",
   "code_sha": "66d8fb49563fb39d2233a888a23496e8b9db303f",
   "runner_code_sha": "66d8fb49563fb39d2233a888a23496e8b9db303f",
-  "status": "starting",
+  "status": "running",
   "started_at": "2026-10-20T10:57:36.150032+00:00",
-  "updated_at": "2026-10-20T10:57:36.152166+00:00",
+  "updated_at": "2026-10-20T10:57:49.176791+00:00",
   "exit_code": null,
-  "pid": null,
+  "pid": 941709,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/mailbox-smoke-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/mailbox-smoke-001.log",
   "log_tail": "logs/mailbox-smoke-001.tail.txt",
   "artifacts": [],
-  "training_started": false
+  "training_started": false,
+  "actual_code_sha": "66d8fb49563fb39d2233a888a23496e8b9db303f",
+  "argv": [
+    "/home/hao/miniconda3/envs/frec-gpu/bin/python",
+    "-u",
+    "-B",
+    "scripts/lab_buffer/smoke.py"
+  ],
+  "elapsed_seconds": 0.053
 }
