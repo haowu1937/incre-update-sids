@@ -20,15 +20,15 @@ This is the main table previously located in Section 5.3. Maintain it here as co
 
 ### Latest Base validation compatibility ranking
 
-Partial evaluation output returned for retuned run `llama_history_retuned_20261020T123132Z_Edpqdn`. Frozen Base TIGER, fixed old targets and Base train candidate addresses; full denominator=9192, with 8689 servable queries. These are compatibility metrics, **not Future results**.
+Completed paired run `llama_history_retuned_20261020T123132Z_Edpqdn`, confirmed by user-returned key fields: 1000 steps per arm and passed pair checks. Frozen Base TIGER, fixed old targets and Base train candidate addresses; full denominator=9192, with 8689 servable queries. These are compatibility metrics, **not Future results**.
 
 | Condition | Recall@5 | Recall@10 | NDCG@5 | NDCG@10 |
 | --- | ---: | ---: | ---: | ---: |
 | Original Base reference | 1.294604% | 1.936466% | 0.008709150212 | 0.010793847025 |
-| Retuned Plain, derived from reported differences | 1.196693% | 1.642733% | 0.007767552735 | 0.009225761662 |
+| Retuned Plain | 1.196693% | 1.642733% | 0.007767552735 | 0.009225761662 |
 | Retuned History-aware | 1.196693% | 1.718886% | 0.007927259322 | 0.009605876138 |
 
-The Plain values are calculated as History-aware minus the reported `historical_minus_plain_full_denominator`; its full entry has not yet been returned. History-aware gains +0.076153 percentage points in Recall@10 (+4.64% relative; 151 → 158 hits) and +0.000380114476 in NDCG@10 (+4.12% relative). Recall@5 is unchanged. Both arms remain below the original Base reference. Completed budgets, final anchor damage, collision statistics and pair checks await the full compact; see Section 6.5. No ranking confidence intervals or statistical-significance claim are available.
+The returned Plain ranking entry now confirms the values previously derived from differences. History-aware gains +0.076153 percentage points in Recall@10 (+4.64% relative; 151 → 158 hits) and +0.000380114476 in NDCG@10 (+4.12% relative). Recall@5 is unchanged; both arms remain below the original Base reference. Final largest collision buckets are 30 / 32 for Plain / History-aware. However, History-aware worsens anchor_train H by 14.51% and anchor_holdout H by 10.57%; both paired H-difference 95% intervals are entirely positive. The modest ranking gain does not establish that the historical-damage objective succeeded. See Section 6.6. No ranking confidence intervals or statistical-significance claim are available.
 
 This report records results returned from Hao's GPU server. The cloud workspace has no Beauty data or model checkpoints. Training and evaluation numbers come from returned compact reports and have not been independently recomputed in the cloud. Code delivery, local checks, and server execution are recorded separately. Earlier sentence-T5 results remain in the existing reports; they are not combined with this Llama pipeline as a controlled encoder ablation.
 
@@ -46,7 +46,7 @@ This report records results returned from Hao's GPU server. The cloud workspace 
 | Base/Plain Future ranking after Update TIGER fine-tuning | Completed; server result returned | 2000 training steps per arm; step 500 selected for both; Plain Recall@10 / NDCG@10 lower by 19.47% / 16.13% |
 | History-aware RQ-VAE and matched evaluation | Failed before completing the budget; server result returned | 418 steps completed; suffix allocation failed on attempt 419; disk checkpoint at step 400; final anchor, ranking and Future evaluation not run |
 | Bounded replay of History-aware capacity failure | Completed / overflow_reproduced; server result returned | Logged observables matched for steps 401–418; bucket [13,26,8] contained 266 items at attempt 419, exceeding capacity 256; no old slots reserved in that bucket |
-| Retuned paired Plain / History-aware experiment | Partial evaluation output returned; complete compact pending | Retuned History-aware Base validation Recall@10 / NDCG@10 exceed retuned Plain by 4.64% / 4.12% relative. Full training, anchor and collision evidence is pending; see Sections 6.4–6.5. |
+| Retuned paired Plain / History-aware experiment | Completed; extracted server results returned | Both completed 1000 steps; pair checks passed; largest collision buckets 30 / 32. History-aware holdout H is 10.57% higher with a positive paired interval, despite Recall@10 / NDCG@10 gains of 4.64% / 4.12%. Future not_run; see Section 6.6. |
 
 Current conclusions:
 
@@ -56,7 +56,7 @@ Current conclusions:
 4. Preserving the old history suffix still gave anchor_holdout mean ΔNLL=+0.189471 and H=0.283439. This is an input diagnostic, not a deployable full-SID mapping. The difference between conditions is not an additive causal estimate of suffix damage.
 5. The first History-aware run targeted 1000 steps with λ=0.001, completed 418 steps and stopped during allocation on attempt 419. Only step 400 was saved to disk; final full anchor/holdout evaluation was not run. Bounded replay reproduced bucket [13,26,8] containing 266 items against suffix capacity 256, with zero reserved old-slot width. The current bucket itself exceeded capacity; old-slot reservation was not the cause in this bucket. There were still 5981 distinct three-level codes, so this was not complete collapse. Section 6.3 gives the evidence and limits. Benefits remain unverified; 1000 steps is a paired budget, not an established convergence point or optimal limit.
 6. The four Future conditions share coverage of 80.555149%. With frozen TIGER, Plain Recall@10 was 0.099447% versus Base 0.678581%; after matched fine-tuning it was 0.979847% versus Base 1.216766%. Fine-tuning narrowed the gap, but this run did not show a Future ranking benefit from Plain codebook updating. These end-to-end results are distinct from the fixed-old-target diagnostic in Section 4.
-7. The retuned recipe reduces update size, smooths the historical STE and increases anchor batch size. A Plain arm with the same content settings is rerun so that stability from a lower learning rate is not attributed to the historical penalty. Parameters were set from training-failure evidence, not holdout/Future results. A returned log tail now shows Base validation ranking gains over the retuned Plain control; full training, anchor and collision evidence remains pending. This does not establish overall compatibility or Future benefits; see Section 6.5.
+7. The retuned recipe reduces update size, smooths the historical STE and increases anchor batch size. A Plain arm with the same content settings is rerun so that stability from a lower learning rate is not attributed to the historical penalty. Parameters were set from training-failure evidence, not holdout/Future results. Both retuned arms now completed 1000 steps with passed pair checks and no reported suffix failure. Final largest buckets are 30 / 32, but History-aware increases H on both anchor cohorts, with paired user-cluster intervals above zero. Reconstruction is effectively unchanged versus retuned Plain. Its modest Base validation ranking gains do not demonstrate success on the damage objective or Future benefits; see Section 6.6.
 
 ## 2. Fixed settings and evaluation definitions
 
@@ -303,7 +303,7 @@ Cloud review covered the compact, source semantics and counts. Server weights, a
 
 This stage completed failure diagnosis and report updating only. It changed no capacity, offsets, allocator, λ, optimizer or training procedure, and did not fix the failure. A subsequent fix should address post-update capacity feasibility and preservation of failed states. Rollback, smaller-step retry or other constraints must be labeled as a new optimization variant with costs recorded, not as completion of the original paired 1000-step experiment. No new full-anchor/holdout, Base validation or History-aware Future results were produced by this diagnostic.
 
-### 6.4 Retuned paired experiment: delivered, launch submitted, results pending
+### 6.4 Retuned paired experiment: preset and implementation
 
 The requested response to unhealthy collisions is a retuned paired run. Direct evidence is the step 400→418 increase in the largest full-code bucket from 118 to 266, with unique codes falling from 7366 to 5981. Even the final slight increase in unique codes did not prevent overflow. Tail concentration made full-SID allocation infeasible under the fixed capacity; per-level usage does not rule out this problem.
 
@@ -333,10 +333,12 @@ Fresh outputs use `results/incremental/Beauty/llama_history_retuned_<timestamp>_
 
 The recipe adds historical computation, gradient probes, full-catalog checks and state snapshots. Equal steps do not mean equal compute. It records training-loop time for each arm, total runtime and overall peak CUDA memory, without claiming equal total compute. Four cloud protocol checks and Python/Bash syntax passed. Two real-model integration checks were provided but not run in the cloud because PyTorch was unavailable: full pairing, fixed labels, ranking and exact interruption recovery including optimizer/two samplers/RNG; and a synthetic audit failure testing post-update rollback, rejected-candidate isolation and unchanged original inputs. The latter tests protection logic, not a new observed collapse. The server launcher requires the original real-model checks and these two new checks before training.
 
-Latest execution evidence: Hao reported checking out delivery `c61bc13f46374790ac6e95f4f225d11e114ecd2c` and submitting a background launch with PID=1104312 and log `results/incremental/Beauty/history_retuned_launch_ZfPUB4.log`. This established launch submission only. A later log tail now provides partial evaluation results, recorded in Section 6.5. Full training/evaluation completion remains unconfirmed pending the complete compact; History-aware Future remains not_run. HANDOFF was not updated.
+Latest execution evidence: Hao reported checking out delivery `c61bc13f46374790ac6e95f4f225d11e114ecd2c` and submitting a background launch with PID=1104312 and log `results/incremental/Beauty/history_retuned_launch_ZfPUB4.log`. This established launch submission only. A later log tail now provides partial evaluation results, recorded in Section 6.5. Completion was unconfirmed at that point. The later extracted results confirm completion in Section 6.6; History-aware Future remains not_run. HANDOFF was not updated.
 
 
 ### 6.5 Retuned result excerpt: preliminary compatibility ranking
+
+This is the earlier partial-evidence record for the same run, not a separate experiment. Its pending items are superseded by the completed extracted results in Section 6.6.
 
 On 2026-10-20, Hao returned the end of `results/incremental/Beauty/llama_history_retuned_20261020T123132Z_Edpqdn/attempt_20261020T123132Z_RwmG3i/train.log`. The final ranking entry and its `historical_minus_plain_full_denominator` values match the History-aware entry position in the delivered driver's output. Only this tail is available; the complete compact, training summaries, pair_checks.json and per-query records have not been read. The full Base validation ranking table is maintained [above](#latest-base-validation-compatibility-ranking), separately from Future results.
 
@@ -354,6 +356,86 @@ Recall@10 corresponds to 151 retuned Plain hits and 158 History-aware hits out o
 The excerpt reports ranking_catalog=base_train, invalid_predictions=0, seen_item_filter=false, decoding=catalog_prefix_beam_search and num_beams=20. It also reports stage=paired_retuned_scalar_history, original_inputs_unchanged=true, runtime_seconds=2014.67658434622 (approximately 33.58 minutes), peak_cuda_allocated_bytes=2508070912 and peak_cuda_reserved_bytes=3424649216. These are server-reported fields; cloud checks have not independently verified input hashes or model execution.
 
 This is a positive directional compatibility-ranking signal versus the new Plain control, not a completed assessment of the method. History-aware still trails the original Base reference by 11.24% in Recall@10 and 11.01% in NDCG@10. There is no ranking interval or repeated-seed evidence; seven extra hits do not establish statistical significance. The full compact is needed to confirm both 1000-step budgets, pair checks, anchor H/mean ΔNLL and their paired intervals, reconstruction, churn, and final collision/capacity statistics. The tail does not establish that unhealthy concentration has been resolved. recommendation_training_status=not_run and future_test_status=not_run; the completed Future table remains unchanged. No parameter change, new training or Future evaluation was initiated from this excerpt.
+
+
+### 6.6 Completed retuned paired experiment: capacity feasible, historical damage worse
+
+On 2026-10-20, Hao returned the requested key-field extraction from `results/incremental/Beauty/llama_history_retuned_20261020T123132Z_Edpqdn/experiment/compact.json`. This completes the evidence previously available only as the tail in Section 6.5; it is the same run, not an additional replication. The returned status is execution_status=completed and original_inputs_unchanged=true. This is server text evidence, not independent cloud execution or recomputation of weights and per-query records.
+
+**Main result:** both arms completed their budgets without a reported capacity failure, but the historical penalty did not reduce hard historical damage. History-aware has higher H on both anchor_train and anchor_holdout, and both paired H-difference intervals exclude zero in the harmful direction. Its small compatibility-ranking gain must be reported alongside this negative primary-objective result.
+
+#### Completion, matching and settings
+
+- Plain and History-aware each completed 1000 Update optimizer steps and processed 254551 content examples.
+- Pair checks passed: same_base=true, same_content_recipe=true, same_optimizer_and_clipping=true, same_content_sampler_endpoint=true, same_update_steps=1000, processed_examples=254551. same_compute=false.
+- Both report teacher_unchanged=true and checkpoint_reload_assignments_equal=true. Original inputs are reported unchanged; those hashes have not been independently rechecked in the cloud.
+- Returned settings: max_steps=1000, lr=0.0001, history_weight=0.0001, temperature=0.5, anchor_batch_size=128 and max_grad_norm=0.1. Plain has no historical penalty; both use the matched content recipe in Section 6.4 and the same Base start. Checkpoint selection remains the last fixed-budget step.
+- The key-field extract does not include source/data/checkpoint/cohort hash bindings, full training summaries, per-step gradients or capacity traces, per-arm runtime, or a separately read pair_checks.json. Completion and matching are reported server results, with these audit limits retained. The launch checkout evidence was delivery `c61bc13f46374790ac6e95f4f225d11e114ecd2c`.
+
+#### Reconstruction, quantization and assignments
+
+All RQ metrics below use the same 11707-item Update training catalog. These RQ totals exclude the historical penalty.
+
+| State | RQ total loss | Reconstruction MSE | Quantization loss | Unique semantic codes | Largest current bucket | Codewords used at each level | Old Base semantic churn |
+| --- | ---: | ---: | ---: | ---: | ---: | --- | ---: |
+| Shared Base weights before Update | 0.006417348934 | 0.003109348266 | 0.013232002630 | — | — | — | — |
+| Retuned Plain after 1000 steps | 0.006498323446 | 0.002695704708 | 0.015210474678 | 8794 | 30 | 105 / 152 / 210 | 79.384841% |
+| Retuned History-aware after 1000 steps | 0.006507471001 | 0.002695613611 | 0.015247429571 | 8795 | 32 | 103 / 150 / 207 | 80.300256% |
+
+Each codebook retains capacity 256. duplicate_assignment_fraction is 0.24882548902366108 for Plain and 0.2487400700435637 for History-aware. The final largest buckets, 30 and 32, are far below the failed recipe's bucket of 266. Completion under the delivered guard/export procedure is consistent with feasible accepted updates; the per-step capacity trace has not been independently read. This establishes successful completion of this recipe, not a guarantee against concentration under other settings or seeds.
+
+Reconstruction improves from the shared start by 13.30% / 13.31%. History-aware−Plain MSE is approximately −9.109724166e-8 (-0.00338% relative), effectively unchanged at this scale. RQ total loss increases by 1.26% / 1.40% because quantization loss increases. It is incorrect to describe all RQ objectives as improved. History-aware churn is 0.915416 percentage points higher; it does not preserve more old semantic assignments.
+
+#### Full-cohort hard historical damage
+
+Each arm uses the same old targets and frozen teacher. Old-reference NLL and cohort sizes match across arms; anchor_train and anchor_holdout remain disjoint by user under the fixed protocol. Base validation loss uses only its 8689 servable queries, distinct from the 9192-query ranking denominator.
+
+| Cohort | Arm | Queries | Users | Old sequence NLL | New sequence NLL | Mean ΔNLL | Positive-part damage H |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| anchor_train | Retuned Plain | 4096 | 2648 | 8.908613241336 | 8.950773072895 | +0.042159831559 | 0.121296057536 |
+| anchor_train | Retuned History-aware | 4096 | 2648 | 8.908613241336 | 8.967521098442 | +0.058907857107 | 0.138890273578 |
+| anchor_holdout | Retuned Plain | 4096 | 2613 | 9.068032124196 | 9.128443209687 | +0.060411085491 | 0.133387686394 |
+| anchor_holdout | Retuned History-aware | 4096 | 2613 | 9.068032124196 | 9.140940013051 | +0.072907888854 | 0.147488629329 |
+| base_validation | Retuned Plain | 8689 | 3955 | 10.221830663040 | 10.245090198319 | +0.023259535279 | 0.109843461008 |
+| base_validation | Retuned History-aware | 8689 | 3955 | 10.221830663040 | 10.246039283579 | +0.024208620539 | 0.116588338223 |
+
+The following intervals are for each arm's mean ΔNLL against its own old-history reference. They are not H intervals and are not the paired-arm intervals in the next table.
+
+| Cohort | Plain mean ΔNLL 95% interval | History-aware mean ΔNLL 95% interval |
+| --- | --- | --- |
+| anchor_train | [0.029572713791, 0.054135531712] | [0.046162745427, 0.071182653117] |
+| anchor_holdout | [0.048020362216, 0.073443784949] | [0.058905421789, 0.087377704660] |
+| base_validation | [0.012476796592, 0.032709633236] | [0.013540367209, 0.034720519544] |
+
+Paired differences below are **History-aware minus retuned Plain**. Positive values mean more damage. Both interval types use 500 user-cluster bootstrap replicates with query-weighted resampled clusters.
+
+| Cohort | Mean sequence NLL difference | NLL-difference 95% interval | Positive-part H difference | H-difference 95% interval | Relative H increase |
+| --- | ---: | --- | ---: | --- | ---: |
+| anchor_train | +0.016748025548 | [0.007296662874, 0.026062053982] | +0.017594216042 | [0.009639276321, 0.025667953749] | +14.51% |
+| anchor_holdout | +0.012496803363 | [0.004108865857, 0.021746903177] | +0.014100942935 | [0.006135259296, 0.023099341622] | +10.57% |
+| base_validation | +0.000949085260 | [-0.007932871644, 0.009171002961] | +0.006744877216 | [-0.000552602887, 0.013950998956] | +6.14% |
+
+For anchor_train, both NLL and H difference intervals are above zero; the same holds for anchor_holdout. Historical damage is therefore worse in this paired run on the training cohort as well as the held-out cohort. This is not explained by holdout generalization alone. The previously viewed holdout and single preset seed limit broader inference.
+
+For Base validation, H increases by approximately 6.14%, but its paired H interval spans zero, as does its paired NLL interval. There is no supported directional difference on these validation loss metrics at the reported interval level.
+
+#### Ranking and interpretation
+
+The confirmed rankings are maintained at the [top of the report](#latest-base-validation-compatibility-ranking). All conditions share 9192 queries, 8689 servable queries, 503 unavailable targets and invalid_predictions=0. History-aware−Plain gains remain Recall@10 +4.64% and NDCG@10 +4.12%, with seven extra top-10 hits (151 → 158); Recall@5 stays at 110 hits. Both remain below the original Base reference. There is no returned ranking confidence interval or multi-seed result.
+
+H measures the average positive increase in teacher-forced sequence NLL on each query; ranking measures the position of an item in a decoded list. A small increase in top-10 hits can coexist with worse mean positive damage, so the ranking gain does not override the negative anchor result. The returned NLL from the paired Base validation loss path is 10.246039283578806 for History-aware, versus 10.246039268624482 in the earlier ranking-path tail; the approximately 1.5e-8 numerical difference does not change the conclusion.
+
+The conservative Plain recipe itself has holdout H about 59.70% below the earlier lr=0.001 Plain result (0.331015811 → 0.133387686394), while its reconstruction MSE is about 13.59% higher (0.002373193651 → 0.002695704708). This is a comparison of different content recipes, including learning rate and clipping, not an isolated learning-rate ablation. It must not be credited to the historical penalty. Under the matched new recipe, the historical penalty adds damage rather than reducing it.
+
+These results do not identify whether the negative effect comes from the STE gradient estimate, conflicts with content gradients, parameter routing or optimization dynamics. That would require inspecting the saved training evidence or a separately declared diagnostic. Do not select a new λ, training budget or checkpoint using this viewed holdout/Future. No new training or automatic parameter search was started from this result.
+
+#### Cost, artifacts and remaining scope
+
+Reported runtime_seconds=2014.67658434622 (approximately 33.58 minutes), peak_cuda_allocated_bytes=2508070912 and peak_cuda_reserved_bytes=3424649216. This is the driver runtime for both arms and evaluation, not a per-arm or equal-compute comparison; per-arm runtime was omitted from the extract.
+
+Run root: `results/incremental/Beauty/llama_history_retuned_20261020T123132Z_Edpqdn`. The returned fields were extracted from `experiment/compact.json`; the delivered workflow also writes training/evaluation summaries, checkpoints, mappings, pair checks and attempt logs under this run. Those other files were not independently read here. The final metrics confirm the earlier derived Plain ranking values. No summary-file hash or new checkpoint hashes were supplied in this extraction.
+
+The retuned RQ update and fixed-model compatibility evaluation are completed as reported. Update TIGER fine-tuning and Future evaluation for these retuned arms remain **not_run**. The primary Future table at the top is unchanged. The first failed run and its diagnostic remain on record; this completed run does not retroactively complete that failed experiment. HANDOFF, RESEARCH_SPEC and training sources are unchanged.
 
 ## 7. Artifact and identity index
 
@@ -380,7 +462,9 @@ Paths below are relative to the server project root. These server files have not
 | Failed History-aware run | `results/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc`; `train.log`, `paths.txt`, `commit.txt` |
 | History-aware partial checkpoint / step logs | `ckpt/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc_1000/last.pth` at step 400; `metrics.jsonl` in the same directory ends at successful step 418 |
 | History-aware capacity diagnostic | `results/incremental/Beauty/llama_capacity_diag_20261020T090834Z_Zic7HT`; diagnostic outputs `summary.json`, `compact.json`, `attempts.jsonl`, `replay.jsonl`. Only the compact and path were returned; the other files have not been independently read. |
-| History-aware final evaluation, not run | `results/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc/evaluation` is a preset output path, not evidence of valid generated results |
+| First failed History-aware run's final evaluation, not run | `results/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc/evaluation` is a preset output path, not evidence of valid generated results |
+
+Retuned completed run: `results/incremental/Beauty/llama_history_retuned_20261020T123132Z_Edpqdn/experiment/compact.json` (key fields returned by the user; no file SHA256 supplied).
 
 Returned SHA256 values:
 
@@ -403,7 +487,7 @@ Code-delivery index: server runs separately save `commit.txt`. Unless explicitly
 - First ongoing experiment report and History-aware launcher: `271e7b9071106fdfd52666c2caa0199d8f6dab18`.
 - Delivery for both Future evaluation modes: `35d135b4273adf5203e42ec9100f706563b4daa1`. The returned compact did not include server commit.txt, so this is not an independently verified Future execution SHA.
 - User-reported execution SHA of the failed History-aware run: `35d135b4273adf5203e42ec9100f706563b4daa1`, distinct from later report/diagnostic deliveries.
-- Retuned paired launcher: `c61bc13f46374790ac6e95f4f225d11e114ecd2c`; checkout and background submission were reported, without completed results.
+- Retuned paired launcher: `c61bc13f46374790ac6e95f4f225d11e114ecd2c`; checkout and background submission were reported, followed by completed extracted results in Section 6.6. The extract does not include server commit.txt or source bindings for an independent execution-identity audit.
 - Current report revision: use this file's Git commit and the delivery reply, avoiding a self-referencing SHA.
 
 ## 8. Ongoing update rules
@@ -412,4 +496,4 @@ After each returned server experiment result, update this file and commit to `vi
 
 Maintain the **Primary downstream results** table at the top. Add completed downstream conditions with their tokenizer, TIGER state, selected Update step and Recall/NDCG@5/@10/@20. Preserve metric units, full denominator, catalog/coverage and checkpoint-selection context. New protocols must be identified separately rather than mixed into the same comparison. Section 5.3 links to the top table instead of duplicating it.
 
-Keep fixed-model compatibility evaluation, post-fine-tuning validation and Future test separate. The two Future workflows and four actual conditions in Section 5 have been returned and recorded. The first full-SID History-aware run stopped before its budget; final anchor, ranking and Future results remain missing. The retuned paired run has partial Base validation ranking output; complete training, anchor and collision evidence is pending. Future is for final evaluation only, not penalty-weight, training-length or checkpoint selection.
+Keep fixed-model compatibility evaluation, post-fine-tuning validation and Future test separate. The two Future workflows and four actual conditions in Section 5 have been returned and recorded. The first full-SID History-aware run stopped before its budget; final anchor, ranking and Future results remain missing. The retuned paired run has completed training, anchor, collision and Base validation results as reported in Section 6.6; History-aware H is worse than matched Plain on both anchor cohorts. Its TIGER fine-tuning and Future evaluation remain not_run. Future is for final evaluation only, not penalty-weight, training-length or checkpoint selection.
