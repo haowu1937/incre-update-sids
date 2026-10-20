@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "protocol_id": "sid-main-v1",
+  "mode": "awaiting_deployment",
+  "pause_requested": false,
+  "active_job_id": null,
+  "lease": null,
+  "receipts": {},
+  "plan": [
+    "accept_existing_history_future"
+  ],
+  "repairs_used": 0,
+  "automation_id": "6ad746543320819187a85beaf87af5bd",
+  "automation_acceptance": "pending"
+}
