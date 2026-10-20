@@ -1,6 +1,6 @@
 # History-aware SID Update 实验报告
 
-更新日期：2026-10-19。当前主线：Amazon Beauty / 冻结 Llama7B 内容特征 / 纯内容 RQ-VAE / TIGER。
+更新日期：2026-10-20。当前主线：Amazon Beauty / 冻结 Llama7B 内容特征 / 纯内容 RQ-VAE / TIGER。
 
 本报告持续记录用户 GPU 服务器回传的实验结果。云端没有 Beauty 数据或模型 checkpoint；表内真实训练和评估数字来自用户 compact，不代表云端独立重算。代码交付、本地模拟检查与服务器实验状态分别记录。旧 sentence-T5 结果保留在存量报告中，不与本轮 Llama 结果混作严格 encoder 消融。
 
@@ -16,7 +16,7 @@
 | Plain anchor 与冻结 TIGER 排名 | completed，用户回传 | anchor_train、anchor_holdout、Base validation 的配对 NLL 和 Base 排名 |
 | Base/Plain 冻结 TIGER 的 Future ranking | completed，用户回传 | 相同 Update 部署目录；Plain 的 Recall@10 / NDCG@10 相对低 85.34% / 89.05% |
 | Base/Plain Update TIGER 微调后的 Future ranking | completed，用户回传 | 各训练 2000 步、均选 step 500；Plain 的 Recall@10 / NDCG@10 相对低 19.47% / 16.13% |
-| History-aware RQ-VAE + 同口径评估 | failed / 预算未完成，用户回传 | full SID 训练至少完成 400 步，随后 suffix 容量耗尽；最终 anchor、排名与 Future 未运行 |
+| History-aware RQ-VAE + 同口径评估 | failed / 预算未完成，用户回传 | 完成 418 步，第 419 次更新分配时 suffix 容量耗尽；磁盘 checkpoint 为 step 400，最终 anchor、排名与 Future 未运行 |
 
 当前结论：
 
@@ -24,7 +24,7 @@
 2. 固定旧 target 和冻结旧 TIGER 后，Plain 的 anchor_holdout 平均序列 ΔNLL 为 +0.235389，用户聚类 bootstrap 95% 区间为 [0.207473, 0.264948]；正部损伤 H 为 0.331016。本轮观察到了历史输入重编码损伤。
 3. Base validation 的 Recall@10 从 1.936466% 降至 1.533943%（相对下降 20.79%），NDCG@10 从 0.01079385 降至 0.00779528（相对下降 27.78%）。这是冻结 TIGER、旧 target 地址下的兼容性排名结果。
 4. 保留旧 history suffix 后，anchor_holdout 平均 ΔNLL 仍为 +0.189471，H 为 0.283439，损伤仍存在。该条件是输入诊断，不是可部署的完整 SID 映射；不能将两个条件的差直接当作可加的 suffix 因果贡献。
-5. 本轮 History-aware 以 1000 步、λ=0.001 启动，至少完成 400 步后因新版本 suffix 容量耗尽中止，未形成完整 anchor/holdout 评估。该异常证明当时完整 SID 分配不可行，不足以证明码本完全坍缩；收益尚未验证。1000 步仍是配对预算，不是已证明收敛或最优的上限。
+5. 本轮 History-aware 以 1000 步、λ=0.001 启动，完成 418 步后在第 419 次更新的分配阶段因新版本 suffix 容量耗尽中止；checkpoint 只保存到 step 400，未形成完整 anchor/holdout 评估。该异常证明当时完整 SID 分配不可行，不足以证明码本完全坍缩；收益尚未验证。1000 步仍是配对预算，不是已证明收敛或最优的上限。
 6. 四组 Future 结果已回传：相同覆盖率 80.555149% 下，Plain 冻结 TIGER 的 Recall@10 为 0.099447%，低于 Base 的 0.678581%；配对微调后为 0.979847%，仍低于 Base 的 1.216766%。微调缩小了差距，本轮尚未观察到 Plain 码本更新带来的 Future 排名收益。详见第 5 节，不与固定旧 target 的历史诊断混用。
 
 ## 2. 固定设置与评价口径
@@ -235,16 +235,31 @@ Anchor 两组 history_changed_fraction 均为 0.99462890625；Base validation �
 | 225 | 0.004056828097 | 0.064984902740 | 0.670326828957 | 0.000670326829 | 108 | 108 |
 | 350 | 0.003523970023 | 0.032825231552 | 0.401989817619 | 0.000401989818 | 131 | 131 |
 | 400 | 0.003486433532 | 0.029009586200 | 0.280607461929 | 0.000280607462 | 102 | 102 |
+| 418 | 0.005391825922 | 0.045405112207 | 0.398684948683 | 0.000398684949 | 228 | 228 |
 
 Step 400 的 processed_examples=101848，anchor_sampler_epoch=4，anchor_changed_history_fraction=1.0；合成梯度范数为 encoder=0.033068541437、decoder=0.003261050209、codebooks=0.007837447338。这些是总目标的梯度范数，没有分别记录 RQ/历史梯度，不能据其数值或 λH 占比认定具体梯度机制。
 
 分配规则是对每个 semantic prefix 保留 Base 已占用地址，再为当前改变 prefix 的旧物品和新物品追加 suffix。因此所需槽位为该 prefix 的旧保留槽宽加当前迁入/新增数，可能大于当前物品桶大小。每次使用固定的 Base registry 重建，不是跨 optimizer steps 永久累积已用槽位。异常只能确认失败时至少一个 prefix 需要超过固定 256 个槽位；失败快照的实际桶大小、unique codes、逐层码本利用率未保存到所贴日志，不能将其记作“完全坍缩”。
 
-`metrics.jsonl` 每个成功 optimizer step 均写入并 flush，终端每 25 步打印；精确的最后成功步和失败尝试步仍待服务器回传该文件末行。代码每 50 步保存 `last.pth`，按现有周期日志推断最近定期保存点应为 step 400；尚未读取该 checkpoint 核实，不将推断当作恢复状态证据。异常发生在当次 backward/optimizer.step 之前；本次路径直接退出，没有生成最终训练 summary、失败快照或成功回滚记录。
+2026-10-20 用户回传只读检查结果：run_commit=`35d135b4273adf5203e42ec9100f706563b4daa1`；最后成功记录为 step 418、epoch=10、processed_examples=106387，total_loss=0.017141789198、rq_loss=0.016743104249、平均序列 ΔNLL=+0.264655411243、H=0.398684948683，anchor_changed_history_fraction=1.0、anchor_sampler_epoch=4。总目标梯度范数为 encoder=0.037496332079、decoder=0.006189642940、codebooks=0.001894956222。
+
+`metrics.jsonl` 每个成功 optimizer step 均写入并 flush，终端每 25 步打印。该末行加此前 traceback 确认第 419 次更新在分配阶段失败，尚未执行其 backward/optimizer.step。Step 418 的容量 228 是该次参数更新前（参数已经完成 417 次更新）的统计；完成第 418 次更新后的实际分配不可行，不应把日志中的 feasible=true 当作更新后仍可行。
+
+用户读取的 `last.pth` 为 step 400、epoch=9、processed_examples=101848、cursor=8192；未保存的最后 18 次更新不能直接从该 checkpoint 读取。compact、training_summary、evaluation_summary 均不存在。该路径直接退出，没有生成失败快照或成功回滚记录；不能把 step 400 checkpoint 当作失败时参数。
 
 本次 1000 步训练、最终完整 SID 导出、最终配对检查、完整 anchor_train/anchor_holdout、Base validation 排名及 History-aware Future 均未完成。不能将当步 32-query H 与 Plain 的完整 4096-query holdout H 比较，也不能用未完成预算的轨迹判断相同步数收益。训练可行性和容量失败需作为负结果保留；目前既没有 History-aware 胜于 Plain 的证据，也没有完整配对评估证明其更差。
 
-本轮仅补充失败记录，不改变 source-bound 训练实现、suffix 容量或已有映射，也不自动重跑、改 λ 或换成 old-suffix 条件。接下来先只读核对 `metrics.jsonl`、`last.pth` 和运行元数据；容量或优化策略的修复应作为单独说明的后续变体。
+### 6.3 受限失败诊断（code_provided，尚未获服务器结果）
+
+新增独立 `diagnose_historical_capacity.py` 与 `scripts/run_llama_capacity_diagnostic.sh FAILED_RUN_DIR`。仅在新输出目录中恢复 step 400 的模型、optimizer、内容/anchor sampler 和 RNG，按原配置重放 401—418，再检查第 419 次分配；不会续跑原 1000 步实验或写入新的训练 checkpoint。原 engine、原 allocator、suffix 容量和 source/data/environment 绑定不变，不改 λ、不切换 old-suffix 条件。
+
+逐步比较原日志全部字段：整数和布尔值精确一致，浮点 relative_tolerance=1e-6、absolute_tolerance=1e-7；任一不一致即停止。相符仅证明已保存的观测值在该容差内相符，没有每步权重参考，不能称为逐 bit 轨迹重现。重放上限硬限制为 50 次尝试；本 run 预期为 18 次已完成更新加第 419 次失败尝试。
+
+诊断保存 step 400、最后匹配的更新前状态及失败尝试的 assignment 统计：unique semantic codes、各层码本使用数、最大前缀桶/完整桶、最大桶占比、是否所有物品共享同一个三层语义码，以及各溢出 prefix 的当前桶数、Base 保留槽宽、迁入数量和所需容量。原输入文件与原 checkpoint 在前后复核 hash。只有在原记录 401—418 均匹配且第 419 次由原 allocator 抛出容量异常时，outcome 才为 `overflow_reproduced`；未重现、提前失败、日志不符或输入变化分别记录，不作原现场证据。
+
+本地 7 项纯协议检查、Python/Bash 语法与 diff 检查通过，覆盖重放步数上限、日志连续性/数值偏差、完整与部分分配集中、非法码、输入目录保护和路径文本解析。另提供 2 项真实 RQ-VAE/TIGER 小模型重放检查：从中间模型/optimizer/两套 sampler/RNG 恢复并匹配原日志，以及首个日志偏差时停止并保持输入文件不变。云端没有 Torch，这两项未执行；服务器启动脚本要求它们通过后才运行实际诊断。诊断本身不使用 holdout/Future，不构成新的优化变体或最终 anchor 评价。
+
+当前尚无失败参数的码本利用率/桶分布或诊断结果；容量/优化策略的修复仍需据其证据单独说明，不能把诊断工具交付当作修复完成。
 
 ## 7. 产物与身份索引
 
@@ -269,7 +284,7 @@ Step 400 的 processed_examples=101848，anchor_sampler_epoch=4，anchor_changed
 | Future 启动检查和运行日志 | `results/incremental/Beauty/llama_future_20261019T142547Z_OQS0aL/attempt_20261019T142547Z_IpXMsA/{checks,evaluate}.log` |
 | Future 报告片段 | `results/incremental/Beauty/llama_future_20261019T142547Z_OQS0aL/evaluation/experiment_report_fragment.md` |
 | History-aware 中止 run | `results/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc`；`train.log`、`paths.txt`、`commit.txt` |
-| History-aware partial checkpoint / 逐步日志 | `ckpt/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc_1000/last.pth`、同目录 `metrics.jsonl`；实际保存步数待核实 |
+| History-aware partial checkpoint / 逐步日志 | `ckpt/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc_1000/last.pth` 为 step 400；同目录 `metrics.jsonl` 最后成功步为 418 |
 | History-aware 最终评估（未运行） | `results/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc/evaluation` 为预设输出路径，不视作已生成有效结果 |
 
 已回传 SHA256：
@@ -292,6 +307,7 @@ Step 400 的 processed_examples=101848，anchor_sampler_epoch=4，anchor_changed
 - Plain E1 启动：`ce6214090ea635835fed4bee89dcb645a8570a06`。
 - 首次持续实验报告与 History-aware 启动：`271e7b9071106fdfd52666c2caa0199d8f6dab18`。
 - 两种 Future 评估交付版本：`35d135b4273adf5203e42ec9100f706563b4daa1`；本次 compact 未包含服务器 commit.txt，不把交付 SHA 当作独立核验的实际运行 SHA。
+- History-aware 中止 run 的用户回传执行版本：`35d135b4273adf5203e42ec9100f706563b4daa1`；与报告/诊断代码的后续交付 commit 区分。
 - 本轮 History-aware 启动和报告提交：以本文件所在 Git commit 及交付回复为准，避免自引用 SHA。
 
 ## 8. 持续更新规则
