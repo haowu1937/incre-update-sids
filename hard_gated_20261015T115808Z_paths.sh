@@ -1,6 +1,0 @@
-HG_E1_DIR=results/incremental/Beauty/historical_damage_20261009T142825Z
-HG_PLAIN_DIR=ckpt/incremental/Beauty/frozen_encoder_20261015T101457Z_plain_100
-HG_UNGATED_DIR=ckpt/incremental/Beauty/frozen_encoder_20261015T101457Z_history_100
-HG_RUN_ID=hard_gated_20261015T115808Z
-HG_RQVAE_DIR=ckpt/incremental/Beauty/hard_gated_20261015T115808Z_100
-HG_COMPARE_DIR=results/incremental/Beauty/hard_gated_20261015T115808Z_comparison
