@@ -1,5 +1,0 @@
-FX_E1_DIR=results/incremental/Beauty/historical_damage_20261009T142825Z
-FX_RUN_ID=frozen_encoder_20261015T101457Z
-FX_PLAIN_DIR=ckpt/incremental/Beauty/frozen_encoder_20261015T101457Z_plain_100
-FX_HISTORY_DIR=ckpt/incremental/Beauty/frozen_encoder_20261015T101457Z_history_100
-FX_COMPARE_DIR=results/incremental/Beauty/frozen_encoder_20261015T101457Z_comparison
