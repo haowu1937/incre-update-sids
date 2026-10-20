@@ -1,0 +1,17 @@
+{
+  "stage": "git_lab_buffer_smoke",
+  "execution_status": "completed",
+  "job_id": "mailbox-smoke-001",
+  "marker": "git-buffer-ok-v1",
+  "python": "3.10.18",
+  "package_metadata_only": {
+    "torch": "2.6.0+cu118",
+    "transformers": "4.56.1",
+    "numpy": "2.2.6"
+  },
+  "code_sha": "66d8fb49563fb39d2233a888a23496e8b9db303f",
+  "cuda_visible_devices": "",
+  "training_started": false,
+  "gpu_used": false,
+  "main_checkout_modified": false
+}
