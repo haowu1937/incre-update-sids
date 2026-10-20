@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "job_id": "mailbox-smoke-002",
+  "worker_id": "server2",
+  "kind": "smoke",
+  "code_sha": "66d8fb49563fb39d2233a888a23496e8b9db303f",
+  "timeout_seconds": 60,
+  "created_at": "2026-10-20T10:59:05.952Z"
+}

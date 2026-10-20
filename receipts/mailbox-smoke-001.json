@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "job_id": "mailbox-smoke-001",
+  "request_sha256": "cd8ac99b7791e4e76afeca0c194112c201d5afb72ab7fce922620da6783443c5",
+  "code_sha": "66d8fb49563fb39d2233a888a23496e8b9db303f",
+  "status": "verified",
+  "next_job_id": "mailbox-smoke-002",
+  "processed_at": "2026-10-20T10:59:05.952Z",
+  "result_blob_sha": "c34953e762acbc828248c7ced098652fcd8fe69b",
+  "artifact_blob_sha": "53d430e4fdca88acd0a2b6b64847669c375b7c50"
+}
