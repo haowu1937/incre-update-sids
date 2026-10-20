@@ -6,15 +6,17 @@
   "request_sha256": "cc0b2fecd2ea5e621f59edee4228166e13a4ccd5df189128e697e2b8f39361a7",
   "code_sha": "66d8fb49563fb39d2233a888a23496e8b9db303f",
   "runner_code_sha": "66d8fb49563fb39d2233a888a23496e8b9db303f",
-  "status": "running",
+  "status": "completed",
   "started_at": "2026-10-20T11:00:08.075249+00:00",
-  "updated_at": "2026-10-20T11:00:20.875817+00:00",
-  "exit_code": null,
+  "updated_at": "2026-10-20T11:00:35.392582+00:00",
+  "exit_code": 0,
   "pid": 946293,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/mailbox-smoke-002",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/mailbox-smoke-002.log",
   "log_tail": "logs/mailbox-smoke-002.tail.txt",
-  "artifacts": [],
+  "artifacts": [
+    "artifacts/mailbox-smoke-002/outputs/lab-buffer-smoke.json"
+  ],
   "training_started": false,
   "actual_code_sha": "66d8fb49563fb39d2233a888a23496e8b9db303f",
   "argv": [
@@ -23,5 +25,6 @@
     "-B",
     "scripts/lab_buffer/smoke.py"
   ],
-  "elapsed_seconds": 0.048
+  "elapsed_seconds": 14.565,
+  "finished_at": "2026-10-20T11:00:35.392562+00:00"
 }
