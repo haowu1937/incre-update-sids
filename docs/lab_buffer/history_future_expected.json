@@ -1,0 +1,73 @@
+{
+  "stage": "retuned_History_aware_Future_evaluation",
+  "execution_status": "completed",
+  "condition_checks": {
+    "execution_status": "passed",
+    "same_history_and_target_mapping": true,
+    "same_future_queries_and_catalog": true,
+    "historical_training_sids_preserved": true,
+    "exact_base_tiger_warm_start": true,
+    "selected_checkpoint_reload_equal": true
+  },
+  "config": {
+    "update_max_steps": 2000,
+    "selection_steps": [0, 100, 250, 500, 1000, 2000],
+    "selection_metric": "ndcg@10",
+    "lr": 0.003,
+    "weight_decay": 0.05,
+    "batch_size": 128,
+    "warmup_steps": 200,
+    "max_grad_norm": 1.0,
+    "seed": 2026,
+    "num_beams": 20,
+    "topk": [5, 10, 20],
+    "selection_probe_size": 512
+  },
+  "training": {
+    "update_optimizer_steps": 2000,
+    "processed_examples": 255919,
+    "best_update_optimizer_step": 2000,
+    "exact_base_warm_start": true,
+    "selected_checkpoint_reload_equal": true
+  },
+  "future_used_for_selection": false,
+  "selection_locked_before_future": true,
+  "original_inputs_unchanged": true,
+  "rqvae_training_performed": false,
+  "future": {
+    "frozen": {
+      "all_queries": 34189,
+      "servable_queries": 27541,
+      "unavailable_targets": 6648,
+      "eligible_items": 11775,
+      "invalid_predictions": 0,
+      "update_optimizer_steps": 0,
+      "model_sha256": "83308fa0bb71f398de22f6a3c5652dbb94da323a4bffcd9cc1cae584e03438fa",
+      "full_denominator": {
+        "recall@5": 0.0025739272865541547,
+        "recall@10": 0.0032174091081926936,
+        "recall@20": 0.003890140103542075,
+        "ndcg@5": 0.001442893260840998,
+        "ndcg@10": 0.0016534336210046836,
+        "ndcg@20": 0.001817588658626969
+      }
+    },
+    "finetuned": {
+      "all_queries": 34189,
+      "servable_queries": 27541,
+      "unavailable_targets": 6648,
+      "eligible_items": 11775,
+      "invalid_predictions": 0,
+      "update_optimizer_steps": 2000,
+      "model_sha256": "bca77fef0b0bb3a107f40d8868f0b805885a21152289a29e97baa4ad6b26177f",
+      "full_denominator": {
+        "recall@5": 0.00778028020708415,
+        "recall@10": 0.013893357512650268,
+        "recall@20": 0.021527391851180203,
+        "ndcg@5": 0.004622809741673401,
+        "ndcg@10": 0.006579084913136963,
+        "ndcg@20": 0.008508993425001478
+      }
+    }
+  }
+}

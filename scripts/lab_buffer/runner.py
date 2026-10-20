@@ -138,15 +138,17 @@ class Runner:
         result = self.git("show", ref + ":" + path, check=False)
         return result.stdout if result.returncode == 0 else None
 
-    def publish(self, files):
+    def publish(self, files, branch_key="results_branch", expected_parent=None):
         """Construct a commit atop the current results head; retry FF races.
 
         Retry only delivery. No training subprocess is ever created here.
         """
-        branch = self.config["results_branch"]
+        branch = self.config[branch_key]
         for _ in range(3):
-            self.fetch(("results_branch",))
-            parent = self.git("rev-parse", self.ref("results_branch")).stdout.decode().strip()
+            self.fetch((branch_key,))
+            parent = self.git("rev-parse", self.ref(branch_key)).stdout.decode().strip()
+            if expected_parent is not None and parent != expected_parent:
+                raise RuntimeError("Concurrent branch change; reread before updating control state")
             index = self.root / ("publish-index-" + uuid.uuid4().hex)
             env = {"GIT_INDEX_FILE": str(index)}
             try:
@@ -163,6 +165,8 @@ class Runner:
                 result = self.git("push", "--quiet", "origin", commit + ":refs/heads/" + branch, check=False)
                 if result.returncode == 0:
                     return
+                if expected_parent is not None:
+                    raise RuntimeError("Concurrent branch change; reread before updating control state")
             finally:
                 index.unlink(missing_ok=True)
         raise RuntimeError("Results delivery failed; local result retained for retry")
@@ -257,6 +261,19 @@ class Runner:
             texts[name] = value
         state["artifact_text"] = texts
         state["result"]["artifacts"] = ["artifacts/" + task["job_id"] + "/" + name for name in texts]
+        state["result"]["artifacts_sha256"] = {
+            "artifacts/" + task["job_id"] + "/" + name: digest(value.encode())
+            for name, value in texts.items()}
+
+    def authorize_main(self, task, raw):
+        """An opt-in main deployment accepts only the controller's exact active job."""
+        if not self.config.get("main_integration"):
+            return True
+        if task["kind"] != "experiment":
+            raise ValueError("New smoke jobs are outside the deployed main acceptance plan")
+        from main_control import authorize_task
+        state_raw = self.read(self.ref("requests_branch"), "control/main.json")
+        return authorize_task(self.root, task, raw, json.loads(state_raw) if state_raw else None)
 
     def execute(self, task, raw):
         state = self.new_state(task, raw)
@@ -290,6 +307,7 @@ class Runner:
             env = dict(self.env, PYTHONDONTWRITEBYTECODE="1")
             env["PATH"] = str(Path(self.config["python"]).parent) + os.pathsep + env.get("PATH", "/usr/bin:/bin")
             env["LAB_BUFFER_JOB_ID"] = task["job_id"]
+            env["LAB_BUFFER_CODE_SHA"] = task["code_sha"]
             if task["kind"] == "smoke":
                 argv = [self.config["python"], "-u", "-B", "scripts/lab_buffer/smoke.py"]
                 env["CUDA_VISIBLE_DEVICES"] = ""
@@ -298,20 +316,32 @@ class Runner:
                 if argv[0] == "python":
                     argv[0] = self.config["python"]
                 env["CUDA_VISIBLE_DEVICES"] = str(self.config.get("gpu", "0"))
+                if self.config.get("main_integration"):
+                    env.update(OMP_NUM_THREADS="1", MKL_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1",
+                               HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1", USE_TF="0", USE_FLAX="0",
+                               CUBLAS_WORKSPACE_CONFIG=":4096:8")
             result["argv"] = argv
             log = Path(result["log_path"])
             with log.open("xb") as handle:
                 process = subprocess.Popen(argv, cwd=workspace, env=env, stdout=handle,
                                            stderr=subprocess.STDOUT, start_new_session=True)
                 watchdog = threading.Thread(target=self.supervise, args=(
-                    process, started + task["timeout_seconds"], timed_out), daemon=True)
-                watchdog.start()
+                    process, started + task["timeout_seconds"], timed_out), daemon=True) if not self.config.get("main_integration") else None
+                if watchdog:
+                    watchdog.start()
                 result.update(status="running", pid=process.pid,
-                              training_started=task["kind"] == "experiment")
+                              training_started=task["kind"] == "experiment" and not self.config.get("main_integration"),
+                              process_started=True)
                 self.save(state)
                 next_heartbeat = 0.0
                 while process.poll() is None:
                     elapsed = time.monotonic() - started
+                    if (self.config.get("main_integration") and elapsed > task["timeout_seconds"]
+                            and not timed_out.is_set()):
+                        timed_out.set()
+                        result["deadline_exceeded"] = True
+                        result["reason"] = "Main task deadline exceeded; child continues, no termination authorized"
+                        self.pause("Main task exceeded deadline; child NOT terminated: " + task["job_id"])
                     if elapsed >= next_heartbeat:
                         result["elapsed_seconds"] = round(elapsed, 3)
                         self.save(state)
@@ -321,7 +351,8 @@ class Runner:
                             print("Heartbeat upload deferred: " + str(error), file=sys.stderr, flush=True)
                         next_heartbeat = elapsed + self.config.get("heartbeat_seconds", 60)
                     time.sleep(0.1)
-            watchdog.join()
+            if watchdog:
+                watchdog.join()
             result["exit_code"] = process.returncode
             result["status"] = ("timed_out" if timed_out.is_set() else
                                 "completed" if process.returncode == 0 else "failed")
@@ -336,6 +367,23 @@ class Runner:
                 result["status"] = "failed"
                 result["exit_code"] = process.returncode if process is not None else None
         finally:
+            if result["status"] != "completed" and workspace.is_dir():
+                # Return any completed evidence even on failure; never require all
+                # success artifacts in order to report the error itself.
+                for name in task.get("artifacts", []):
+                    try:
+                        partial = dict(task, artifacts=[name])
+                        saved = dict(state.get("artifact_text", {}))
+                        self.collect_artifacts(partial, state, workspace)
+                        saved.update(state["artifact_text"])
+                        state["artifact_text"] = saved
+                    except (ValueError, OSError, UnicodeError):
+                        pass
+                state["result"]["artifacts"] = ["artifacts/" + task["job_id"] + "/" + name
+                                                  for name in state.get("artifact_text", {})]
+                state["result"]["artifacts_sha256"] = {
+                    "artifacts/" + task["job_id"] + "/" + name: digest(value.encode())
+                    for name, value in state.get("artifact_text", {}).items()}
             result["elapsed_seconds"] = round(time.monotonic() - started, 3)
             result["finished_at"] = now()
             self.save(state)
@@ -388,6 +436,8 @@ class Runner:
                     return state["result"]
                 if task["worker_id"] != self.config["worker_id"]:
                     continue
+                if not self.authorize_main(task, raw):
+                    return {"status": "control_wait", "training_started": False}
                 # Experimental jobs are never started while a separate GPU job
                 # is visible. This is advisory; smoke mode is the hard rollout gate.
                 if task["kind"] == "experiment" and "experiment" in self.config["allowed_kinds"]:

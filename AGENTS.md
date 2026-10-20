@@ -1,5 +1,9 @@
 # 项目协作规则
 
+## 当前主实验Git接入（2026-10-20，覆盖早期阶段限制）
+
+用户授权在既定计划和预算内接入自动迭代。每次手动“继续”或定时检查均先读`docs/lab_buffer/CONTROLLER.md`、`docs/lab_buffer/main_protocol.json`及`lab-requests:control/main.json`，共用原子领取和回执。两个History-aware Future条件已收到完成结果；剩余任务仅为真实服务器产物/模型重载验收和报告，不新增训练预算或研究实验。保留旧负结果，不用holdout/Future调参，不更新HANDOFF。暂停自动迭代仅停止新任务下发，终止正在运行的实验需用户明确指令。实际部署和恢复Web监控必须等待服务器验收证据，不能将云端检查冒充部署完成。
+
 ## 当前优先任务（2026-10-19，用户最新指令）
 
 先补齐 Llama Base/Plain 的 Future evaluation，History-aware 暂缓。用户确认冻结 TIGER 直接测试和 Update 微调后测试两种都评估并记录。当前状态以根目录 `experiment_report.md` 为准；下文早期 Llama pilot 的 not_run 描述为历史状态。Base RQ-VAE 保持冻结并为已观察 Update 物品追加 SID，Plain 使用已完成的 1000 步 checkpoint；两组采用相同 Update 部署目录，history/target 使用各组自己的完整 SID。TIGER 从同一 Base checkpoint 配对微调，仅用 Update validation 选择；两组选定 checkpoint 后才能运行 Future 推理。真实 Future 指标须等待服务器回传，不将本地协议检查或 code_provided 当作完成结果。

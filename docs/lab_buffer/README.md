@@ -1,3 +1,7 @@
+# Main experiment integration (2026-10-20)
+
+The current authorized scope and manual/hourly processing entry are [CONTROLLER.md](CONTROLLER.md) and [main_protocol.json](main_protocol.json). The original installation and smoke records below are historical. Reuse the existing root; do not rerun install.sh. The pinned attach_main.py upgrades it under the existing lock and preserves unrelated cron/state. Both requested History-aware Future conditions are completed; the first real job accepts existing artifacts with zero new training. Web remains paused until that task and its report/receipt pass acceptance.
+
 # Git 实验消息队列：第一阶段部署
 
 本轮只接通通信闭环。服务器默认 `allowed_kinds=["smoke"]`，Web 只自动下发第二个通信测试；不会提交主实验任务、修改主实验代码、切换主工作区、加载模型或占用 GPU。真实服务器安装与运行状态，以 `lab-results` 的实际回传为准。CPU 合成检查不等于服务器部署完成。
