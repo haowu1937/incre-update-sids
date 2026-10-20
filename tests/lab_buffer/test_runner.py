@@ -34,7 +34,8 @@ class MailboxTest(unittest.TestCase):
         git(self.author, "config", "user.name", "Test")
         git(self.author, "config", "user.email", "test@localhost")
         git(self.author, "checkout", "-b", "vibe-dev")
-        for name in ("scripts/lab_buffer/smoke.py", "scripts/lab_buffer/runner.py", "scripts/lab_buffer/install.sh"):
+        for name in ("scripts/lab_buffer/smoke.py", "scripts/lab_buffer/runner.py", "scripts/lab_buffer/install.sh",
+                     "scripts/lab_buffer/collect_retuned.py", "scripts/lab_buffer/attach_retuned.sh"):
             target = self.author / name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes((REPO / name).read_bytes())
@@ -237,6 +238,46 @@ else: store.write_bytes(Path(sys.argv[1]).read_bytes())
         again = subprocess.run(command, env=env, capture_output=True, text=True)
         self.assertNotEqual(again.returncode, 0)
         self.assertEqual(cron_store.read_text(), installed)
+
+    def test_collector_attachment_preserves_runner_gate_and_existing_cron(self):
+        fake_bin = self.base / "fake-bin"
+        fake_bin.mkdir()
+        store = self.base / "crontab.txt"
+        existing = "* * * * * /usr/bin/true # git-lab-buffer-server2\n"
+        store.write_text(existing)
+        script = fake_bin / "crontab"
+        script.write_text("#!" + sys.executable + "\n" + '''import os,sys
+from pathlib import Path
+store=Path(os.environ["TEST_CRON_STORE"])
+if sys.argv[1:]==["-l"]: print(store.read_text(),end="")
+else: store.write_bytes(Path(sys.argv[1]).read_bytes())
+''')
+        script.chmod(0o755)
+        installed_runner = self.root / "bin/runner.py"
+        installed_runner.parent.mkdir()
+        installed_runner.write_bytes((REPO / "scripts/lab_buffer/runner.py").read_bytes())
+        config_before = (self.root / "config.json").read_bytes()
+        runner_before = installed_runner.read_bytes()
+        project = self.base / "main-project"
+        (project / "results/incremental/Beauty").mkdir(parents=True)
+        sentinel = project / "running-experiment.txt"
+        sentinel.write_text("unchanged")
+        env = dict(os.environ, TEST_CRON_STORE=str(store),
+                   PATH=str(fake_bin) + os.pathsep + os.environ["PATH"])
+        command = ["bash", str(self.author / "scripts/lab_buffer/attach_retuned.sh"), str(self.root), str(project)]
+        result = subprocess.run(command, env=env, text=True, capture_output=True)
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+        self.assertEqual((self.root / "config.json").read_bytes(), config_before)
+        self.assertEqual(installed_runner.read_bytes(), runner_before)
+        self.assertEqual(sentinel.read_text(), "unchanged")
+        self.assertTrue(store.read_text().startswith(existing))
+        self.assertEqual(store.read_text().count("# git-lab-retuned-collector"), 1)
+        self.assertIn("--delay-seconds 20", store.read_text())
+        self.worker.fetch(("results_branch",))
+        report = json.loads(self.worker.read(self.worker.ref("results_branch"), "observations/history-retuned/observation.json"))
+        self.assertEqual(report["status"], "waiting_for_run")
+        self.assertFalse(report["training_started"])
+        self.assertEqual(report["collector_code_sha"], self.sha)
 
 
 class ValidationTest(unittest.TestCase):
