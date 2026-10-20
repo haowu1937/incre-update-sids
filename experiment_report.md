@@ -18,6 +18,7 @@
 | Base/Plain Update TIGER 微调后的 Future ranking | completed，用户回传 | 各训练 2000 步、均选 step 500；Plain 的 Recall@10 / NDCG@10 相对低 19.47% / 16.13% |
 | History-aware RQ-VAE + 同口径评估 | failed / 预算未完成，用户回传 | 完成 418 步，第 419 次更新分配时 suffix 容量耗尽；磁盘 checkpoint 为 step 400，最终 anchor、排名与 Future 未运行 |
 | History-aware 容量失败受限重放 | completed / overflow_reproduced，用户回传 | 401—418 日志观测值匹配；第 419 次分配的桶 [13,26,8] 含 266 项，超过 256 容量；该桶无旧槽位预留 |
+| 调参后配对 Plain / History-aware 主实验 | code delivered / server not_run | 两组均从同一 Base 重新开始；lr=1e-4、裁剪 0.1，历史组 λ=1e-4、temperature=0.5、anchor batch=128；各 1000 步，见第 6.4 节 |
 
 当前结论：
 
@@ -27,6 +28,7 @@
 4. 保留旧 history suffix 后，anchor_holdout 平均 ΔNLL 仍为 +0.189471，H 为 0.283439，损伤仍存在。该条件是输入诊断，不是可部署的完整 SID 映射；不能将两个条件的差直接当作可加的 suffix 因果贡献。
 5. 本轮 History-aware 以 1000 步、λ=0.001 启动，完成 418 步后在第 419 次更新的分配阶段中止；checkpoint 只保存到 step 400，完整 anchor/holdout 尚未评估。受限重放已复现：语义码 [13,26,8] 当前聚集 266 项，超过 suffix 容量 256，且该桶旧保留槽宽为 0。这次是当前碰撞桶本身超限，并非旧槽位预留挤占；仍有 5981 个不同三层语义码，不能称为完全坍缩。具体原因及证据边界见第 6.3 节；收益尚未验证，1000 步仍是配对预算，不是已证明收敛或最优的上限。
 6. 四组 Future 结果已回传：相同覆盖率 80.555149% 下，Plain 冻结 TIGER 的 Recall@10 为 0.099447%，低于 Base 的 0.678581%；配对微调后为 0.979847%，仍低于 Base 的 1.216766%。微调缩小了差距，本轮尚未观察到 Plain 码本更新带来的 Future 排名收益。详见第 5 节，不与固定旧 target 的历史诊断混用。
+7. 针对局部集中，下一轮降低更新幅度、平滑历史 STE 并增加 anchor batch，同时重跑相同内容配置的 Plain，避免将降低学习率本身带来的稳定性误归于历史惩罚。参数由训练失败证据确定，未通过 holdout/Future 调参。新配置尚无服务器结果，不预设其能改善碰撞或兼容性。
 
 ## 2. 固定设置与评价口径
 
@@ -35,7 +37,7 @@
 - Update 训练物品组：Base train 10924、Base validation 首见 255、Update train 首见 528。
 - 特征：本地冻结 Llama7B，title / categories / description；最后层 hidden states，长度 1024，padding 清零后 sum/1024；输出 float32 / 4096 维，无额外归一化、投影或微调。
 - RQ-VAE：4096 → 512 → 256 → 128 → 64，镜像 decoder，3×256 semantic codebooks。外层 quantization loss weight=0.25，无 BN、dropout、CF、graph 或 Sinkhorn。
-- Update：AdamW，lr=0.001、weight_decay=0、batch_size=256、seed=2026；从同一 Base 全权重开始，Update 起点重置优化器，不重新初始化码本。冻结的是 Llama 内容模型，不是 RQ-VAE encoder。
+- 已完成 Plain 和首次中止 History-aware 的 Update：AdamW，lr=0.001、weight_decay=0、batch_size=256、seed=2026；从同一 Base 全权重开始，Update 起点重置优化器，不重新初始化码本。第 6.4 节新配对实验使用不同学习率和裁剪，单独记录。冻结的是 Llama 内容模型，不是 RQ-VAE encoder。
 - 完整 SID：3 个 semantic digits + 固定容量 256 的 suffix；token offsets=[1,257,513,769]，PAD=0、EOS=1025、vocab_size=1026。新版本预留旧 slots、保留未移动物品的 suffix，其他物品按 registry 顺序追加。
 - Base TIGER：随机初始化的 repository T5，4 encoder / 4 decoder layers，d_model=128、d_ff=1024、num_heads=6、d_kv=64、dropout=0.1；batch=128、lr=0.003、weight_decay=0.05、warmup=200、seed=2026。
 - TIGER 最多训练 5000 步，按固定 512-query probe 的 full-denominator NDCG@10 选择 checkpoint；最终选中 step 4500。最终表格使用完整 Base validation，不用 probe 代替。
@@ -43,7 +45,7 @@
 - History-only：teacher 参数冻结，history 重编码，target 完整旧 SID 与 EOS、teacher-forced target prefix、可用性 mask 和位置不变。原来不可用的 history 保持 PAD，不因 Update 已观察到物品而补入。
 - NLL 为 5 个 target tokens 的序列损失之和。ΔNLL=new−old；H=mean(max(ΔNLL,0))。H 不允许预测增益抵消损伤；平均 ΔNLL 允许抵消。token CE 的差等于序列 ΔNLL/5。
 - Anchor：seed=2026 的 user-hash 分组，各取 4096 queries；train=2648 users、holdout=2613 users，用户不重叠。holdout 仅对历史惩罚训练留出，并非对 Base TIGER 训练留出；此 cohort 已在旧探索中查看，不称为新的盲测。
-- 95% 区间：500 次用户聚类 bootstrap，重采样后以 query 加权计算平均 ΔNLL；这里的区间不属于 H 或排名差。
+- 已回传结果的 95% 区间：500 次用户聚类 bootstrap，重采样后以 query 加权计算平均 ΔNLL；这些区间不属于 H 或排名差。第 6.4 节新入口另外计算配对 H 差的专属区间，不能与平均 NLL 差区间混用。
 
 ## 3. 内容训练结果
 
@@ -275,6 +277,37 @@ Step 400 的 processed_examples=101848，anchor_sampler_epoch=4，anchor_changed
 原 run 未被续跑（original_run_continued=false），没有写入新训练 checkpoint（checkpoint_written=false），受监测输入前后 hash 不变（observed_inputs_unchanged=true）；holdout_evaluated=false、future_evaluated=false。重放中的 418 步参数是诊断内存状态，不是新的磁盘训练 checkpoint；磁盘保存点仍为 400。诊断耗时 35.141653 秒，这是受限重放耗时，不是原训练总耗时。回传 diagnostic_source_sha256=`a3a5098769fe37dc9390250755367286e7f73e1d81f85fb4c87055adf4ab6646`，与交付诊断文件内容一致；原 run commit 仍为 `35d135b4273adf5203e42ec9100f706563b4daa1`。云端核对了 compact、源码语义和计数，没有读取服务器权重、attempts.jsonl 或逐步日志独立重放；日志观测值相符不等于逐 bit 权重相符。
 
 本轮只完成失败诊断与报告更新，没有改变容量、offsets、allocator、λ、优化器或训练过程，没有完成修复。后续修复应显式处理参数更新后的容量可行性与失败状态保全；若引入回滚、减小步长重试或其他约束，应单独标为新优化变体并记录成本，不能将其冒称为原 1000 步配对实验完成。本诊断没有新增完整 anchor/holdout、Base validation 或 History-aware Future 结果。
+
+
+### 6.4 调参后的配对主实验（代码已交付，服务器 not_run）
+
+用户要求分析不健康碰撞并调整参数重跑。本轮直接证据是 step 400→418 最大完整语义桶由 118 增至 266，unique codes 从 7366 降至 5981；最后一步 unique codes 略增却仍溢出。固定容量下的尾部集中已破坏完整 SID 可分配性，逐层码本利用率正常不能排除此问题。
+
+源码给出的待验证机制如下，尚未分别隔离因果贡献：历史 STE 的软分配为 softmax(-distance/(Base 固定尺度 × temperature))，经残差同时向 encoder 和三个码本反传；encoder 更新会影响整个目录。temperature=0.1 的代理梯度可能对距离变化敏感，32-query anchor minibatch 可能带来较大波动。原目标只有重构、量化和冻结 teacher 的正部损伤，没有均衡分配或每桶容量约束。原 lr=1e-3 配合无裁剪的混合目标可能过于激进；原 Plain 在此学习率完成 1000 步，并不证明加入历史梯度后仍稳定。日志只有混合梯度，尚不能证明是其中某一项导致集中。
+
+step 418 的 λH 约占总 loss 的 2.33%，这不限制其梯度影响；STE、残差传播和 Adam 按参数自适应缩放使标量占比不足以诊断更新大小。提高温度、降低 λ 和学习率均为待检验的稳定化选择，不能据此保证梯度或参数位移严格按比例下降。多项参数同时改变，本轮是配方重跑，不是逐项消融。
+
+| 设置 | 首次失败 History-aware | 新 Plain 对照 | 新 History-aware |
+| --- | ---: | ---: | ---: |
+| 内容学习率 | 0.001 | 0.0001 | 0.0001 |
+| 历史惩罚 λ | 0.001 | 0 | 0.0001 |
+| STE temperature | 0.1 | 不应用历史梯度 | 0.5 |
+| anchor minibatch | 32 | 无历史训练 | 128 |
+| 全局梯度裁剪 max_norm | 无 | 0.1 | 0.1 |
+| Update optimizer steps | 目标 1000，实际完成 418 | 固定 1000 | 固定 1000 |
+| 内容 batch / weight_decay / seed | 256 / 0 / 2026 | 256 / 0 / 2026 | 256 / 0 / 2026 |
+
+两个新分支均 fresh warm-start 同一 Base RQ-VAE `23d4163c…` 并重置 AdamW。不会从失败 step 400/418 或旧 Plain step 1000 接着训练；保持 3-hidden/e64、3×256 码本、RQ 损失和全部参数可训练。Llama 特征、Base teacher、完整 SID/256 suffix、旧 target、mask/位置与原 cohorts 保持原协议。只有 anchor_train 进入历史训练；训练长度固定，不按 holdout/validation/Future 选择 checkpoint。最终均使用 last step 1000。旧 lr=1e-3 Plain 保留为已有结果，新配对 Plain 是新主比较对象。
+
+新增独立 `train_retuned_historical.py` 和 `scripts/run_llama_history_retuned.sh E1_DIR [EXISTING_RUN_TO_RESUME]`，不修改 E1 hash 绑定的原训练/分配源码。两组都在每次 optimizer.step 后对全部 11707 项检查原完整 SID 分配容量，写出更新后 unique codes、最大桶、每层使用数和容量审计；历史 H 和梯度指标明确属于更新前，避免重复原日志的时间点混淆。每 25 步记录 RQ 与未加权历史梯度的分组范数、加权历史/RQ 比值及夹角，并记录每步合成梯度的裁剪前范数和是否裁剪。
+
+两组采用同一项新增保护：保存最近可行模型、optimizer、内容 sampler、anchor sampler 和 RNG；若更新后的容量不可行，保存独立 `rejected_candidate.pth`（明确不可导出/不可作为普通 resume checkpoint），回滚 `last.pth` 并停止。不自动调参重试、不扩充 suffix、不改用 old-suffix 目标。此保护不能防止所有不健康但尚未溢出的集中；完整碰撞轨迹仍需审核。若任一组不能完成预算，不执行最终配对评估，也不将较短轨迹标成主实验成功。正常中断可在同一 commit/config 下显式 resume；容量/训练错误保留失败结果，禁止在同一输出里自动重试。
+
+两组完成后核对同一初始化、配置（仅 λ 不同）、optimizer 参数组和内容 sampler 终点；验证保存 checkpoint 重载后 assignments 相同。随后自动评估同一 frozen teacher：anchor_train、anchor_holdout、Base validation 的旧 NLL、新 full-SID NLL、平均 ΔNLL、H、重构、churn、碰撞与 Base validation 排名。old-suffix 仅单列为诊断条件。新入口对 Historical−新 Plain 的平均 NLL 差及正部损伤 H 差分别做用户聚类 bootstrap 区间；H 差区间不借用 NLL 区间。排名保留旧 Base 地址目录、full denominator、原 beam/seen-filter 口径并复核旧 Base 排名。额外的 TIGER Update 微调和 History-aware Future 仍为 not_run，不能从 anchor 结果推断 Future 收益。
+
+产物在全新 `results/incremental/Beauty/llama_history_retuned_<timestamp>_<suffix>/experiment`，含 `request.json`、两组 checkpoint/summary、每步 metrics、`pair_checks.json`、evaluation 逐 query 明细、`summary.json` 和 `compact.json`。原 Base、旧 Plain、teacher checkpoint 与 E1 summary 前后核对 hash；原失败 run 不写入。后续 attempt 使用新日志目录，部分 evaluation 中断后在新 attempt 重算，保留旧文件。启动脚本允许已获用户说明的未跟踪 `verify_incremental_embeddings.py` 留在现场；其他工作区修改仍停止。
+
+该配方有额外历史计算、梯度探针、全目录检查和状态快照成本，等步数不等算力；记录两组训练 loop 耗时、总耗时和总峰值 CUDA 内存，不声称两组总算力相同。云端 4 项纯协议检查、Python/Bash 语法通过；2 项真实模型集成检查尚未执行（云端无 PyTorch）：一项覆盖完整配对、固定 labels、排名及含 optimizer/双 sampler/RNG 的中断精确恢复；一项用合成审计失败验证更新后回滚、候选隔离与原输入不变。后者是保护机制测试，不是另一次真实坍缩证据。服务器启动脚本要求原真实模型检查与这两项新集成检查通过后才训练。当前没有新服务器训练/评估数字，状态 not_run；没有更新 HANDOFF。
 
 ## 7. 产物与身份索引
 
