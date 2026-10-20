@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "job_id": "mailbox-smoke-002",
+  "worker_id": "server2",
+  "kind": "smoke",
+  "request_sha256": "cc0b2fecd2ea5e621f59edee4228166e13a4ccd5df189128e697e2b8f39361a7",
+  "code_sha": "66d8fb49563fb39d2233a888a23496e8b9db303f",
+  "runner_code_sha": "66d8fb49563fb39d2233a888a23496e8b9db303f",
+  "status": "starting",
+  "started_at": "2026-10-20T11:00:08.075249+00:00",
+  "updated_at": "2026-10-20T11:00:08.076957+00:00",
+  "exit_code": null,
+  "pid": null,
+  "workspace": "/home/hao/frec/git-lab-buffer/workspaces/mailbox-smoke-002",
+  "log_path": "/home/hao/frec/git-lab-buffer/logs/mailbox-smoke-002.log",
+  "log_tail": "logs/mailbox-smoke-002.tail.txt",
+  "artifacts": [],
+  "training_started": false
+}
