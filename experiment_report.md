@@ -17,6 +17,7 @@
 | Base/Plain 冻结 TIGER 的 Future ranking | completed，用户回传 | 相同 Update 部署目录；Plain 的 Recall@10 / NDCG@10 相对低 85.34% / 89.05% |
 | Base/Plain Update TIGER 微调后的 Future ranking | completed，用户回传 | 各训练 2000 步、均选 step 500；Plain 的 Recall@10 / NDCG@10 相对低 19.47% / 16.13% |
 | History-aware RQ-VAE + 同口径评估 | failed / 预算未完成，用户回传 | 完成 418 步，第 419 次更新分配时 suffix 容量耗尽；磁盘 checkpoint 为 step 400，最终 anchor、排名与 Future 未运行 |
+| History-aware 容量失败受限重放 | completed / overflow_reproduced，用户回传 | 401—418 日志观测值匹配；第 419 次分配的桶 [13,26,8] 含 266 项，超过 256 容量；该桶无旧槽位预留 |
 
 当前结论：
 
@@ -24,7 +25,7 @@
 2. 固定旧 target 和冻结旧 TIGER 后，Plain 的 anchor_holdout 平均序列 ΔNLL 为 +0.235389，用户聚类 bootstrap 95% 区间为 [0.207473, 0.264948]；正部损伤 H 为 0.331016。本轮观察到了历史输入重编码损伤。
 3. Base validation 的 Recall@10 从 1.936466% 降至 1.533943%（相对下降 20.79%），NDCG@10 从 0.01079385 降至 0.00779528（相对下降 27.78%）。这是冻结 TIGER、旧 target 地址下的兼容性排名结果。
 4. 保留旧 history suffix 后，anchor_holdout 平均 ΔNLL 仍为 +0.189471，H 为 0.283439，损伤仍存在。该条件是输入诊断，不是可部署的完整 SID 映射；不能将两个条件的差直接当作可加的 suffix 因果贡献。
-5. 本轮 History-aware 以 1000 步、λ=0.001 启动，完成 418 步后在第 419 次更新的分配阶段因新版本 suffix 容量耗尽中止；checkpoint 只保存到 step 400，未形成完整 anchor/holdout 评估。该异常证明当时完整 SID 分配不可行，不足以证明码本完全坍缩；收益尚未验证。1000 步仍是配对预算，不是已证明收敛或最优的上限。
+5. 本轮 History-aware 以 1000 步、λ=0.001 启动，完成 418 步后在第 419 次更新的分配阶段中止；checkpoint 只保存到 step 400，完整 anchor/holdout 尚未评估。受限重放已复现：语义码 [13,26,8] 当前聚集 266 项，超过 suffix 容量 256，且该桶旧保留槽宽为 0。这次是当前碰撞桶本身超限，并非旧槽位预留挤占；仍有 5981 个不同三层语义码，不能称为完全坍缩。具体原因及证据边界见第 6.3 节；收益尚未验证，1000 步仍是配对预算，不是已证明收敛或最优的上限。
 6. 四组 Future 结果已回传：相同覆盖率 80.555149% 下，Plain 冻结 TIGER 的 Recall@10 为 0.099447%，低于 Base 的 0.678581%；配对微调后为 0.979847%，仍低于 Base 的 1.216766%。微调缩小了差距，本轮尚未观察到 Plain 码本更新带来的 Future 排名收益。详见第 5 节，不与固定旧 target 的历史诊断混用。
 
 ## 2. 固定设置与评价口径
@@ -239,7 +240,7 @@ Anchor 两组 history_changed_fraction 均为 0.99462890625；Base validation �
 
 Step 400 的 processed_examples=101848，anchor_sampler_epoch=4，anchor_changed_history_fraction=1.0；合成梯度范数为 encoder=0.033068541437、decoder=0.003261050209、codebooks=0.007837447338。这些是总目标的梯度范数，没有分别记录 RQ/历史梯度，不能据其数值或 λH 占比认定具体梯度机制。
 
-分配规则是对每个 semantic prefix 保留 Base 已占用地址，再为当前改变 prefix 的旧物品和新物品追加 suffix。因此所需槽位为该 prefix 的旧保留槽宽加当前迁入/新增数，可能大于当前物品桶大小。每次使用固定的 Base registry 重建，不是跨 optimizer steps 永久累积已用槽位。异常只能确认失败时至少一个 prefix 需要超过固定 256 个槽位；失败快照的实际桶大小、unique codes、逐层码本利用率未保存到所贴日志，不能将其记作“完全坍缩”。
+分配规则是对每个 semantic prefix 保留 Base 已占用地址，再为当前改变 prefix 的旧物品和新物品追加 suffix。因此所需槽位为该 prefix 的旧保留槽宽加当前迁入/新增数，可能大于当前物品桶大小。每次使用固定的 Base registry 重建，不是跨 optimizer steps 永久累积已用槽位。原 traceback 仅能确认失败时至少一个 prefix 需要超过固定 256 个槽位；当时所贴日志未包含失败参数的桶大小、unique codes 或逐层码本利用率。后续受限重放补齐这些统计，确定本次溢出桶没有旧槽位预留，见第 6.3 节。
 
 2026-10-20 用户回传只读检查结果：run_commit=`35d135b4273adf5203e42ec9100f706563b4daa1`；最后成功记录为 step 418、epoch=10、processed_examples=106387，total_loss=0.017141789198、rq_loss=0.016743104249、平均序列 ΔNLL=+0.264655411243、H=0.398684948683，anchor_changed_history_fraction=1.0、anchor_sampler_epoch=4。总目标梯度范数为 encoder=0.037496332079、decoder=0.006189642940、codebooks=0.001894956222。
 
@@ -249,7 +250,7 @@ Step 400 的 processed_examples=101848，anchor_sampler_epoch=4，anchor_changed
 
 本次 1000 步训练、最终完整 SID 导出、最终配对检查、完整 anchor_train/anchor_holdout、Base validation 排名及 History-aware Future 均未完成。不能将当步 32-query H 与 Plain 的完整 4096-query holdout H 比较，也不能用未完成预算的轨迹判断相同步数收益。训练可行性和容量失败需作为负结果保留；目前既没有 History-aware 胜于 Plain 的证据，也没有完整配对评估证明其更差。
 
-### 6.3 受限失败诊断（code_provided，尚未获服务器结果）
+### 6.3 受限失败诊断（completed，用户回传 overflow_reproduced）
 
 新增独立 `diagnose_historical_capacity.py` 与 `scripts/run_llama_capacity_diagnostic.sh FAILED_RUN_DIR`。仅在新输出目录中恢复 step 400 的模型、optimizer、内容/anchor sampler 和 RNG，按原配置重放 401—418，再检查第 419 次分配；不会续跑原 1000 步实验或写入新的训练 checkpoint。原 engine、原 allocator、suffix 容量和 source/data/environment 绑定不变，不改 λ、不切换 old-suffix 条件。
 
@@ -259,7 +260,21 @@ Step 400 的 processed_examples=101848，anchor_sampler_epoch=4，anchor_changed
 
 本地 7 项纯协议检查、Python/Bash 语法与 diff 检查通过，覆盖重放步数上限、日志连续性/数值偏差、完整与部分分配集中、非法码、输入目录保护和路径文本解析。另提供 2 项真实 RQ-VAE/TIGER 小模型重放检查：从中间模型/optimizer/两套 sampler/RNG 恢复并匹配原日志，以及首个日志偏差时停止并保持输入文件不变。云端没有 Torch，这两项未执行；服务器启动脚本要求它们通过后才运行实际诊断。诊断本身不使用 holdout/Future，不构成新的优化变体或最终 anchor 评价。
 
-当前尚无失败参数的码本利用率/桶分布或诊断结果；容量/优化策略的修复仍需据其证据单独说明，不能把诊断工具交付当作修复完成。
+2026-10-20 用户回传实际诊断 compact：`execution_status=completed`、`outcome=overflow_reproduced`；输出为 `results/incremental/Beauty/llama_capacity_diag_20261020T090834Z_Zic7HT`。从磁盘 step 400 恢复，401—418 共 18 个成功步骤的已记录观测值均在上述容差内匹配；在已完成 418 次 optimizer 更新的参数上，第 419 次尝试由原 allocator 再次抛出同一容量异常。第 419 次没有执行 optimizer 更新。
+
+| 参数已完成 optimizer 步数 | 诊断分配尝试 | 不同三层语义码数 | 最大当前完整语义桶 | 最大所需 suffix 容量 | 三层码本使用数 / 各层容量 256 | 各长度最大前缀桶（L1 / L1–L2 / L1–L3） | 完整 SID 可分配 |
+| --- | ---: | ---: | ---: | ---: | --- | --- | --- |
+| 400（磁盘 checkpoint） | 401 | 7366 | 118 | 118 | 101 / 176 / 228 | 1409 / 250 / 118 | true |
+| 417（最后匹配尝试的更新前） | 418 | 5980 | 228 | 228 | 92 / 168 / 214 | 2050 / 566 / 228 | true |
+| 418（失败尝试的更新前） | 419 | 5981 | 266 | 266 | 94 / 175 / 216 | 2054 / 613 / 266 | false |
+
+唯一回传的溢出桶为三层语义码 `[13,26,8]`：current_bucket_items=266、reserved_old_slots=0、reserved_slot_width=0、appended_items=266、required_capacity=266，固定 suffix_capacity=256，超出 10 个槽位。因此，本次具体触发原因是当前桶本身已超过容量，不是 Base 旧槽位预留挤占。第 6.2 节的预留规则仍是分配器的一般规则，但不能用作这次溢出桶的具体解释。
+
+失败参数下，最大完整语义桶占目录 266/11707=2.272145%，三层码本仍分别使用 94、175、216 个 codeword；`all_items_share_one_full_semantic_code=false`。应描述为局部过度集中导致完整 SID 不可分配，不能称为“所有物品的三层语义码完全坍缩”。相对 step 400，最大完整桶由 118 增至 266，不同完整语义码由 7366 降至 5981；但是 step 417→418 的 unique codes 从 5980 略增至 5981，同时最大桶继续扩大，说明单看 unique codes 或逐层利用率不足以保证每桶容量可行。现有证据定位了分配失败的直接原因，没有隔离历史梯度、内容梯度、学习率或 STE 对集中趋势的因果贡献，也没有同一步 Plain 的配对集中度诊断。
+
+原 run 未被续跑（original_run_continued=false），没有写入新训练 checkpoint（checkpoint_written=false），受监测输入前后 hash 不变（observed_inputs_unchanged=true）；holdout_evaluated=false、future_evaluated=false。重放中的 418 步参数是诊断内存状态，不是新的磁盘训练 checkpoint；磁盘保存点仍为 400。诊断耗时 35.141653 秒，这是受限重放耗时，不是原训练总耗时。回传 diagnostic_source_sha256=`a3a5098769fe37dc9390250755367286e7f73e1d81f85fb4c87055adf4ab6646`，与交付诊断文件内容一致；原 run commit 仍为 `35d135b4273adf5203e42ec9100f706563b4daa1`。云端核对了 compact、源码语义和计数，没有读取服务器权重、attempts.jsonl 或逐步日志独立重放；日志观测值相符不等于逐 bit 权重相符。
+
+本轮只完成失败诊断与报告更新，没有改变容量、offsets、allocator、λ、优化器或训练过程，没有完成修复。后续修复应显式处理参数更新后的容量可行性与失败状态保全；若引入回滚、减小步长重试或其他约束，应单独标为新优化变体并记录成本，不能将其冒称为原 1000 步配对实验完成。本诊断没有新增完整 anchor/holdout、Base validation 或 History-aware Future 结果。
 
 ## 7. 产物与身份索引
 
@@ -285,6 +300,7 @@ Step 400 的 processed_examples=101848，anchor_sampler_epoch=4，anchor_changed
 | Future 报告片段 | `results/incremental/Beauty/llama_future_20261019T142547Z_OQS0aL/evaluation/experiment_report_fragment.md` |
 | History-aware 中止 run | `results/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc`；`train.log`、`paths.txt`、`commit.txt` |
 | History-aware partial checkpoint / 逐步日志 | `ckpt/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc_1000/last.pth` 为 step 400；同目录 `metrics.jsonl` 最后成功步为 418 |
+| History-aware 容量失败诊断 | `results/incremental/Beauty/llama_capacity_diag_20261020T090834Z_Zic7HT`；诊断输出 `summary.json`、`compact.json`、`attempts.jsonl`、`replay.jsonl`（本轮回传 compact 与目录，其他文件未独立读取） |
 | History-aware 最终评估（未运行） | `results/incremental/Beauty/llama_history_aware_20261019T155320Z_Yk6Nlc/evaluation` 为预设输出路径，不视作已生成有效结果 |
 
 已回传 SHA256：
