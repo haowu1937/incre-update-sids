@@ -1,0 +1,1 @@
+{"schema_version": 1, "worker_id": "server2", "status": "installed_smoke_only", "allowed_kinds": ["smoke"], "time": "2026-10-20T10:57:17.220293+00:00", "training_started": false}
