@@ -138,5 +138,24 @@ class Handoff(unittest.TestCase):
         t['timeout_seconds']=9999;raw=control.encoded(t);state['request_sha256']=runner.digest(raw)
         with self.assertRaises(ValueError): bridge.authorize(self.root,t,raw,state)
 
+    def test_preflight_repair_requires_exact_failure_and_zero_spent_budget(self):
+        state,_=self.c.read()
+        state['extension'].update(status='controlled_queued',logs_analysis_receipt={'report_commit_sha':'a'*40})
+        t=bridge.task(self.d,self.sha,job_id=bridge.CONTROLLED_REPAIR);raw=control.encoded(t)
+        state.update(active_job_id=t['job_id'],request_sha256=runner.digest(raw))
+        with self.assertRaisesRegex(ValueError,'Repair lacks evidence'):bridge.authorize(self.root,t,raw,state)
+        authorization=dict(failed_job_id=bridge.CONTROLLED,diagnostic_steps_spent=0,
+            mandatory_real_model_checks_passed=True,code_sha=self.sha,
+            failed_artifact_sha256='e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f')
+        state['extension']['controlled_repair_authorization']=authorization
+        self.assertTrue(bridge.authorize(self.root,t,raw,state))
+        for key,value in [('diagnostic_steps_spent',1),('mandatory_real_model_checks_passed',False),
+                          ('code_sha','0'*40),('failed_artifact_sha256','0'*64)]:
+            prior=authorization[key];authorization[key]=value
+            with self.assertRaisesRegex(ValueError,'Repair lacks evidence'):bridge.authorize(self.root,t,raw,state)
+            authorization[key]=prior
+        with self.assertRaisesRegex(ValueError,'Unknown controlled job'):
+            bridge.task(self.d,self.sha,job_id='arbitrary-repeat')
+
 
 if __name__=='__main__':unittest.main()

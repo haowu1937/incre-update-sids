@@ -42,7 +42,7 @@ def save(path,value):
 def task_output(deployment_path,output):
     d=json.loads(Path(deployment_path).read_text());output=Path(output).resolve()
     job_id=os.environ.get('LAB_BUFFER_JOB_ID')
-    if (job_id != 'history-gradient-controlled-001'
+    if (job_id not in ('history-gradient-controlled-001','history-gradient-controlled-repair-001')
             or ROOT != (Path(d['runner_root'])/'workspaces'/str(job_id)).resolve()
             or ROOT not in output.parents or output.exists()
             or subprocess.check_output(['git','-C',str(ROOT),'rev-parse','HEAD'],text=True).strip()!=os.environ.get('LAB_BUFFER_CODE_SHA')):

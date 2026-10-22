@@ -547,6 +547,18 @@ Every micro-update records hard full-SID capacity, fixed-anchor H, actual displa
 
 Local validation: two diagnostic protocol checks and 42 existing Runner/control/Git tests passed; Python 3.10 syntax and whitespace checks passed. Two new real-model checks could not run locally because PyTorch is absent. The server job must pass those checks before loading Beauty or spending diagnostic updates. Results remain pending; this delivery does not establish a direction of change in hard H. After verification, report all branches including plateaus and failures, then stop before any lambda or STE decision.
 
+### 6.13 Diagnostic preflight failure and narrowly scoped repair
+
+<!-- history-gradient-preflight-failure:e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f -->
+
+The real Runner executed `history-gradient-controlled-001` at code `e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d` on 2026-10-22, finishing with exit 1 at 10:48:31 UTC. Both real-model checks stopped during fixture construction: the reused tiny Plain checkpoint had hard training H=0. The diagnostic correctly rejected that start. This was a test-fixture error, not an observed failure of History-aware optimization or the real final Historical checkpoint. The production Beauty context was never initialized; zero Beauty diagnostic optimizer steps were spent. The Runner's `training_started=true` flag indicates that the diagnostic process launched, not that it passed preflight or updated Beauty weights.
+
+Failure evidence is retained under `lab-results:jobs/history-gradient-controlled-001.json`, its log tail and `artifacts/history-gradient-controlled-001/outputs/controlled/compact.json`; compact SHA256 `e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f`, request SHA256 `3b45f6fba4277287df55a0c6752ebfd5110af9368b74a63cb42467a833793c1d`. The returned checks log shows both errors before the production `run` call; no optimizer-count journal exists. Only temporary synthetic fixtures performed checks, including their synthetic validation. No Beauty holdout, Base validation or Future evaluation ran.
+
+The repaired fixture deterministically permutes actual tiny-model codeword rows until real frozen-TIGER hard scoring confirms positive H, while preserving code vectors and the production positive-H check. It does not fabricate NLL values, remove guards or alter the scientific recipe. Local results after the repair: two protocol tests and 43 Runner/control/Git tests passed, including rejection of a repair without exact preflight-failure evidence, zero spent budget and real-model-check attestation. The two real-model tests still require server execution; no repaired ML result is claimed locally.
+
+Deployment limitation: the installed revision-2 gate hard-codes the first diagnostic job ID. A fresh repair ID therefore requires one explicit idle-Runner helper attachment; Git-only dispatch cannot safely replace that gate. `scripts/lab_buffer/attach_gradient_repair.py` validates the exact failed artifact and installed helper hashes, refuses live tasks/uncertainty, runs mandatory real-model CPU checks, backs up and replaces only the gradient gate, then queues `history-gradient-controlled-repair-001` at its full code SHA. Cron, main checkout, original inputs and prior records remain intact. Dispatch stays paused pending that attachment; the existing hourly Web task can continue observing. The repair retains the same remaining 60-step maximum, fixed lambda/STE and train-only protocol. No repeated repair or parameter change is authorized on another failure.
+
 ## 7. Artifact and identity index
 
 Paths below are relative to the server project root. These server files have not been read directly in the cloud.

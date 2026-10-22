@@ -11,6 +11,8 @@
   "migration_job_id": "history-future-accept-002",
   "migration_is_repair": false,
   "controlled_job_id": "history-gradient-controlled-001",
+  "controlled_preflight_repair_job_id": "history-gradient-controlled-repair-001",
+  "repair_restriction": "Only the identified zero-Beauty-update positive-H synthetic fixture failure; fresh job and code, same remaining 60-step budget; no automatic repeat",
   "max_diagnostic_optimizer_steps": 60,
   "steps_per_branch": 5,
   "optimizers": [

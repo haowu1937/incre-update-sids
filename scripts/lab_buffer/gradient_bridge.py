@@ -20,6 +20,7 @@ from main_control import encoded, job as legacy_job
 SCOPE = 'history-gradient-v1'
 MIGRATION = 'history-future-accept-002'
 CONTROLLED = 'history-gradient-controlled-001'
+CONTROLLED_REPAIR = 'history-gradient-controlled-repair-001'
 PLAN = 'docs/lab_buffer/history_gradient_plan.json'
 
 
@@ -31,8 +32,10 @@ def migration_requested(deployment_path):
     return bool(raw and json.loads(raw).get('extension', {}).get('scope_id') == SCOPE)
 
 
-def task(deployment, code_sha, created_at=None):
-    value = dict(schema_version=1, job_id=CONTROLLED, worker_id='server2', kind='experiment',
+def task(deployment, code_sha, created_at=None, job_id=CONTROLLED):
+    if job_id not in (CONTROLLED,CONTROLLED_REPAIR):
+        raise ValueError('Unknown controlled job or repair')
+    value = dict(schema_version=1, job_id=job_id, worker_id='server2', kind='experiment',
         code_sha=code_sha, created_at=created_at or now(), timeout_seconds=1800,
         argv=['python', '-u', '-B', 'diagnose_history_gradients.py', '--deployment',
               str(Path(deployment['runner_root'])/'main-deployment.json'), '--output', 'outputs/controlled'],
@@ -53,7 +56,14 @@ def authorize(root, request, raw, state):
     elif ex['status'] == 'controlled_queued':
         if not ex.get('logs_analysis_receipt'):
             raise ValueError('Existing gradient observations must be analyzed before any optimization')
-        expected = task(deployment, state['code_sha'], request['created_at'])
+        if request['job_id']==CONTROLLED_REPAIR:
+            repair=ex.get('controlled_repair_authorization',{})
+            if (repair.get('failed_job_id')!=CONTROLLED or repair.get('diagnostic_steps_spent')!=0
+                    or repair.get('mandatory_real_model_checks_passed') is not True
+                    or repair.get('code_sha')!=state['code_sha']
+                    or repair.get('failed_artifact_sha256')!='e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f'):
+                raise ValueError('Repair lacks evidence of the exact preflight-only fault and zero Beauty updates')
+        expected = task(deployment, state['code_sha'], request['created_at'], request['job_id'])
     else:
         return False
     if request != expected:

@@ -57,6 +57,31 @@ class Real(unittest.TestCase):
         cls.cp['distance_scales']=h.distance_scales(model,cls.ex.features[:cls.ex.groups['base_train'][1]],cls.ex.old_batch)
         cls.cp['config'].update(anchor_batch_size=3,anchor_sampler_seed=2027,temperature=.5,
             compatibility_weight=1e-4,max_grad_norm=.1,batch_size=min(3,len(cls.ex.features)//2))
+        # A trained tiny Plain checkpoint need not have positive hard H. Find a
+        # deterministic *real* token permutation with measured positive H; do
+        # not fabricate NLL references or weaken Engine's production guard.
+        # Permuting rows changes token addresses without changing code vectors.
+        original=copy.deepcopy(cls.cp['state_dict'])
+        permutations=torch.Generator().manual_seed(2026)
+        cls.fixture_search=[]
+        for trial in range(1,33):
+            cls.cp['state_dict']=copy.deepcopy(original)
+            for level in range(3):
+                key='rq.vq_layers.'+str(level)+'.embedding.weight'
+                value=original[key]
+                cls.cp['state_dict'][key]=value[torch.randperm(len(value),generator=permutations)].clone()
+            with tempfile.TemporaryDirectory() as candidate:
+                plan=json.loads((ROOT/'docs/lab_buffer/history_gradient_plan.json').read_text())
+                plan.update(steps_per_branch=2,fixed_anchor_queries=len(cls.ex.cohorts['anchor_train']),full_anchor_eval_steps=[0,1,2])
+                try:
+                    with contextlib.redirect_stdout(io.StringIO()):e=d.Engine(cls.ex,cls.cp,plan,candidate,'cpu')
+                except ValueError as error:
+                    if 'positive hard training H' not in str(error) and 'suffix capacity exhausted' not in str(error):raise
+                    cls.fixture_search.append(dict(trial=trial,rejected=str(error)))
+                    continue
+                cls.fixture_search.append(dict(trial=trial,H=e.initial_full['H']))
+                if e.initial_full['H']>0:break
+        else:raise AssertionError('No measured positive-H synthetic start: '+repr(cls.fixture_search))
 
     @classmethod
     def tearDownClass(cls):cls.fixture.tearDownClass()
@@ -65,7 +90,7 @@ class Real(unittest.TestCase):
         self.tmp=tempfile.TemporaryDirectory();self.addCleanup(self.tmp.cleanup)
         self.output=Path(self.tmp.name)
         self.plan=json.loads((ROOT/'docs/lab_buffer/history_gradient_plan.json').read_text())
-        self.plan.update(steps_per_branch=2,fixed_anchor_queries=3,full_anchor_eval_steps=[0,1,2])
+        self.plan.update(steps_per_branch=2,fixed_anchor_queries=len(self.ex.cohorts['anchor_train']),full_anchor_eval_steps=[0,1,2])
 
     def engine(self):
         with contextlib.redirect_stdout(io.StringIO()):
@@ -75,6 +100,7 @@ class Real(unittest.TestCase):
         import torch
         e=self.engine()
         self.assertGreater(e.initial_full['H'],0)
+        self.assertGreater(e.initial_fixed['H'],0)
         teacher={k:v.clone() for k,v in e.teacher.state_dict().items()}
         first=None
         for obj in ('h_only','rq_only','mixed'):
