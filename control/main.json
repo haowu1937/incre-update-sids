@@ -4,7 +4,12 @@
   "mode": "awaiting_runner_upgrade",
   "pause_requested": true,
   "active_job_id": "history-gradient-controlled-001",
-  "lease": null,
+  "lease": {
+    "token": "8e11591c90f948cc890c1eea79b6c9ce",
+    "owner": "server-explicit-positive-H-fixture-repair",
+    "acquired_at": "2026-10-22T16:04:58.155447+00:00",
+    "expires_at_unix": 1792685998.1554759
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
