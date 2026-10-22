@@ -1,0 +1,34 @@
+{
+  "stage": "history_gradient_scope_migration_v1",
+  "execution_status": "completed",
+  "job_id": "history-future-accept-002",
+  "code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
+  "scope_id": "history-gradient-v1",
+  "training_started": false,
+  "original_trace_inputs_unchanged": true,
+  "main_workspace_written": false,
+  "optimizer_steps_this_task": 0,
+  "checks": {
+    "installed_legacy_sources_verified": true,
+    "trace_source_verified": true,
+    "no_main_checkout_switch": true,
+    "no_cron_change": true,
+    "no_training": true
+  },
+  "runner_upgrade": {
+    "backup": "/home/hao/frec/git-lab-buffer/scope-upgrade-backups/b8e40bd251980509aa48f8cca5d700d0fbee3311",
+    "previous_source_sha256": {
+      "main_control.py": "a4076635081baec728759a9e9b912dc84a99fa7aff9eb383bbff5f250d02614d",
+      "main_service.py": "7669b760ed8feb3d916d411dfbfca206f90604f3dfbebb2a3312dd0fa4715856",
+      "runner.py": "a265153a4e0d64561bba1cd5867cc31eecacf3477e7f3271aeaf09ba8e3125e3"
+    },
+    "installed_source_sha256": {
+      "runner.py": "084d43bb53969270c3a9a1f094b0c7f377d54e41748a96736be1cf9d523780e2",
+      "main_control.py": "0242c995745f474cba644201644995c8392d48b076ada9fad59387e87548288f",
+      "main_service.py": "d9a124b12ca40b8d61d9353957a9054cebfffdae2b6ea86c66715ef4a4f8c114",
+      "gradient_bridge.py": "b6317be11ee7c70b86a4bf2063a335c951ce457a6a45502fa62adb0a9032c681",
+      "gradient_logs.py": "d95d7749aae08bafac13f7da9d066f129f1f06e069e6d6e27eb8752a2ac6e80c"
+    }
+  },
+  "runtime_seconds": 27.502954247407615
+}
