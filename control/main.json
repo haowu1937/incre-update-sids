@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "awaiting_runner_upgrade",
-  "pause_requested": true,
-  "active_job_id": "history-gradient-controlled-001",
-  "lease": {
-    "token": "ab56b53b13414e36901e8d04485ee793",
-    "owner": "server-explicit-positive-H-fixture-repair",
-    "acquired_at": "2026-10-22T16:30:44.339252+00:00",
-    "expires_at_unix": 1792687544.3392794
-  },
+  "mode": "queued",
+  "pause_requested": false,
+  "active_job_id": "history-gradient-controlled-repair-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -31,8 +26,8 @@
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
-  "request_sha256": "3b45f6fba4277287df55a0c6752ebfd5110af9368b74a63cb42467a833793c1d",
+  "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+  "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -85,12 +80,12 @@
     "scope_id": "history-gradient-v1",
     "authorized_at": "2026-10-22",
     "authorization": "User explicitly requested existing gradient logs and bounded controlled diagnosis before lambda or STE changes",
-    "status": "awaiting_runner_upgrade",
+    "status": "controlled_queued",
     "migration_purpose": "explicit scope upgrade + read-only gradient logs; not a repair or Future rerun",
     "legacy_previous_repairs_used": 0,
     "max_diagnostic_optimizer_steps": 60,
     "scope_manifest": "docs/lab_buffer/history_gradient_plan.json",
-    "installed_code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
+    "installed_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
     "legacy_slot": {
       "job_id": "history-future-accept-002",
       "purpose": "explicit scope upgrade + read-only log extraction",
@@ -143,18 +138,14 @@
       "next_job_id": null
     },
     "previous_dispatch_blocker": {
-      "kind": "missing_delivered_controlled_driver",
-      "required_path": "diagnose_history_gradients.py",
-      "checked_code_sha": "8182cb17802da08a4b2341950cee7f9b2b95f75f",
-      "checked_at": "2026-10-22T10:38:36.457Z",
-      "planned_job_id": "history-gradient-controlled-001",
-      "job_submitted": false,
-      "diagnostic_optimizer_steps_spent": 0,
-      "reason": "Fixed gradient_bridge.task entry point is absent from the delivered code; do not dispatch a guaranteed missing-file failure.",
-      "resume_condition": "Deliver and review the fixed 60-step controlled driver with required checks, pin its complete code SHA, then clear this software-readiness pause and resume the same monitor under the existing scope.",
+      "kind": "installed_gate_lacks_fresh_repair_job_id",
       "not_a_user_pause": true,
-      "resolved_by_code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
-      "resolved_at": "2026-10-22T10:47:05.419Z"
+      "reason": "Installed b8e40bd gate only permits history-gradient-controlled-001; a one-time idle-Runner attachment is required for the exact preflight repair. No safe Git-only bootstrap remains.",
+      "required_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+      "planned_job_id": "history-gradient-controlled-repair-001",
+      "job_submitted": false,
+      "resolved_at": "2026-10-22T16:31:10.109807+00:00",
+      "resolved_by_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa"
     },
     "previous_web_monitor_pause": {
       "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -238,19 +229,12 @@
       "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
       "job_id": "history-gradient-controlled-repair-001",
       "entry": "scripts/lab_buffer/attach_gradient_repair.py",
-      "status": "code_delivered_not_attached",
+      "status": "attached",
       "local_runner_checks_passed": 45,
       "local_protocol_checks_passed": 2,
       "real_model_checks": "mandatory in explicit attachment; pending",
-      "remaining_micro_update_budget": 60
-    },
-    "dispatch_blocker": {
-      "kind": "installed_gate_lacks_fresh_repair_job_id",
-      "not_a_user_pause": true,
-      "reason": "Installed b8e40bd gate only permits history-gradient-controlled-001; a one-time idle-Runner attachment is required for the exact preflight repair. No safe Git-only bootstrap remains.",
-      "required_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-      "planned_job_id": "history-gradient-controlled-repair-001",
-      "job_submitted": false
+      "remaining_micro_update_budget": 60,
+      "checks_log_sha256": "e728f5a3ddf3b9057f3b2d11759f53d79e83fef98e650dac584fcc0a6a5bc5a4"
     },
     "attachment_schema_fix_receipt": {
       "schema_version": 1,
@@ -269,6 +253,26 @@
       "beauty_optimizer_steps_spent": 0,
       "processed_at": "2026-10-22T16:11:26.001Z",
       "new_job_submitted": false
+    },
+    "controlled_repair_authorization": {
+      "failed_job_id": "history-gradient-controlled-001",
+      "failed_code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+      "failed_artifact_sha256": "e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f",
+      "diagnostic_steps_spent": 0,
+      "remaining_step_budget": 60,
+      "diagnosis": "Tiny Plain fixture had H=0; deterministic measured positive-H token permutations fix only the test fixture.",
+      "mandatory_real_model_checks_passed": true,
+      "checks_log_sha256": "e728f5a3ddf3b9057f3b2d11759f53d79e83fef98e650dac584fcc0a6a5bc5a4",
+      "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+      "attached_at": "2026-10-22T16:31:10.109775+00:00",
+      "installed_before": {
+        "runner.py": "084d43bb53969270c3a9a1f094b0c7f377d54e41748a96736be1cf9d523780e2",
+        "main_control.py": "0242c995745f474cba644201644995c8392d48b076ada9fad59387e87548288f",
+        "main_service.py": "d9a124b12ca40b8d61d9353957a9054cebfffdae2b6ea86c66715ef4a4f8c114",
+        "gradient_logs.py": "d95d7749aae08bafac13f7da9d066f129f1f06e069e6d6e27eb8752a2ac6e80c",
+        "gradient_bridge.py": "b6317be11ee7c70b86a4bf2063a335c951ce457a6a45502fa62adb0a9032c681"
+      },
+      "backup": "/home/hao/frec/git-lab-buffer/scope-upgrade-backups/positive-H-fixture-3d901876e12ea344d34a59773ca3d03c812235fa"
     }
   },
   "previous_software_pause": {
