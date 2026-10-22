@@ -1,8 +1,8 @@
 {
   "worker_id": "server2",
-  "mode": "queued",
+  "mode": "plan_completed",
   "active_job_id": "history-future-accept-001",
-  "runner_status": "idle",
+  "runner_status": "completed",
   "pause_requested": false,
-  "observed_at": "2026-10-22T08:52:23.966643+00:00"
+  "observed_at": "2026-10-22T08:52:47.585402+00:00"
 }
