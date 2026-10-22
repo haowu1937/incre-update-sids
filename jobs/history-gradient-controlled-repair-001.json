@@ -6,14 +6,27 @@
   "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
   "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
   "runner_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-  "status": "starting",
+  "status": "running",
   "started_at": "2026-10-22T16:32:08.732246+00:00",
-  "updated_at": "2026-10-22T16:32:08.735165+00:00",
+  "updated_at": "2026-10-22T16:32:27.435784+00:00",
   "exit_code": null,
-  "pid": null,
+  "pid": 3727804,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-gradient-controlled-repair-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/history-gradient-controlled-repair-001.log",
   "log_tail": "logs/history-gradient-controlled-repair-001.tail.txt",
   "artifacts": [],
-  "training_started": false
+  "training_started": true,
+  "actual_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+  "argv": [
+    "/home/hao/miniconda3/envs/frec-gpu/bin/python",
+    "-u",
+    "-B",
+    "diagnose_history_gradients.py",
+    "--deployment",
+    "/home/hao/frec/git-lab-buffer/main-deployment.json",
+    "--output",
+    "outputs/controlled"
+  ],
+  "process_started": true,
+  "elapsed_seconds": 0.049
 }
