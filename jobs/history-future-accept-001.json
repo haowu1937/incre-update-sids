@@ -6,14 +6,27 @@
   "request_sha256": "3a1ef2964bfb5da2d17c2c3e5c16c38d9395c5ae01f388462e5a00bfca7f9b7e",
   "code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
   "runner_code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
-  "status": "starting",
+  "status": "running",
   "started_at": "2026-10-22T08:50:22.502188+00:00",
-  "updated_at": "2026-10-22T08:50:22.505053+00:00",
+  "updated_at": "2026-10-22T08:50:33.785201+00:00",
   "exit_code": null,
-  "pid": null,
+  "pid": 3488643,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-future-accept-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/history-future-accept-001.log",
   "log_tail": "logs/history-future-accept-001.tail.txt",
   "artifacts": [],
-  "training_started": false
+  "training_started": false,
+  "actual_code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
+  "argv": [
+    "/home/hao/miniconda3/envs/frec-gpu/bin/python",
+    "-u",
+    "-B",
+    "scripts/lab_buffer/accept_main.py",
+    "--deployment",
+    "/home/hao/frec/git-lab-buffer/main-deployment.json",
+    "--output",
+    "outputs/main-acceptance.json"
+  ],
+  "process_started": true,
+  "elapsed_seconds": 0.047
 }
