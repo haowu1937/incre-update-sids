@@ -512,6 +512,31 @@ The controlled plan uses the final Historical checkpoint with positive H, a fixe
 
 The log collector and scope migration code passed 42 local standard-library/Git/subprocess checks, including a real legacy-parent handoff with simulated trace data. This is not GPU/model evidence. The controlled driver is being prepared. The first job only extracts existing trace observations and upgrades the existing Runner's narrow legacy gate; the controlled job cannot run before a validated log-analysis report/receipt. Source-bound RQ/TIGER/Future implementation files and old artifacts are preserved. New outputs remain under the independent Runner workspaces.
 
+
+### 6.11 Verified existing gradient logs
+
+<!-- history-gradient-logs:0a94dcff5c46ed991481852e9799f1c65be18e24b4e789b82710b394f9cab1c9 -->
+
+Validated the 2026-10-22 server return from `history-future-accept-002`, code `b8e40bd251980509aa48f8cca5d700d0fbee3311`. This was the explicit Runner scope migration and read-only log extraction, not a repair or a repeat of Future acceptance. The returned stage is `history_gradient_scope_migration_v1`, exit code 0, with zero optimizer steps, no model scoring, no main-workspace writes and unchanged original trace bytes. The installed helper hashes match the delivered code; the prior helper hashes match the declared legacy revision. The temporary legacy slot counter was restored to 0, and the original job-001 receipt remains intact.
+
+The source-bound collector validated an exact completed-step sequence 1–1000 from one stable 1,262,217-byte training trace. The cloud received 41 individual component-gradient probes plus summaries, rather than all 1000 raw metric records. Probe steps are 1 and every 25th step through 1000. Recomputed the component distributions, four component-window summaries and norm/weight/ratio arithmetic from these probes. The collector's full-trace sequence and changing-batch H summaries remain server-side checks backed by the reviewed collector source and trace hash.
+
+| Parameter group | Mean RQ gradient norm | Mean unweighted H gradient norm | Mean weighted H/RQ norm ratio | Mean cosine (defined probes) | Negative cosine | Zero H gradient |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Encoder | 0.005929175 | 0.930419261 | 1.6793% | -0.023598 (40) | 22/40, 55.0% | 1/41, 2.4390% |
+| Decoder | 0.002094012 | 0 | 0% | Undefined (0) | Undefined | 41/41, 100% |
+| Codebooks | 0.000244023 | 0.081744113 | 3.3919% | -0.001734 (40) | 21/40, 52.5% | 1/41, 2.4390% |
+
+Ratios are the mean of per-probe `1e-4 * ||g_H|| / ||g_RQ||`, not the ratio of mean norms. Encoder ratios have median 1.3148%, p90 3.8696% and maximum 5.4150%; codebook ratios have median 2.6478%, p90 6.4061% and maximum 12.6885%. The only zero-H encoder/codebook probe is step 1; all 40 subsequent probes are nonzero. Decoder H gradients are zero because the historical input path does not use the RQ decoder. The logs therefore do not support a generally disconnected or vanishing encoder/codebook history gradient in the sampled steps.
+
+Global clipping was never active: 0/1000 steps exceeded the 0.1 threshold. The pre-clip norm has mean 0.006258044, median 0.005825807 and maximum 0.030484244. Clipping suppression is not supported as the explanation for this run. Encoder cosines range from -0.398314 to 0.427430, while codebook cosines range from -0.067621 to 0.039486. These probes show mixed directions, with codebook gradients nearly orthogonal on average, rather than persistent strong opposition. Neither the small weighted ratios nor the cosine summaries identify AdamW's actual displacement or prove that changing lambda would reduce hard-ID H.
+
+The extracted changing-batch H averages confirm the supplied trend: 0.082952994 in steps 1–100 versus 0.129097154 in steps 901–1000; mean delta sequence NLL increases from 0.017155859 to 0.048137641. These are pre-update observations on different anchor batches, not a fixed-checkpoint full-anchor curve. The negative paired full-anchor result in Section 6.6 and the independent Future table remain unchanged.
+
+Evidence: request SHA256 `4cca64fb47ec53f6ad31ef7c7558589f1d7985a5c2251e27c06f9f032655edaf`; returned artifact `artifacts/history-future-accept-002/outputs/main-acceptance.json`, SHA256 `0a94dcff5c46ed991481852e9799f1c65be18e24b4e789b82710b394f9cab1c9`; original trace `historical/attempt_cctqvv8a/metrics.jsonl`, SHA256 `f9cbb7ec65ab80c98413348cb09a410d7361a841b990afc73f186a9202f2e526`; source `train_retuned_historical.py`, SHA256 `6f5c5303457042c68b586ccb5c9ae6899785f93bfa0be0fbcd8b9fb4cca3a088`, identical to the declared original training commit `c61bc13f46374790ac6e95f4f225d11e114ecd2c`; final Historical checkpoint SHA256 `b3d2a4150229d5924a5f267cb6e79efcd030588d1a70172a61935c95536c0e25`.
+
+Next: run only the already declared 12-branch, 60-step maximum training-side diagnostic, measuring actual displacement and fixed-anchor hard H before considering lambda or STE changes. Dispatch is currently blocked because the fixed `gradient_bridge.task` command references `diagnose_history_gradients.py`, which is absent from the delivered `vibe-dev` head `b8e40bd251980509aa48f8cca5d700d0fbee3311`. No controlled job has been submitted and no diagnostic optimizer budget has been spent. A reviewed, checked driver must be delivered and pinned to a complete code SHA before dispatch; the existing helper migration and verified logs need not be repeated.
+
 ## 7. Artifact and identity index
 
 Paths below are relative to the server project root. These server files have not been read directly in the cloud.
