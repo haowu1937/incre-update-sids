@@ -6,15 +6,17 @@
   "request_sha256": "3a1ef2964bfb5da2d17c2c3e5c16c38d9395c5ae01f388462e5a00bfca7f9b7e",
   "code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
   "runner_code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
-  "status": "running",
+  "status": "completed",
   "started_at": "2026-10-22T08:50:22.502188+00:00",
-  "updated_at": "2026-10-22T08:50:33.785201+00:00",
-  "exit_code": null,
+  "updated_at": "2026-10-22T08:51:13.823113+00:00",
+  "exit_code": 0,
   "pid": 3488643,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-future-accept-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/history-future-accept-001.log",
   "log_tail": "logs/history-future-accept-001.tail.txt",
-  "artifacts": [],
+  "artifacts": [
+    "artifacts/history-future-accept-001/outputs/main-acceptance.json"
+  ],
   "training_started": false,
   "actual_code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
   "argv": [
@@ -28,5 +30,9 @@
     "outputs/main-acceptance.json"
   ],
   "process_started": true,
-  "elapsed_seconds": 0.047
+  "elapsed_seconds": 40.085,
+  "artifacts_sha256": {
+    "artifacts/history-future-accept-001/outputs/main-acceptance.json": "966416120907d6c205b188b08b36bafe511efe8783c1291109e4a0832f0e056a"
+  },
+  "finished_at": "2026-10-22T08:51:13.823090+00:00"
 }

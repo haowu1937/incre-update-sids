@@ -1,0 +1,254 @@
+{
+  "stage": "sid_main_existing_future_acceptance",
+  "execution_status": "completed",
+  "job_id": "history-future-accept-001",
+  "code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
+  "future_dir": "/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_historical_future_20261020T154736Z_Gdh50N/evaluation",
+  "retuned_dir": "/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_history_retuned_20261020T123132Z_Edpqdn/experiment",
+  "summary_sha256": "32735aa0b6cecd7ea62287136c5844dbfe4bab5e7a29b6af4791e706d42b8a7a",
+  "training_started": false,
+  "optimizer_steps_this_task": 0,
+  "new_future_predictions": false,
+  "original_inputs_unchanged": true,
+  "protected_input_count": 94,
+  "input_manifest_sha256": "9590ad449c3f74c351a26e16c9eebdc838b0ec8934da0ac4c8912f0981738795",
+  "checks": {
+    "source_and_artifact_bindings": true,
+    "real_rqvae_mapping_reload": true,
+    "real_tiger_reload": true,
+    "selection_recomputed": true,
+    "query_aggregates_recomputed": true,
+    "actual_tiger_budget": true,
+    "same_future_query_identities": true,
+    "exact_returned_observations": true
+  },
+  "compact": {
+    "stage": "retuned_History_aware_Future_evaluation",
+    "execution_status": "completed",
+    "retuned_dir": "/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_history_retuned_20261020T123132Z_Edpqdn/experiment",
+    "config": {
+      "num_layers": 4,
+      "num_decoder_layers": 4,
+      "d_model": 128,
+      "d_ff": 1024,
+      "num_heads": 6,
+      "d_kv": 64,
+      "dropout_rate": 0.1,
+      "activation_function": "relu",
+      "feed_forward_proj": "relu",
+      "lr": 0.003,
+      "weight_decay": 0.05,
+      "batch_size": 128,
+      "warmup_steps": 200,
+      "scheduler": "constant_with_warmup",
+      "max_grad_norm": 1.0,
+      "seed": 2026,
+      "device": "cuda:0",
+      "precision": "float32",
+      "num_beams": 20,
+      "topk": [
+        5,
+        10,
+        20
+      ],
+      "metrics": [
+        "recall",
+        "ndcg"
+      ],
+      "probe_size": 512,
+      "eval_batch_size": 16,
+      "eval_every": 500,
+      "checkpoint_selection": "best_fixed_Update_validation_probe_full_denominator_NDCG; earliest tie",
+      "trailing_padding": "trim_only_after_last_active_position",
+      "selection_metric": "ndcg@10",
+      "selection_steps": [
+        0,
+        100,
+        250,
+        500,
+        1000,
+        2000
+      ],
+      "update_max_steps": 2000,
+      "selection_probe_size": 512
+    },
+    "condition_checks": {
+      "execution_status": "passed",
+      "same_history_and_target_mapping": true,
+      "same_future_queries_and_catalog": true,
+      "historical_training_sids_preserved": true,
+      "exact_base_tiger_warm_start": true,
+      "selected_checkpoint_reload_equal": true
+    },
+    "finetuned_minus_frozen": {
+      "full_denominator": {
+        "recall@5": 0.005206352920529995,
+        "recall@10": 0.010675948404457574,
+        "recall@20": 0.017637251747638128,
+        "ndcg@5": 0.003179916480832403,
+        "ndcg@10": 0.00492565129213228,
+        "ndcg@20": 0.006691404766374509
+      },
+      "conditional_on_servable": {
+        "recall@5": 0.00646309139101703,
+        "recall@10": 0.013252968301804582,
+        "recall@20": 0.021894629824625103,
+        "ndcg@5": 0.0039475024350306455,
+        "ndcg@10": 0.006114632439879108,
+        "ndcg@20": 0.008306613324046988
+      }
+    },
+    "future_used_for_selection": false,
+    "selection_locked_before_future": true,
+    "original_inputs_unchanged": true,
+    "rqvae_training_performed": false,
+    "runtime_seconds": 2196.025258248672,
+    "peak_cuda_allocated_bytes": 3684060160,
+    "peak_cuda_reserved_bytes": 4469030912,
+    "training": {
+      "update_optimizer_steps": 2000,
+      "processed_examples": 255919,
+      "best_update_optimizer_step": 2000,
+      "best_update_validation": {
+        "all_queries": 512,
+        "servable_queries": 483,
+        "unavailable_targets": 29,
+        "decoded_queries": 483,
+        "full_denominator": {
+          "recall@5": 0.0078125,
+          "recall@10": 0.03125,
+          "recall@20": 0.05078125,
+          "ndcg@5": 0.004026574897579849,
+          "ndcg@10": 0.011718849011231214,
+          "ndcg@20": 0.016564690362429246
+        },
+        "conditional_on_servable": {
+          "recall@5": 0.008281573498964804,
+          "recall@10": 0.033126293995859216,
+          "recall@20": 0.053830227743271224,
+          "ndcg@5": 0.004268336123314457,
+          "ndcg@10": 0.012422465204452136,
+          "ndcg@20": 0.01755925769267862
+        },
+        "mean_sequence_nll_servable": 9.381105347943356,
+        "mean_token_ce_servable": 1.876221069588671,
+        "ranking_catalog": "update_train",
+        "invalid_predictions": 0,
+        "seen_item_filter": false,
+        "decoding": "catalog_prefix_beam_search",
+        "num_beams": 20
+      },
+      "full_update_validation": {
+        "all_queries": 3280,
+        "servable_queries": 3084,
+        "unavailable_targets": 196,
+        "decoded_queries": 3084,
+        "full_denominator": {
+          "recall@5": 0.011585365853658536,
+          "recall@10": 0.027439024390243903,
+          "recall@20": 0.04878048780487805,
+          "ndcg@5": 0.00676530890348481,
+          "ndcg@10": 0.011835299259642275,
+          "ndcg@20": 0.017182336847593144
+        },
+        "conditional_on_servable": {
+          "recall@5": 0.01232166018158236,
+          "recall@10": 0.029182879377431907,
+          "recall@20": 0.05188067444876784,
+          "ndcg@5": 0.007195270169724441,
+          "ndcg@10": 0.0125874778118115,
+          "ndcg@20": 0.01827434009731048
+        },
+        "mean_sequence_nll_servable": 9.55494512565405,
+        "mean_token_ce_servable": 1.91098902513081,
+        "ranking_catalog": "update_train",
+        "invalid_predictions": 0,
+        "seen_item_filter": false,
+        "decoding": "catalog_prefix_beam_search",
+        "num_beams": 20
+      },
+      "exact_base_warm_start": true,
+      "selected_checkpoint_reload_equal": true,
+      "runtime_seconds": 416.7677133320831
+    },
+    "future": {
+      "frozen": {
+        "all_queries": 34189,
+        "servable_queries": 27541,
+        "unavailable_targets": 6648,
+        "coverage": 0.8055514931703179,
+        "full_denominator": {
+          "recall@5": 0.0025739272865541547,
+          "recall@10": 0.0032174091081926936,
+          "recall@20": 0.003890140103542075,
+          "ndcg@5": 0.001442893260840998,
+          "ndcg@10": 0.0016534336210046836,
+          "ndcg@20": 0.001817588658626969
+        },
+        "conditional_on_servable": {
+          "recall@5": 0.0031952361933117895,
+          "recall@10": 0.003994045241639737,
+          "recall@20": 0.00482916379216441,
+          "ndcg@5": 0.001791186873929519,
+          "ndcg@10": 0.002052548639066451,
+          "ndcg@20": 0.0022563283341126843
+        },
+        "mean_sequence_nll_servable": 15.513307567827193,
+        "ranking_catalog": "update",
+        "eligible_items": 11775,
+        "invalid_predictions": 0,
+        "seen_item_filter": false,
+        "num_beams": 20,
+        "decoding": "catalog_prefix_beam_search",
+        "history_protocol": "prequential raw history; unavailable four-token blocks retain position and mask",
+        "target_address": "current arm full SID plus EOS; history and target use the same mapping",
+        "arm": "historical",
+        "model_state": "frozen",
+        "update_optimizer_steps": 0,
+        "model_sha256": "83308fa0bb71f398de22f6a3c5652dbb94da323a4bffcd9cc1cae584e03438fa",
+        "runtime_seconds": 874.7474715458229,
+        "selection_locked_before_future": true,
+        "teacher_frozen_during_evaluation": true
+      },
+      "finetuned": {
+        "all_queries": 34189,
+        "servable_queries": 27541,
+        "unavailable_targets": 6648,
+        "coverage": 0.8055514931703179,
+        "full_denominator": {
+          "recall@5": 0.00778028020708415,
+          "recall@10": 0.013893357512650268,
+          "recall@20": 0.021527391851180203,
+          "ndcg@5": 0.004622809741673401,
+          "ndcg@10": 0.006579084913136963,
+          "ndcg@20": 0.008508993425001478
+        },
+        "conditional_on_servable": {
+          "recall@5": 0.00965832758432882,
+          "recall@10": 0.01724701354344432,
+          "recall@20": 0.026723793616789514,
+          "ndcg@5": 0.005738689308960165,
+          "ndcg@10": 0.00816718107894556,
+          "ndcg@20": 0.010562941658159672
+        },
+        "mean_sequence_nll_servable": 10.524138456145636,
+        "ranking_catalog": "update",
+        "eligible_items": 11775,
+        "invalid_predictions": 0,
+        "seen_item_filter": false,
+        "num_beams": 20,
+        "decoding": "catalog_prefix_beam_search",
+        "history_protocol": "prequential raw history; unavailable four-token blocks retain position and mask",
+        "target_address": "current arm full SID plus EOS; history and target use the same mapping",
+        "arm": "historical",
+        "model_state": "finetuned",
+        "update_optimizer_steps": 2000,
+        "model_sha256": "bca77fef0b0bb3a107f40d8868f0b805885a21152289a29e97baa4ad6b26177f",
+        "runtime_seconds": 875.6817773510702,
+        "selection_locked_before_future": true,
+        "teacher_frozen_during_evaluation": true
+      }
+    }
+  },
+  "runtime_seconds": 38.792642465326935
+}

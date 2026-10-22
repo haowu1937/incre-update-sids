@@ -1,0 +1,26 @@
+{
+  "stage": "sid_main_existing_future_acceptance",
+  "execution_status": "completed",
+  "job_id": "history-future-accept-001",
+  "code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
+  "future_dir": "/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_historical_future_20261020T154736Z_Gdh50N/evaluation",
+  "retuned_dir": "/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_history_retuned_20261020T123132Z_Edpqdn/experiment",
+  "summary_sha256": "32735aa0b6cecd7ea62287136c5844dbfe4bab5e7a29b6af4791e706d42b8a7a",
+  "training_started": false,
+  "optimizer_steps_this_task": 0,
+  "new_future_predictions": false,
+  "original_inputs_unchanged": true,
+  "protected_input_count": 94,
+  "input_manifest_sha256": "9590ad449c3f74c351a26e16c9eebdc838b0ec8934da0ac4c8912f0981738795",
+  "checks": {
+    "source_and_artifact_bindings": true,
+    "real_rqvae_mapping_reload": true,
+    "real_tiger_reload": true,
+    "selection_recomputed": true,
+    "query_aggregates_recomputed": true,
+    "actual_tiger_budget": true,
+    "same_future_query_identities": true,
+    "exact_returned_observations": true
+  },
+  "runtime_seconds": 38.792642465326935
+}
