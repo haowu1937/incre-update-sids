@@ -4,7 +4,12 @@
   "mode": "needs_diagnosis",
   "pause_requested": true,
   "active_job_id": "history-gradient-controlled-001",
-  "lease": null,
+  "lease": {
+    "token": "web-preflight-repair-mvjfbvo4",
+    "owner": "web-history-gradient-preflight-diagnosis",
+    "acquired_at": "2026-10-22T10:54:28.372Z",
+    "expires_at_unix": 1792667368.372
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
