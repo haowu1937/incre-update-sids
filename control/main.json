@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "queued",
-  "pause_requested": false,
+  "mode": "needs_diagnosis",
+  "pause_requested": true,
   "active_job_id": "history-gradient-controlled-001",
-  "lease": {
-    "token": "3e553fc0cd56496698692be5139cdd57",
-    "owner": "server-diagnostic-observer",
-    "acquired_at": "2026-10-22T10:48:53.512752+00:00",
-    "expires_at_unix": 1792667033.5127785
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -85,7 +80,7 @@
     "scope_id": "history-gradient-v1",
     "authorized_at": "2026-10-22",
     "authorization": "User explicitly requested existing gradient logs and bounded controlled diagnosis before lambda or STE changes",
-    "status": "controlled_queued",
+    "status": "failed",
     "migration_purpose": "explicit scope upgrade + read-only gradient logs; not a repair or Future rerun",
     "legacy_previous_repairs_used": 0,
     "max_diagnostic_optimizer_steps": 60,
@@ -177,7 +172,46 @@
       "resumed_at": "2026-10-22T10:47:05.419Z",
       "reason": "Fixed controlled driver delivered and read back; software-readiness blocker resolved"
     },
-    "diagnostic_optimizer_steps_spent": 0
+    "diagnostic_optimizer_steps_spent": 0,
+    "failure_job_id": "history-gradient-controlled-001",
+    "result": {
+      "schema_version": 1,
+      "job_id": "history-gradient-controlled-001",
+      "worker_id": "server2",
+      "kind": "experiment",
+      "request_sha256": "3b45f6fba4277287df55a0c6752ebfd5110af9368b74a63cb42467a833793c1d",
+      "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+      "runner_code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
+      "status": "failed",
+      "started_at": "2026-10-22T10:48:08.688725+00:00",
+      "updated_at": "2026-10-22T10:48:31.342193+00:00",
+      "exit_code": 1,
+      "pid": 3549535,
+      "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-gradient-controlled-001",
+      "log_path": "/home/hao/frec/git-lab-buffer/logs/history-gradient-controlled-001.log",
+      "log_tail": "logs/history-gradient-controlled-001.tail.txt",
+      "artifacts": [
+        "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json"
+      ],
+      "training_started": true,
+      "actual_code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+      "argv": [
+        "/home/hao/miniconda3/envs/frec-gpu/bin/python",
+        "-u",
+        "-B",
+        "diagnose_history_gradients.py",
+        "--deployment",
+        "/home/hao/frec/git-lab-buffer/main-deployment.json",
+        "--output",
+        "outputs/controlled"
+      ],
+      "process_started": true,
+      "elapsed_seconds": 11.463,
+      "artifacts_sha256": {
+        "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json": "e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f"
+      },
+      "finished_at": "2026-10-22T10:48:31.342170+00:00"
+    }
   },
   "previous_software_pause": {
     "reason": "Software-readiness blocker: diagnose_history_gradients.py absent from delivered code; no controlled job dispatched",
