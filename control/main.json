@@ -230,7 +230,7 @@
       "next_job_id": null
     },
     "repair_delivery": {
-      "code_sha": "5844f51ac2863dc2296f7708e725f1074917f70d",
+      "code_sha": "11bd146068611b9451e41732178c11513784817c",
       "job_id": "history-gradient-controlled-repair-001",
       "entry": "scripts/lab_buffer/attach_gradient_repair.py",
       "status": "code_delivered_not_attached",
@@ -243,7 +243,7 @@
       "kind": "installed_gate_lacks_fresh_repair_job_id",
       "not_a_user_pause": true,
       "reason": "Installed b8e40bd gate only permits history-gradient-controlled-001; a one-time idle-Runner attachment is required for the exact preflight repair. No safe Git-only bootstrap remains.",
-      "required_code_sha": "5844f51ac2863dc2296f7708e725f1074917f70d",
+      "required_code_sha": "11bd146068611b9451e41732178c11513784817c",
       "planned_job_id": "history-gradient-controlled-repair-001",
       "job_submitted": false
     }
