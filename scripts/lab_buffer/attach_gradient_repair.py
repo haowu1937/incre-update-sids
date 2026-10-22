@@ -54,6 +54,7 @@ def attach(root):
         if (state['active_job_id']!=CONTROLLED or state['mode'] not in ('needs_diagnosis','awaiting_runner_upgrade')
                 or not state['pause_requested'] or state.get('lease')
                 or state['extension'].get('scope_id')!=SCOPE or not state['extension'].get('logs_analysis_receipt')
+                or state['extension'].get('repair_delivery',{}).get('code_sha')!=code
                 or r.config.get('main_scope_revision')!=2):
             raise ValueError('Require paused diagnosed zero-update failure and no live controller lease')
         failure_evidence(r)
@@ -95,7 +96,11 @@ def attach(root):
                 mandatory_real_model_checks_passed=True,checks_log_sha256=digest(checks.read_bytes()),
                 code_sha=code,attached_at=now(),installed_before=before,backup=str(backup))
             state['extension'].update(status='controlled_queued',controlled_repair_authorization=authorization,
-                diagnostic_optimizer_steps_spent=0)
+                diagnostic_optimizer_steps_spent=0,installed_code_sha=code)
+            blocker=state['extension'].pop('dispatch_blocker',None)
+            if blocker:
+                state['extension']['previous_dispatch_blocker']=dict(blocker,resolved_at=now(),resolved_by_code_sha=code)
+            state['extension']['repair_delivery'].update(status='attached',checks_log_sha256=authorization['checks_log_sha256'])
             state.update(mode='queued',pause_requested=False,lease=None,active_job_id=CONTROLLED_REPAIR,
                 code_sha=code,request_sha256=digest(raw))
             c.write(state,parent,{'jobs/'+CONTROLLED_REPAIR+'.json':raw})
@@ -108,6 +113,7 @@ def attach(root):
             state,parent=c.read()
             if (state.get('lease') or {}).get('token')==token:
                 state.update(mode='needs_diagnosis',pause_requested=True,lease=None)
+                state['extension']['status']='repair_attachment_failed'
                 c.write(state,parent)
             evidence=dict(status='repair_attachment_failed',code_sha=code,error=repr(error),
                 checks_log_tail=checks.read_text(errors='replace')[-14000:] if checks.exists() else None,
