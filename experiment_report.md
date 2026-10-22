@@ -558,3 +558,12 @@ Maintain the **Primary downstream results** table at the top. Add completed down
 Keep fixed-model compatibility evaluation, post-fine-tuning validation and Future test separate. The two Future workflows and four actual conditions in Section 5 have been returned and recorded. The first full-SID History-aware run stopped before its budget; final anchor, ranking and Future results remain missing. The retuned paired run has completed training, anchor, collision and Base validation results as reported in Section 6.6; History-aware H is worse than matched Plain on both anchor cohorts. Its History-aware TIGER fine-tuning and Future evaluation have now completed (Sections 6.7–6.8); the matched retuned Plain Future evaluation remains not_run. Future is for final evaluation only, not penalty-weight, training-length or checkpoint selection.
 
 The requested two-condition History-aware Future stage is completed as returned in Sections 6.7–6.8. The Git Runner acceptance task performs no new training or Future predictions; after acceptance/reporting the current explicit plan stops.
+
+
+### Git Runner acceptance of the completed History-aware Future experiment
+
+<!-- sid-main-acceptance:966416120907d6c205b188b08b36bafe511efe8783c1291109e4a0832f0e056a -->
+
+Job `history-future-accept-001`; code `02eca7996ccddc2b0e35c47cf4cd00aafe200291`; original evaluation `/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_historical_future_20261020T154736Z_Gdh50N/evaluation`. The independent Runner loaded the real checkpoints, reproduced the full SID ledgers, verified source/config/artifact bindings and selection, recomputed both aggregate metrics from saved query records, and left the input bytes unchanged. No optimizer steps or new Future predictions were performed. This is artifact and reload acceptance, not an independent retraining or new generalization trial.
+
+Full-denominator Future Recall@10: frozen 0.321741%, fine-tuned 1.389336%; NDCG@10: 0.001653433621 / 0.006579084913. TIGER trained 2000 Update steps and selected step 2000. The retuned paired anchor result remains negative for the historical penalty. The older Base/Plain Future controls use a different RQ recipe; no isolated penalty benefit is established. The explicitly requested two-condition plan is complete; no further training jobs are queued.
