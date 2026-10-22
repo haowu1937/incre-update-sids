@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "awaiting_runner_upgrade",
+  "mode": "needs_diagnosis",
   "pause_requested": true,
   "active_job_id": "history-gradient-controlled-001",
-  "lease": {
-    "token": "8e11591c90f948cc890c1eea79b6c9ce",
-    "owner": "server-explicit-positive-H-fixture-repair",
-    "acquired_at": "2026-10-22T16:04:58.155447+00:00",
-    "expires_at_unix": 1792685998.1554759
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -85,7 +80,7 @@
     "scope_id": "history-gradient-v1",
     "authorized_at": "2026-10-22",
     "authorization": "User explicitly requested existing gradient logs and bounded controlled diagnosis before lambda or STE changes",
-    "status": "awaiting_runner_upgrade",
+    "status": "repair_attachment_failed",
     "migration_purpose": "explicit scope upgrade + read-only gradient logs; not a repair or Future rerun",
     "legacy_previous_repairs_used": 0,
     "max_diagnostic_optimizer_steps": 60,
