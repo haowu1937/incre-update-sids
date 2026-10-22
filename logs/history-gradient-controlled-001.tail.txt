@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/hao/frec/git-lab-buffer/workspaces/history-gradient-controlled-001/diagnose_history_gradients.py", line 356, in <module>
+    if __name__=='__main__':main()
+  File "/home/hao/frec/git-lab-buffer/workspaces/history-gradient-controlled-001/diagnose_history_gradients.py", line 337, in main
+    subprocess.run([sys.executable,'-B',str(ROOT/'tests/incremental/test_history_gradient_diagnostic.py'),'--require-torch'],
+  File "/home/hao/miniconda3/envs/frec-gpu/lib/python3.10/subprocess.py", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-B', '/home/hao/frec/git-lab-buffer/workspaces/history-gradient-controlled-001/tests/incremental/test_history_gradient_diagnostic.py', '--require-torch']' returned non-zero exit status 1.
