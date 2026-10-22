@@ -1,9 +1,9 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "awaiting_deployment",
+  "mode": "queued",
   "pause_requested": false,
-  "active_job_id": null,
+  "active_job_id": "history-future-accept-001",
   "lease": null,
   "receipts": {},
   "plan": [
@@ -11,5 +11,8 @@
   ],
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
-  "automation_acceptance": "pending"
+  "automation_acceptance": "pending",
+  "code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
+  "request_sha256": "3a1ef2964bfb5da2d17c2c3e5c16c38d9395c5ae01f388462e5a00bfca7f9b7e",
+  "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694"
 }
