@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "plan_completed",
+  "mode": "queued",
   "pause_requested": false,
-  "active_job_id": "history-future-accept-001",
-  "lease": {
-    "token": "gradient-1792664833648",
-    "owner": "web-gradient-development",
-    "acquired_at": "2026-10-22T10:27:13.648Z",
-    "expires_at_unix": 1792665733.648
-  },
+  "active_job_id": "history-future-accept-002",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -25,13 +20,14 @@
     }
   },
   "plan": [
-    "accept_existing_history_future"
+    "read_existing_gradient_logs",
+    "controlled_train_side_diagnostic"
   ],
-  "repairs_used": 0,
+  "repairs_used": 1,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
-  "request_sha256": "3a1ef2964bfb5da2d17c2c3e5c16c38d9395c5ae01f388462e5a00bfca7f9b7e",
+  "code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
+  "request_sha256": "4cca64fb47ec53f6ad31ef7c7558589f1d7985a5c2251e27c06f9f032655edaf",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -59,5 +55,35 @@
     "automation_resumed_at": "2026-10-22T08:55:51.168152+00:00",
     "processed_at": "2026-10-22T08:58:33.666Z",
     "next_job_id": null
+  },
+  "completed_plans": [
+    {
+      "plan": [
+        "accept_existing_history_future"
+      ],
+      "completed_job_id": "history-future-accept-001",
+      "receipt": {
+        "schema_version": 1,
+        "job_id": "history-future-accept-001",
+        "status": "verified",
+        "request_sha256": "3a1ef2964bfb5da2d17c2c3e5c16c38d9395c5ae01f388462e5a00bfca7f9b7e",
+        "artifact_sha256": "966416120907d6c205b188b08b36bafe511efe8783c1291109e4a0832f0e056a",
+        "summary_sha256": "32735aa0b6cecd7ea62287136c5844dbfe4bab5e7a29b6af4791e706d42b8a7a",
+        "report_commit_sha": "4a868e8f154f7203ab3ff12458b88e1095dbc871",
+        "code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
+        "processed_at": "2026-10-22T08:52:25.642769+00:00",
+        "next_job_id": null
+      }
+    }
+  ],
+  "extension": {
+    "scope_id": "history-gradient-v1",
+    "authorized_at": "2026-10-22",
+    "authorization": "User explicitly requested existing gradient logs and bounded controlled diagnosis before lambda or STE changes",
+    "status": "migration_queued",
+    "migration_purpose": "explicit scope upgrade + read-only gradient logs; not a repair or Future rerun",
+    "legacy_previous_repairs_used": 0,
+    "max_diagnostic_optimizer_steps": 60,
+    "scope_manifest": "docs/lab_buffer/history_gradient_plan.json"
   }
 }

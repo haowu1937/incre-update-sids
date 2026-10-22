@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "job_id": "history-future-accept-002",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
+  "created_at": "2026-10-22T10:29:10.735Z",
+  "timeout_seconds": 1800,
+  "argv": [
+    "python",
+    "-u",
+    "-B",
+    "scripts/lab_buffer/accept_main.py",
+    "--deployment",
+    "/home/hao/frec/git-lab-buffer/main-deployment.json",
+    "--output",
+    "outputs/main-acceptance.json"
+  ],
+  "artifacts": [
+    "outputs/main-acceptance.json"
+  ]
+}
