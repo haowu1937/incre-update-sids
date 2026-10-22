@@ -4,7 +4,12 @@
   "mode": "queued",
   "pause_requested": false,
   "active_job_id": "history-future-accept-001",
-  "lease": null,
+  "lease": {
+    "token": "c4c05414b4cf4d648adc99f944efd03d",
+    "owner": "server-after-acceptance",
+    "acquired_at": "2026-10-22T08:51:47.042727+00:00",
+    "expires_at_unix": 1792660007.042755
+  },
   "receipts": {},
   "plan": [
     "accept_existing_history_future"
