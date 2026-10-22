@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "worker_id": "server2",
+  "status": "main_attached",
+  "code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
+  "project": "/home/hao/frec/graph-informed-sids-web",
+  "root": "/home/hao/frec/git-lab-buffer",
+  "python": "/home/hao/miniconda3/envs/frec-gpu/bin/python",
+  "cron_before": {
+    "runner": false,
+    "collector": false
+  },
+  "old_allowed_kinds": [
+    "smoke"
+  ],
+  "collector_installed": false,
+  "existing_state_files": [
+    "mailbox-smoke-001.json",
+    "mailbox-smoke-002.json"
+  ],
+  "bound_inputs": {
+    "e1_dir": "/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_plain_history_damage_ranking_20261019T111607Z_zCkKTi/evaluation",
+    "retuned_dir": "/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_history_retuned_20261020T123132Z_Edpqdn/experiment",
+    "future_dir": "/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_historical_future_20261020T154736Z_Gdh50N/evaluation",
+    "protocol_dir": "/home/hao/frec/graph-informed-sids-web/cache/incremental/Beauty/beauty_20261007T104452Z",
+    "features_dir": "/home/hao/frec/graph-informed-sids-web/cache/incremental/Beauty/llama7b_features_20261016T132127Z",
+    "base_rqvae_dir": "/home/hao/frec/graph-informed-sids-web/ckpt/incremental/Beauty/llama_base_3hidden_e64_20261016T153649Z_R1DwE8_1000",
+    "old_plain_dir": "/home/hao/frec/graph-informed-sids-web/ckpt/incremental/Beauty/llama_plain_update_20261019T110104Z_mdchRh_1000",
+    "base_tiger_dir": "/home/hao/frec/graph-informed-sids-web/ckpt/incremental/Beauty/llama_base_tiger_full_20261019T094547Z_vHLdGQ_5000",
+    "sid_dir": "/home/hao/frec/graph-informed-sids-web/cache/incremental/Beauty/llama_base_sids_20261019T091637Z_QHuOlK"
+  },
+  "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
+  "input_access": "absolute bound paths; no project symlinks; detached output workspace",
+  "observed_at": "2026-10-22T08:49:47.208048+00:00",
+  "training_started": false
+}
