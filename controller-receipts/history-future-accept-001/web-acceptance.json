@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "job_id": "history-future-accept-001",
+  "status": "verified_by_web_controller",
+  "request_sha256": "3a1ef2964bfb5da2d17c2c3e5c16c38d9395c5ae01f388462e5a00bfca7f9b7e",
+  "artifact_sha256": "966416120907d6c205b188b08b36bafe511efe8783c1291109e4a0832f0e056a",
+  "summary_sha256": "32735aa0b6cecd7ea62287136c5844dbfe4bab5e7a29b6af4791e706d42b8a7a",
+  "code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
+  "server_report_commit_sha": "4a868e8f154f7203ab3ff12458b88e1095dbc871",
+  "web_report_commit_sha": "3d9fe71ea30aff4eca03ef6af65eb041c097b002",
+  "raw_hash_and_identity_checks": "passed",
+  "declared_observations": "matched",
+  "acceptance_checks": 8,
+  "protected_inputs": 94,
+  "automation_id": "6ad746543320819187a85beaf87af5bd",
+  "automation_enabled": true,
+  "automation_resumed_at": "2026-10-22T08:55:51.168152+00:00",
+  "processed_at": "2026-10-22T08:58:33.666Z",
+  "next_job_id": null
+}
