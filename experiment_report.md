@@ -535,7 +535,17 @@ The extracted changing-batch H averages confirm the supplied trend: 0.082952994 
 
 Evidence: request SHA256 `4cca64fb47ec53f6ad31ef7c7558589f1d7985a5c2251e27c06f9f032655edaf`; returned artifact `artifacts/history-future-accept-002/outputs/main-acceptance.json`, SHA256 `0a94dcff5c46ed991481852e9799f1c65be18e24b4e789b82710b394f9cab1c9`; original trace `historical/attempt_cctqvv8a/metrics.jsonl`, SHA256 `f9cbb7ec65ab80c98413348cb09a410d7361a841b990afc73f186a9202f2e526`; source `train_retuned_historical.py`, SHA256 `6f5c5303457042c68b586ccb5c9ae6899785f93bfa0be0fbcd8b9fb4cca3a088`, identical to the declared original training commit `c61bc13f46374790ac6e95f4f225d11e114ecd2c`; final Historical checkpoint SHA256 `b3d2a4150229d5924a5f267cb6e79efcd030588d1a70172a61935c95536c0e25`.
 
-Next: run only the already declared 12-branch, 60-step maximum training-side diagnostic, measuring actual displacement and fixed-anchor hard H before considering lambda or STE changes. Dispatch is currently blocked because the fixed `gradient_bridge.task` command references `diagnose_history_gradients.py`, which is absent from the delivered `vibe-dev` head `b8e40bd251980509aa48f8cca5d700d0fbee3311`. No controlled job has been submitted and no diagnostic optimizer budget has been spent. A reviewed, checked driver must be delivered and pinned to a complete code SHA before dispatch; the existing helper migration and verified logs need not be repeated.
+The log-analysis controller initially paused dispatch because `diagnose_history_gradients.py` was absent from delivery `b8e40bd251980509aa48f8cca5d700d0fbee3311`. It recorded the analysis receipt without submitting a guaranteed missing-file failure. The driver has since been delivered as described below; the helper migration and verified log extraction need not be repeated.
+
+### 6.12 Controlled hard-SID diagnostic: delivered, awaiting server checks
+
+<!-- history-gradient-driver:e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d -->
+
+Code `e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d` adds the fixed `diagnose_history_gradients.py` entry point and mandatory real RQ/TIGER checks. The sole planned job is `history-gradient-controlled-001`, timeout 1800 seconds, with a fresh detached Runner output `outputs/controlled/compact.json`. The driver enforces the declared 12 independent five-step branches and global 60-step limit. Each branch resets the same final Historical weights and optimizer state; it uses the same fixed training anchors and content order. AdamW retains the saved original parameter groups, betas and epsilon but resets moments. H-only uses coefficient 1 to isolate direction; Mixed keeps lambda=1e-4. This is not a lambda sweep or an exact optimizer continuation.
+
+Every micro-update records hard full-SID capacity, fixed-anchor H, actual displacement and both gradient dot products. Full anchor_train H and full-catalog RQ metrics are measured at baseline and steps 1/5. Feasibility failure saves the rejected candidate and last valid state, then stops the branch. No held-out or downstream scoring is performed; existing source-bound E1 metadata is integrity-loaded only. No original RQ, teacher, STE, allocator or Future source was modified.
+
+Local validation: two diagnostic protocol checks and 42 existing Runner/control/Git tests passed; Python 3.10 syntax and whitespace checks passed. Two new real-model checks could not run locally because PyTorch is absent. The server job must pass those checks before loading Beauty or spending diagnostic updates. Results remain pending; this delivery does not establish a direction of change in hard H. After verification, report all branches including plateaus and failures, then stop before any lambda or STE decision.
 
 ## 7. Artifact and identity index
 
