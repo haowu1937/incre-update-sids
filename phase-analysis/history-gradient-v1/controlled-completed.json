@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "scope_id": "history-gradient-v1",
+  "phase": "controlled_train_side_diagnostic",
+  "status": "verified_and_analyzed",
+  "job_id": "history-gradient-controlled-repair-001",
+  "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+  "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
+  "artifact_path": "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json",
+  "artifact_sha256": "b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c",
+  "full_server_summary_sha256": "bc3f61abff7f0fbd88fbf82c6cdbf5044a2335e431309b2509d95047b722f132",
+  "report_commit_sha": "fad7f94ef1b7774b145b66ed77cb41e6879b69ff",
+  "report_marker": "<!-- history-gradient-controlled:b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c -->",
+  "actual_beauty_optimizer_steps": 60,
+  "completed_branches": 12,
+  "steps_per_branch": 5,
+  "remaining_micro_update_budget": 0,
+  "checks": {
+    "request_result_code_identity": true,
+    "raw_byte_hashes": true,
+    "declared_plan_and_step_accounting": true,
+    "finite_metrics_and_consistent_checkpoint_arithmetic": true,
+    "capacity_feasible_steps": 60,
+    "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+    "reported_same_start_sampling_teacher_and_inputs": true,
+    "no_holdout_base_validation_future_scoring": true,
+    "real_model_preflight_passed": true
+  },
+  "evidence_boundary": "Raw mailbox hashes and compact arithmetic checked in cloud; model resets, loss computation, unchanged inputs/teacher and real-model checks are reviewed-source server evidence. No independent cloud checkpoint reload or per-query recomputation.",
+  "processed_at": "2026-10-22T16:46:23.586Z",
+  "next_job_id": null
+}

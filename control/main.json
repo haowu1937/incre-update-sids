@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "awaiting_analysis",
+  "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "history-gradient-controlled-repair-001",
-  "lease": {
-    "token": "web-hard-H-mvjrsj6h",
-    "owner": "web-controlled-hard-H-acceptance",
-    "acquired_at": "2026-10-22T16:43:20.729Z",
-    "expires_at_unix": 1792688300.729
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -79,13 +74,53 @@
         "processed_at": "2026-10-22T08:52:25.642769+00:00",
         "next_job_id": null
       }
+    },
+    {
+      "scope_id": "history-gradient-v1",
+      "plan": [
+        "read_existing_gradient_logs",
+        "controlled_train_side_diagnostic"
+      ],
+      "completed_job_id": "history-gradient-controlled-repair-001",
+      "receipt": {
+        "schema_version": 1,
+        "scope_id": "history-gradient-v1",
+        "phase": "controlled_train_side_diagnostic",
+        "status": "verified_and_analyzed",
+        "job_id": "history-gradient-controlled-repair-001",
+        "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+        "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
+        "artifact_path": "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json",
+        "artifact_sha256": "b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c",
+        "full_server_summary_sha256": "bc3f61abff7f0fbd88fbf82c6cdbf5044a2335e431309b2509d95047b722f132",
+        "report_commit_sha": "fad7f94ef1b7774b145b66ed77cb41e6879b69ff",
+        "report_marker": "<!-- history-gradient-controlled:b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c -->",
+        "actual_beauty_optimizer_steps": 60,
+        "completed_branches": 12,
+        "steps_per_branch": 5,
+        "remaining_micro_update_budget": 0,
+        "checks": {
+          "request_result_code_identity": true,
+          "raw_byte_hashes": true,
+          "declared_plan_and_step_accounting": true,
+          "finite_metrics_and_consistent_checkpoint_arithmetic": true,
+          "capacity_feasible_steps": 60,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+          "reported_same_start_sampling_teacher_and_inputs": true,
+          "no_holdout_base_validation_future_scoring": true,
+          "real_model_preflight_passed": true
+        },
+        "evidence_boundary": "Raw mailbox hashes and compact arithmetic checked in cloud; model resets, loss computation, unchanged inputs/teacher and real-model checks are reviewed-source server evidence. No independent cloud checkpoint reload or per-query recomputation.",
+        "processed_at": "2026-10-22T16:46:23.586Z",
+        "next_job_id": null
+      }
     }
   ],
   "extension": {
     "scope_id": "history-gradient-v1",
     "authorized_at": "2026-10-22",
     "authorization": "User explicitly requested existing gradient logs and bounded controlled diagnosis before lambda or STE changes",
-    "status": "controlled_pending_analysis",
+    "status": "completed",
     "migration_purpose": "explicit scope upgrade + read-only gradient logs; not a repair or Future rerun",
     "legacy_previous_repairs_used": 0,
     "max_diagnostic_optimizer_steps": 60,
@@ -173,29 +208,28 @@
       "resumed_at": "2026-10-22T10:47:05.419Z",
       "reason": "Fixed controlled driver delivered and read back; software-readiness blocker resolved"
     },
-    "diagnostic_optimizer_steps_spent": 0,
-    "failure_job_id": "history-gradient-controlled-001",
+    "diagnostic_optimizer_steps_spent": 60,
     "result": {
       "schema_version": 1,
-      "job_id": "history-gradient-controlled-001",
+      "job_id": "history-gradient-controlled-repair-001",
       "worker_id": "server2",
       "kind": "experiment",
-      "request_sha256": "3b45f6fba4277287df55a0c6752ebfd5110af9368b74a63cb42467a833793c1d",
-      "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
-      "runner_code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
-      "status": "failed",
-      "started_at": "2026-10-22T10:48:08.688725+00:00",
-      "updated_at": "2026-10-22T10:48:31.342193+00:00",
-      "exit_code": 1,
-      "pid": 3549535,
-      "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-gradient-controlled-001",
-      "log_path": "/home/hao/frec/git-lab-buffer/logs/history-gradient-controlled-001.log",
-      "log_tail": "logs/history-gradient-controlled-001.tail.txt",
+      "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
+      "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+      "runner_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+      "status": "completed",
+      "started_at": "2026-10-22T16:32:08.732246+00:00",
+      "updated_at": "2026-10-22T16:35:43.307267+00:00",
+      "exit_code": 0,
+      "pid": 3727804,
+      "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-gradient-controlled-repair-001",
+      "log_path": "/home/hao/frec/git-lab-buffer/logs/history-gradient-controlled-repair-001.log",
+      "log_tail": "logs/history-gradient-controlled-repair-001.tail.txt",
       "artifacts": [
-        "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json"
+        "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json"
       ],
       "training_started": true,
-      "actual_code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+      "actual_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
       "argv": [
         "/home/hao/miniconda3/envs/frec-gpu/bin/python",
         "-u",
@@ -207,11 +241,11 @@
         "outputs/controlled"
       ],
       "process_started": true,
-      "elapsed_seconds": 11.463,
+      "elapsed_seconds": 195.92,
       "artifacts_sha256": {
-        "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json": "e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f"
+        "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json": "b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c"
       },
-      "finished_at": "2026-10-22T10:48:31.342170+00:00"
+      "finished_at": "2026-10-22T16:35:43.307244+00:00"
     },
     "failure_analysis_receipt": {
       "schema_version": 1,
@@ -234,12 +268,13 @@
       "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
       "job_id": "history-gradient-controlled-repair-001",
       "entry": "scripts/lab_buffer/attach_gradient_repair.py",
-      "status": "attached",
+      "status": "completed_and_verified",
       "local_runner_checks_passed": 45,
       "local_protocol_checks_passed": 2,
-      "real_model_checks": "mandatory in explicit attachment; pending",
-      "remaining_micro_update_budget": 60,
-      "checks_log_sha256": "e728f5a3ddf3b9057f3b2d11759f53d79e83fef98e650dac584fcc0a6a5bc5a4"
+      "real_model_checks": "passed on server during attachment and task",
+      "remaining_micro_update_budget": 0,
+      "checks_log_sha256": "e728f5a3ddf3b9057f3b2d11759f53d79e83fef98e650dac584fcc0a6a5bc5a4",
+      "completed_optimizer_steps": 60
     },
     "attachment_schema_fix_receipt": {
       "schema_version": 1,
@@ -278,7 +313,78 @@
         "gradient_bridge.py": "b6317be11ee7c70b86a4bf2063a335c951ce457a6a45502fa62adb0a9032c681"
       },
       "backup": "/home/hao/frec/git-lab-buffer/scope-upgrade-backups/positive-H-fixture-3d901876e12ea344d34a59773ca3d03c812235fa"
-    }
+    },
+    "controlled_analysis_receipt": {
+      "schema_version": 1,
+      "scope_id": "history-gradient-v1",
+      "phase": "controlled_train_side_diagnostic",
+      "status": "verified_and_analyzed",
+      "job_id": "history-gradient-controlled-repair-001",
+      "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+      "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
+      "artifact_path": "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json",
+      "artifact_sha256": "b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c",
+      "full_server_summary_sha256": "bc3f61abff7f0fbd88fbf82c6cdbf5044a2335e431309b2509d95047b722f132",
+      "report_commit_sha": "fad7f94ef1b7774b145b66ed77cb41e6879b69ff",
+      "report_marker": "<!-- history-gradient-controlled:b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c -->",
+      "actual_beauty_optimizer_steps": 60,
+      "completed_branches": 12,
+      "steps_per_branch": 5,
+      "remaining_micro_update_budget": 0,
+      "checks": {
+        "request_result_code_identity": true,
+        "raw_byte_hashes": true,
+        "declared_plan_and_step_accounting": true,
+        "finite_metrics_and_consistent_checkpoint_arithmetic": true,
+        "capacity_feasible_steps": 60,
+        "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+        "reported_same_start_sampling_teacher_and_inputs": true,
+        "no_holdout_base_validation_future_scoring": true,
+        "real_model_preflight_passed": true
+      },
+      "evidence_boundary": "Raw mailbox hashes and compact arithmetic checked in cloud; model resets, loss computation, unchanged inputs/teacher and real-model checks are reviewed-source server evidence. No independent cloud checkpoint reload or per-query recomputation.",
+      "processed_at": "2026-10-22T16:46:23.586Z",
+      "next_job_id": null
+    },
+    "initial_failed_job_result": {
+      "schema_version": 1,
+      "job_id": "history-gradient-controlled-001",
+      "worker_id": "server2",
+      "kind": "experiment",
+      "request_sha256": "3b45f6fba4277287df55a0c6752ebfd5110af9368b74a63cb42467a833793c1d",
+      "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+      "runner_code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
+      "status": "failed",
+      "started_at": "2026-10-22T10:48:08.688725+00:00",
+      "updated_at": "2026-10-22T10:48:31.342193+00:00",
+      "exit_code": 1,
+      "pid": 3549535,
+      "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-gradient-controlled-001",
+      "log_path": "/home/hao/frec/git-lab-buffer/logs/history-gradient-controlled-001.log",
+      "log_tail": "logs/history-gradient-controlled-001.tail.txt",
+      "artifacts": [
+        "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json"
+      ],
+      "training_started": true,
+      "actual_code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+      "argv": [
+        "/home/hao/miniconda3/envs/frec-gpu/bin/python",
+        "-u",
+        "-B",
+        "diagnose_history_gradients.py",
+        "--deployment",
+        "/home/hao/frec/git-lab-buffer/main-deployment.json",
+        "--output",
+        "outputs/controlled"
+      ],
+      "process_started": true,
+      "elapsed_seconds": 11.463,
+      "artifacts_sha256": {
+        "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json": "e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f"
+      },
+      "finished_at": "2026-10-22T10:48:31.342170+00:00"
+    },
+    "initial_failed_job_id": "history-gradient-controlled-001"
   },
   "previous_software_pause": {
     "reason": "Software-readiness blocker: diagnose_history_gradients.py absent from delivered code; no controlled job dispatched",
