@@ -2,7 +2,7 @@
   "worker_id": "server2",
   "mode": "queued",
   "active_job_id": "history-future-accept-001",
-  "runner_status": "busy",
+  "runner_status": "idle",
   "pause_requested": false,
-  "observed_at": "2026-10-22T08:51:12.819740+00:00"
+  "observed_at": "2026-10-22T08:52:23.966643+00:00"
 }
