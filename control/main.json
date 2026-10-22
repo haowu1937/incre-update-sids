@@ -4,7 +4,12 @@
   "mode": "awaiting_code",
   "pause_requested": true,
   "active_job_id": "history-future-accept-002",
-  "lease": null,
+  "lease": {
+    "token": "web-controlled-mvjezgsl-g4d9nvasj2d",
+    "owner": "web-history-gradient-controlled-driver",
+    "acquired_at": "2026-10-22T10:44:49.221Z",
+    "expires_at": 1792666789.221
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
