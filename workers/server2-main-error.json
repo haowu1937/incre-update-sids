@@ -1,0 +1,5 @@
+{
+  "status": "main_service_error",
+  "error": "RuntimeError: Concurrent branch change; reread before updating control state",
+  "new_jobs_paused": true
+}
