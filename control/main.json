@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "queued",
+  "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "history-future-accept-002",
   "lease": null,
@@ -80,10 +80,17 @@
     "scope_id": "history-gradient-v1",
     "authorized_at": "2026-10-22",
     "authorization": "User explicitly requested existing gradient logs and bounded controlled diagnosis before lambda or STE changes",
-    "status": "migration_queued",
+    "status": "awaiting_migration_result",
     "migration_purpose": "explicit scope upgrade + read-only gradient logs; not a repair or Future rerun",
     "legacy_previous_repairs_used": 0,
     "max_diagnostic_optimizer_steps": 60,
-    "scope_manifest": "docs/lab_buffer/history_gradient_plan.json"
+    "scope_manifest": "docs/lab_buffer/history_gradient_plan.json",
+    "installed_code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
+    "legacy_slot": {
+      "job_id": "history-future-accept-002",
+      "purpose": "explicit scope upgrade + read-only log extraction",
+      "not_a_repair": true,
+      "previous_repairs_used": 0
+    }
   }
 }
