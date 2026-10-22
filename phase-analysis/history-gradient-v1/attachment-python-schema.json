@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "phase": "runner_attachment_config_schema",
+  "status": "diagnosed_fix_delivered_not_executed",
+  "failed_code_sha": "11bd146068611b9451e41732178c11513784817c",
+  "failure_path": "workers/server2-gradient-repair-attach.json",
+  "failure_sha256": "43a5313319b6c7388ff25334300356208f0fb048ca7af38b13634347608ca204",
+  "error": "KeyError('python')",
+  "cause": "Interpreter belongs to Runner config.json, not main-deployment.json",
+  "fix_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+  "report_commit_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+  "local_runner_checks_passed": 45,
+  "ml_subprocess_mocked_in_new_wiring_tests": true,
+  "real_model_checks": "not_started; pending explicit server attachment",
+  "beauty_optimizer_steps_spent": 0,
+  "processed_at": "2026-10-22T16:11:26.001Z",
+  "new_job_submitted": false
+}

@@ -1,0 +1,8 @@
+{
+  "status": "repair_attachment_failed",
+  "code_sha": "11bd146068611b9451e41732178c11513784817c",
+  "error": "KeyError('python')",
+  "checks_log_tail": "",
+  "no_automatic_retry": true,
+  "beauty_optimizer_steps_during_attachment": 0
+}

@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "needs_diagnosis",
+  "mode": "awaiting_runner_upgrade",
   "pause_requested": true,
   "active_job_id": "history-gradient-controlled-001",
-  "lease": {
-    "token": "web-python-schema-mvjqla21",
-    "owner": "web-runner-config-python-fix",
-    "acquired_at": "2026-10-22T16:09:42.697Z",
-    "expires_at_unix": 1792686282.697
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -85,7 +80,7 @@
     "scope_id": "history-gradient-v1",
     "authorized_at": "2026-10-22",
     "authorization": "User explicitly requested existing gradient logs and bounded controlled diagnosis before lambda or STE changes",
-    "status": "repair_attachment_failed",
+    "status": "awaiting_runner_upgrade",
     "migration_purpose": "explicit scope upgrade + read-only gradient logs; not a repair or Future rerun",
     "legacy_previous_repairs_used": 0,
     "max_diagnostic_optimizer_steps": 60,
@@ -235,11 +230,11 @@
       "next_job_id": null
     },
     "repair_delivery": {
-      "code_sha": "11bd146068611b9451e41732178c11513784817c",
+      "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
       "job_id": "history-gradient-controlled-repair-001",
       "entry": "scripts/lab_buffer/attach_gradient_repair.py",
       "status": "code_delivered_not_attached",
-      "local_runner_checks_passed": 43,
+      "local_runner_checks_passed": 45,
       "local_protocol_checks_passed": 2,
       "real_model_checks": "mandatory in explicit attachment; pending",
       "remaining_micro_update_budget": 60
@@ -248,9 +243,27 @@
       "kind": "installed_gate_lacks_fresh_repair_job_id",
       "not_a_user_pause": true,
       "reason": "Installed b8e40bd gate only permits history-gradient-controlled-001; a one-time idle-Runner attachment is required for the exact preflight repair. No safe Git-only bootstrap remains.",
-      "required_code_sha": "11bd146068611b9451e41732178c11513784817c",
+      "required_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
       "planned_job_id": "history-gradient-controlled-repair-001",
       "job_submitted": false
+    },
+    "attachment_schema_fix_receipt": {
+      "schema_version": 1,
+      "phase": "runner_attachment_config_schema",
+      "status": "diagnosed_fix_delivered_not_executed",
+      "failed_code_sha": "11bd146068611b9451e41732178c11513784817c",
+      "failure_path": "workers/server2-gradient-repair-attach.json",
+      "failure_sha256": "43a5313319b6c7388ff25334300356208f0fb048ca7af38b13634347608ca204",
+      "error": "KeyError('python')",
+      "cause": "Interpreter belongs to Runner config.json, not main-deployment.json",
+      "fix_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+      "report_commit_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+      "local_runner_checks_passed": 45,
+      "ml_subprocess_mocked_in_new_wiring_tests": true,
+      "real_model_checks": "not_started; pending explicit server attachment",
+      "beauty_optimizer_steps_spent": 0,
+      "processed_at": "2026-10-22T16:11:26.001Z",
+      "new_job_submitted": false
     }
   },
   "previous_software_pause": {
