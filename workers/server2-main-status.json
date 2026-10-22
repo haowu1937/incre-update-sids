@@ -2,7 +2,7 @@
   "worker_id": "server2",
   "mode": "plan_completed",
   "active_job_id": "history-future-accept-001",
-  "runner_status": "completed",
+  "runner_status": "idle",
   "pause_requested": false,
-  "observed_at": "2026-10-22T08:52:47.585402+00:00"
+  "observed_at": "2026-10-22T08:53:17.534429+00:00"
 }
