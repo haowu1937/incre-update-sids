@@ -1,8 +1,29 @@
 {
-  "status": "repair_attachment_failed",
-  "code_sha": "11bd146068611b9451e41732178c11513784817c",
-  "error": "KeyError('python')",
-  "checks_log_tail": "",
-  "no_automatic_retry": true,
-  "beauty_optimizer_steps_during_attachment": 0
+  "status": "attached",
+  "job_id": "history-gradient-controlled-repair-001",
+  "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+  "authorization": {
+    "failed_job_id": "history-gradient-controlled-001",
+    "failed_code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+    "failed_artifact_sha256": "e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f",
+    "diagnostic_steps_spent": 0,
+    "remaining_step_budget": 60,
+    "diagnosis": "Tiny Plain fixture had H=0; deterministic measured positive-H token permutations fix only the test fixture.",
+    "mandatory_real_model_checks_passed": true,
+    "checks_log_sha256": "e728f5a3ddf3b9057f3b2d11759f53d79e83fef98e650dac584fcc0a6a5bc5a4",
+    "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+    "attached_at": "2026-10-22T16:31:10.109775+00:00",
+    "installed_before": {
+      "runner.py": "084d43bb53969270c3a9a1f094b0c7f377d54e41748a96736be1cf9d523780e2",
+      "main_control.py": "0242c995745f474cba644201644995c8392d48b076ada9fad59387e87548288f",
+      "main_service.py": "d9a124b12ca40b8d61d9353957a9054cebfffdae2b6ea86c66715ef4a4f8c114",
+      "gradient_logs.py": "d95d7749aae08bafac13f7da9d066f129f1f06e069e6d6e27eb8752a2ac6e80c",
+      "gradient_bridge.py": "b6317be11ee7c70b86a4bf2063a335c951ce457a6a45502fa62adb0a9032c681"
+    },
+    "backup": "/home/hao/frec/git-lab-buffer/scope-upgrade-backups/positive-H-fixture-3d901876e12ea344d34a59773ca3d03c812235fa"
+  },
+  "main_workspace_written": false,
+  "cron_changed": false,
+  "beauty_optimizer_steps_during_attachment": 0,
+  "existing_processes_terminated": false
 }
