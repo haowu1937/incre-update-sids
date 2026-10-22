@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "status": "captured_for_web_analysis",
+  "job_id": "history-gradient-controlled-repair-001",
+  "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
+  "artifact_sha256": "b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c",
+  "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+  "captured_at": "2026-10-22T16:36:24.694179+00:00",
+  "artifact_path": "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json"
+}
