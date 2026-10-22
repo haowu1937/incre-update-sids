@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "awaiting_code",
-  "pause_requested": true,
-  "active_job_id": "history-future-accept-002",
-  "lease": {
-    "token": "web-controlled-mvjezgsl-g4d9nvasj2d",
-    "owner": "web-history-gradient-controlled-driver",
-    "acquired_at": "2026-10-22T10:44:49.221Z",
-    "expires_at": 1792666789.221
-  },
+  "mode": "queued",
+  "pause_requested": false,
+  "active_job_id": "history-gradient-controlled-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -31,8 +26,8 @@
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
-  "request_sha256": "4cca64fb47ec53f6ad31ef7c7558589f1d7985a5c2251e27c06f9f032655edaf",
+  "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+  "request_sha256": "3b45f6fba4277287df55a0c6752ebfd5110af9368b74a63cb42467a833793c1d",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -85,7 +80,7 @@
     "scope_id": "history-gradient-v1",
     "authorized_at": "2026-10-22",
     "authorization": "User explicitly requested existing gradient logs and bounded controlled diagnosis before lambda or STE changes",
-    "status": "logs_pending_analysis",
+    "status": "controlled_queued",
     "migration_purpose": "explicit scope upgrade + read-only gradient logs; not a repair or Future rerun",
     "legacy_previous_repairs_used": 0,
     "max_diagnostic_optimizer_steps": 60,
@@ -142,7 +137,7 @@
       "processed_at": "2026-10-22T10:38:36.457Z",
       "next_job_id": null
     },
-    "dispatch_blocker": {
+    "previous_dispatch_blocker": {
       "kind": "missing_delivered_controlled_driver",
       "required_path": "diagnose_history_gradients.py",
       "checked_code_sha": "8182cb17802da08a4b2341950cee7f9b2b95f75f",
@@ -152,15 +147,35 @@
       "diagnostic_optimizer_steps_spent": 0,
       "reason": "Fixed gradient_bridge.task entry point is absent from the delivered code; do not dispatch a guaranteed missing-file failure.",
       "resume_condition": "Deliver and review the fixed 60-step controlled driver with required checks, pin its complete code SHA, then clear this software-readiness pause and resume the same monitor under the existing scope.",
-      "not_a_user_pause": true
+      "not_a_user_pause": true,
+      "resolved_by_code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+      "resolved_at": "2026-10-22T10:47:05.419Z"
     },
-    "web_monitor_paused": {
+    "previous_web_monitor_pause": {
       "automation_id": "6ad746543320819187a85beaf87af5bd",
       "is_enabled": false,
       "paused_at": "2026-10-22T10:38:11.204771+00:00",
       "reason": "Controlled driver not yet delivered"
-    }
+    },
+    "controlled_delivery": {
+      "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+      "report_commit_sha": "4921302cfa2737232dcf499696d49d10091058c0",
+      "local_protocol_checks_passed": 2,
+      "local_runner_checks_passed": 42,
+      "real_model_checks": "mandatory server preflight; pending",
+      "job_id": "history-gradient-controlled-001",
+      "maximum_micro_updates": 60
+    },
+    "web_monitor_resumed": {
+      "automation_id": "6ad746543320819187a85beaf87af5bd",
+      "is_enabled": true,
+      "resumed_at": "2026-10-22T10:47:05.419Z",
+      "reason": "Fixed controlled driver delivered and read back; software-readiness blocker resolved"
+    },
+    "diagnostic_optimizer_steps_spent": 0
   },
-  "pause_reason": "Software-readiness blocker: diagnose_history_gradients.py absent from delivered code; no controlled job dispatched",
-  "paused_at": "2026-10-22T10:38:36.457Z"
+  "previous_software_pause": {
+    "reason": "Software-readiness blocker: diagnose_history_gradients.py absent from delivered code; no controlled job dispatched",
+    "paused_at": "2026-10-22T10:38:36.457Z"
+  }
 }
