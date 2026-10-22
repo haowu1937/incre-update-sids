@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "scope_id": "history-gradient-v1",
+  "phase": "controlled_preflight_failure",
+  "status": "diagnosed_before_beauty_updates",
+  "job_id": "history-gradient-controlled-001",
+  "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+  "request_sha256": "3b45f6fba4277287df55a0c6752ebfd5110af9368b74a63cb42467a833793c1d",
+  "artifact_sha256": "e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f",
+  "artifact_path": "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json",
+  "report_commit_sha": "5844f51ac2863dc2296f7708e725f1074917f70d",
+  "diagnostic_optimizer_steps_spent": 0,
+  "diagnosis": "Synthetic Plain checkpoint had H=0; both tests stopped at the production positive-H guard during fixture construction. Main run/Beauty context was not entered.",
+  "fault_fingerprint": "synthetic-positive-hard-H-start-v1",
+  "processed_at": "2026-10-22T10:57:36.232Z",
+  "next_job_id": null
+}
