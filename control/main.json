@@ -4,7 +4,12 @@
   "mode": "awaiting_analysis",
   "pause_requested": false,
   "active_job_id": "history-future-accept-002",
-  "lease": null,
+  "lease": {
+    "token": "web-gradient-mvjennak-es8d5hq3krj",
+    "owner": "web-history-gradient-log-analysis",
+    "acquired_at": "2026-10-22T10:35:37.772Z",
+    "expires_at_unix": 1792666237.772
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
