@@ -559,6 +559,12 @@ The repaired fixture deterministically permutes actual tiny-model codeword rows 
 
 Deployment limitation: the installed revision-2 gate hard-codes the first diagnostic job ID. A fresh repair ID therefore requires one explicit idle-Runner helper attachment; Git-only dispatch cannot safely replace that gate. `scripts/lab_buffer/attach_gradient_repair.py` validates the exact failed artifact and installed helper hashes, refuses live tasks/uncertainty, runs mandatory real-model CPU checks, backs up and replaces only the gradient gate, then queues `history-gradient-controlled-repair-001` at its full code SHA. Cron, main checkout, original inputs and prior records remain intact. Dispatch stays paused pending that attachment; the existing hourly Web task can continue observing. The repair retains the same remaining 60-step maximum, fixed lambda/STE and train-only protocol. No repeated repair or parameter change is authorized on another failure.
 
+### 6.14 Runner attachment interpreter-field correction
+
+The explicit attachment at code `11bd146068611b9451e41732178c11513784817c` stopped with `KeyError('python')` before invoking its real-model preflight. The installer incorrectly read the interpreter from `main-deployment.json`; the original installation stores it in `config.json`, which the Runner already loads as `Runner.config`. The server returned `repair_attachment_failed`, an empty checks-log tail and zero Beauty optimizer steps. No helper replacement or repair-task submission was reached. The old attachment worktree, log and failure record are retained.
+
+The correction changes only that interpreter lookup to `r.config['python']`. Two attachment regression checks now exercise the actual config/deployment split, including a deployment without a Python field, successful queue wiring after a mocked preflight, and preservation of the old gate with no submission when preflight fails. All 45 local Runner/control checks, Python 3.10 syntax and whitespace checks passed. These wiring checks mock the ML subprocess; repaired real-model preflight and Beauty diagnosis remain pending server execution. The same unused repair job, scientific settings and remaining 60-step budget are retained. This correction addresses the identified attachment failure and adds no experiment or Runner feature.
+
 ## 7. Artifact and identity index
 
 Paths below are relative to the server project root. These server files have not been read directly in the cloud.

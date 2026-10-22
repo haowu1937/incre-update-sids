@@ -76,7 +76,7 @@ def attach(root):
         checks=root/'diagnostic-repair-checks'/(code+'.log');checks.parent.mkdir(exist_ok=True)
         try:
             with checks.open('x') as log:
-                subprocess.run([d['python'],'-B',str(ROOT/'tests/incremental/test_history_gradient_diagnostic.py'),'--require-torch'],
+                subprocess.run([r.config['python'],'-B',str(ROOT/'tests/incremental/test_history_gradient_diagnostic.py'),'--require-torch'],
                     cwd=ROOT,env=dict(os.environ,CUDA_VISIBLE_DEVICES='',PYTHONDONTWRITEBYTECODE='1'),
                     stdout=log,stderr=subprocess.STDOUT,check=True,timeout=180)
             backup=root/'scope-upgrade-backups'/('positive-H-fixture-'+code);backup.mkdir(exist_ok=False)
