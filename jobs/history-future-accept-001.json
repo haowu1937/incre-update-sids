@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "job_id": "history-future-accept-001",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "request_sha256": "3a1ef2964bfb5da2d17c2c3e5c16c38d9395c5ae01f388462e5a00bfca7f9b7e",
+  "code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
+  "runner_code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
+  "status": "starting",
+  "started_at": "2026-10-22T08:50:22.502188+00:00",
+  "updated_at": "2026-10-22T08:50:22.505053+00:00",
+  "exit_code": null,
+  "pid": null,
+  "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-future-accept-001",
+  "log_path": "/home/hao/frec/git-lab-buffer/logs/history-future-accept-001.log",
+  "log_tail": "logs/history-future-accept-001.tail.txt",
+  "artifacts": [],
+  "training_started": false
+}
