@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "status": "captured_for_web_analysis",
+  "job_id": "history-future-accept-002",
+  "request_sha256": "4cca64fb47ec53f6ad31ef7c7558589f1d7985a5c2251e27c06f9f032655edaf",
+  "artifact_sha256": "0a94dcff5c46ed991481852e9799f1c65be18e24b4e789b82710b394f9cab1c9",
+  "code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
+  "captured_at": "2026-10-22T10:31:34.575154+00:00",
+  "artifact_path": "artifacts/history-future-accept-002/outputs/main-acceptance.json"
+}

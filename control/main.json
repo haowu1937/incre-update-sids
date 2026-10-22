@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "plan_completed",
+  "mode": "awaiting_analysis",
   "pause_requested": false,
   "active_job_id": "history-future-accept-002",
-  "lease": {
-    "token": "9dd16f2078164760b707c4d4fdf9d8cf",
-    "owner": "server-diagnostic-observer",
-    "acquired_at": "2026-10-22T10:31:18.005044+00:00",
-    "expires_at_unix": 1792665978.0050714
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -28,7 +23,7 @@
     "read_existing_gradient_logs",
     "controlled_train_side_diagnostic"
   ],
-  "repairs_used": 1,
+  "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
   "code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
@@ -85,7 +80,7 @@
     "scope_id": "history-gradient-v1",
     "authorized_at": "2026-10-22",
     "authorization": "User explicitly requested existing gradient logs and bounded controlled diagnosis before lambda or STE changes",
-    "status": "awaiting_migration_result",
+    "status": "logs_pending_analysis",
     "migration_purpose": "explicit scope upgrade + read-only gradient logs; not a repair or Future rerun",
     "legacy_previous_repairs_used": 0,
     "max_diagnostic_optimizer_steps": 60,
@@ -96,6 +91,16 @@
       "purpose": "explicit scope upgrade + read-only log extraction",
       "not_a_repair": true,
       "previous_repairs_used": 0
+    },
+    "result_receipt": {
+      "schema_version": 1,
+      "status": "captured_for_web_analysis",
+      "job_id": "history-future-accept-002",
+      "request_sha256": "4cca64fb47ec53f6ad31ef7c7558589f1d7985a5c2251e27c06f9f032655edaf",
+      "artifact_sha256": "0a94dcff5c46ed991481852e9799f1c65be18e24b4e789b82710b394f9cab1c9",
+      "code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
+      "captured_at": "2026-10-22T10:31:34.575154+00:00",
+      "artifact_path": "artifacts/history-future-accept-002/outputs/main-acceptance.json"
     }
   }
 }
