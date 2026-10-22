@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "scope_id": "history-gradient-v1",
+  "authorized_at": "2026-10-22",
+  "original_training_commit": "c61bc13f46374790ac6e95f4f225d11e114ecd2c",
+  "original_retuned_relative_dir": "results/incremental/Beauty/llama_history_retuned_20261020T123132Z_Edpqdn/experiment",
+  "phases": [
+    "read_existing_gradient_logs",
+    "controlled_train_side_diagnostic"
+  ],
+  "migration_job_id": "history-future-accept-002",
+  "migration_is_repair": false,
+  "controlled_job_id": "history-gradient-controlled-001",
+  "max_diagnostic_optimizer_steps": 60,
+  "steps_per_branch": 5,
+  "optimizers": [
+    {
+      "name": "sgd_reset",
+      "learning_rates": [
+        1e-06,
+        1e-05,
+        0.0001
+      ],
+      "momentum": 0.0,
+      "weight_decay": 0.0
+    },
+    {
+      "name": "adamw_reset",
+      "learning_rates": [
+        0.0001
+      ],
+      "weight_decay": 0.0
+    }
+  ],
+  "objectives": [
+    "h_only",
+    "rq_only",
+    "mixed"
+  ],
+  "history_weight": 0.0001,
+  "temperature": 0.5,
+  "anchor_batch_size": 128,
+  "content_batch_size": 256,
+  "max_grad_norm": 0.1,
+  "seed": 2026,
+  "full_anchor_eval_steps": [
+    0,
+    1,
+    5
+  ],
+  "full_anchor_cohort": "anchor_train",
+  "fixed_anchor_queries": 128,
+  "diagnostic_start": "historical/last.pth; positive full anchor_train H required",
+  "carry_original_optimizer_momentum": false,
+  "teacher": "original frozen Base TIGER",
+  "labels_masks_catalog": "fixed old versions; production new full history SID allocation",
+  "suffix_capacity": 256,
+  "auto_expand_suffix": false,
+  "holdout_evaluation": false,
+  "base_validation_evaluation": false,
+  "future_evaluation": false,
+  "lambda_or_ste_changes": false,
+  "full_1000_step_training_authorized": false,
+  "capacity_failure": "save rejected candidate and last valid state; stop branch; no retry",
+  "timeout_seconds_per_job": 1800,
+  "stop_after_diagnostic": true,
+  "legacy_installed_source_sha256": {
+    "runner.py": "a265153a4e0d64561bba1cd5867cc31eecacf3477e7f3271aeaf09ba8e3125e3",
+    "main_control.py": "a4076635081baec728759a9e9b912dc84a99fa7aff9eb383bbff5f250d02614d",
+    "main_service.py": "7669b760ed8feb3d916d411dfbfca206f90604f3dfbebb2a3312dd0fa4715856"
+  }
+}

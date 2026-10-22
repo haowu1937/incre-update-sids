@@ -502,6 +502,16 @@ The Web controller independently verified the request and returned artifact byte
 
 The existing **SID实验结果监控** task was restored at 09:55 Europe/Dublin on 2026-10-22, retaining its hourly schedule and task identity. Manual “继续” and timed checks use the same persistent state, lease and receipts. The current state is `plan_completed`, with `next_job_id=null`; no additional experiment or budget is queued. New research requires an explicit plan update. Raw data and checkpoints remain on the server; the cloud verified the returned evidence rather than rerunning CUDA inference locally.
 
+### 6.10 Training-gradient diagnosis: merged side analysis and bounded plan
+
+On 2026-10-22, Hao supplied a training-trace analysis of the completed retuned Historical arm and authorized gradient diagnosis before changing lambda or STE. The supplied pre-update, changing-batch H averages increase from 0.082953 in steps 1–100 to 0.129097 in steps 901–1000 (+55.6%). Mean delta NLL increases from 0.017156 to 0.048138. These observations are consistent with the already recorded negative full anchor_train/holdout H result. They are not a fixed-checkpoint full-anchor curve. The original complete RQ loss increased slightly while reconstruction improved; this does not isolate a claim that RQ optimization sacrificed H.
+
+The side analysis reported no loss-sign error and reported directional/synthetic checks, but its raw checkpoint and per-query data were not independently rechecked in that side session. The present main session will first extract the original gradient logs with byte hashes, confirm sampled probe counts and clipping, then use actual update-and-hard-ID evaluations. No diagnostic result or causal mechanism is claimed yet.
+
+The controlled plan uses the final Historical checkpoint with positive H, a fixed 128-query training-anchor set and identical content batches. Independent H-only / RQ-only / Mixed branches each run five steps: no-momentum SGD at three conservative learning rates, followed by reset AdamW at the original recipe. Total bound: 60 diagnostic micro-updates; full anchor_train/reconstruction at steps 0/1/5; full-SID capacity checked after each step. Lambda=1e-4, temperature=0.5, clipping=0.1, teacher, old target/mask/catalog and all trainable RQ components stay fixed. Actual parameter displacement and hard H are the acceptance evidence; sampled gradient ratios alone are not. No holdout, Base validation or Future scoring, lambda sweep, STE change or new full training is authorized in this phase.
+
+The log collector and scope migration code passed 42 local standard-library/Git/subprocess checks, including a real legacy-parent handoff with simulated trace data. This is not GPU/model evidence. The controlled driver is being prepared. The first job only extracts existing trace observations and upgrades the existing Runner's narrow legacy gate; the controlled job cannot run before a validated log-analysis report/receipt. Source-bound RQ/TIGER/Future implementation files and old artifacts are preserved. New outputs remain under the independent Runner workspaces.
+
 ## 7. Artifact and identity index
 
 Paths below are relative to the server project root. These server files have not been read directly in the cloud.

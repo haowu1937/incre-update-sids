@@ -168,17 +168,36 @@ def main():
         raise FileExistsError('Require fresh output inside this exact detached job workspace')
     # Always write failure evidence to this job's independent output.
     started = time.monotonic()
+    migration = False
     try:
-        result = accept(a.deployment, output)
+        if os.environ['LAB_BUFFER_JOB_ID'] == 'history-future-accept-002':
+            # Explicit user-authorized scope migration, NOT a Future rerun or
+            # a claim that the accepted job 001 failed. The legacy executable
+            # permits this one unused argv/ID slot; all new jobs get new IDs.
+            from gradient_bridge import migrate, migration_requested
+            migration = migration_requested(a.deployment)
+        if migration:
+            result = migrate(ROOT, a.deployment, output)
+        else:
+            result = accept(a.deployment, output)
     except BaseException as error:
-        atomic_json(output, dict(stage='sid_main_existing_future_acceptance', execution_status='failed',
+        atomic_json(output, dict(stage='history_gradient_scope_migration_v1' if migration else 'sid_main_existing_future_acceptance', execution_status='failed',
                     job_id=os.environ.get('LAB_BUFFER_JOB_ID'), training_started=False,
                     error=type(error).__name__+': '+str(error), traceback=traceback.format_exc(),
                     runtime_seconds=time.monotonic()-started))
         raise
     result['runtime_seconds'] = time.monotonic()-started
-    atomic_json(output, result)
-    print(json.dumps({k: v for k, v in result.items() if k not in ('compact', 'input_sha256')}, indent=2), flush=True)
+    if migration:
+        raw = json.dumps(result, separators=(',', ':'), allow_nan=False)+'\n'
+        if len(raw.encode()) > 64*1024:
+            raise ValueError('Diagnostic text exceeds the explicit mailbox limit')
+        output.parent.mkdir(parents=True, exist_ok=True)
+        pending = output.with_suffix('.tmp')
+        pending.write_text(raw)
+        os.replace(pending, output)
+    else:
+        atomic_json(output, result)
+    print(json.dumps({k: v for k, v in result.items() if k not in ('compact', 'input_sha256', 'gradient_logs')}, indent=2), flush=True)
 
 
 if __name__ == '__main__':

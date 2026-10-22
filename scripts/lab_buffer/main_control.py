@@ -39,6 +39,9 @@ def job(deployment, code_sha, job_id):
 
 
 def authorize_task(root, task, raw, state):
+    if state and state.get('extension', {}).get('scope_id') == 'history-gradient-v1':
+        from gradient_bridge import authorize
+        return authorize(root, task, raw, state)
     if not state or state['pause_requested'] or state['mode'] != 'queued':
         return False
     if state['active_job_id'] != task['job_id'] or state['request_sha256'] != digest(raw):
@@ -170,6 +173,9 @@ class Control:
 
     def process(self, owner='server-after-acceptance'):
         state, _ = self.read()
+        if state.get('extension', {}).get('scope_id') == 'history-gradient-v1':
+            from gradient_bridge import observe
+            return observe(self, state)
         if state['mode'] in ('awaiting_deployment', 'plan_completed'):
             return dict(status=state['mode'])
         if state['pause_requested']:

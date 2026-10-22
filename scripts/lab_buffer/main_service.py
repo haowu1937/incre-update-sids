@@ -22,6 +22,8 @@ def main():
         state, _ = control.read()
         current = dict(worker_id='server2', mode=state['mode'], active_job_id=state['active_job_id'],
                        runner_status=status['status'], pause_requested=state['pause_requested'])
+        if state.get('extension'):
+            current['extension'] = {k: state['extension'].get(k) for k in ('scope_id','status')}
         path = 'workers/server2-main-status.json'
         raw = control.runner.read(control.runner.ref('results_branch'), path)
         previous = json.loads(raw) if raw else {}

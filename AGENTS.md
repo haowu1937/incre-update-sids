@@ -1,5 +1,9 @@
 # 项目协作规则
 
+## 当前诊断任务（2026-10-22，覆盖已完成计划的停止条件）
+
+用户已明确授权：先读取现有retuned Historical梯度日志，再从同一H>0最终checkpoint执行训练侧最小受控H-only/RQ-only/Mixed诊断。先读`docs/lab_buffer/CONTROLLER.md`最新scope amendment和`history_gradient_plan.json`；全部新微更新预算上限60步，不改λ/STE，不做holdout/Base validation/Future评分，不新增TIGER训练。既有Future结果与负anchor结论保留。通过原Runner的有记录兼容升级接入，不切换主工作区、不覆盖输入/旧结果；英文报告及时提交。
+
 ## 当前主实验Git接入（2026-10-20，覆盖早期阶段限制）
 
 用户授权在既定计划和预算内接入自动迭代。每次手动“继续”或定时检查均先读`docs/lab_buffer/CONTROLLER.md`、`docs/lab_buffer/main_protocol.json`及`lab-requests:control/main.json`，共用原子领取和回执。两个History-aware Future条件已收到完成结果；剩余任务仅为真实服务器产物/模型重载验收和报告，不新增训练预算或研究实验。保留旧负结果，不用holdout/Future调参，不更新HANDOFF。暂停自动迭代仅停止新任务下发，终止正在运行的实验需用户明确指令。实际部署和恢复Web监控必须等待服务器验收证据，不能将云端检查冒充部署完成。

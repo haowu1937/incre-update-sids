@@ -10,15 +10,25 @@
   "runner_root": "/home/hao/frec/git-lab-buffer",
   "project": "/home/hao/frec/graph-informed-sids-web",
   "python": "/home/hao/miniconda3/envs/frec-gpu/bin/python",
-  "plan": ["accept_existing_history_future"],
-  "new_training_steps_authorized": 0,
+  "plan": [
+    "read_existing_gradient_logs",
+    "controlled_train_side_diagnostic"
+  ],
+  "new_training_steps_authorized": 60,
   "new_future_prediction_passes_authorized": 0,
   "acceptance_timeout_seconds": 1800,
   "max_diagnosed_repair_jobs": 1,
   "same_fault_automatic_retry": false,
   "rq_update_steps_already_completed": 1000,
   "tiger_update_steps_already_completed": 2000,
-  "selection_steps": [0, 100, 250, 500, 1000, 2000],
+  "selection_steps": [
+    0,
+    100,
+    250,
+    500,
+    1000,
+    2000
+  ],
   "selection_metric": "Update validation fixed 512-query probe full-denominator ndcg@10; earliest tie",
   "selected_history_tiger_step": 2000,
   "future_queries": 34189,
@@ -26,10 +36,19 @@
   "catalog_items": 11775,
   "suffix_capacity": 256,
   "beam": 20,
-  "topk": [5, 10, 20],
+  "topk": [
+    5,
+    10,
+    20
+  ],
   "seed": 2026,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "web_controller": "docs/lab_buffer/CONTROLLER.md",
   "persistent_state": "lab-requests:control/main.json",
-  "stop_after_plan": true
+  "stop_after_plan": true,
+  "revision": 2,
+  "active_scope": "history-gradient-v1",
+  "scope_manifest": "docs/lab_buffer/history_gradient_plan.json",
+  "scope_authorized_at": "2026-10-22",
+  "optimizer_steps_scope": "diagnostic micro-updates only; not production training"
 }
