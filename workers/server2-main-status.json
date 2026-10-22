@@ -1,12 +1,12 @@
 {
   "worker_id": "server2",
-  "mode": "awaiting_runner_upgrade",
-  "active_job_id": "history-gradient-controlled-001",
+  "mode": "queued",
+  "active_job_id": "history-gradient-controlled-repair-001",
   "runner_status": "busy",
-  "pause_requested": true,
+  "pause_requested": false,
   "extension": {
     "scope_id": "history-gradient-v1",
-    "status": "awaiting_runner_upgrade"
+    "status": "controlled_queued"
   },
-  "observed_at": "2026-10-22T16:31:12.667078+00:00"
+  "observed_at": "2026-10-22T16:33:14.124858+00:00"
 }
