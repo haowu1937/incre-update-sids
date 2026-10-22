@@ -1,12 +1,12 @@
 {
   "worker_id": "server2",
-  "mode": "awaiting_analysis",
+  "mode": "awaiting_code",
   "active_job_id": "history-future-accept-002",
   "runner_status": "idle",
-  "pause_requested": false,
+  "pause_requested": true,
   "extension": {
     "scope_id": "history-gradient-v1",
     "status": "logs_pending_analysis"
   },
-  "observed_at": "2026-10-22T10:31:51.244037+00:00"
+  "observed_at": "2026-10-22T10:39:17.928408+00:00"
 }
