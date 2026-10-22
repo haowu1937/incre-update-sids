@@ -4,7 +4,12 @@
   "mode": "queued",
   "pause_requested": false,
   "active_job_id": "history-gradient-controlled-001",
-  "lease": null,
+  "lease": {
+    "token": "3e553fc0cd56496698692be5139cdd57",
+    "owner": "server-diagnostic-observer",
+    "acquired_at": "2026-10-22T10:48:53.512752+00:00",
+    "expires_at_unix": 1792667033.5127785
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
