@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "awaiting_analysis",
-  "pause_requested": false,
+  "mode": "awaiting_code",
+  "pause_requested": true,
   "active_job_id": "history-future-accept-002",
-  "lease": {
-    "token": "web-gradient-mvjennak-es8d5hq3krj",
-    "owner": "web-history-gradient-log-analysis",
-    "acquired_at": "2026-10-22T10:35:37.772Z",
-    "expires_at_unix": 1792666237.772
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -106,6 +101,61 @@
       "code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
       "captured_at": "2026-10-22T10:31:34.575154+00:00",
       "artifact_path": "artifacts/history-future-accept-002/outputs/main-acceptance.json"
+    },
+    "logs_analysis_receipt": {
+      "schema_version": 1,
+      "scope_id": "history-gradient-v1",
+      "phase": "read_existing_gradient_logs",
+      "status": "verified_and_analyzed",
+      "job_id": "history-future-accept-002",
+      "request_sha256": "4cca64fb47ec53f6ad31ef7c7558589f1d7985a5c2251e27c06f9f032655edaf",
+      "artifact_path": "artifacts/history-future-accept-002/outputs/main-acceptance.json",
+      "artifact_sha256": "0a94dcff5c46ed991481852e9799f1c65be18e24b4e789b82710b394f9cab1c9",
+      "code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
+      "report_commit_sha": "8182cb17802da08a4b2341950cee7f9b2b95f75f",
+      "report_marker": "<!-- history-gradient-logs:0a94dcff5c46ed991481852e9799f1c65be18e24b4e789b82710b394f9cab1c9 -->",
+      "original_training_commit": "c61bc13f46374790ac6e95f4f225d11e114ecd2c",
+      "original_training_source_sha256": "6f5c5303457042c68b586ccb5c9ae6899785f93bfa0be0fbcd8b9fb4cca3a088",
+      "trace_sha256": "f9cbb7ec65ab80c98413348cb09a410d7361a841b990afc73f186a9202f2e526",
+      "trace_records_validated_by_server": 1000,
+      "gradient_probes_recomputed_by_web": 41,
+      "clipped_steps": 0,
+      "checks": {
+        "request_result_and_artifact_identity": true,
+        "raw_byte_hashes": true,
+        "training_source_matches_original_commit": true,
+        "installed_helpers_match_code": true,
+        "legacy_sources_match_manifest": true,
+        "stable_trace_files": true,
+        "probe_norm_weight_ratio_arithmetic": true,
+        "probe_aggregate_distributions": true,
+        "component_windows": true,
+        "complete_step_sequence_verified_by_bound_server_collector": true,
+        "report_read_back_equal": true
+      },
+      "evidence_boundary": "Cloud rechecked 41 individual gradient probes and summaries; full raw step coverage and changing-batch H windows were validated by the reviewed server collector, not recomputed from 1000 raw records in cloud.",
+      "processed_at": "2026-10-22T10:38:36.457Z",
+      "next_job_id": null
+    },
+    "dispatch_blocker": {
+      "kind": "missing_delivered_controlled_driver",
+      "required_path": "diagnose_history_gradients.py",
+      "checked_code_sha": "8182cb17802da08a4b2341950cee7f9b2b95f75f",
+      "checked_at": "2026-10-22T10:38:36.457Z",
+      "planned_job_id": "history-gradient-controlled-001",
+      "job_submitted": false,
+      "diagnostic_optimizer_steps_spent": 0,
+      "reason": "Fixed gradient_bridge.task entry point is absent from the delivered code; do not dispatch a guaranteed missing-file failure.",
+      "resume_condition": "Deliver and review the fixed 60-step controlled driver with required checks, pin its complete code SHA, then clear this software-readiness pause and resume the same monitor under the existing scope.",
+      "not_a_user_pause": true
+    },
+    "web_monitor_paused": {
+      "automation_id": "6ad746543320819187a85beaf87af5bd",
+      "is_enabled": false,
+      "paused_at": "2026-10-22T10:38:11.204771+00:00",
+      "reason": "Controlled driver not yet delivered"
     }
-  }
+  },
+  "pause_reason": "Software-readiness blocker: diagnose_history_gradients.py absent from delivered code; no controlled job dispatched",
+  "paused_at": "2026-10-22T10:38:36.457Z"
 }
