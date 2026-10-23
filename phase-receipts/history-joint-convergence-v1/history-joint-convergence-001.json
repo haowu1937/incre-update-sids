@@ -1,0 +1,13 @@
+{
+  "scope_id": "history-joint-convergence-v1",
+  "job_id": "history-joint-convergence-001",
+  "status": "verified_and_reported",
+  "code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+  "request_sha256": "98cfccdd745ff7770389d7ea03cdac7b17c57a882ef492cb7f10e2602da430d5",
+  "artifact_sha256": "1d34004ae25f2216edd0586b5dcd9ef83501fcf646e10227db063163775f26d5",
+  "report_commit_sha": "d4db394f32a1157256e71dfb19e1c640f360e96e",
+  "actual_optimizer_steps": 21400,
+  "processed_at": "2026-10-23T13:44:35.386881+00:00",
+  "next_job_id": null,
+  "evidence": "Server verified local counters, bound curves and training-only selection arithmetic; no independent cloud model recomputation."
+}
