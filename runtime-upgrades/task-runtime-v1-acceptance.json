@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "protocol_version": 1,
+  "status": "installed_and_verified",
+  "code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
+  "authorization_path": "runtime-upgrades/task-runtime-v1.json",
+  "authorization_sha256": "897a111e127bf71ab00028db95cf53f38fbfa109fde12ed517117a49ebc548a2",
+  "worker_evidence_path": "workers/server2-task-runtime.json",
+  "worker_evidence_sha256": "7054e20eeb5f56314b08e6aaf2992d7eafd8925ed7a72e09a3f047dada141857",
+  "installed_at": "2026-10-23T13:44:47.381518+00:00",
+  "verified_at": "2026-10-23T14:48:32.490Z",
+  "checks": {
+    "authorized_sha": true,
+    "prior_helper_hashes": true,
+    "completed_study_receipt_before_installation": true,
+    "zero_new_optimizer_steps": true,
+    "zero_new_tasks": true,
+    "cron_and_main_workspace_preserved": true
+  },
+  "capabilities": {
+    "task_protocol_versions": [
+      1
+    ],
+    "max_parallel": 2,
+    "read_roots": [
+      "/home/hao/frec/graph-informed-sids-web",
+      "/home/hao/frec/git-lab-buffer/main-deployment.json",
+      "/home/hao/frec/git-lab-buffer/convergence-deployment.json"
+    ]
+  },
+  "backup": "/home/hao/frec/git-lab-buffer/runtime-upgrade-backups/fe790d49ce65db558433bba7d6c4e759279fa2aa",
+  "report_commit_sha": "f1e013e09f11901f5e15f5aff35c94efde2f2881",
+  "evidence_boundary": "Verified raw Git installation evidence, authorization, ordering and prior helper hashes against pinned Git source. No direct cloud read of installed server files or generic-contract real ML execution.",
+  "web_monitor": {
+    "automation_id": "6ad746543320819187a85beaf87af5bd",
+    "is_enabled": true
+  }
+}
