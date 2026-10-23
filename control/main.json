@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "plan_completed",
-  "pause_requested": false,
+  "mode": "needs_diagnosis",
+  "pause_requested": true,
   "active_job_id": "history-gradient-controlled-repair-001",
-  "lease": {
-    "token": "4818f638a6044718800cfeb11236ecb6",
-    "owner": "server-explicit-joint-convergence-upgrade",
-    "acquired_at": "2026-10-23T09:55:18.703641+00:00",
-    "expires_at_unix": 1792750218.7036703
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -411,5 +406,10 @@
     "planned_job_id": "history-joint-convergence-001",
     "server_attachment_required": true,
     "real_model_checks_required": true
+  },
+  "joint_attachment_failure": {
+    "error": "CalledProcessError(1, ['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-B', '/home/hao/frec/git-lab-buffer/attachments/joint-convergence.I7XXcp/code/tests/incremental/test_joint_convergence.py', '--require-torch'])",
+    "code_sha": "eeb6bf30aa34cc6843bf609d7673c1d3f5515024",
+    "changed_helpers": false
   }
 }
