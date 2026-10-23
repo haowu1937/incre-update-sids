@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "proposal_id": "history-joint-convergence-20261023",
+  "status": "design_recorded_not_queued",
+  "created_at": "2026-10-23T08:42:07.892Z",
+  "report_commit_sha": "ef31ed622908dd5c70af9aa5fa2431e7776d6b4d",
+  "plan_path": "docs/experiments/joint_convergence_plan.md",
+  "proposed_new_optimizer_step_limit": 30400,
+  "jobs_submitted": 0,
+  "new_optimizer_steps_executed": 0,
+  "active_execution_scope_unchanged": "history-gradient-v1",
+  "active_plan_status": "completed",
+  "server_readiness": "unverified; published paused snapshot and separate untimestamped fetch error",
+  "evidence": "Plan/report read back exactly; no executable training driver, queue, Runner, cron, automation, original input or model change."
+}

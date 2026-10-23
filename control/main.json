@@ -4,12 +4,7 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "history-gradient-controlled-repair-001",
-  "lease": {
-    "token": "joint-convergence-design-1792744846219",
-    "owner": "web-manual-joint-convergence-design",
-    "acquired_at": "2026-10-23T08:40:46.219Z",
-    "expires_at_unix": 1792745746.219
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -394,5 +389,11 @@
   "previous_software_pause": {
     "reason": "Software-readiness blocker: diagnose_history_gradients.py absent from delivered code; no controlled job dispatched",
     "paused_at": "2026-10-22T10:38:36.457Z"
+  },
+  "latest_design_receipt": {
+    "proposal_id": "history-joint-convergence-20261023",
+    "path": "design-proposals/history-joint-convergence-20261023.json",
+    "report_commit_sha": "ef31ed622908dd5c70af9aa5fa2431e7776d6b4d",
+    "status": "design_recorded_not_queued"
   }
 }
