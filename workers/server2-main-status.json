@@ -2,11 +2,11 @@
   "worker_id": "server2",
   "mode": "plan_completed",
   "active_job_id": "history-joint-convergence-001",
-  "runner_status": "completed",
+  "runner_status": "idle",
   "pause_requested": false,
   "extension": {
     "scope_id": "history-joint-convergence-v1",
     "status": "completed"
   },
-  "observed_at": "2026-10-23T13:44:52.287790+00:00"
+  "observed_at": "2026-10-23T13:45:17.731045+00:00"
 }
