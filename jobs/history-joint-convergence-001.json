@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "job_id": "history-joint-convergence-001",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "request_sha256": "98cfccdd745ff7770389d7ea03cdac7b17c57a882ef492cb7f10e2602da430d5",
+  "code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+  "runner_code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+  "status": "starting",
+  "started_at": "2026-10-23T10:10:07.959028+00:00",
+  "updated_at": "2026-10-23T10:10:07.962482+00:00",
+  "exit_code": null,
+  "pid": null,
+  "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-joint-convergence-001",
+  "log_path": "/home/hao/frec/git-lab-buffer/logs/history-joint-convergence-001.log",
+  "log_tail": "logs/history-joint-convergence-001.tail.txt",
+  "artifacts": [],
+  "training_started": false
+}
