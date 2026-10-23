@@ -2,11 +2,11 @@
   "worker_id": "server2",
   "mode": "plan_completed",
   "active_job_id": "history-gradient-controlled-repair-001",
-  "runner_status": "idle",
+  "runner_status": "busy",
   "pause_requested": false,
   "extension": {
     "scope_id": "history-gradient-v1",
     "status": "completed"
   },
-  "observed_at": "2026-10-23T09:05:17.656669+00:00"
+  "observed_at": "2026-10-23T09:55:12.313417+00:00"
 }
