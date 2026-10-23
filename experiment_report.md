@@ -606,6 +606,37 @@ Evidence: request SHA256 `7d09f7309d32768e99a605ae5814e74eb7520640a3db095af49410
 
 **Decision.** The Runner upgrade and declared diagnostic are complete. The evidence does not justify reducing the original failure to lambda being too small: H-only is not reliably improving hard H, while most small SGD updates are inconclusive plateaus. It highlights the relationship among finite optimizer displacement, the STE direction and full-SID discrete changes, without isolating a single cause. No lambda/STE change, further diagnostic, paired long run or downstream evaluation is dispatched. The original negative anchors and completed Future table remain unchanged; the current plan stops here.
 
+### 6.16 Proposed train-only joint convergence study (2026-10-23)
+
+**Status: design recorded; no new job dispatched or optimizer step executed.** Hao's
+current goal is simultaneous stabilization of full RQ loss and true hard-SID historical
+damage H, with useful content adaptation. The previous diagnostic plan remains completed.
+
+The proposed [joint convergence plan](docs/experiments/joint_convergence_plan.md)
+specifies 12 paired cells: peak LR={3e-5,1e-4,3e-4} crossed with
+lambda={0,1e-4,1e-3,1e-2}. All start from the original Base; STE temperature=0.5,
+clipping=0.1 and model scope stay fixed. A common warmup/decay schedule and same-LR
+Plain controls separate the new optimization recipe from the historical-penalty
+comparison. Full L_RQ includes the weighted quantization term; the earlier MSE
+improvement did not establish improvement or convergence of that full loss.
+
+Proposed maximum new budget is 30400 optimizer steps: 400 throughput-calibration
+steps, 12x1500 screening steps, at most four faithful 1500-step extensions to step
+3000, and one conditional seed-2027 paired confirmation (2x3000). This is a proposed
+new study limit, not reuse of the exhausted 60-step diagnostic allowance. Full fixed
+anchor_train and catalog metrics are collected each content epoch; minibatch
+pre-update H is retained separately. Late constant-LR stability, lower H than paired
+Plain, full-RQ improvement and new-item reconstruction are joint acceptance criteria.
+No holdout, ranking or Future result selects parameters.
+
+Concurrency is measured before adoption: two workers initially, at most four after
+throughput and <=24-GiB total-memory checks. The current Runner is serial and its
+installed exact-command gate needs bounded bundle support. Latest published worker
+state is paused; a separate untimestamped Git-fetch error does not establish its
+current cause. Actual deployment readiness remains unverified. This design changes
+neither active execution protocol nor queue, existing artifacts, source-bound training
+code, main workspace, cron or Web task. No new downstream result is claimed.
+
 ## 7. Artifact and identity index
 
 Paths below are relative to the server project root. These server files have not been read directly in the cloud.
