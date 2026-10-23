@@ -54,5 +54,14 @@
   "scope_manifest": "docs/lab_buffer/joint_convergence_plan.json",
   "scope_authorized_at": "2026-10-23",
   "optimizer_steps_scope": "entire new train-only study, including calibration, rejected updates and confirmation",
-  "max_parallel": 2
+  "max_parallel": 2,
+  "task_runtime": {
+    "protocol_version": 1,
+    "specification": "docs/lab_buffer/task_runtime_v1.md",
+    "deployment_evidence": "lab-results:workers/server2-task-runtime.json",
+    "task_contracts": "lab-requests:task-contracts/JOB.json",
+    "scope_authorizations": "lab-requests:task-scopes/SCOPE.json",
+    "per_experiment_runner_upgrade": false,
+    "core_migration": "single deferred idle installation; no research task or budget change"
+  }
 }

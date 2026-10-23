@@ -20,6 +20,8 @@ def main():
             # The active parent owns task execution and heartbeat transport.
             # Do not race its Git fetch/push from overlapping cron invocations.
             return 0
+        if status['status'] == 'paused':
+            return 0
         control = Control(root)
         processed = control.process()
         print(json.dumps(processed, ensure_ascii=False), flush=True)

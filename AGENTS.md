@@ -1,5 +1,9 @@
 # 项目协作规则
 
+## Runner 与任务边界（2026-10-23 最新授权）
+
+用户要求修复反复手动升级 Runner 的边界。先读 `docs/lab_buffer/task_runtime_v1.md`。当前联合收敛任务已经在 1bc0b43 成功接入并运行，保持其代码、任务、预算、输出和进程。新的通用 v1 入口只做一次等待空闲后的核心迁移；部署以 `workers/server2-task-runtime.json` 为准，不能把交付当作已部署。此后实验入口、参数、检查和科学 verifier 随任务完整 SHA/不可变 Git contract 下发，禁止为新实验或 repair job ID 再新增 installed gate/bridge 或要求用户升级。Git CAS、共享 lease、预算 reservation、输入校验、GPU 等待、失败证据和既定停止条件保留。本次基础设施修复不新增实验或计算预算。
+
 ## 当前联合收敛实验（2026-10-23，覆盖已完成诊断的停止条件）
 
 用户已确认按已提交方案继续开发并执行，新增 optimizer step 总上限 30,400（含 400 步吞吐标定、12x1500 筛选、最多四组 1500 步延长、条件性 2x3000 第二 seed 复验）。先读 `docs/experiments/joint_convergence_plan.md`、`docs/lab_buffer/joint_convergence_plan.json` 和 CONTROLLER 最新 amendment。完整 RQ loss 与 hard full-SID H 为训练侧目标；不运行 holdout、Base/Update validation 排名、Future 或 TIGER 训练。固定 STE/temperature，不扩展矩阵、预算或自动重跑。并行上限两组，标定吞吐不改善则串行；保留外部 GPU 占用等待、失败/中断/原输入证据。用独立新入口保留旧 source-bound 文件。已有 Runner 必须先通过 pinned 一次性接入及真实 RQ/TIGER CPU 检查；不把云端无 Torch 的协议测试记作真实模型通过。阶段间保留优化器、LR schedule、两个 sampler 和 RNG。每个 epoch 全目录 RQ、完整 anchor_train H；不把变化 minibatch 的日志当作收敛曲线。完成矩阵/条件复验、自动英文报告及回执后停止。

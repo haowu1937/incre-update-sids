@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Git-backed main-plan state, atomic leases, immutable jobs and acceptance receipts.
+"""Git-backed state, leases and receipts; v1 versioned tasks plus legacy adapters.
 
-The only current action is acceptance of ALREADY COMPLETED experiments. No new
-training or parameter search is authorized. CLI and Web follow the same state.
+Research authorization is read from persistent state, never inferred from this
+module's installed version. CLI, server and Web share the same state.
 """
 import argparse
 import copy
@@ -39,6 +39,9 @@ def job(deployment, code_sha, job_id):
 
 
 def authorize_task(root, task, raw, state):
+    if state and state.get('task_dispatch'):
+        from task_runtime import authorize
+        return authorize(Runner(root), task, raw, state)
     if state and state.get('extension', {}).get('scope_id') == 'history-joint-convergence-v1':
         from convergence_bridge import authorize
         return authorize(root, task, raw, state)
@@ -176,6 +179,9 @@ class Control:
 
     def process(self, owner='server-after-acceptance'):
         state, _ = self.read()
+        if state.get('task_dispatch'):
+            from task_runtime import observe
+            return observe(self, state)
         if state.get('extension', {}).get('scope_id') == 'history-joint-convergence-v1':
             from convergence_bridge import observe
             return observe(self, state)

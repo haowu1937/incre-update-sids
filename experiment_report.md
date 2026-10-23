@@ -709,6 +709,43 @@ The repair is delivered pending server execution, not a successful attachment or
 convergence result. Local repair checks cover 57 Runner cases and five protocol cases;
 real-model checks on the revised SHA remain mandatory on the server.
 
+### 6.19 Stable Runner boundary and confirmed study startup
+
+Server attachment at `1bc0b437973cea3b6e9293611eac2e39f7771983` completed. Mandatory
+real-model preflight passed; checks log SHA256 is
+`e8fdc3c974e69beddcf4a3de1eb07761c17ded2c4b48a77ae303a1d664420491`.
+Git result `history-joint-convergence-001` is running, with the first serial
+calibration arm completed at 100 steps and the second started in the returned log.
+This establishes execution, not convergence. The declared study remains bounded
+at 30,400 steps; downstream/Future results at the top remain unchanged.
+
+Repeated manual upgrades came from experiment-specific command/job-ID gates in
+the installed controller. Implemented a generic v1 boundary: immutable requests,
+scope authorizations, task contracts and scientific verifiers travel at each
+task's full Git SHA. Installed code handles transport, claims, GPU waiting,
+preflight execution, bounded artifact return and shared report/receipt publication.
+Scope reservations, input hashes, failures and stop conditions remain enforced;
+new task code or a fresh repair ID does not require another Runner installation.
+This is a trusted-repository executor, not a filesystem or GPU quota sandbox.
+
+The current executable cannot bootstrap a generic request through its old exact
+gate. One final core installer is therefore delivered with deferred activation:
+wait for the running task and terminal delivery/receipt, validate the exact prior
+installation, preserve a backup, then activate the generic interface. It changes
+no cron entry, main workspace, scientific input, task record or research budget;
+it queues no experiment and terminates no process. Existing adapters remain for
+old records. Installation is pending until the server returns
+`workers/server2-task-runtime.json`; code delivery is not deployment acceptance.
+
+Local acceptance uses real temporary Git repositories and child processes with
+synthetic transport data. It covers two unrelated task entries and code SHAs
+through unchanged installed files, deduplication, preflight failure, input/contract
+mutation, scope-budget limits, GPU/pause deferral, and idle/partial installation.
+The 68-case Runner regression suite passed; the final 13-case boundary suite also
+passed after adding exact noncanonical JSON-byte handling and live-PID refusal.
+Python 3.10 syntax and protocol JSON checks passed. These checks do not establish
+GPU/Beauty results.
+
 ## 7. Artifact and identity index
 
 Paths below are relative to the server project root. These server files have not been read directly in the cloud.

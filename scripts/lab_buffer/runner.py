@@ -131,7 +131,7 @@ class Runner:
         return "refs/remotes/origin/" + self.config[key]
 
     def fetch(self, keys=("requests_branch", "results_branch", "code_branch")):
-        self.git("fetch", "--quiet", "origin", *[
+        self.git("fetch", "--quiet", "--no-write-fetch-head", "origin", *[
             "+refs/heads/" + self.config[key] + ":" + self.ref(key) for key in keys])
 
     def read(self, ref, path):
@@ -320,6 +320,13 @@ class Runner:
                     env.update(OMP_NUM_THREADS="1", MKL_NUM_THREADS="1", OPENBLAS_NUM_THREADS="1",
                                HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1", USE_TF="0", USE_FLAX="0",
                                CUBLAS_WORKSPACE_CONFIG=":4096:8")
+                contract = self.root / 'task-contracts' / (task['job_id'] + '.json')
+                if self.config.get('task_runtime_version') == 1 and contract.is_file():
+                    # Stable host wrapper; experiment commands/checks live in the
+                    # immutable contract, not in an installed experiment allowlist.
+                    argv = [self.config['python'], '-u', '-B',
+                            str(self.root/'bin/task_runtime.py'), 'run', '--root', str(self.root),
+                            '--job-id', task['job_id'], '--workspace', str(workspace)]
             result["argv"] = argv
             log = Path(result["log_path"])
             with log.open("xb") as handle:
@@ -331,6 +338,7 @@ class Runner:
                     watchdog.start()
                 result.update(status="running", pid=process.pid,
                               training_started=task["kind"] == "experiment" and (
+                                  self.config.get('task_runtime_version') == 1 and contract.is_file() or
                                   not self.config.get("main_integration") or
                                   self.config.get("main_scope_revision", 1) >= 2 and
                                   any(name in task.get("argv", []) for name in
