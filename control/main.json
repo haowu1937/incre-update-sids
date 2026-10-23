@@ -4,12 +4,7 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "history-gradient-controlled-repair-001",
-  "lease": {
-    "token": "joint-study-delivery-1792748659035",
-    "owner": "web-joint-study-implementation",
-    "acquired_at": "2026-10-23T09:44:19.035Z",
-    "expires_at_unix": 1792749559.035
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -400,5 +395,16 @@
     "path": "design-proposals/history-joint-convergence-20261023.json",
     "report_commit_sha": "ef31ed622908dd5c70af9aa5fa2431e7776d6b4d",
     "status": "design_recorded_not_queued"
+  },
+  "pending_scope": {
+    "scope_id": "history-joint-convergence-v1",
+    "status": "awaiting_runner_upgrade",
+    "code_sha": "eeb6bf30aa34cc6843bf609d7673c1d3f5515024",
+    "manifest_sha256": "e4e2596c24ddf01b5dcd915d4b6cd5abe92e8a1a3650192022022172995c33b1",
+    "max_optimizer_steps": 30400,
+    "authorization_path": "scope-authorizations/history-joint-convergence-v1.json",
+    "planned_job_id": "history-joint-convergence-001",
+    "server_attachment_required": true,
+    "real_model_checks_required": true
   }
 }
