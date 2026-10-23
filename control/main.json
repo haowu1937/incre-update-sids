@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "needs_diagnosis",
-  "pause_requested": true,
-  "active_job_id": "history-gradient-controlled-repair-001",
-  "lease": {
-    "token": "f15c703a7ef44681b8d3b8757d8f07d8",
-    "owner": "server-explicit-joint-convergence-upgrade",
-    "acquired_at": "2026-10-23T10:08:52.968538+00:00",
-    "expires_at_unix": 1792751032.9685657
-  },
+  "mode": "queued",
+  "pause_requested": false,
+  "active_job_id": "history-joint-convergence-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -25,14 +20,17 @@
     }
   },
   "plan": [
-    "read_existing_gradient_logs",
-    "controlled_train_side_diagnostic"
+    "calibrate_concurrency",
+    "train_only_parameter_screen",
+    "faithful_candidate_extensions",
+    "conditional_second_seed_confirmation",
+    "verify_report_and_stop"
   ],
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-  "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
+  "code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+  "request_sha256": "98cfccdd745ff7770389d7ea03cdac7b17c57a882ef492cb7f10e2602da430d5",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -122,274 +120,16 @@
     }
   ],
   "extension": {
-    "scope_id": "history-gradient-v1",
-    "authorized_at": "2026-10-22",
-    "authorization": "User explicitly requested existing gradient logs and bounded controlled diagnosis before lambda or STE changes",
-    "status": "completed",
-    "migration_purpose": "explicit scope upgrade + read-only gradient logs; not a repair or Future rerun",
-    "legacy_previous_repairs_used": 0,
-    "max_diagnostic_optimizer_steps": 60,
-    "scope_manifest": "docs/lab_buffer/history_gradient_plan.json",
-    "installed_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-    "legacy_slot": {
-      "job_id": "history-future-accept-002",
-      "purpose": "explicit scope upgrade + read-only log extraction",
-      "not_a_repair": true,
-      "previous_repairs_used": 0
-    },
-    "result_receipt": {
-      "schema_version": 1,
-      "status": "captured_for_web_analysis",
-      "job_id": "history-gradient-controlled-repair-001",
-      "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
-      "artifact_sha256": "b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c",
-      "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-      "captured_at": "2026-10-22T16:36:24.694179+00:00",
-      "artifact_path": "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json"
-    },
-    "logs_analysis_receipt": {
-      "schema_version": 1,
-      "scope_id": "history-gradient-v1",
-      "phase": "read_existing_gradient_logs",
-      "status": "verified_and_analyzed",
-      "job_id": "history-future-accept-002",
-      "request_sha256": "4cca64fb47ec53f6ad31ef7c7558589f1d7985a5c2251e27c06f9f032655edaf",
-      "artifact_path": "artifacts/history-future-accept-002/outputs/main-acceptance.json",
-      "artifact_sha256": "0a94dcff5c46ed991481852e9799f1c65be18e24b4e789b82710b394f9cab1c9",
-      "code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
-      "report_commit_sha": "8182cb17802da08a4b2341950cee7f9b2b95f75f",
-      "report_marker": "<!-- history-gradient-logs:0a94dcff5c46ed991481852e9799f1c65be18e24b4e789b82710b394f9cab1c9 -->",
-      "original_training_commit": "c61bc13f46374790ac6e95f4f225d11e114ecd2c",
-      "original_training_source_sha256": "6f5c5303457042c68b586ccb5c9ae6899785f93bfa0be0fbcd8b9fb4cca3a088",
-      "trace_sha256": "f9cbb7ec65ab80c98413348cb09a410d7361a841b990afc73f186a9202f2e526",
-      "trace_records_validated_by_server": 1000,
-      "gradient_probes_recomputed_by_web": 41,
-      "clipped_steps": 0,
-      "checks": {
-        "request_result_and_artifact_identity": true,
-        "raw_byte_hashes": true,
-        "training_source_matches_original_commit": true,
-        "installed_helpers_match_code": true,
-        "legacy_sources_match_manifest": true,
-        "stable_trace_files": true,
-        "probe_norm_weight_ratio_arithmetic": true,
-        "probe_aggregate_distributions": true,
-        "component_windows": true,
-        "complete_step_sequence_verified_by_bound_server_collector": true,
-        "report_read_back_equal": true
-      },
-      "evidence_boundary": "Cloud rechecked 41 individual gradient probes and summaries; full raw step coverage and changing-batch H windows were validated by the reviewed server collector, not recomputed from 1000 raw records in cloud.",
-      "processed_at": "2026-10-22T10:38:36.457Z",
-      "next_job_id": null
-    },
-    "previous_dispatch_blocker": {
-      "kind": "installed_gate_lacks_fresh_repair_job_id",
-      "not_a_user_pause": true,
-      "reason": "Installed b8e40bd gate only permits history-gradient-controlled-001; a one-time idle-Runner attachment is required for the exact preflight repair. No safe Git-only bootstrap remains.",
-      "required_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-      "planned_job_id": "history-gradient-controlled-repair-001",
-      "job_submitted": false,
-      "resolved_at": "2026-10-22T16:31:10.109807+00:00",
-      "resolved_by_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa"
-    },
-    "previous_web_monitor_pause": {
-      "automation_id": "6ad746543320819187a85beaf87af5bd",
-      "is_enabled": false,
-      "paused_at": "2026-10-22T10:38:11.204771+00:00",
-      "reason": "Controlled driver not yet delivered"
-    },
-    "controlled_delivery": {
-      "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
-      "report_commit_sha": "4921302cfa2737232dcf499696d49d10091058c0",
-      "local_protocol_checks_passed": 2,
-      "local_runner_checks_passed": 42,
-      "real_model_checks": "mandatory server preflight; pending",
-      "job_id": "history-gradient-controlled-001",
-      "maximum_micro_updates": 60
-    },
-    "web_monitor_resumed": {
-      "automation_id": "6ad746543320819187a85beaf87af5bd",
-      "is_enabled": true,
-      "resumed_at": "2026-10-22T10:47:05.419Z",
-      "reason": "Fixed controlled driver delivered and read back; software-readiness blocker resolved"
-    },
-    "diagnostic_optimizer_steps_spent": 60,
-    "result": {
-      "schema_version": 1,
-      "job_id": "history-gradient-controlled-repair-001",
-      "worker_id": "server2",
-      "kind": "experiment",
-      "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
-      "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-      "runner_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-      "status": "completed",
-      "started_at": "2026-10-22T16:32:08.732246+00:00",
-      "updated_at": "2026-10-22T16:35:43.307267+00:00",
-      "exit_code": 0,
-      "pid": 3727804,
-      "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-gradient-controlled-repair-001",
-      "log_path": "/home/hao/frec/git-lab-buffer/logs/history-gradient-controlled-repair-001.log",
-      "log_tail": "logs/history-gradient-controlled-repair-001.tail.txt",
-      "artifacts": [
-        "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json"
-      ],
-      "training_started": true,
-      "actual_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-      "argv": [
-        "/home/hao/miniconda3/envs/frec-gpu/bin/python",
-        "-u",
-        "-B",
-        "diagnose_history_gradients.py",
-        "--deployment",
-        "/home/hao/frec/git-lab-buffer/main-deployment.json",
-        "--output",
-        "outputs/controlled"
-      ],
-      "process_started": true,
-      "elapsed_seconds": 195.92,
-      "artifacts_sha256": {
-        "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json": "b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c"
-      },
-      "finished_at": "2026-10-22T16:35:43.307244+00:00"
-    },
-    "failure_analysis_receipt": {
-      "schema_version": 1,
-      "scope_id": "history-gradient-v1",
-      "phase": "controlled_preflight_failure",
-      "status": "diagnosed_before_beauty_updates",
-      "job_id": "history-gradient-controlled-001",
-      "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
-      "request_sha256": "3b45f6fba4277287df55a0c6752ebfd5110af9368b74a63cb42467a833793c1d",
-      "artifact_sha256": "e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f",
-      "artifact_path": "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json",
-      "report_commit_sha": "5844f51ac2863dc2296f7708e725f1074917f70d",
-      "diagnostic_optimizer_steps_spent": 0,
-      "diagnosis": "Synthetic Plain checkpoint had H=0; both tests stopped at the production positive-H guard during fixture construction. Main run/Beauty context was not entered.",
-      "fault_fingerprint": "synthetic-positive-hard-H-start-v1",
-      "processed_at": "2026-10-22T10:57:36.232Z",
-      "next_job_id": null
-    },
-    "repair_delivery": {
-      "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-      "job_id": "history-gradient-controlled-repair-001",
-      "entry": "scripts/lab_buffer/attach_gradient_repair.py",
-      "status": "completed_and_verified",
-      "local_runner_checks_passed": 45,
-      "local_protocol_checks_passed": 2,
-      "real_model_checks": "passed on server during attachment and task",
-      "remaining_micro_update_budget": 0,
-      "checks_log_sha256": "e728f5a3ddf3b9057f3b2d11759f53d79e83fef98e650dac584fcc0a6a5bc5a4",
-      "completed_optimizer_steps": 60
-    },
-    "attachment_schema_fix_receipt": {
-      "schema_version": 1,
-      "phase": "runner_attachment_config_schema",
-      "status": "diagnosed_fix_delivered_not_executed",
-      "failed_code_sha": "11bd146068611b9451e41732178c11513784817c",
-      "failure_path": "workers/server2-gradient-repair-attach.json",
-      "failure_sha256": "43a5313319b6c7388ff25334300356208f0fb048ca7af38b13634347608ca204",
-      "error": "KeyError('python')",
-      "cause": "Interpreter belongs to Runner config.json, not main-deployment.json",
-      "fix_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-      "report_commit_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-      "local_runner_checks_passed": 45,
-      "ml_subprocess_mocked_in_new_wiring_tests": true,
-      "real_model_checks": "not_started; pending explicit server attachment",
-      "beauty_optimizer_steps_spent": 0,
-      "processed_at": "2026-10-22T16:11:26.001Z",
-      "new_job_submitted": false
-    },
-    "controlled_repair_authorization": {
-      "failed_job_id": "history-gradient-controlled-001",
-      "failed_code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
-      "failed_artifact_sha256": "e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f",
-      "diagnostic_steps_spent": 0,
-      "remaining_step_budget": 60,
-      "diagnosis": "Tiny Plain fixture had H=0; deterministic measured positive-H token permutations fix only the test fixture.",
-      "mandatory_real_model_checks_passed": true,
-      "checks_log_sha256": "e728f5a3ddf3b9057f3b2d11759f53d79e83fef98e650dac584fcc0a6a5bc5a4",
-      "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-      "attached_at": "2026-10-22T16:31:10.109775+00:00",
-      "installed_before": {
-        "runner.py": "084d43bb53969270c3a9a1f094b0c7f377d54e41748a96736be1cf9d523780e2",
-        "main_control.py": "0242c995745f474cba644201644995c8392d48b076ada9fad59387e87548288f",
-        "main_service.py": "d9a124b12ca40b8d61d9353957a9054cebfffdae2b6ea86c66715ef4a4f8c114",
-        "gradient_logs.py": "d95d7749aae08bafac13f7da9d066f129f1f06e069e6d6e27eb8752a2ac6e80c",
-        "gradient_bridge.py": "b6317be11ee7c70b86a4bf2063a335c951ce457a6a45502fa62adb0a9032c681"
-      },
-      "backup": "/home/hao/frec/git-lab-buffer/scope-upgrade-backups/positive-H-fixture-3d901876e12ea344d34a59773ca3d03c812235fa"
-    },
-    "controlled_analysis_receipt": {
-      "schema_version": 1,
-      "scope_id": "history-gradient-v1",
-      "phase": "controlled_train_side_diagnostic",
-      "status": "verified_and_analyzed",
-      "job_id": "history-gradient-controlled-repair-001",
-      "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
-      "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
-      "artifact_path": "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json",
-      "artifact_sha256": "b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c",
-      "full_server_summary_sha256": "bc3f61abff7f0fbd88fbf82c6cdbf5044a2335e431309b2509d95047b722f132",
-      "report_commit_sha": "fad7f94ef1b7774b145b66ed77cb41e6879b69ff",
-      "report_marker": "<!-- history-gradient-controlled:b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c -->",
-      "actual_beauty_optimizer_steps": 60,
-      "completed_branches": 12,
-      "steps_per_branch": 5,
-      "remaining_micro_update_budget": 0,
-      "checks": {
-        "request_result_code_identity": true,
-        "raw_byte_hashes": true,
-        "declared_plan_and_step_accounting": true,
-        "finite_metrics_and_consistent_checkpoint_arithmetic": true,
-        "capacity_feasible_steps": 60,
-        "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
-        "reported_same_start_sampling_teacher_and_inputs": true,
-        "no_holdout_base_validation_future_scoring": true,
-        "real_model_preflight_passed": true
-      },
-      "evidence_boundary": "Raw mailbox hashes and compact arithmetic checked in cloud; model resets, loss computation, unchanged inputs/teacher and real-model checks are reviewed-source server evidence. No independent cloud checkpoint reload or per-query recomputation.",
-      "processed_at": "2026-10-22T16:46:23.586Z",
-      "next_job_id": null
-    },
-    "initial_failed_job_result": {
-      "schema_version": 1,
-      "job_id": "history-gradient-controlled-001",
-      "worker_id": "server2",
-      "kind": "experiment",
-      "request_sha256": "3b45f6fba4277287df55a0c6752ebfd5110af9368b74a63cb42467a833793c1d",
-      "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
-      "runner_code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
-      "status": "failed",
-      "started_at": "2026-10-22T10:48:08.688725+00:00",
-      "updated_at": "2026-10-22T10:48:31.342193+00:00",
-      "exit_code": 1,
-      "pid": 3549535,
-      "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-gradient-controlled-001",
-      "log_path": "/home/hao/frec/git-lab-buffer/logs/history-gradient-controlled-001.log",
-      "log_tail": "logs/history-gradient-controlled-001.tail.txt",
-      "artifacts": [
-        "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json"
-      ],
-      "training_started": true,
-      "actual_code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
-      "argv": [
-        "/home/hao/miniconda3/envs/frec-gpu/bin/python",
-        "-u",
-        "-B",
-        "diagnose_history_gradients.py",
-        "--deployment",
-        "/home/hao/frec/git-lab-buffer/main-deployment.json",
-        "--output",
-        "outputs/controlled"
-      ],
-      "process_started": true,
-      "elapsed_seconds": 11.463,
-      "artifacts_sha256": {
-        "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json": "e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f"
-      },
-      "finished_at": "2026-10-22T10:48:31.342170+00:00"
-    },
-    "initial_failed_job_id": "history-gradient-controlled-001"
+    "scope_id": "history-joint-convergence-v1",
+    "status": "queued",
+    "max_optimizer_steps": 30400,
+    "optimizer_steps_spent": 0,
+    "real_model_preflight_passed": true,
+    "checks_log_sha256": "e8fdc3c974e69beddcf4a3de1eb07761c17ded2c4b48a77ae303a1d664420491",
+    "code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+    "source_manifest": "e4e2596c24ddf01b5dcd915d4b6cd5abe92e8a1a3650192022022172995c33b1",
+    "attached_at": "2026-10-23T10:09:26.291173+00:00",
+    "backup": "/home/hao/frec/git-lab-buffer/scope-upgrade-backups/joint-convergence-1bc0b437973cea3b6e9293611eac2e39f7771983"
   },
   "previous_software_pause": {
     "reason": "Software-readiness blocker: diagnose_history_gradients.py absent from delivered code; no controlled job dispatched",
@@ -401,32 +141,296 @@
     "report_commit_sha": "ef31ed622908dd5c70af9aa5fa2431e7776d6b4d",
     "status": "design_recorded_not_queued"
   },
-  "pending_scope": {
-    "scope_id": "history-joint-convergence-v1",
-    "status": "awaiting_runner_upgrade",
-    "code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
-    "manifest_sha256": "e4e2596c24ddf01b5dcd915d4b6cd5abe92e8a1a3650192022022172995c33b1",
-    "max_optimizer_steps": 30400,
-    "authorization_path": "scope-authorizations/history-joint-convergence-v1-plot-repair.json",
-    "planned_job_id": "history-joint-convergence-001",
-    "server_attachment_required": true,
-    "real_model_checks_required": true,
-    "preflight_repair": {
-      "failed_code_sha": "eeb6bf30aa34cc6843bf609d7673c1d3f5515024",
-      "failure_sha256": "6f6335930604db31b0fbffa123a82bf5548ce9f92231577620d6b1f3073029ff",
-      "analysis_path": "scope-analysis/history-joint-convergence-v1/optional-plotter-failure.json",
-      "beauty_optimizer_steps_spent": 0,
-      "helpers_unchanged": true
-    }
-  },
-  "joint_attachment_failure": {
-    "error": "CalledProcessError(1, ['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-B', '/home/hao/frec/git-lab-buffer/attachments/joint-convergence.I7XXcp/code/tests/incremental/test_joint_convergence.py', '--require-torch'])",
-    "code_sha": "eeb6bf30aa34cc6843bf609d7673c1d3f5515024",
-    "changed_helpers": false
-  },
   "latest_preflight_analysis": {
     "path": "scope-analysis/history-joint-convergence-v1/optional-plotter-failure.json",
     "status": "diagnosed_repair_delivered_not_executed",
     "report_commit_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983"
-  }
+  },
+  "resolved_attachment_failures": [
+    {
+      "error": "CalledProcessError(1, ['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-B', '/home/hao/frec/git-lab-buffer/attachments/joint-convergence.I7XXcp/code/tests/incremental/test_joint_convergence.py', '--require-torch'])",
+      "code_sha": "eeb6bf30aa34cc6843bf609d7673c1d3f5515024",
+      "changed_helpers": false,
+      "failed_code_sha": "eeb6bf30aa34cc6843bf609d7673c1d3f5515024",
+      "failure_sha256": "6f6335930604db31b0fbffa123a82bf5548ce9f92231577620d6b1f3073029ff",
+      "resolved_at": "2026-10-23T10:09:26.286300+00:00",
+      "resolved_by_code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983"
+    }
+  ],
+  "completed_scope_history": [
+    {
+      "scope_id": "history-gradient-v1",
+      "authorized_at": "2026-10-22",
+      "authorization": "User explicitly requested existing gradient logs and bounded controlled diagnosis before lambda or STE changes",
+      "status": "completed",
+      "migration_purpose": "explicit scope upgrade + read-only gradient logs; not a repair or Future rerun",
+      "legacy_previous_repairs_used": 0,
+      "max_diagnostic_optimizer_steps": 60,
+      "scope_manifest": "docs/lab_buffer/history_gradient_plan.json",
+      "installed_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+      "legacy_slot": {
+        "job_id": "history-future-accept-002",
+        "purpose": "explicit scope upgrade + read-only log extraction",
+        "not_a_repair": true,
+        "previous_repairs_used": 0
+      },
+      "result_receipt": {
+        "schema_version": 1,
+        "status": "captured_for_web_analysis",
+        "job_id": "history-gradient-controlled-repair-001",
+        "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
+        "artifact_sha256": "b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c",
+        "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+        "captured_at": "2026-10-22T16:36:24.694179+00:00",
+        "artifact_path": "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json"
+      },
+      "logs_analysis_receipt": {
+        "schema_version": 1,
+        "scope_id": "history-gradient-v1",
+        "phase": "read_existing_gradient_logs",
+        "status": "verified_and_analyzed",
+        "job_id": "history-future-accept-002",
+        "request_sha256": "4cca64fb47ec53f6ad31ef7c7558589f1d7985a5c2251e27c06f9f032655edaf",
+        "artifact_path": "artifacts/history-future-accept-002/outputs/main-acceptance.json",
+        "artifact_sha256": "0a94dcff5c46ed991481852e9799f1c65be18e24b4e789b82710b394f9cab1c9",
+        "code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
+        "report_commit_sha": "8182cb17802da08a4b2341950cee7f9b2b95f75f",
+        "report_marker": "<!-- history-gradient-logs:0a94dcff5c46ed991481852e9799f1c65be18e24b4e789b82710b394f9cab1c9 -->",
+        "original_training_commit": "c61bc13f46374790ac6e95f4f225d11e114ecd2c",
+        "original_training_source_sha256": "6f5c5303457042c68b586ccb5c9ae6899785f93bfa0be0fbcd8b9fb4cca3a088",
+        "trace_sha256": "f9cbb7ec65ab80c98413348cb09a410d7361a841b990afc73f186a9202f2e526",
+        "trace_records_validated_by_server": 1000,
+        "gradient_probes_recomputed_by_web": 41,
+        "clipped_steps": 0,
+        "checks": {
+          "request_result_and_artifact_identity": true,
+          "raw_byte_hashes": true,
+          "training_source_matches_original_commit": true,
+          "installed_helpers_match_code": true,
+          "legacy_sources_match_manifest": true,
+          "stable_trace_files": true,
+          "probe_norm_weight_ratio_arithmetic": true,
+          "probe_aggregate_distributions": true,
+          "component_windows": true,
+          "complete_step_sequence_verified_by_bound_server_collector": true,
+          "report_read_back_equal": true
+        },
+        "evidence_boundary": "Cloud rechecked 41 individual gradient probes and summaries; full raw step coverage and changing-batch H windows were validated by the reviewed server collector, not recomputed from 1000 raw records in cloud.",
+        "processed_at": "2026-10-22T10:38:36.457Z",
+        "next_job_id": null
+      },
+      "previous_dispatch_blocker": {
+        "kind": "installed_gate_lacks_fresh_repair_job_id",
+        "not_a_user_pause": true,
+        "reason": "Installed b8e40bd gate only permits history-gradient-controlled-001; a one-time idle-Runner attachment is required for the exact preflight repair. No safe Git-only bootstrap remains.",
+        "required_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+        "planned_job_id": "history-gradient-controlled-repair-001",
+        "job_submitted": false,
+        "resolved_at": "2026-10-22T16:31:10.109807+00:00",
+        "resolved_by_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa"
+      },
+      "previous_web_monitor_pause": {
+        "automation_id": "6ad746543320819187a85beaf87af5bd",
+        "is_enabled": false,
+        "paused_at": "2026-10-22T10:38:11.204771+00:00",
+        "reason": "Controlled driver not yet delivered"
+      },
+      "controlled_delivery": {
+        "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+        "report_commit_sha": "4921302cfa2737232dcf499696d49d10091058c0",
+        "local_protocol_checks_passed": 2,
+        "local_runner_checks_passed": 42,
+        "real_model_checks": "mandatory server preflight; pending",
+        "job_id": "history-gradient-controlled-001",
+        "maximum_micro_updates": 60
+      },
+      "web_monitor_resumed": {
+        "automation_id": "6ad746543320819187a85beaf87af5bd",
+        "is_enabled": true,
+        "resumed_at": "2026-10-22T10:47:05.419Z",
+        "reason": "Fixed controlled driver delivered and read back; software-readiness blocker resolved"
+      },
+      "diagnostic_optimizer_steps_spent": 60,
+      "result": {
+        "schema_version": 1,
+        "job_id": "history-gradient-controlled-repair-001",
+        "worker_id": "server2",
+        "kind": "experiment",
+        "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
+        "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+        "runner_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+        "status": "completed",
+        "started_at": "2026-10-22T16:32:08.732246+00:00",
+        "updated_at": "2026-10-22T16:35:43.307267+00:00",
+        "exit_code": 0,
+        "pid": 3727804,
+        "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-gradient-controlled-repair-001",
+        "log_path": "/home/hao/frec/git-lab-buffer/logs/history-gradient-controlled-repair-001.log",
+        "log_tail": "logs/history-gradient-controlled-repair-001.tail.txt",
+        "artifacts": [
+          "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json"
+        ],
+        "training_started": true,
+        "actual_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+        "argv": [
+          "/home/hao/miniconda3/envs/frec-gpu/bin/python",
+          "-u",
+          "-B",
+          "diagnose_history_gradients.py",
+          "--deployment",
+          "/home/hao/frec/git-lab-buffer/main-deployment.json",
+          "--output",
+          "outputs/controlled"
+        ],
+        "process_started": true,
+        "elapsed_seconds": 195.92,
+        "artifacts_sha256": {
+          "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json": "b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c"
+        },
+        "finished_at": "2026-10-22T16:35:43.307244+00:00"
+      },
+      "failure_analysis_receipt": {
+        "schema_version": 1,
+        "scope_id": "history-gradient-v1",
+        "phase": "controlled_preflight_failure",
+        "status": "diagnosed_before_beauty_updates",
+        "job_id": "history-gradient-controlled-001",
+        "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+        "request_sha256": "3b45f6fba4277287df55a0c6752ebfd5110af9368b74a63cb42467a833793c1d",
+        "artifact_sha256": "e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f",
+        "artifact_path": "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json",
+        "report_commit_sha": "5844f51ac2863dc2296f7708e725f1074917f70d",
+        "diagnostic_optimizer_steps_spent": 0,
+        "diagnosis": "Synthetic Plain checkpoint had H=0; both tests stopped at the production positive-H guard during fixture construction. Main run/Beauty context was not entered.",
+        "fault_fingerprint": "synthetic-positive-hard-H-start-v1",
+        "processed_at": "2026-10-22T10:57:36.232Z",
+        "next_job_id": null
+      },
+      "repair_delivery": {
+        "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+        "job_id": "history-gradient-controlled-repair-001",
+        "entry": "scripts/lab_buffer/attach_gradient_repair.py",
+        "status": "completed_and_verified",
+        "local_runner_checks_passed": 45,
+        "local_protocol_checks_passed": 2,
+        "real_model_checks": "passed on server during attachment and task",
+        "remaining_micro_update_budget": 0,
+        "checks_log_sha256": "e728f5a3ddf3b9057f3b2d11759f53d79e83fef98e650dac584fcc0a6a5bc5a4",
+        "completed_optimizer_steps": 60
+      },
+      "attachment_schema_fix_receipt": {
+        "schema_version": 1,
+        "phase": "runner_attachment_config_schema",
+        "status": "diagnosed_fix_delivered_not_executed",
+        "failed_code_sha": "11bd146068611b9451e41732178c11513784817c",
+        "failure_path": "workers/server2-gradient-repair-attach.json",
+        "failure_sha256": "43a5313319b6c7388ff25334300356208f0fb048ca7af38b13634347608ca204",
+        "error": "KeyError('python')",
+        "cause": "Interpreter belongs to Runner config.json, not main-deployment.json",
+        "fix_code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+        "report_commit_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+        "local_runner_checks_passed": 45,
+        "ml_subprocess_mocked_in_new_wiring_tests": true,
+        "real_model_checks": "not_started; pending explicit server attachment",
+        "beauty_optimizer_steps_spent": 0,
+        "processed_at": "2026-10-22T16:11:26.001Z",
+        "new_job_submitted": false
+      },
+      "controlled_repair_authorization": {
+        "failed_job_id": "history-gradient-controlled-001",
+        "failed_code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+        "failed_artifact_sha256": "e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f",
+        "diagnostic_steps_spent": 0,
+        "remaining_step_budget": 60,
+        "diagnosis": "Tiny Plain fixture had H=0; deterministic measured positive-H token permutations fix only the test fixture.",
+        "mandatory_real_model_checks_passed": true,
+        "checks_log_sha256": "e728f5a3ddf3b9057f3b2d11759f53d79e83fef98e650dac584fcc0a6a5bc5a4",
+        "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+        "attached_at": "2026-10-22T16:31:10.109775+00:00",
+        "installed_before": {
+          "runner.py": "084d43bb53969270c3a9a1f094b0c7f377d54e41748a96736be1cf9d523780e2",
+          "main_control.py": "0242c995745f474cba644201644995c8392d48b076ada9fad59387e87548288f",
+          "main_service.py": "d9a124b12ca40b8d61d9353957a9054cebfffdae2b6ea86c66715ef4a4f8c114",
+          "gradient_logs.py": "d95d7749aae08bafac13f7da9d066f129f1f06e069e6d6e27eb8752a2ac6e80c",
+          "gradient_bridge.py": "b6317be11ee7c70b86a4bf2063a335c951ce457a6a45502fa62adb0a9032c681"
+        },
+        "backup": "/home/hao/frec/git-lab-buffer/scope-upgrade-backups/positive-H-fixture-3d901876e12ea344d34a59773ca3d03c812235fa"
+      },
+      "controlled_analysis_receipt": {
+        "schema_version": 1,
+        "scope_id": "history-gradient-v1",
+        "phase": "controlled_train_side_diagnostic",
+        "status": "verified_and_analyzed",
+        "job_id": "history-gradient-controlled-repair-001",
+        "code_sha": "3d901876e12ea344d34a59773ca3d03c812235fa",
+        "request_sha256": "7d09f7309d32768e99a605ae5814e74eb7520640a3db095af494109cd02ca0f9",
+        "artifact_path": "artifacts/history-gradient-controlled-repair-001/outputs/controlled/compact.json",
+        "artifact_sha256": "b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c",
+        "full_server_summary_sha256": "bc3f61abff7f0fbd88fbf82c6cdbf5044a2335e431309b2509d95047b722f132",
+        "report_commit_sha": "fad7f94ef1b7774b145b66ed77cb41e6879b69ff",
+        "report_marker": "<!-- history-gradient-controlled:b71607a509ac8c259b0d58487f7ca9a289c041d9d1f5b9f3278d709e2d9d9f4c -->",
+        "actual_beauty_optimizer_steps": 60,
+        "completed_branches": 12,
+        "steps_per_branch": 5,
+        "remaining_micro_update_budget": 0,
+        "checks": {
+          "request_result_code_identity": true,
+          "raw_byte_hashes": true,
+          "declared_plan_and_step_accounting": true,
+          "finite_metrics_and_consistent_checkpoint_arithmetic": true,
+          "capacity_feasible_steps": 60,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
+          "reported_same_start_sampling_teacher_and_inputs": true,
+          "no_holdout_base_validation_future_scoring": true,
+          "real_model_preflight_passed": true
+        },
+        "evidence_boundary": "Raw mailbox hashes and compact arithmetic checked in cloud; model resets, loss computation, unchanged inputs/teacher and real-model checks are reviewed-source server evidence. No independent cloud checkpoint reload or per-query recomputation.",
+        "processed_at": "2026-10-22T16:46:23.586Z",
+        "next_job_id": null
+      },
+      "initial_failed_job_result": {
+        "schema_version": 1,
+        "job_id": "history-gradient-controlled-001",
+        "worker_id": "server2",
+        "kind": "experiment",
+        "request_sha256": "3b45f6fba4277287df55a0c6752ebfd5110af9368b74a63cb42467a833793c1d",
+        "code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+        "runner_code_sha": "b8e40bd251980509aa48f8cca5d700d0fbee3311",
+        "status": "failed",
+        "started_at": "2026-10-22T10:48:08.688725+00:00",
+        "updated_at": "2026-10-22T10:48:31.342193+00:00",
+        "exit_code": 1,
+        "pid": 3549535,
+        "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-gradient-controlled-001",
+        "log_path": "/home/hao/frec/git-lab-buffer/logs/history-gradient-controlled-001.log",
+        "log_tail": "logs/history-gradient-controlled-001.tail.txt",
+        "artifacts": [
+          "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json"
+        ],
+        "training_started": true,
+        "actual_code_sha": "e225ebd9547aa6eb89a23e4a4f909ca4e9e0608d",
+        "argv": [
+          "/home/hao/miniconda3/envs/frec-gpu/bin/python",
+          "-u",
+          "-B",
+          "diagnose_history_gradients.py",
+          "--deployment",
+          "/home/hao/frec/git-lab-buffer/main-deployment.json",
+          "--output",
+          "outputs/controlled"
+        ],
+        "process_started": true,
+        "elapsed_seconds": 11.463,
+        "artifacts_sha256": {
+          "artifacts/history-gradient-controlled-001/outputs/controlled/compact.json": "e87e19e408001f2d04bf6932e64d591d57f8927de8031038f779d2b157f2415f"
+        },
+        "finished_at": "2026-10-22T10:48:31.342170+00:00"
+      },
+      "initial_failed_job_id": "history-gradient-controlled-001",
+      "controller_plan": [
+        "read_existing_gradient_logs",
+        "controlled_train_side_diagnostic"
+      ]
+    }
+  ]
 }
