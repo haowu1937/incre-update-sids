@@ -746,6 +746,78 @@ passed after adding exact noncanonical JSON-byte handling and live-PID refusal.
 Python 3.10 syntax and protocol JSON checks passed. These checks do not establish
 GPU/Beauty results.
 
+<!-- joint-convergence-cloud:1d34004ae25f2216edd0586b5dcd9ef83501fcf646e10227db063163775f26d5 -->
+
+### 6.20 Joint convergence: stable losses, insufficient historical benefit
+
+The bounded study completed and the server accepted all returned artifacts. All
+12 cells reached 1,500 steps. The predeclared training-only Pareto fallback retained
+one Historical candidate (peak LR=3e-5, lambda=1e-4) and its matched Plain control;
+both were faithfully extended to 3,000 steps. No candidate passed every quality
+condition, so the conditional seed-2027 confirmation was not run. Total new steps
+were 21,400: 400 calibration + 18,000 screening + 3,000 extension. The remaining
+9,000 authorized steps were not reassigned. The declared plan is complete.
+
+Both extended arms passed the fixed eight-completed-epoch tail stability checks.
+These are finite-window checks, not proof of global convergence. At steps
+2668/2714/2760/2806/2852/2898/2944/2990, the means were:
+
+| Training-side measurement | Plain | Historical |
+| --- | ---: | ---: |
+| Full RQ loss, MSE + 0.25 quantization | 0.006282328315 | 0.006285275639 |
+| Full 4,096-query anchor_train H | 0.102028577319 | 0.100669074935 |
+| Reconstruction MSE on 528 newly observed Update items | 0.005940554466 | 0.005947839793 |
+| Relative RQ drift between the two four-epoch halves | 0.03029% | 0.04859% |
+| Absolute H drift between the two four-epoch halves | 0.001587160 | 0.001380403 |
+| Declared tail stability | Passed | Passed |
+
+Historical tail RQ loss is 2.06% below its initial 0.006417348934, and new-item
+reconstruction MSE improves by 23.99%. Its H is **1.33% lower than matched Plain**,
+below the predeclared 5% benefit requirement. This is the only failed final quality
+condition. The single step-3000 endpoints show H=0.102483670 / 0.099447366, a 2.96%
+reduction; that endpoint comparison does not replace the fixed-window rule.
+A stable plateau was observed, but this run did not establish a qualifying historical
+penalty benefit or a confirmed setting across seeds. H rises from its zero-at-Base
+reference before reaching the observed plateau; it does not decrease monotonically.
+
+The screening tradeoff is also visible: LR=1e-4/lambda=1e-3 reduced window H by
+approximately 7.26% versus its Plain control, but its full RQ loss was 3.57% above
+initial and failed the declared RQ condition. Larger lambda did not consistently
+improve real H in the tested grid. These observations do not isolate a STE or
+optimizer mechanism; neither STE nor temperature changed in this study.
+
+![Joint RQ/H full trajectories and constant-LR tail](docs/experiments/figures/joint_convergence_001.svg)
+
+The figure is rendered in the cloud from hash-verified returned numeric epoch
+monitors, including the final non-epoch endpoint. Acceptance uses only the eight
+completed epochs listed above. It is not a changing-minibatch loss plot or a new
+model evaluation. All 544 returned monitor rows were checked; maximum monitored
+suffix-capacity requirement was 121/256. All reported arms completed with feasible
+full-SID allocation; endpoint maximum semantic buckets were 47 Plain / 44 Historical
+for the extended pair. Per-update capacity checks and checkpoint reloads remain
+reviewed-source server evidence, not independent cloud model recomputation.
+
+Throughput calibration selected two concurrent arms: aggregate throughput improved
+1.901x over the serial trial, with 7,580 MiB peak observed total GPU memory. Elapsed
+job time was approximately 3.55 hours. No holdout, validation ranking, Future scoring
+or TIGER training was performed. The primary downstream table remains unchanged.
+
+Cloud verification reproduced all raw mailbox SHA256 values, request/result/receipt
+identity, phase-step arithmetic, the screen/final selection and all fixed-window
+statistics from the returned curves. It did not load server checkpoints or recompute
+per-query NLL. Compact SHA256:
+`1d34004ae25f2216edd0586b5dcd9ef83501fcf646e10227db063163775f26d5`.
+Server acceptance/report commit: `d4db394f32a1157256e71dfb19e1c640f360e96e`.
+
+The generic task runtime was installed at `fe790d49ce65db558433bba7d6c4e759279fa2aa`
+after the experiment and its server receipt completed. The returned installation
+record matches the authorized SHA and prior helper hashes; cron, scientific inputs,
+main workspace and processes were preserved, and installation queued zero tasks.
+This confirms server installation. Real scientific execution through the new generic
+contract has not yet been exercised; its acceptance checks use Git/subprocess fixtures.
+The Runner is idle and the research plan has stopped. A new study or wider budget
+requires Hao's decision; no automatic repair, seed or downstream task is queued.
+
 ## 7. Artifact and identity index
 
 Paths below are relative to the server project root. These server files have not been read directly in the cloud.
