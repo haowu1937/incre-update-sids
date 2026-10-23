@@ -1,0 +1,22 @@
+{
+  "schema_version": 1,
+  "protocol_version": 1,
+  "code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
+  "from_code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+  "authorization": "Hao explicitly requested repairing the Runner/task boundary so new experiments and repair IDs no longer require manual Runner upgrades.",
+  "authorized_at": "2026-10-23T10:36:16.861Z",
+  "new_optimizer_steps": 0,
+  "new_research_jobs": 0,
+  "activation": "defer until existing Runner is idle, terminal delivery and controller receipt are reconciled; preserve pauses, processes, records, inputs and cron",
+  "current_job_preserved": "history-joint-convergence-001",
+  "current_job_code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+  "study_budget_unchanged": 30400,
+  "checks": {
+    "runner_regression_passed": 68,
+    "final_boundary_suite_passed": 13,
+    "python_3_10_syntax": true,
+    "real_beauty_steps": 0
+  },
+  "specification": "docs/lab_buffer/task_runtime_v1.md",
+  "deployment_evidence": "workers/server2-task-runtime.json"
+}

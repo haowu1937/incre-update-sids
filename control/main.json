@@ -4,12 +4,7 @@
   "mode": "queued",
   "pause_requested": false,
   "active_job_id": "history-joint-convergence-001",
-  "lease": {
-    "token": "runtime-boundary-mvku2vn9-991748a1f0b4a8",
-    "owner": "web-stable-runner-boundary",
-    "acquired_at": "2026-10-23T10:35:08.853Z",
-    "expires_at_unix": 1792752608.853
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -437,5 +432,15 @@
         "controlled_train_side_diagnostic"
       ]
     }
-  ]
+  ],
+  "core_runtime_upgrade": {
+    "protocol_version": 1,
+    "status": "awaiting_one_time_idle_activation",
+    "code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
+    "authorization_path": "runtime-upgrades/task-runtime-v1.json",
+    "deployment_evidence": "workers/server2-task-runtime.json",
+    "per_experiment_installation": false,
+    "new_optimizer_steps": 0,
+    "requested_at": "2026-10-23T10:36:50.217Z"
+  }
 }
