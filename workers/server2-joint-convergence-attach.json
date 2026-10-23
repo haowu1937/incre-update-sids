@@ -1,9 +1,23 @@
 {
-  "status": "attachment_failed",
-  "code_sha": "eeb6bf30aa34cc6843bf609d7673c1d3f5515024",
-  "error": "CalledProcessError(1, ['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-B', '/home/hao/frec/git-lab-buffer/attachments/joint-convergence.I7XXcp/code/tests/incremental/test_joint_convergence.py', '--require-torch'])",
-  "changed_helpers": false,
-  "checks_log_tail": ".E..\nBase validation:   0%|          | 0/2 [00:00<?, ?batch/s]\nBase validation: 100%|██████████| 2/2 [00:00<00:00, 28.43batch/s]\n\nBase validation:   0%|          | 0/2 [00:00<?, ?batch/s]\nBase validation: 100%|██████████| 2/2 [00:00<00:00, 37.40batch/s]\n\nanchor_train:   0%|          | 0/4 [00:00<?, ?batch/s]\nanchor_train: 100%|██████████| 4/4 [00:00<00:00, 69.59batch/s]\n\nanchor_holdout:   0%|          | 0/4 [00:00<?, ?batch/s]\nanchor_holdout: 100%|██████████| 4/4 [00:00<00:00, 69.69batch/s]\n\nbase_validation:   0%|          | 0/2 [00:00<?, ?batch/s]\nbase_validation: 100%|██████████| 2/2 [00:00<00:00, 65.70batch/s]\n\nBase validation:   0%|          | 0/2 [00:00<?, ?batch/s]\nBase validation: 100%|██████████| 2/2 [00:00<00:00, 34.71batch/s]\n\nBase validation:   0%|          | 0/2 [00:00<?, ?batch/s]\nBase validation: 100%|██████████| 2/2 [00:00<00:00, 18.14batch/s]\nBase validation: 100%|██████████| 2/2 [00:00<00:00, 18.07batch/s]\n\nCache old anchor_train NLL:   0%|          | 0/4 [00:00<?, ?batch/s]\nCache old anchor_train NLL: 100%|██████████| 4/4 [00:00<00:00, 210.81batch/s]\n.\nCache old anchor_train NLL:   0%|          | 0/4 [00:00<?, ?batch/s]\nCache old anchor_train NLL: 100%|██████████| 4/4 [00:00<00:00, 124.17batch/s]\n\nCache old anchor_train NLL:   0%|          | 0/4 [00:00<?, ?batch/s]\nCache old anchor_train NLL: 100%|██████████| 4/4 [00:00<00:00, 174.92batch/s]\n\nCache old anchor_train NLL:   0%|          | 0/4 [00:00<?, ?batch/s]\nCache old anchor_train NLL: 100%|██████████| 4/4 [00:00<00:00, 146.57batch/s]\n.\nCache old anchor_train NLL:   0%|          | 0/4 [00:00<?, ?batch/s]\nCache old anchor_train NLL: 100%|██████████| 4/4 [00:00<00:00, 176.30batch/s]\n.\n======================================================================\nERROR: test_curve_export_and_plot_are_actual_epoch_values (__main__.Protocol)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/home/hao/frec/git-lab-buffer/attachments/joint-convergence.I7XXcp/code/tests/incremental/test_joint_convergence.py\", line 74, in test_curve_export_and_plot_are_actual_epoch_values\n    plot_curves(tmp)\n  File \"/home/hao/frec/git-lab-buffer/attachments/joint-convergence.I7XXcp/code/run_joint_convergence.py\", line 240, in plot_curves\n    import matplotlib\nModuleNotFoundError: No module named 'matplotlib'\n\n----------------------------------------------------------------------\nRan 7 tests in 14.687s\n\nFAILED (errors=1)\n",
-  "beauty_optimizer_steps": 0,
-  "no_automatic_retry": true
+  "status": "attached",
+  "scope_id": "history-joint-convergence-v1",
+  "job_id": "history-joint-convergence-001",
+  "code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+  "max_optimizer_steps": 30400,
+  "max_parallel": 2,
+  "real_model_checks_passed": true,
+  "checks_log_sha256": "e8fdc3c974e69beddcf4a3de1eb07761c17ded2c4b48a77ae303a1d664420491",
+  "installed_before": {
+    "runner.py": "084d43bb53969270c3a9a1f094b0c7f377d54e41748a96736be1cf9d523780e2",
+    "main_control.py": "0242c995745f474cba644201644995c8392d48b076ada9fad59387e87548288f",
+    "main_service.py": "d9a124b12ca40b8d61d9353957a9054cebfffdae2b6ea86c66715ef4a4f8c114",
+    "gradient_bridge.py": "76083cb6700a86c410601fef9ed2b301e859d425bc3cc0fbc19559091c30169b",
+    "gradient_logs.py": "d95d7749aae08bafac13f7da9d066f129f1f06e069e6d6e27eb8752a2ac6e80c"
+  },
+  "backup": "/home/hao/frec/git-lab-buffer/scope-upgrade-backups/joint-convergence-1bc0b437973cea3b6e9293611eac2e39f7771983",
+  "cron_changed": false,
+  "main_workspace_written": false,
+  "original_inputs_modified": false,
+  "beauty_optimizer_steps_during_attachment": 0,
+  "processes_terminated": false
 }
