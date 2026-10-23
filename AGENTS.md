@@ -1,5 +1,9 @@
 # 项目协作规则
 
+## 新范式方案阶段（2026-10-23 最新请求）
+
+用户要求先构建 SASRec CF embedding + LETTER-style 新范式的实验方案。方案见 `docs/experiments/cf_letter_migration_plan.md` 与配套 JSON，当前为 design_only，未授权执行。沿用已安装通用 Runner，不能再为实验安装 gate；不得因看到方案而下发任务、复用上一轮剩余 9,000 步或改动已完成的 control scope。既有研究结果与 Future 主表保留。先区分 Mitigating 的纯 CF / decoder-only 变体与完整原版 LETTER，再按新预算获准后实施。
+
 ## Runner 与任务边界（2026-10-23 最新授权）
 
 用户要求修复反复手动升级 Runner 的边界。先读 `docs/lab_buffer/task_runtime_v1.md`。当前联合收敛任务已经在 1bc0b43 成功接入并运行，保持其代码、任务、预算、输出和进程。新的通用 v1 入口只做一次等待空闲后的核心迁移；部署以 `workers/server2-task-runtime.json` 为准，不能把交付当作已部署。此后实验入口、参数、检查和科学 verifier 随任务完整 SHA/不可变 Git contract 下发，禁止为新实验或 repair job ID 再新增 installed gate/bridge 或要求用户升级。Git CAS、共享 lease、预算 reservation、输入校验、GPU 等待、失败证据和既定停止条件保留。本次基础设施修复不新增实验或计算预算。

@@ -818,6 +818,36 @@ contract has not yet been exercised; its acceptance checks use Git/subprocess fi
 The Runner is idle and the research plan has stopped. A new study or wider budget
 requires Hao's decision; no automatic repair, seed or downstream task is queued.
 
+<!-- cf-letter-design:v1 -->
+
+### 6.21 Proposed next pipeline: SASRec CF embeddings and LETTER-style retrieval
+
+Hao requested an experimental design for replacing content RQ-VAE + T5/TIGER.
+The proposal is [CF-LETTER-adapted](docs/experiments/cf_letter_migration_plan.md),
+with a [machine-readable design](docs/experiments/cf_letter_migration_plan.json).
+Status is **design_only**: no execution is authorized, no job is queued, and no
+optimizer steps or Future predictions are performed in this phase.
+
+The design follows Mitigating's purely collaborative tokenization and decoder-only
+retriever, using SASRec item weights, three learned 512-entry residual books plus a
+512-entry suffix, and the author's actual 768-dimensional GPT configuration. It
+distinguishes this adaptation from original LETTER's complete multi-loss objective.
+The existing chronological query identities are retained, with a separate common
+old-item catalog protocol, 20-event history and four target digits. CF-only cold-start
+coverage is re-audited; old content-pipeline coverage and absolute H are not copied.
+
+The proposed controls separate frozen SIDs, feature refresh with frozen quantizer,
+fresh rebuild, Hungarian alignment and matched Plain/Historical incremental updates.
+CF embeddings and the old retriever remain fixed during paired quantizer fitting.
+Lambda calibration uses training-side cohorts; only downstream checkpoint selection
+uses Update validation. All settings lock before Future evaluation.
+
+A first-seed cap of 80,880 heterogeneous optimizer steps and proposed 12 fitting/
+validation plus 8 inference V100-hours is a **budget proposal**, not a grant. It
+does not consume the previous study's unused 9,000 steps. A new explicitly approved
+scope would execute through the installed generic runtime; no Runner upgrade is
+needed. Existing scientific results and the primary downstream table remain unchanged.
+
 ## 7. Artifact and identity index
 
 Paths below are relative to the server project root. These server files have not been read directly in the cloud.
