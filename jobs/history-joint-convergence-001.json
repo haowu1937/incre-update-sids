@@ -6,15 +6,20 @@
   "request_sha256": "98cfccdd745ff7770389d7ea03cdac7b17c57a882ef492cb7f10e2602da430d5",
   "code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
   "runner_code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
-  "status": "running",
+  "status": "completed",
   "started_at": "2026-10-23T10:10:07.959028+00:00",
-  "updated_at": "2026-10-23T13:42:29.667409+00:00",
-  "exit_code": null,
+  "updated_at": "2026-10-23T13:43:24.391582+00:00",
+  "exit_code": 0,
   "pid": 164757,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/history-joint-convergence-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/history-joint-convergence-001.log",
   "log_tail": "logs/history-joint-convergence-001.tail.txt",
-  "artifacts": [],
+  "artifacts": [
+    "artifacts/history-joint-convergence-001/outputs/convergence/compact.json",
+    "artifacts/history-joint-convergence-001/outputs/convergence/screen-curves.json",
+    "artifacts/history-joint-convergence-001/outputs/convergence/extended-curves.json",
+    "artifacts/history-joint-convergence-001/outputs/convergence/confirmation-curves.json"
+  ],
   "training_started": true,
   "actual_code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
   "argv": [
@@ -28,5 +33,12 @@
     "outputs/convergence"
   ],
   "process_started": true,
-  "elapsed_seconds": 12730.537
+  "elapsed_seconds": 12785.261,
+  "artifacts_sha256": {
+    "artifacts/history-joint-convergence-001/outputs/convergence/compact.json": "1d34004ae25f2216edd0586b5dcd9ef83501fcf646e10227db063163775f26d5",
+    "artifacts/history-joint-convergence-001/outputs/convergence/screen-curves.json": "c0a803a6f2ed8d408d27dac960d455dadc3e90549508e3e7e15427d9b98023ea",
+    "artifacts/history-joint-convergence-001/outputs/convergence/extended-curves.json": "ebf89a40d69bfcaa1c8d8e0c46fb0340d1999c44a1790249a63fbac182efb7f4",
+    "artifacts/history-joint-convergence-001/outputs/convergence/confirmation-curves.json": "971d280501270d56420aebac1fb2a21260143536399de9aa53707ed635c0bc2c"
+  },
+  "finished_at": "2026-10-23T13:43:24.391557+00:00"
 }
