@@ -4,7 +4,12 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "history-gradient-controlled-repair-001",
-  "lease": null,
+  "lease": {
+    "token": "joint-convergence-design-1792744846219",
+    "owner": "web-manual-joint-convergence-design",
+    "acquired_at": "2026-10-23T08:40:46.219Z",
+    "expires_at_unix": 1792745746.219
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
