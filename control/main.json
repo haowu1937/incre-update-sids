@@ -4,12 +4,7 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "history-joint-convergence-001",
-  "lease": {
-    "token": "cf-letter-design-mvl74dyp-ea2e1722130498",
-    "owner": "web-cf-letter-design-only",
-    "acquired_at": "2026-10-23T16:40:14.257Z",
-    "expires_at_unix": 1792774514.257
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -523,6 +518,14 @@
         "/home/hao/frec/git-lab-buffer/main-deployment.json",
         "/home/hao/frec/git-lab-buffer/convergence-deployment.json"
       ]
+    }
+  },
+  "scope_proposals": {
+    "cf-letter-adapted-v1": {
+      "status": "design_only",
+      "code_sha": "8b4a5d8f7dcbf082323baaee2b1d979ba70a5318",
+      "record_path": "scope-proposals/cf-letter-adapted-v1.json",
+      "execution_authorized": false
     }
   }
 }

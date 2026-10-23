@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "proposal_id": "cf-letter-adapted-v1",
+  "status": "design_only",
+  "execution_authorized": false,
+  "new_jobs_queued": 0,
+  "execution_budget_granted": 0,
+  "code_sha": "8b4a5d8f7dcbf082323baaee2b1d979ba70a5318",
+  "source_code_sha": "133692ecd4ebf27f4d925a261952f8f6dec5d41c",
+  "document": "docs/experiments/cf_letter_migration_plan.md",
+  "manifest": "docs/experiments/cf_letter_migration_plan.json",
+  "file_sha256": {
+    "AGENTS.md": "a80e96b5fad4bfb6306220bdb70279f8317eb947a1a925b3599a3faefd5d5651",
+    "docs/experiments/cf_letter_migration_plan.md": "144bca31bae231702e7160a47becbb73fc257ebec8708a2d490681e19ce7dcb7",
+    "docs/experiments/cf_letter_migration_plan.json": "27c9c41d283f8a208d5f3e59ac819cd174facf8548da608fbc7c3a935fcb7bd8",
+    "experiment_report.md": "c79cba6dff8f1c593062e1ad1285f7aa93f20e5f95d4156180cdd2e51cf83dec"
+  },
+  "proposed_budget": {
+    "sasrec_base_steps_cap": 44700,
+    "base_quantizer_steps": 1000,
+    "base_retriever_steps_cap": 8940,
+    "shared_sasrec_update_steps_cap": 12240,
+    "quantizer_update_arms_steps_cap": 3000,
+    "lambda_pilots_steps_cap": 800,
+    "retriever_update_arms_steps_cap": 10000,
+    "throughput_calibration_steps_cap": 200,
+    "total_optimizer_steps_cap": 80880,
+    "fitting_validation_v100_hours_cap": 12,
+    "future_v100_hours_cap": 8,
+    "first_seed": 2026,
+    "parallel_cap": 2
+  },
+  "previous_study_unused_steps_reused": 0,
+  "report_marker": "<!-- cf-letter-design:v1 -->",
+  "prepared_at": "2026-10-23T16:41:47.145Z",
+  "next_job_id": null
+}
