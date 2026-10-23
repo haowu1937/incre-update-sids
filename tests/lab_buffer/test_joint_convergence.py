@@ -254,6 +254,7 @@ class Attachment(unittest.TestCase):
         result=attach.attach(self.root,self.code)
         self.assertEqual(result['status'],'attached');self.assertFalse(result['cron_changed'])
         self.assertEqual(self.state['extension']['scope_id'],bridge.SCOPE)
+        self.assertIn('train_only_parameter_screen',self.state['plan'])
         self.assertEqual(self.state['completed_scope_history'][0]['scope_id'],'history-gradient-v1')
         requests=[k for e in self.events for k in e if k.startswith('jobs/')]
         self.assertEqual(requests,['jobs/'+bridge.JOB+'.json'])

@@ -89,6 +89,9 @@ def attach(root,expected_code):
             if (state.get('lease') or {}).get('token')!=token:raise ValueError('Lost study attachment lease')
             if r.read(r.ref('requests_branch'),'jobs/'+JOB+'.json') is not None:raise ValueError('Immutable study job already exists')
             state.setdefault('completed_scope_history',[]).append(copy.deepcopy(state['extension']))
+            state['completed_scope_history'][-1]['controller_plan']=copy.deepcopy(state.get('plan',[]))
+            state['plan']=['calibrate_concurrency','train_only_parameter_screen','faithful_candidate_extensions',
+                'conditional_second_seed_confirmation','verify_report_and_stop']
             state['extension']=dict(scope_id=SCOPE,status='queued',max_optimizer_steps=30400,optimizer_steps_spent=0,
                 real_model_preflight_passed=True,checks_log_sha256=digest(checks.read_bytes()),
                 code_sha=code,source_manifest=pending['manifest_sha256'],attached_at=now(),backup=str(backup))
