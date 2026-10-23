@@ -4,7 +4,12 @@
   "mode": "queued",
   "pause_requested": false,
   "active_job_id": "history-joint-convergence-001",
-  "lease": null,
+  "lease": {
+    "token": "runtime-boundary-mvku2vn9-991748a1f0b4a8",
+    "owner": "web-stable-runner-boundary",
+    "acquired_at": "2026-10-23T10:35:08.853Z",
+    "expires_at_unix": 1792752608.853
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -108,7 +113,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -379,7 +384,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
