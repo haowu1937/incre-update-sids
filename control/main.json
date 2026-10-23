@@ -4,7 +4,12 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "history-gradient-controlled-repair-001",
-  "lease": null,
+  "lease": {
+    "token": "4818f638a6044718800cfeb11236ecb6",
+    "owner": "server-explicit-joint-convergence-upgrade",
+    "acquired_at": "2026-10-23T09:55:18.703641+00:00",
+    "expires_at_unix": 1792750218.7036703
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -105,7 +110,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -337,7 +342,7 @@
         "declared_plan_and_step_accounting": true,
         "finite_metrics_and_consistent_checkpoint_arithmetic": true,
         "capacity_feasible_steps": 60,
-        "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+        "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
         "reported_same_start_sampling_teacher_and_inputs": true,
         "no_holdout_base_validation_future_scoring": true,
         "real_model_preflight_passed": true
