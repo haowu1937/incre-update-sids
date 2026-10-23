@@ -4,7 +4,12 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "history-joint-convergence-001",
-  "lease": null,
+  "lease": {
+    "token": "cf-letter-design-mvl74dyp-ea2e1722130498",
+    "owner": "web-cf-letter-design-only",
+    "acquired_at": "2026-10-23T16:40:14.257Z",
+    "expires_at_unix": 1792774514.257
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
