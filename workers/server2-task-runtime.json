@@ -1,0 +1,30 @@
+{
+  "status": "installed",
+  "protocol_version": 1,
+  "code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
+  "installed_at": "2026-10-23T13:44:47.381518+00:00",
+  "installed_before": {
+    "runner.py": "f898e5ae477663c43185f4974259c0db7ea0e5cb7107e2799c5205cb3cda4cb9",
+    "main_control.py": "a7b4c2f64a806ff35c546d4f973cb496d9c63d42a5d330f2029d62d7aacda5d9",
+    "main_service.py": "01eb382e6de6a959e39150e309e1aa2301d327a4a95d4d66a4da0431d06f69e7"
+  },
+  "backup": "/home/hao/frec/git-lab-buffer/runtime-upgrade-backups/fe790d49ce65db558433bba7d6c4e759279fa2aa",
+  "cron_changed": false,
+  "tasks_queued": 0,
+  "optimizer_steps": 0,
+  "main_workspace_written": false,
+  "processes_terminated": false,
+  "control_state_modified": false,
+  "existing_pause_preserved": false,
+  "capabilities": {
+    "task_protocol_versions": [
+      1
+    ],
+    "max_parallel": 2,
+    "read_roots": [
+      "/home/hao/frec/graph-informed-sids-web",
+      "/home/hao/frec/git-lab-buffer/main-deployment.json",
+      "/home/hao/frec/git-lab-buffer/convergence-deployment.json"
+    ]
+  }
+}
