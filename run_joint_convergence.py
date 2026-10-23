@@ -208,7 +208,7 @@ class Bundle:
         curves(self.output/'confirmation-curves.json',confirmation)
         self.report.update(execution_status='completed',research_outcome='joint_candidate_confirmed' if
             self.report.get('confirmation',{}).get('selected') else 'no_confirmed_joint_candidate_within_declared_grid')
-        plot_curves(self.output)
+        self.report['plotting']=plot_curves(self.output)
         self.progress()
 
 
@@ -237,9 +237,18 @@ def curves(path,summaries):
 
 
 def plot_curves(output):
-    import matplotlib
-    matplotlib.use('Agg')
-    import matplotlib.pyplot as plt
+    try:
+        import matplotlib
+        matplotlib.use('Agg')
+        import matplotlib.pyplot as plt
+    except ModuleNotFoundError as error:
+        if not (error.name or '').startswith('matplotlib'):
+            raise
+        result=dict(status='deferred',reason='Optional matplotlib is unavailable; raw numeric curves are preserved',
+            numeric_artifacts=[phase+'-curves.json' for phase in ('screen','extended','confirmation')])
+        save(Path(output)/'plot-status.json',result)
+        return result
+    rendered=[]
     for phase in ('screen','extended','confirmation'):
         path=Path(output)/(phase+'-curves.json')
         data=json.loads(path.read_text())
@@ -253,6 +262,10 @@ def plot_curves(output):
         axes[1].legend(fontsize=6,loc='upper left',bbox_to_anchor=(1,1))
         fig.suptitle(phase+' (training monitors only)');fig.tight_layout()
         fig.savefig(Path(output)/(phase+'-curves.svg'),bbox_inches='tight');plt.close(fig)
+        rendered.append(phase+'-curves.svg')
+    result=dict(status='rendered',files=rendered)
+    save(Path(output)/'plot-status.json',result)
+    return result
 
 
 def main():

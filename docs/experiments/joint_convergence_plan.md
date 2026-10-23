@@ -222,7 +222,9 @@ terminate live jobs or duplicate cron/Web tasks.
 
 Per arm: immutable config/input/code identities, stdout/stderr, step and epoch curves,
 archived stage/final checkpoints, resume state, capacity audit, resource measurements
-and compact result. Batch summary: all 12 matrix rows (including failures), paired
+and compact result. Rendering is optional when matplotlib is absent; numeric curves
+remain mandatory and sufficient for training/selection, with an explicit deferred
+plot status. No server package installation is required. Batch summary: all 12 matrix rows (including failures), paired
 training comparisons, declared selection arithmetic, seed-2027 confirmation if eligible,
 and English experiment_report.md with the current downstream table preserved.
 

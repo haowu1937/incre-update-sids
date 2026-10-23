@@ -220,13 +220,14 @@ class Attachment(unittest.TestCase):
         (self.root/'runner-code-sha.txt').write_text(attach.INSTALLED+'\n')
         (self.root/'config.json').write_text(json.dumps(dict(python=sys.executable,main_scope_revision=2)))
         (self.root/'main-deployment.json').write_text(json.dumps(dict(runner_root=str(self.root),future_dir='/future',input_sha256={},e1_dir='/e1',retuned_dir='/retuned')))
-        self.code='f'*40;self.events=[];self.fail=False
+        self.code='f'*40;self.events=[];self.fail=False;self.failure_raw=None
         self.state=dict(mode='plan_completed',pause_requested=False,lease=None,extension={'scope_id':'history-gradient-v1','status':'completed'},
             pending_scope=dict(scope_id=bridge.SCOPE,code_sha=self.code,max_optimizer_steps=30400,manifest_sha256=digest(self.manifest)))
         owner=self
         class Runner:
             def __init__(self,root):self.config=json.loads((Path(root)/'config.json').read_text())
-            def read(self,*args):return None
+            def read(self,ref,path):
+                return owner.failure_raw if path=='workers/server2-joint-convergence-attach.json' else None
             def ref(self,key):return key
             def publish(self,files):owner.events.append(files)
             def pause(self,reason):(owner.root/'PAUSED.json').write_text(reason)
@@ -268,6 +269,27 @@ class Attachment(unittest.TestCase):
         self.assertTrue(self.state['pause_requested'])
         for name,content in self.old.items():self.assertEqual((self.root/'bin'/name).read_bytes(),content)
         self.assertFalse(any(k.startswith('jobs/') for e in self.events for k in e))
+
+    def prepare_plot_failure(self,steps=0):
+        failure=dict(status='attachment_failed',code_sha=attach.PLOT_FAILURE_CODE,changed_helpers=False,
+            beauty_optimizer_steps=steps,checks_log_tail="ModuleNotFoundError: No module named 'matplotlib'\nRan 7 tests\nFAILED (errors=1)")
+        self.failure_raw=json.dumps(failure).encode();value=digest(self.failure_raw)
+        self.state.update(mode='needs_diagnosis',pause_requested=True,
+            joint_attachment_failure=dict(code_sha=attach.PLOT_FAILURE_CODE,changed_helpers=False,error='preflight failed'))
+        self.state['pending_scope']['preflight_repair']=dict(failed_code_sha=attach.PLOT_FAILURE_CODE,failure_sha256=value)
+        p=patch.object(attach,'PLOT_FAILURE_SHA',value);p.start();self.addCleanup(p.stop)
+
+    def test_only_exact_zero_step_plot_failure_can_be_reconciled(self):
+        self.prepare_plot_failure()
+        result=attach.attach(self.root,self.code)
+        self.assertEqual(result['status'],'attached');self.assertFalse(self.state['pause_requested'])
+        self.assertEqual(self.state['resolved_attachment_failures'][0]['failed_code_sha'],attach.PLOT_FAILURE_CODE)
+        self.assertNotIn('joint_attachment_failure',self.state)
+
+    def test_nonzero_or_unidentified_failure_cannot_clear_pause(self):
+        self.prepare_plot_failure(steps=1)
+        with self.assertRaisesRegex(ValueError,'Missing evidence'):attach.attach(self.root,self.code)
+        self.assertTrue(self.state['pause_requested']);self.assertEqual(self.events,[])
 
 
 if __name__=='__main__':unittest.main()

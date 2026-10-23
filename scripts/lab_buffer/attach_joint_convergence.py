@@ -16,6 +16,29 @@ from convergence_bridge import SCOPE,JOB,task
 ROOT=Path(__file__).resolve().parents[2]
 INSTALLED='3d901876e12ea344d34a59773ca3d03c812235fa'
 HELPERS=('runner.py','main_control.py','main_service.py','gradient_bridge.py','gradient_logs.py','convergence_bridge.py')
+PLOT_FAILURE_CODE='eeb6bf30aa34cc6843bf609d7673c1d3f5515024'
+PLOT_FAILURE_SHA='6f6335930604db31b0fbffa123a82bf5548ce9f92231577620d6b1f3073029ff'
+
+
+def known_preflight_repair(r,state,pending):
+    """Only reconcile the recorded missing-plotter failure, with zero Beauty work."""
+    if state['mode']=='plan_completed' and not state['pause_requested']:
+        return None
+    authorization=pending.get('preflight_repair',{})
+    failure=state.get('joint_attachment_failure',{})
+    raw=r.read(r.ref('results_branch'),'workers/server2-joint-convergence-attach.json')
+    if (state['mode']!='needs_diagnosis' or not state['pause_requested'] or raw is None
+            or digest(raw)!=PLOT_FAILURE_SHA or authorization.get('failure_sha256')!=PLOT_FAILURE_SHA
+            or authorization.get('failed_code_sha')!=PLOT_FAILURE_CODE
+            or failure.get('code_sha')!=PLOT_FAILURE_CODE or failure.get('changed_helpers') is not False):
+        raise ValueError('Paused attachment is not the exact authorized zero-step plotting failure')
+    result=json.loads(raw)
+    if (result.get('status')!='attachment_failed' or result.get('code_sha')!=PLOT_FAILURE_CODE
+            or result.get('changed_helpers') is not False or result.get('beauty_optimizer_steps')!=0
+            or "ModuleNotFoundError: No module named 'matplotlib'" not in result.get('checks_log_tail','')
+            or 'Ran 7 tests' not in result['checks_log_tail'] or 'FAILED (errors=1)' not in result['checks_log_tail']):
+        raise ValueError('Missing evidence for the isolated preflight dependency failure')
+    return dict(failed_code_sha=PLOT_FAILURE_CODE,failure_sha256=PLOT_FAILURE_SHA)
 
 
 def attach(root,expected_code):
@@ -30,11 +53,15 @@ def attach(root,expected_code):
         if state.get('extension',{}).get('scope_id')==SCOPE and state.get('code_sha')==code:
             return dict(status='already_attached',job_id=JOB,code_sha=code)
         pending=state.get('pending_scope',{})
-        if (state['mode']!='plan_completed' or state['pause_requested'] or state.get('lease')
+        repair=known_preflight_repair(r,state,pending)
+        if (state.get('lease')
                 or pending.get('scope_id')!=SCOPE or pending.get('code_sha')!=code
                 or pending.get('max_optimizer_steps')!=30400
                 or state.get('extension',{}).get('status')!='completed'):
             raise ValueError('Require completed prior plan and exact pending study authorization')
+        for branch in ('requests_branch','results_branch'):
+            if r.read(r.ref(branch),'jobs/'+JOB+'.json') is not None:
+                raise ValueError('Study job already exists; no attachment retry or overwrite')
         if digest((ROOT/'docs/lab_buffer/joint_convergence_plan.json').read_bytes())!=pending.get('manifest_sha256'):
             raise ValueError('Pinned study manifest differs from pending authorization')
         for path in (root/'state').glob('*.json'):
@@ -87,6 +114,9 @@ def attach(root,expected_code):
             (root/'runner-code-sha.txt').write_text(code+'\n')
             state,parent=c.read()
             if (state.get('lease') or {}).get('token')!=token:raise ValueError('Lost study attachment lease')
+            if repair:
+                previous=state.pop('joint_attachment_failure')
+                state.setdefault('resolved_attachment_failures',[]).append(dict(previous,**repair,resolved_at=now(),resolved_by_code_sha=code))
             if r.read(r.ref('requests_branch'),'jobs/'+JOB+'.json') is not None:raise ValueError('Immutable study job already exists')
             state.setdefault('completed_scope_history',[]).append(copy.deepcopy(state['extension']))
             state['completed_scope_history'][-1]['controller_plan']=copy.deepcopy(state.get('plan',[]))

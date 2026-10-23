@@ -22,6 +22,20 @@ The existing cron/root/config interpreter are reused. No main checkout or origin
 input modification, dependency installation, live process termination or cron change.
 Connection/pause/lease uncertainty stops attachment; do not clear it speculatively.
 
+**Identified preflight-only dependency repair:** attachment at code
+`eeb6bf30aa34cc6843bf609d7673c1d3f5515024` ran seven synthetic CPU checks: six passed,
+including all three real RQ/TIGER checks; only plotting failed because matplotlib was
+absent. Returned failure SHA256 is
+`6f6335930604db31b0fbffa123a82bf5548ce9f92231577620d6b1f3073029ff`.
+It records changed_helpers=false and zero Beauty optimizer steps; no study job was
+created. Rendering is now optional: always preserve numeric curves, record deferred
+plotting if unavailable, and install no dependency. A new pinned attachment may
+reconcile only this exact failure, after checking its hash, unchanged helpers, pending
+repair authorization and absence of any existing study job. Preserve the original
+failure/log and rerun all mandatory real-model checks before upgrading/queueing.
+Do not manually clear an unrelated pause or repeat the old attachment SHA. Budget,
+training/selection parameters and the initial never-created study job remain unchanged.
+
 The bundle uses independent subprocesses and per-invocation job IDs under its own
 detached workspace. Its maximum is 30,400 optimizer steps INCLUDING calibration and
 rejected committed updates. Two 100-step trials run sequentially and then concurrently;

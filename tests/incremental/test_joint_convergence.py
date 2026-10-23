@@ -71,10 +71,23 @@ class Protocol(unittest.TestCase):
                 r['rq'].update(reconstruction_loss=.002,quantization_loss=.008)
                 r['capacity']={'maximum_required_suffix_capacity':20}
             for name in ('screen','extended','confirmation'):curves(Path(tmp)/(name+'-curves.json'),[s])
-            plot_curves(tmp)
+            result=plot_curves(tmp)
             data=json.loads((Path(tmp)/'screen-curves.json').read_text())
             self.assertEqual(next(iter(data['arms'].values()))[-1][4],.04)
-            self.assertGreater((Path(tmp)/'screen-curves.svg').stat().st_size,1000)
+            self.assertIn(result['status'],('rendered','deferred'))
+            if result['status']=='rendered':
+                self.assertGreater((Path(tmp)/'screen-curves.svg').stat().st_size,1000)
+            else:
+                self.assertEqual(json.loads((Path(tmp)/'plot-status.json').read_text()),result)
+
+    def test_missing_optional_plotter_preserves_all_numeric_curves(self):
+        from run_joint_convergence import curves,plot_curves
+        with tempfile.TemporaryDirectory() as tmp:
+            for phase in ('screen','extended','confirmation'):curves(Path(tmp)/(phase+'-curves.json'),[])
+            before={p.name:p.read_bytes() for p in Path(tmp).glob('*-curves.json')}
+            with patch.dict(sys.modules,{'matplotlib':None}):result=plot_curves(tmp)
+            self.assertEqual(result['status'],'deferred')
+            self.assertEqual(before,{p.name:p.read_bytes() for p in Path(tmp).glob('*-curves.json')})
 
 
 HAVE=importlib.util.find_spec('torch') is not None

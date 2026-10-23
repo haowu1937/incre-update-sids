@@ -683,6 +683,32 @@ Plain H/monitor isolation, capacity rejection/rollback). They were skipped local
 because PyTorch is absent. No CUDA convergence, speedup, memory result or successful
 parameter setting is claimed yet. No task is queued until attachment passes.
 
+### 6.18 Server preflight: optional plotting dependency blocked attachment
+
+The eeb6bf30aa34cc6843bf609d7673c1d3f5515024 attachment failed before helper changes
+or study dispatch. The returned log ran seven checks: six passed, including all three
+real RQ/TIGER synthetic CPU checks; the only error was `ModuleNotFoundError: No module
+named 'matplotlib'` in the curve-rendering check. Synthetic fixture validation/holdout
+messages are not Beauty cohort evaluation. The returned artifact reports
+changed_helpers=false and **zero Beauty optimizer steps**. Existing code, data,
+checkpoints, job records and failed preflight log remain preserved.
+
+Cause: plotting was incorrectly made a mandatory prerequisite despite the deployment
+not having matplotlib. The repair makes rendering optional while retaining mandatory
+numeric curve export, convergence arithmetic and all real-model checks. Missing
+matplotlib records `plotting.status=deferred`; it does not change training, selection,
+lambda, STE, seeds or the 30,400-step limit. No dependency is installed. A regression
+check explicitly simulates matplotlib being absent and verifies unchanged curve bytes.
+
+The new attachment can reconcile only the exact hash-bound, zero-step, unchanged-helper
+failure and the matching pending repair authorization; it refuses an existing study
+job or unrelated pause. It reruns mandatory checks before upgrade/dispatch. Failure
+evidence is archived in the Git scope-analysis receipt. Artifact SHA256:
+`6f6335930604db31b0fbffa123a82bf5548ce9f92231577620d6b1f3073029ff`.
+The repair is delivered pending server execution, not a successful attachment or a
+convergence result. Local repair checks cover 57 Runner cases and five protocol cases;
+real-model checks on the revised SHA remain mandatory on the server.
+
 ## 7. Artifact and identity index
 
 Paths below are relative to the server project root. These server files have not been read directly in the cloud.
