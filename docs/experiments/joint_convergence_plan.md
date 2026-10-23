@@ -1,9 +1,10 @@
 # Train-only joint RQ-VAE / historical-damage convergence study
 
-Status: **proposed; no jobs queued, executable search driver not yet delivered**.
+Status: **implementation delivered; server attachment and real-model checks pending; no jobs queued**.
 Prepared on 2026-10-23 against vibe-dev `fad7f94ef1b7774b145b66ed77cb41e6879b69ff`.
-This document records Hao's requested experiment design. It does not reopen the completed
-`history-gradient-v1` execution gate or spend its exhausted 60-step budget.
+Hao subsequently requested implementation/execution with “继续”. The new scope is
+`history-joint-convergence-v1`; it preserves the completed `history-gradient-v1`
+execution record and does not spend its exhausted 60-step budget.
 
 ## Objective and interpretation
 
@@ -76,7 +77,7 @@ nonzero LR for steps 2501-3000. Record the actual LR at every step. The common s
 is a deliberate new recipe; the paired lambda=0 arms control for that change.
 Do not reset or rebase the schedule at the stage boundary.
 
-## Stages and bounded proposed budget
+## Stages and bounded new budget
 
 | Stage | Work | Maximum new optimizer steps |
 | --- | --- | ---: |
@@ -86,8 +87,8 @@ Do not reset or rebase the schedule at the stage boundary.
 | C: confirmation | Best feasible Historical candidate and matching Plain, fresh paired seed 2027, each through step 3000 | 6000 |
 | Total | Includes calibration; excludes all previous experiments | **30400** |
 
-These are proposed new limits, not a claim that the old 60-step authorization covers
-them. No tasks are dispatched by this document. Stage C is conditional on a feasible
+These are the new study limits, separate from the completed 60-step diagnostic.
+No task is queued until the pinned server attachment passes. Stage C is conditional on a feasible
 candidate; unused budget is not reassigned to retries, new parameters, extra seeds or
 TIGER/Future work. Calibration trials have unique outputs and are not research endpoints.
 
@@ -188,11 +189,9 @@ per-process allocated/reserved bytes and total nvidia-smi memory.
 
 Start at concurrency 2 only if aggregate throughput improves by >=10%, there is no
 OOM, and peak total GPU memory stays <=24 GiB, leaving at least 8 GiB on the 32 GiB V100.
-Otherwise use 1. After passing this test, an optional four-worker pilot may use the
-first 100 genuine steps of four stage-A arms, already included in their budgets.
-It must restore full resume states and fall back to the measured better setting if
-throughput/memory conditions fail. Do not rerun or reset those 100 steps to erase a
-performance failure. OOM/uncertain partial progress pauses dispatch for diagnosis.
+Otherwise use 1. The delivered implementation caps concurrency at 2; the optional
+four-worker pilot in the initial proposal is deferred. OOM, a violated memory guard
+or uncertain partial progress pauses dispatch for diagnosis instead of repeating steps.
 
 Run all simultaneous arms under a single Runner-owned bundle with a recorded child
 PID set, independent job/arm IDs and output directories. Keep the external GPU-busy
@@ -201,8 +200,9 @@ Runners or weaken the existing safety gate. Fix/record CPU thread and data-worke
 settings across speed measurements and research arms. Never vary scientific batch
 size to fill memory.
 
-The existing Runner is serial and its exact command/ID gate does not yet support this
-bundle. Do not claim concurrency is deployed. Every real task must bind an immutable
+The old installed Runner is serial. The new exact gate and bundle are delivered through
+the one-time existing-Runner attachment; do not claim they are deployed before evidence.
+Every real task must bind an immutable
 code SHA, exact argv/config, input hashes, fresh job_id/output root, deadline, expected
 artifacts and result receipt. Parent and each arm need success/failure/interruption
 records. A deadline pauses new dispatch and preserves live-process evidence; it does
@@ -210,9 +210,10 @@ not authorize killing the user's running experiments.
 
 Latest Git state inspected for this design: completed 60-step diagnostic, no next job,
 and worker snapshot `runner_status=paused`, observed 2026-10-22T16:47:13Z.
-A separately published main-service error reports a Git fetch failure; it has no
-timestamp tying it to the pause, so the current pause cause remains unverified.
-Before execution, reconcile the actual server state and deploy only the necessary
+A later server read tied the pause to a Git-fetch failure at 2026-10-22T16:42:27Z.
+Hao archived that pause after successful guarded fetch and terminal-state checks;
+the Git worker snapshot at 2026-10-23T09:05:17Z reports idle, with no user pause.
+Before execution, recheck the actual server state and deploy only the necessary
 bundle/measurement support through the existing installation. Do not clear pause
 records speculatively, switch the main experiment workspace, modify original inputs,
 terminate live jobs or duplicate cron/Web tasks.
@@ -226,5 +227,5 @@ training comparisons, declared selection arithmetic, seed-2027 confirmation if e
 and English experiment_report.md with the current downstream table preserved.
 
 No TIGER fitting, holdout evaluation, Base-compatibility ranking or Future inference
-is included in the proposed 30400-step study. Those remain a later decision after a
+is included in the bounded 30400-step study. Those remain a later decision after a
 training-side candidate has passed the declared checks.

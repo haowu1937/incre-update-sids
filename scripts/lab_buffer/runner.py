@@ -333,7 +333,8 @@ class Runner:
                               training_started=task["kind"] == "experiment" and (
                                   not self.config.get("main_integration") or
                                   self.config.get("main_scope_revision", 1) >= 2 and
-                                  "diagnose_history_gradients.py" in task.get("argv", [])),
+                                  any(name in task.get("argv", []) for name in
+                                      ("diagnose_history_gradients.py", "run_joint_convergence.py"))),
                               process_started=True)
                 self.save(state)
                 next_heartbeat = 0.0

@@ -11,13 +11,16 @@
   "project": "/home/hao/frec/graph-informed-sids-web",
   "python": "/home/hao/miniconda3/envs/frec-gpu/bin/python",
   "plan": [
-    "read_existing_gradient_logs",
-    "controlled_train_side_diagnostic"
+    "calibrate_concurrency",
+    "train_only_parameter_screen",
+    "faithful_candidate_extensions",
+    "conditional_second_seed_confirmation",
+    "verify_report_and_stop"
   ],
-  "new_training_steps_authorized": 60,
+  "new_training_steps_authorized": 30400,
   "new_future_prediction_passes_authorized": 0,
-  "acceptance_timeout_seconds": 1800,
-  "max_diagnosed_repair_jobs": 1,
+  "acceptance_timeout_seconds": 86400,
+  "max_diagnosed_repair_jobs": 0,
   "same_fault_automatic_retry": false,
   "rq_update_steps_already_completed": 1000,
   "tiger_update_steps_already_completed": 2000,
@@ -29,7 +32,7 @@
     1000,
     2000
   ],
-  "selection_metric": "Update validation fixed 512-query probe full-denominator ndcg@10; earliest tie",
+  "selection_metric": "Training-only fixed eight completed-epoch RQ/H windows; declared feasibility and Pareto screen; no ranking selection",
   "selected_history_tiger_step": 2000,
   "future_queries": 34189,
   "servable_queries": 27541,
@@ -46,9 +49,10 @@
   "web_controller": "docs/lab_buffer/CONTROLLER.md",
   "persistent_state": "lab-requests:control/main.json",
   "stop_after_plan": true,
-  "revision": 2,
-  "active_scope": "history-gradient-v1",
-  "scope_manifest": "docs/lab_buffer/history_gradient_plan.json",
-  "scope_authorized_at": "2026-10-22",
-  "optimizer_steps_scope": "diagnostic micro-updates only; not production training"
+  "revision": 3,
+  "active_scope": "history-joint-convergence-v1",
+  "scope_manifest": "docs/lab_buffer/joint_convergence_plan.json",
+  "scope_authorized_at": "2026-10-23",
+  "optimizer_steps_scope": "entire new train-only study, including calibration, rejected updates and confirmation",
+  "max_parallel": 2
 }

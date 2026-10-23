@@ -1,5 +1,9 @@
 # 项目协作规则
 
+## 当前联合收敛实验（2026-10-23，覆盖已完成诊断的停止条件）
+
+用户已确认按已提交方案继续开发并执行，新增 optimizer step 总上限 30,400（含 400 步吞吐标定、12x1500 筛选、最多四组 1500 步延长、条件性 2x3000 第二 seed 复验）。先读 `docs/experiments/joint_convergence_plan.md`、`docs/lab_buffer/joint_convergence_plan.json` 和 CONTROLLER 最新 amendment。完整 RQ loss 与 hard full-SID H 为训练侧目标；不运行 holdout、Base/Update validation 排名、Future 或 TIGER 训练。固定 STE/temperature，不扩展矩阵、预算或自动重跑。并行上限两组，标定吞吐不改善则串行；保留外部 GPU 占用等待、失败/中断/原输入证据。用独立新入口保留旧 source-bound 文件。已有 Runner 必须先通过 pinned 一次性接入及真实 RQ/TIGER CPU 检查；不把云端无 Torch 的协议测试记作真实模型通过。阶段间保留优化器、LR schedule、两个 sampler 和 RNG。每个 epoch 全目录 RQ、完整 anchor_train H；不把变化 minibatch 的日志当作收敛曲线。完成矩阵/条件复验、自动英文报告及回执后停止。
+
 ## 当前诊断任务（2026-10-22，覆盖已完成计划的停止条件）
 
 用户已明确授权：先读取现有retuned Historical梯度日志，再从同一H>0最终checkpoint执行训练侧最小受控H-only/RQ-only/Mixed诊断。先读`docs/lab_buffer/CONTROLLER.md`最新scope amendment和`history_gradient_plan.json`；全部新微更新预算上限60步，不改λ/STE，不做holdout/Base validation/Future评分，不新增TIGER训练。既有Future结果与负anchor结论保留。通过原Runner的有记录兼容升级接入，不切换主工作区、不覆盖输入/旧结果；英文报告及时提交。

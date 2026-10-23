@@ -637,6 +637,52 @@ current cause. Actual deployment readiness remains unverified. This design chang
 neither active execution protocol nor queue, existing artifacts, source-bound training
 code, main workspace, cron or Web task. No new downstream result is claimed.
 
+### 6.17 Joint convergence implementation and pending server attachment (2026-10-23)
+
+**Status: code delivered; no new Beauty optimizer step or study job executed.** Hao
+requested continuing the reviewed study to find a setting where full RQ loss and
+true hard-SID H stabilize with useful new-item adaptation. The new bounded scope is
+`history-joint-convergence-v1`; it preserves the completed 60-step diagnostic and all
+previous negative anchors and downstream results. Maximum new budget is 30,400
+optimizer steps, including calibration, rejected committed updates and conditional
+seed-2027 confirmation.
+
+The independent training entry measures full-catalog RQ/reconstruction/quantization
+and full 4096-query anchor_train H at every content epoch. Plain measures the same
+actual H without optimizing it. Per-step minibatch H remains separate. Extensions
+restore AdamW moments, schedule position, content and anchor samplers and RNG; raw
+curves, stage checkpoints and capacity failures are preserved. The matrix, tail
+stability and paired quality criteria remain fixed before execution; no holdout,
+ranking or Future scoring selects settings.
+
+The bundle first compares sequential and two-process 100-step calibration. It uses
+two workers only for at least 10% aggregate throughput improvement and at most 24 GiB
+total observed GPU memory; otherwise it uses one. This delivery caps concurrency at
+two and defers the optional four-worker pilot. Each subprocess has an invocation ID,
+exact argv, own output/logs and durable step counters. External GPU occupation waits;
+unknown failures stop further dispatch while owned children finish. Rejected steps
+and unresolved step intents count conservatively against the budget. Original input
+hashes and the frozen teacher are checked. No dependency installation or main-workspace
+change is needed.
+
+The existing Runner requires one SHA-pinned attachment. It verifies the installed
+3d901876e12ea344d34a59773ca3d03c812235fa helpers and terminal state, runs mandatory real
+RQ/TIGER CPU checks, preserves helper/config backups, then atomically queues the exact
+new bundle. It reuses the original cron/root and never kills a live experiment. Busy
+cron invocations now return before competing with the active parent's Git transport;
+the bundle reads the request branch separately for pause control. Terminal acceptance
+rechecks artifact hashes, local counters, stage-checkpoint hashes and training-only
+selection arithmetic, updates this English report and writes the shared receipt.
+
+Local validation: **55 Runner checks passed**, including 10 new scope/pool/attachment/
+acceptance checks; **4 new experiment-protocol checks passed**. Python 3.10 syntax,
+JSON, budget arithmetic, curve artifact bounds and SVG generation passed. Local pool
+and installer fixtures simulate processes/ML; they do not establish real GPU behavior.
+**Three real RQ/TIGER tests remain mandatory on the server** (exact continuation,
+Plain H/monitor isolation, capacity rejection/rollback). They were skipped locally
+because PyTorch is absent. No CUDA convergence, speedup, memory result or successful
+parameter setting is claimed yet. No task is queued until attachment passes.
+
 ## 7. Artifact and identity index
 
 Paths below are relative to the server project root. These server files have not been read directly in the cloud.

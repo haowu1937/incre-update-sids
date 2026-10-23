@@ -39,6 +39,9 @@ def job(deployment, code_sha, job_id):
 
 
 def authorize_task(root, task, raw, state):
+    if state and state.get('extension', {}).get('scope_id') == 'history-joint-convergence-v1':
+        from convergence_bridge import authorize
+        return authorize(root, task, raw, state)
     if state and state.get('extension', {}).get('scope_id') == 'history-gradient-v1':
         from gradient_bridge import authorize
         return authorize(root, task, raw, state)
@@ -173,6 +176,9 @@ class Control:
 
     def process(self, owner='server-after-acceptance'):
         state, _ = self.read()
+        if state.get('extension', {}).get('scope_id') == 'history-joint-convergence-v1':
+            from convergence_bridge import observe
+            return observe(self, state)
         if state.get('extension', {}).get('scope_id') == 'history-gradient-v1':
             from gradient_bridge import observe
             return observe(self, state)
