@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "scope_id": "history-joint-convergence-v1",
+  "phase": "attachment_optional_plotter_failure",
+  "status": "diagnosed_repair_delivered_not_executed",
+  "failed_code_sha": "eeb6bf30aa34cc6843bf609d7673c1d3f5515024",
+  "failed_artifact_path": "workers/server2-joint-convergence-attach.json",
+  "failure_sha256": "6f6335930604db31b0fbffa123a82bf5548ce9f92231577620d6b1f3073029ff",
+  "raw_failure": {
+    "status": "attachment_failed",
+    "code_sha": "eeb6bf30aa34cc6843bf609d7673c1d3f5515024",
+    "error": "CalledProcessError(1, ['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-B', '/home/hao/frec/git-lab-buffer/attachments/joint-convergence.I7XXcp/code/tests/incremental/test_joint_convergence.py', '--require-torch'])",
+    "changed_helpers": false,
+    "checks_log_tail": ".E..\nBase validation:   0%|          | 0/2 [00:00<?, ?batch/s]\nBase validation: 100%|██████████| 2/2 [00:00<00:00, 28.43batch/s]\n\nBase validation:   0%|          | 0/2 [00:00<?, ?batch/s]\nBase validation: 100%|██████████| 2/2 [00:00<00:00, 37.40batch/s]\n\nanchor_train:   0%|          | 0/4 [00:00<?, ?batch/s]\nanchor_train: 100%|██████████| 4/4 [00:00<00:00, 69.59batch/s]\n\nanchor_holdout:   0%|          | 0/4 [00:00<?, ?batch/s]\nanchor_holdout: 100%|██████████| 4/4 [00:00<00:00, 69.69batch/s]\n\nbase_validation:   0%|          | 0/2 [00:00<?, ?batch/s]\nbase_validation: 100%|██████████| 2/2 [00:00<00:00, 65.70batch/s]\n\nBase validation:   0%|          | 0/2 [00:00<?, ?batch/s]\nBase validation: 100%|██████████| 2/2 [00:00<00:00, 34.71batch/s]\n\nBase validation:   0%|          | 0/2 [00:00<?, ?batch/s]\nBase validation: 100%|██████████| 2/2 [00:00<00:00, 18.14batch/s]\nBase validation: 100%|██████████| 2/2 [00:00<00:00, 18.07batch/s]\n\nCache old anchor_train NLL:   0%|          | 0/4 [00:00<?, ?batch/s]\nCache old anchor_train NLL: 100%|██████████| 4/4 [00:00<00:00, 210.81batch/s]\n.\nCache old anchor_train NLL:   0%|          | 0/4 [00:00<?, ?batch/s]\nCache old anchor_train NLL: 100%|██████████| 4/4 [00:00<00:00, 124.17batch/s]\n\nCache old anchor_train NLL:   0%|          | 0/4 [00:00<?, ?batch/s]\nCache old anchor_train NLL: 100%|██████████| 4/4 [00:00<00:00, 174.92batch/s]\n\nCache old anchor_train NLL:   0%|          | 0/4 [00:00<?, ?batch/s]\nCache old anchor_train NLL: 100%|██████████| 4/4 [00:00<00:00, 146.57batch/s]\n.\nCache old anchor_train NLL:   0%|          | 0/4 [00:00<?, ?batch/s]\nCache old anchor_train NLL: 100%|██████████| 4/4 [00:00<00:00, 176.30batch/s]\n.\n======================================================================\nERROR: test_curve_export_and_plot_are_actual_epoch_values (__main__.Protocol)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/home/hao/frec/git-lab-buffer/attachments/joint-convergence.I7XXcp/code/tests/incremental/test_joint_convergence.py\", line 74, in test_curve_export_and_plot_are_actual_epoch_values\n    plot_curves(tmp)\n  File \"/home/hao/frec/git-lab-buffer/attachments/joint-convergence.I7XXcp/code/run_joint_convergence.py\", line 240, in plot_curves\n    import matplotlib\nModuleNotFoundError: No module named 'matplotlib'\n\n----------------------------------------------------------------------\nRan 7 tests in 14.687s\n\nFAILED (errors=1)\n",
+    "beauty_optimizer_steps": 0,
+    "no_automatic_retry": true
+  },
+  "diagnosis": "Missing optional matplotlib was incorrectly a mandatory preflight dependency.",
+  "original_helpers_changed": false,
+  "beauty_optimizer_steps_spent": 0,
+  "study_job_created": false,
+  "old_server_checks": {
+    "total": 7,
+    "passed": 6,
+    "errors": 1,
+    "real_RQ_TIGER_checks_passed": 3,
+    "evidence": "Code-bound returned unittest log; synthetic CPU models, no Beauty training."
+  },
+  "fix_code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+  "report_commit_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+  "manifest_sha256": "e4e2596c24ddf01b5dcd915d4b6cd5abe92e8a1a3650192022022172995c33b1",
+  "max_optimizer_steps": 30400,
+  "unchanged_scientific_settings": true,
+  "no_dependency_installation": true,
+  "local_checks": {
+    "runner_passed": 57,
+    "protocol_passed": 5,
+    "missing_matplotlib_simulation": "passed",
+    "real_model_recheck": "mandatory on server"
+  },
+  "processed_at": "2026-10-23T10:07:10.316Z"
+}

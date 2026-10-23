@@ -1,0 +1,17 @@
+{
+  "scope_id": "history-joint-convergence-v1",
+  "status": "awaiting_runner_upgrade",
+  "code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+  "max_optimizer_steps": 30400,
+  "manifest_sha256": "e4e2596c24ddf01b5dcd915d4b6cd5abe92e8a1a3650192022022172995c33b1",
+  "preflight_repair": {
+    "failed_code_sha": "eeb6bf30aa34cc6843bf609d7673c1d3f5515024",
+    "failure_sha256": "6f6335930604db31b0fbffa123a82bf5548ce9f92231577620d6b1f3073029ff",
+    "analysis_path": "scope-analysis/history-joint-convergence-v1/optional-plotter-failure.json",
+    "beauty_optimizer_steps_spent": 0,
+    "helpers_unchanged": true
+  },
+  "planned_job_id": "history-joint-convergence-001",
+  "job_previously_created": false,
+  "authorization": "Diagnosed repair within the already authorized study; no scientific or budget expansion."
+}
