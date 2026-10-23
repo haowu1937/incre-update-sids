@@ -817,3 +817,31 @@ The requested two-condition History-aware Future stage is completed as returned 
 Job `history-future-accept-001`; code `02eca7996ccddc2b0e35c47cf4cd00aafe200291`; original evaluation `/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_historical_future_20261020T154736Z_Gdh50N/evaluation`. The independent Runner loaded the real checkpoints, reproduced the full SID ledgers, verified source/config/artifact bindings and selection, recomputed both aggregate metrics from saved query records, and left the input bytes unchanged. No optimizer steps or new Future predictions were performed. This is artifact and reload acceptance, not an independent retraining or new generalization trial.
 
 Full-denominator Future Recall@10: frozen 0.321741%, fine-tuned 1.389336%; NDCG@10: 0.001653433621 / 0.006579084913. TIGER trained 2000 Update steps and selected step 2000. The retuned paired anchor result remains negative for the historical penalty. The older Base/Plain Future controls use a different RQ recipe; no isolated penalty benefit is established. The explicitly requested two-condition plan is complete; no further training jobs are queued.
+
+<!-- joint-convergence:1d34004ae25f2216edd0586b5dcd9ef83501fcf646e10227db063163775f26d5 -->
+### Joint RQ/H convergence study: server result
+
+Train-only study; no holdout, ranking or Future scoring. Immutable job `history-joint-convergence-001`, code `1bc0b437973cea3b6e9293611eac2e39f7771983`.
+Actual new optimizer steps: 21400 / 30400. Outcome: `no_confirmed_joint_candidate_within_declared_grid`.
+Selected concurrency: 2.
+The table reports fixed-budget endpoints. Selection and stability use the declared eight-epoch training windows.
+
+| Phase | LR | lambda | Seed | Step | Full RQ loss | Anchor train H | Status |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| screen | 3e-05 | 0.0 | 2026 | 1500 | 0.00627220397 | 0.0966144718 | completed |
+| screen | 3e-05 | 0.0001 | 2026 | 1500 | 0.00626442829 | 0.091643621 | completed |
+| screen | 3e-05 | 0.001 | 2026 | 1500 | 0.00632254559 | 0.100183809 | completed |
+| screen | 3e-05 | 0.01 | 2026 | 1500 | 0.00703948342 | 0.11022997 | completed |
+| screen | 0.0001 | 0.0 | 2026 | 1500 | 0.00663655225 | 0.127460144 | completed |
+| screen | 0.0001 | 0.0001 | 2026 | 1500 | 0.00663483573 | 0.122405993 | completed |
+| screen | 0.0001 | 0.001 | 2026 | 1500 | 0.00669368518 | 0.117461895 | completed |
+| screen | 0.0001 | 0.01 | 2026 | 1500 | 0.0071090093 | 0.176198837 | completed |
+| screen | 0.0003 | 0.0 | 2026 | 1500 | 0.00690470124 | 0.145349686 | completed |
+| screen | 0.0003 | 0.0001 | 2026 | 1500 | 0.00696031732 | 0.164356615 | completed |
+| screen | 0.0003 | 0.001 | 2026 | 1500 | 0.00724488451 | 0.158640338 | completed |
+| screen | 0.0003 | 0.01 | 2026 | 1500 | 0.00936493993 | 0.298922757 | completed |
+| extended | 3e-05 | 0.0 | 2026 | 3000 | 0.00628179942 | 0.10248367 | completed |
+| extended | 3e-05 | 0.0001 | 2026 | 3000 | 0.00628192233 | 0.0994473656 | completed |
+
+Outcome is training-side evidence only. Existing downstream/Future results remain unchanged.
+Full curves, checkpoints, resource observations and failures remain in the independent Runner workspace; bounded curve tables and compact evidence are returned through lab-results.
