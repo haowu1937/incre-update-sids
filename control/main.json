@@ -4,7 +4,12 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "history-gradient-controlled-repair-001",
-  "lease": null,
+  "lease": {
+    "token": "joint-study-delivery-1792748659035",
+    "owner": "web-joint-study-implementation",
+    "acquired_at": "2026-10-23T09:44:19.035Z",
+    "expires_at_unix": 1792749559.035
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
