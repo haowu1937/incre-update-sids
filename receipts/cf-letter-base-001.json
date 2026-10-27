@@ -1,0 +1,18 @@
+{
+  "status": "verified_and_reported",
+  "job_id": "cf-letter-base-001",
+  "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+  "contract_sha256": "d468e76eb33177a7729b5a25d734278a78e28e8fe94e723fb4e4785096b0de5c",
+  "request_sha256": "bfdf426456eaf99fd5e76a923cf54e99f4de00eede363056dbb74affcee2a2b5",
+  "result_sha256": "1aa85663ccd19bea39cb475ec102d968b2bddcfd68cb481adee614026da15569",
+  "actual_optimizer_steps": 54640,
+  "report_commit_sha": "ac88401c1abb326b1406196d73b105160de4a5d0",
+  "artifacts_sha256": {
+    "artifacts/cf-letter-base-001/outputs/task-runtime.json": "fce15dcb42955044acf586511ab35757eacce2929ab621cdb502c151907fc0fc",
+    "artifacts/cf-letter-base-001/outputs/cf-base/compact.json": "ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb",
+    "artifacts/cf-letter-base-001/outputs/cf-base/data_audit.json": "7de0f166e75a9c9bbbd660bce7912fb10fc59611c3f76e6bdb9d7c8d2752203a",
+    "artifacts/cf-letter-base-001/outputs/cf-base/curves.json": "f3d1f481e46ef6129635c3d1fe8adafb24c6a88fea14a01e4c78fc2f33e9b847"
+  },
+  "processed_at": "2026-10-27T17:28:31.978467+00:00",
+  "next_job_id": null
+}
