@@ -4,12 +4,7 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "cf-letter-base-001",
-  "lease": {
-    "token": "cf-letter-base-cloud-2026-10-27T20:59:38.275Z",
-    "owner": "web-base-acceptance-analysis",
-    "acquired_at": "2026-10-27T20:59:38.275Z",
-    "expires_at_unix": 1793135678.275
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -664,7 +659,8 @@
     "max_optimizer_steps": 54640,
     "max_parallel": 1,
     "stop_after_base": true,
-    "update_historical_future_authorized": false
+    "update_historical_future_authorized": false,
+    "status": "completed_and_analyzed"
   },
   "latest_task_delivery": {
     "job_id": "cf-letter-base-001",
@@ -672,5 +668,53 @@
     "local_protocol_contract_checks_passed": 7,
     "real_model_preflight": "mandatory on server; pending",
     "installed_runner_changes": false
+  },
+  "cloud_analysis_receipts": {
+    "cf-letter-base-001": {
+      "schema_version": 1,
+      "scope_id": "cf-letter-base-v1",
+      "job_id": "cf-letter-base-001",
+      "phase": "cloud_base_acceptance_analysis",
+      "status": "verified_and_analyzed",
+      "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+      "request_sha256": "bfdf426456eaf99fd5e76a923cf54e99f4de00eede363056dbb74affcee2a2b5",
+      "contract_sha256": "d468e76eb33177a7729b5a25d734278a78e28e8fe94e723fb4e4785096b0de5c",
+      "result_sha256": "1aa85663ccd19bea39cb475ec102d968b2bddcfd68cb481adee614026da15569",
+      "artifact_sha256": {
+        "artifacts/cf-letter-base-001/outputs/task-runtime.json": "fce15dcb42955044acf586511ab35757eacce2929ab621cdb502c151907fc0fc",
+        "artifacts/cf-letter-base-001/outputs/cf-base/compact.json": "ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb",
+        "artifacts/cf-letter-base-001/outputs/cf-base/data_audit.json": "7de0f166e75a9c9bbbd660bce7912fb10fc59611c3f76e6bdb9d7c8d2752203a",
+        "artifacts/cf-letter-base-001/outputs/cf-base/curves.json": "f3d1f481e46ef6129635c3d1fe8adafb24c6a88fea14a01e4c78fc2f33e9b847"
+      },
+      "actual_optimizer_steps": 54640,
+      "report_commit_sha": "4f8d24afb9f851c791b1181f0d54f25dd4d2da1c",
+      "report_marker": "<!-- cf-letter-base-cloud:ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb -->",
+      "checks": {
+        "raw_hashes_and_code_identity": true,
+        "immutable_scope_manifest_and_budget": true,
+        "earliest_fixed_probe_selection": true,
+        "full_and_servable_denominator_arithmetic": true,
+        "checkpoint_and_feature_digest_lineage": true,
+        "all_declared_stage_gates_passed": true,
+        "existing_future_table_unchanged": true,
+        "report_readback_equal": true
+      },
+      "scientific_outcome": {
+        "base_chain_accepted": true,
+        "gpt_selected_epoch": 4,
+        "gpt_selected_step": 1192,
+        "gpt_actual_epochs": 30,
+        "sasrec_selected_epoch": 125,
+        "all_three_codebooks_used": 512,
+        "max_semantic_bucket": 71,
+        "full_sids_unique": 10924,
+        "gpt_late_overfitting_signal": true,
+        "historical_benefit_tested": false,
+        "future_tested": false
+      },
+      "evidence_boundary": "Cloud rechecked raw Git bytes, the complete returned probe curves, selection/step/metric arithmetic and report readback. Per-query aggregates, real model/data checks and independent CPU checkpoint NLL/CF reconstruction are reviewed task-SHA server-verifier evidence; no cloud Beauty checkpoint or per-query prediction recomputation.",
+      "processed_at": "2026-10-27T21:00:48.814Z",
+      "next_job_id": null
+    }
   }
 }
