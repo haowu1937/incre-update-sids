@@ -1000,3 +1000,20 @@ beam-versus-brute-force equivalence. Python 3.10 syntax and whitespace checks pa
 Real Beauty training, Base acceptance and new downstream values remain **not_run**
 until server evidence arrives. The existing Future table is unchanged. After the
 Base result is verified and reported, this scope stops.
+
+<!-- lab-task:cf-letter-base-001:d468e76eb33177a7729b5a25d734278a78e28e8fe94e723fb4e4785096b0de5c -->
+
+### CF-LETTER Base chain acceptance
+
+Job `cf-letter-base-001`; code `5f56e68b9b9ca09b825b9274007078aefb701fa3`. Base train/validation only; no Update, Historical or Future execution.
+Outcome: `base_chain_accepted`. Actual optimizer steps: 54640 / 54,640.
+All query masks, selected checkpoints and scores refer to the new 20-event, four-digit Base-catalog protocol.
+
+| Component | Actual steps | Selected step | Base validation Recall@10 | Base validation NDCG@10 |
+| --- | ---: | ---: | ---: | ---: |
+| sasrec | 44700 | 37250 | 2.991732% | 0.012750642 |
+| gpt | 8940 | 1192 | 3.111401% | 0.015726218 |
+
+CF quantizer hard reconstruction MSE: 0.00221874751; mean-vector baseline: 0.00475102915; maximum semantic bucket: 71.
+
+The server verifier recomputed validation aggregates from saved query records, reproduced the CF export and hard reconstruction, and checked fixed-query selected-GPT NLL after an independent CPU reload when that stage completed. GPU reload parity and historical-input readiness remain bounded implementation checks; no historical optimization has run. The previous Future table is unchanged. Base scope stops here; no Update/Future job is queued.
