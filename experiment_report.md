@@ -1153,3 +1153,21 @@ same-map/frozen-teacher checks. Python 3.10 syntax and whitespace checks pass.
 Real refresh steps and diagnostic results remain **not_run** until returned server
 evidence. The task reports its outcome and stops; remaining migration arms are
 still unapproved. No completed task or old reservation is reused.
+
+<!-- lab-task:cf-letter-refresh-diag-001:efaa01a74a4b0c9bfff67963947e17e1b849436e54562137ff72ec49d313dbc8 -->
+
+### Shared CF refresh and feature-only damage diagnostic
+
+
+
+Job `cf-letter-refresh-diag-001`; code `18cb948e503609ddfb8228b6a7425b52302acfa3`. SASRec refresh: 12240 steps / 30 cumulative epochs; selected epoch 8.
+
+Frozen Base GPT and codebooks; exact old anchor_train queries, old target/mask/catalog, four-digit NLL. Same-map H=0.
+
+Outcome: `feature_refresh_measured`. Old-item semantic churn=24.935921%; maximum required suffix capacity=72 / 512.
+
+Feature-only anchor_train H=0.102947295; mean delta sequence NLL=0.0626050102.
+
+Old-item hard reconstruction MSE=0.00227987268.
+
+Server verification reaggregated query metrics/H, checked exact warm start and CPU likelihood/CF reconstruction. This is training-cohort diagnostic evidence, not historical-penalty benefit or Future ranking. No quantizer/GPT training, holdout/Future scoring or next task. Previous Base and Future tables remain unchanged.
