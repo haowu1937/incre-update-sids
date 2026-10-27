@@ -10,18 +10,146 @@
   "reference_code_sha": "133692ecd4ebf27f4d925a261952f8f6dec5d41c",
   "reference_paper": "https://arxiv.org/html/2604.13273v1",
   "variant": "Mitigating-style pure CF quantization and decoder-only retriever; adapted existing temporal protocol",
-  "sasrec": {"item_dim": 64, "layers": 2, "heads": 2, "ffn": 256, "dropout": 0.3, "history": 20, "lr": 0.0001, "weight_decay": 0.01, "batch_size": 256, "update_initialization": "warm_start_selected_base", "update_positive_splits": ["base_train", "update_train"]},
-  "quantizer": {"encoder": "identity", "decoder": "identity", "dimension": 64, "semantic_books": 3, "book_size": 512, "suffix_capacity": 512, "commitment_weight": 0.25, "outer_quant_weight": 1.0, "base_steps": 1000, "update_steps": 1000, "batch_size": 4096, "lr": 0.0001, "weight_decay": 0.01, "incremental_dead_code_reinitialization": false},
-  "retriever": {"family": "GPT_decoder_only", "d_model": 768, "per_head_dim": 128, "layers": 4, "heads": 6, "ffn": 1024, "dropout": 0.1, "user_hash_buckets": 8000, "sid_length": 4, "target_eos": false, "supervision": "one existing causal next-item query; target four digits only", "lr": 0.0001, "weight_decay": 0.01, "batch_size": 256, "update_steps": 2000, "selection_steps": [0, 100, 250, 500, 1000, 2000], "selection_metric": "fixed_Update_validation_probe_full_denominator_ndcg@10_earliest_tie"},
-  "catalog": {"main_reference": "base_train", "expected_items": 10924, "cold_start_extension": false, "original_future_denominator": 34189, "cf_refresh_fit_catalog": "base_train plus new IDs with allowed training input/positive occurrences; audit actual size"},
-  "history": {"anchor_train_queries": 4096, "anchor_holdout_queries": 4096, "new_user_disjoint_dev_queries_cap": 1024, "anchor_batch_size": 128, "temperature": 0.5, "max_grad_norm": 0.1, "lambda": "training_calibrated_scalar_then_frozen", "lambda_pilot_steps": 800, "nll_unit": "sum_over_four_target_digits", "cf_embeddings_frozen": true, "teacher_frozen": true},
-  "arms": ["base_frozen_and_ft_old", "fresh_rebuild", "same_rebuild_plus_hungarian", "plain_incremental", "historical_incremental"],
-  "diagnostic_only": ["frozen_quantizer_on_refreshed_CF"],
-  "future": {"protocol": "existing_prequential_queries", "history_limit": 20, "beam": 20, "topk": [5, 10, 20], "seen_item_filter": false, "used_for_selection": false, "maximum_distinct_conditions": 10},
-  "proposed_budget": {"sasrec_base_steps_cap": 44700, "base_quantizer_steps": 1000, "base_retriever_steps_cap": 8940, "shared_sasrec_update_steps_cap": 12240, "quantizer_update_arms_steps_cap": 3000, "lambda_pilots_steps_cap": 800, "retriever_update_arms_steps_cap": 10000, "throughput_calibration_steps_cap": 200, "total_optimizer_steps_cap": 80880, "fitting_validation_v100_hours_cap": 12, "future_v100_hours_cap": 8, "first_seed": 2026, "parallel_cap": 2},
-  "deferred": ["Full_retrain", "content_SID_same_GPT_bridge", "from_scratch_SASRec_refresh", "open_world_CF_catalog", "three_full_pipeline_seeds", "paper_ten_block_fixed_history_high_cutoff_replication", "original_full_LETTER_losses"],
+  "sasrec": {
+    "item_dim": 64,
+    "layers": 2,
+    "heads": 2,
+    "ffn": 256,
+    "dropout": 0.3,
+    "history": 20,
+    "lr": 0.0001,
+    "weight_decay": 0.01,
+    "batch_size": 256,
+    "update_initialization": "warm_start_selected_base",
+    "update_positive_splits": [
+      "base_train",
+      "update_train"
+    ]
+  },
+  "quantizer": {
+    "encoder": "identity",
+    "decoder": "identity",
+    "dimension": 64,
+    "semantic_books": 3,
+    "book_size": 512,
+    "suffix_capacity": 512,
+    "commitment_weight": 0.25,
+    "outer_quant_weight": 1.0,
+    "base_steps": 1000,
+    "update_steps": 1000,
+    "batch_size": 4096,
+    "lr": 0.0001,
+    "weight_decay": 0.01,
+    "incremental_dead_code_reinitialization": false
+  },
+  "retriever": {
+    "family": "GPT_decoder_only",
+    "d_model": 768,
+    "per_head_dim": 128,
+    "layers": 4,
+    "heads": 6,
+    "ffn": 1024,
+    "dropout": 0.1,
+    "user_hash_buckets": 8000,
+    "sid_length": 4,
+    "target_eos": false,
+    "supervision": "one existing causal next-item query; target four digits only",
+    "lr": 0.0001,
+    "weight_decay": 0.01,
+    "batch_size": 256,
+    "update_steps": 2000,
+    "selection_steps": [
+      0,
+      100,
+      250,
+      500,
+      1000,
+      2000
+    ],
+    "selection_metric": "fixed_Update_validation_probe_full_denominator_ndcg@10_earliest_tie"
+  },
+  "catalog": {
+    "main_reference": "base_train",
+    "expected_items": 10924,
+    "cold_start_extension": false,
+    "original_future_denominator": 34189,
+    "cf_refresh_fit_catalog": "base_train plus new IDs with allowed training input/positive occurrences; audit actual size"
+  },
+  "history": {
+    "anchor_train_queries": 4096,
+    "anchor_holdout_queries": 4096,
+    "new_user_disjoint_dev_queries_cap": 1024,
+    "anchor_batch_size": 128,
+    "temperature": 0.5,
+    "max_grad_norm": 0.1,
+    "lambda": "training_calibrated_scalar_then_frozen",
+    "lambda_pilot_steps": 800,
+    "nll_unit": "sum_over_four_target_digits",
+    "cf_embeddings_frozen": true,
+    "teacher_frozen": true
+  },
+  "arms": [
+    "base_frozen_and_ft_old",
+    "fresh_rebuild",
+    "same_rebuild_plus_hungarian",
+    "plain_incremental",
+    "historical_incremental"
+  ],
+  "diagnostic_only": [
+    "frozen_quantizer_on_refreshed_CF"
+  ],
+  "future": {
+    "protocol": "existing_prequential_queries",
+    "history_limit": 20,
+    "beam": 20,
+    "topk": [
+      5,
+      10,
+      20
+    ],
+    "seen_item_filter": false,
+    "used_for_selection": false,
+    "maximum_distinct_conditions": 10
+  },
+  "proposed_budget": {
+    "sasrec_base_steps_cap": 44700,
+    "base_quantizer_steps": 1000,
+    "base_retriever_steps_cap": 8940,
+    "shared_sasrec_update_steps_cap": 12240,
+    "quantizer_update_arms_steps_cap": 3000,
+    "lambda_pilots_steps_cap": 800,
+    "retriever_update_arms_steps_cap": 10000,
+    "throughput_calibration_steps_cap": 200,
+    "total_optimizer_steps_cap": 80880,
+    "fitting_validation_v100_hours_cap": 12,
+    "future_v100_hours_cap": 8,
+    "first_seed": 2026,
+    "parallel_cap": 2
+  },
+  "deferred": [
+    "Full_retrain",
+    "content_SID_same_GPT_bridge",
+    "from_scratch_SASRec_refresh",
+    "open_world_CF_catalog",
+    "three_full_pipeline_seeds",
+    "paper_ten_block_fixed_history_high_cutoff_replication",
+    "original_full_LETTER_losses"
+  ],
   "runtime": "installed_generic_task_contract_v1; no host upgrade required",
   "execution_layout": "one bounded top-level bundle; unique stage/arm invocations and all intermediate dependencies in its own workspace",
   "existing_temporal_input_root": "cache/incremental/Beauty/beauty_20261007T104452Z",
-  "expected_small_artifacts": ["outputs/task-runtime.json", "compact.json", "validation.json", "anchors.json", "curves.json"]
+  "expected_small_artifacts": [
+    "outputs/task-runtime.json",
+    "compact.json",
+    "validation.json",
+    "anchors.json",
+    "curves.json"
+  ],
+  "authorized_subset": {
+    "scope_id": "cf-letter-base-v1",
+    "manifest": "docs/experiments/cf_letter_base_acceptance.json",
+    "authorized_at": "2026-10-27",
+    "optimizer_step_cap": 54640,
+    "remaining_full_study_authorized": false
+  }
 }

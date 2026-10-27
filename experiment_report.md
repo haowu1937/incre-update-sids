@@ -947,3 +947,56 @@ The table reports fixed-budget endpoints. Selection and stability use the declar
 
 Outcome is training-side evidence only. Existing downstream/Future results remain unchanged.
 Full curves, checkpoints, resource observations and failures remain in the independent Runner workspace; bounded curve tables and compact evidence are returned through lab-results.
+
+<!-- cf-letter-base-implementation:v1 -->
+
+### 6.22 Base CF-LETTER acceptance: implemented, pending server execution
+
+Hao authorized only the Base chain on 2026-10-27. The fixed scope is
+`cf-letter-base-v1`, job `cf-letter-base-001`, with settings in
+`docs/experiments/cf_letter_base_acceptance.json`. This supersedes the design-only
+status for the Base subset of Section 6.21; the remaining migration plan is still
+unapproved. No old unused budget is recycled.
+
+| Stage | Training input | Maximum fitting budget | Selection |
+| --- | --- | ---: | --- |
+| SASRec, item dimension 64 | Existing Base training queries | 150 epochs / 44,700 steps | Fixed Base validation probe NDCG@10 |
+| Direct CF residual quantizer, 3x512 + suffix 512 | Frozen selected SASRec item table | 1,000 steps | Terminal checkpoint; no validation tuning |
+| Decoder-only GPT, dimension 768, 4 layers | Base queries encoded with the new full SIDs | 30 epochs / 8,940 steps | Same fixed Base validation probe NDCG@10 |
+
+The combined reservation is 54,640 heterogeneous optimizer steps, seed 2026,
+serial execution and a 12-hour guard that stops new stages without terminating a
+live one. Expected input is 10,924 Base items, 76,252 training queries and 9,192
+validation queries. Raw histories are truncated to 20 events before unavailable
+positions are masked. The 512-query probe is deterministic; earliest ties win.
+Only after selection is the complete Base validation reported, including unavailable
+targets as misses. No Update, Historical, anchor holdout or Future execution occurs.
+A failed scientific quality gate is reported as a negative result and stops the
+next stage; it does not trigger parameter changes or a retry.
+
+The models adapt Mitigating's MIT-licensed source at
+`133692ecd4ebf27f4d925a261952f8f6dec5d41c`. The CF quantizer has identity encoder/
+decoder and frozen input vectors, rather than the previous content MLP RQ-VAE.
+Its native detached reconstruction term is distinguished from independent hard
+reconstruction MSE; codebook updates use the source commitment/codeword objective.
+Dead entries are repaired during Base fitting only. Explicit adaptations are the
+existing causal one-query supervision, a SASRec BOS carrier for fully masked
+histories, native random GPT2 initialization, and four target digits without EOS.
+This is CF-LETTER-adapted, not the full original LETTER objective or an exact paper
+replication. No pretrained download or dependency upgrade is required.
+
+All outputs and stage dependencies stay inside the unique Runner workspace.
+The generic v1 contract binds code, scientific settings, input deployment hash,
+command, preflight, verifier, timeout and bounded return artifacts; no installed
+Runner changes or manual server attachment are needed. Per-stage counters record
+step intent/completion. Capacity failures preserve both the rejected candidate and
+last feasible checkpoint. The read-only verifier reaggregates saved query metrics,
+checks input/CF/SID lineage and reproduces selected checkpoint likelihoods on CPU.
+
+Cloud checks: seven protocol/contract tests passed; five actual Torch/transformers
+model tests are skipped because these packages are unavailable locally. Those five
+are mandatory server preflight tests, including tiny end-to-end training and cached
+beam-versus-brute-force equivalence. Python 3.10 syntax and whitespace checks pass.
+Real Beauty training, Base acceptance and new downstream values remain **not_run**
+until server evidence arrives. The existing Future table is unchanged. After the
+Base result is verified and reported, this scope stops.

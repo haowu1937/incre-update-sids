@@ -4,6 +4,15 @@ Status: **design only; not authorized for execution**. Prepared on 2026-10-23.
 No task is queued, no training/evaluation is started, and no previous budget is reused.
 The completed content-RQ/TIGER experiments and their negative results remain intact.
 
+**2026-10-27 amendment:** Hao authorized only the Base acceptance subset via
+"先验收Base链路". Its executable scope is
+`docs/experiments/cf_letter_base_acceptance.json`: at most 54,640 steps, serial,
+seed=2026, Base train/validation only. It uses the installed generic runtime.
+The original full-study budget below is still a proposal; Update, Historical,
+holdout and Future execution have not been authorized. Current job state is in
+`lab-requests:control/main.json`; the original design-only statements above record
+the document's initial status.
+
 ## 1. Goal and interpretation of LETTER
 
 Replace the current content-embedding RQ-VAE + T5/TIGER pipeline with:

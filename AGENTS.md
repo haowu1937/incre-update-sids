@@ -1,5 +1,11 @@
 # 项目协作规则
 
+## Base 链路验收（2026-10-27 最新授权，覆盖方案未执行状态）
+
+用户明确“先验收Base链路”。当前仅授权 `cf-letter-base-v1`：SASRec 最多 150 epochs / 44,700 steps，冻结 CF 表的直接残差量化器 1,000 steps，GPT/LETTER-style Base 生成模型最多 30 epochs / 8,940 steps；总上限 54,640，seed=2026，串行，12h 后不启动下一阶段。配置见 `docs/experiments/cf_letter_base_acceptance.json`。只读既有 Base train/Base validation；以固定 512-query Base validation probe 的 full-denominator NDCG@10 选 checkpoint，最早平局优先。完整 Base validation 仅在选定后报告。无 Update、Historical、holdout 或 Future 执行，不调参、不自动重跑，不回收旧 scope 的剩余预算。
+
+通过已安装的通用 v1 task contract 下发 `cf-letter-base-001`，无需升级 Runner，不改 installed helper/gate/cron。数据依赖绑定既有 main-deployment.json 及其中的 Base 文件 hashes；所有新输出在独立 job workspace。服务器 preflight 必须运行真实 Torch/transformers CPU 模型测试；云端跳过项不能视为通过。数据、合法 SID 解码、checkpoint 重载与只读科学 verifier 验收后更新英文报告并停止。保留旧 Future 表和负结果。整个迁移方案的其余部分仍为 design_only。
+
 ## 新范式方案阶段（2026-10-23 最新请求）
 
 用户要求先构建 SASRec CF embedding + LETTER-style 新范式的实验方案。方案见 `docs/experiments/cf_letter_migration_plan.md` 与配套 JSON，当前为 design_only，未授权执行。沿用已安装通用 Runner，不能再为实验安装 gate；不得因看到方案而下发任务、复用上一轮剩余 9,000 步或改动已完成的 control scope。既有研究结果与 Future 主表保留。先区分 Mitigating 的纯 CF / decoder-only 变体与完整原版 LETTER，再按新预算获准后实施。

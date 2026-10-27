@@ -1,5 +1,52 @@
 # Main SID experiment controller, protocol sid-main-v1
 
+## Current scope amendment, 2026-10-27: Base CF-LETTER acceptance only
+
+Hao explicitly requested "先验收Base链路". The current scope is `cf-letter-base-v1`,
+with exact settings in `docs/experiments/cf_letter_base_acceptance.json`.
+Authorize one serial job, `cf-letter-base-001`: SASRec <=150 epochs/44,700 steps,
+frozen-CF direct residual quantization <=1,000 steps, and the Base GPT retriever
+<=30 epochs/8,940 steps. Total reservation is 54,640; seed=2026. The 12-hour
+bundle guard stops subsequent stages without killing a live stage. No Update,
+Historical, anchor holdout or Future fitting/scoring, no hyperparameter search,
+and no automatic retry or recycling of older scope budgets is authorized.
+
+The generic task runtime is **installed**, confirmed by
+`lab-results:workers/server2-task-runtime.json` at
+`fe790d49ce65db558433bba7d6c4e759279fa2aa`. The old amendments below are history.
+Do not install a study-specific gate/bridge, change cron, switch the main checkout,
+or ask Hao to attach a Runner upgrade. Publish the full-SHA request, immutable
+scope and contract, and reservation atomically on lab-requests under the existing
+CAS lease. `control/main.json.task_dispatch` is the authoritative current entry;
+the completed legacy extension and receipts remain historical records.
+
+Bind the exact deployed `main-deployment.json` hash; the Base loader verifies its
+captured protocol-file hashes. Only read Base train/Base validation from the existing
+temporal preparation. Keep all models, CF tables and intermediate SID dependencies
+in the unique job workspace. Before real Beauty updates, require the task-pinned
+Torch/transformers CPU preflight, including actual tiny training, cached decoding,
+mask/position parity, gradients and exact optimizer/sampler/dropout resume. Local
+protocol tests with unavailable Torch are not real-model acceptance evidence.
+
+Use a fixed 512-query Base validation probe, full-denominator NDCG@10 and earliest
+tie for SASRec/GPT selection. Evaluate the complete Base validation only after
+selection. Report Recall/NDCG at 5/10/20, cold-target misses, reconstruction versus
+mean/zero predictors, all codebook utilization/collisions, exact CF export,
+checkpoint reloads and input-embedding readiness. These are Base metrics, never
+Future results or a test of historical damage. Native GPT2 initialization, a SASRec
+BOS carrier and existing one-query supervision are explicit adaptations, not an
+exact original LETTER or paper-dataset reproduction.
+
+Manual "继续" and the existing hourly monitor reread protocol/state/contracts and
+the exact result. Queued/running: inspect progress without redispatch. Completed:
+the pinned verifier checks local counters/hashes, query-level metric arithmetic,
+CF export/reconstruction and CPU checkpoint NLL; the generic observer appends the
+English report and receipt under the shared lease. Preserve the top Future table.
+A failed scientific quality gate is a valid negative outcome and stops later
+stages; execution failure/unknown state preserves evidence and pauses new work.
+After verified reporting, mark plan_completed and stop. The remaining migration
+proposal, including CF refresh, lambda/STE studies and Future, remains design_only.
+
 ## Runner boundary amendment, 2026-10-23
 
 Hao explicitly requested a stable Runner boundary after repeated manual per-study

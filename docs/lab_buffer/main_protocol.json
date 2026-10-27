@@ -11,33 +11,18 @@
   "project": "/home/hao/frec/graph-informed-sids-web",
   "python": "/home/hao/miniconda3/envs/frec-gpu/bin/python",
   "plan": [
-    "calibrate_concurrency",
-    "train_only_parameter_screen",
-    "faithful_candidate_extensions",
-    "conditional_second_seed_confirmation",
+    "base_data_acceptance",
+    "sasrec_base",
+    "cf_quantizer_base",
+    "gpt_base",
     "verify_report_and_stop"
   ],
-  "new_training_steps_authorized": 30400,
+  "new_training_steps_authorized": 54640,
   "new_future_prediction_passes_authorized": 0,
   "acceptance_timeout_seconds": 86400,
   "max_diagnosed_repair_jobs": 0,
   "same_fault_automatic_retry": false,
-  "rq_update_steps_already_completed": 1000,
-  "tiger_update_steps_already_completed": 2000,
-  "selection_steps": [
-    0,
-    100,
-    250,
-    500,
-    1000,
-    2000
-  ],
-  "selection_metric": "Training-only fixed eight completed-epoch RQ/H windows; declared feasibility and Pareto screen; no ranking selection",
-  "selected_history_tiger_step": 2000,
-  "future_queries": 34189,
-  "servable_queries": 27541,
-  "catalog_items": 11775,
-  "suffix_capacity": 256,
+  "selection_metric": "fixed 512-query Base validation probe full-denominator NDCG@10; earliest tie",
   "beam": 20,
   "topk": [
     5,
@@ -49,12 +34,12 @@
   "web_controller": "docs/lab_buffer/CONTROLLER.md",
   "persistent_state": "lab-requests:control/main.json",
   "stop_after_plan": true,
-  "revision": 3,
-  "active_scope": "history-joint-convergence-v1",
-  "scope_manifest": "docs/lab_buffer/joint_convergence_plan.json",
-  "scope_authorized_at": "2026-10-23",
-  "optimizer_steps_scope": "entire new train-only study, including calibration, rejected updates and confirmation",
-  "max_parallel": 2,
+  "revision": 4,
+  "active_scope": "cf-letter-base-v1",
+  "scope_manifest": "docs/experiments/cf_letter_base_acceptance.json",
+  "scope_authorized_at": "2026-10-27",
+  "optimizer_steps_scope": "Base only: SASRec + CF residual quantizer + GPT; no old-budget recycling",
+  "max_parallel": 1,
   "task_runtime": {
     "protocol_version": 1,
     "specification": "docs/lab_buffer/task_runtime_v1.md",
@@ -62,6 +47,17 @@
     "task_contracts": "lab-requests:task-contracts/JOB.json",
     "scope_authorizations": "lab-requests:task-scopes/SCOPE.json",
     "per_experiment_runner_upgrade": false,
-    "core_migration": "single deferred idle installation; no research task or budget change"
-  }
+    "core_migration": "installed fe790d49ce65db558433bba7d6c4e759279fa2aa; no per-task upgrade"
+  },
+  "allowed_splits": [
+    "base_train",
+    "base_val"
+  ],
+  "catalog_items": 10924,
+  "suffix_capacity": 512,
+  "wall_seconds": 43200,
+  "update_training_authorized": false,
+  "historical_training_authorized": false,
+  "holdout_evaluation_authorized": false,
+  "future_evaluation_authorized": false
 }
