@@ -4,7 +4,12 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "cf-letter-base-001",
-  "lease": null,
+  "lease": {
+    "token": "cf-letter-base-cloud-2026-10-27T20:59:38.275Z",
+    "owner": "web-base-acceptance-analysis",
+    "acquired_at": "2026-10-27T20:59:38.275Z",
+    "expires_at_unix": 1793135678.275
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -126,7 +131,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -459,7 +464,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
