@@ -1,5 +1,4 @@
-: null}
-{"stage": "gpt", "pid": 514248, "optimizer_steps": 48141, "stage_steps": {"quantizer": 1000, "gpt": 2441, "sasrec": 44700}, "progress": {"step": 2460, "epochs": 8, "processed_examples": 629472, "loss": 1.4131059646606445, "gradient_norm": 3.3946380615234375}, "stop_new_stages": null}
+ null}
 {"stage": "gpt", "pid": 514248, "optimizer_steps": 48264, "stage_steps": {"quantizer": 1000, "gpt": 2564, "sasrec": 44700}, "progress": {"step": 2580, "epochs": 8, "processed_examples": 660192, "loss": 1.4803539514541626, "gradient_norm": 3.5558319091796875}, "stop_new_stages": null}
 {"stage": "gpt", "pid": 514248, "optimizer_steps": 48384, "stage_steps": {"quantizer": 1000, "gpt": 2684, "sasrec": 44700}, "progress": {"step": 2700, "epochs": 9, "processed_examples": 690876, "loss": 1.273964285850525, "gradient_norm": 3.43636155128479}, "stop_new_stages": null}
 {"stage": "gpt", "pid": 514248, "optimizer_steps": 48506, "stage_steps": {"quantizer": 1000, "gpt": 2806, "sasrec": 44700}, "progress": {"step": 2820, "epochs": 9, "processed_examples": 721596, "loss": 1.3665213584899902, "gradient_norm": 3.646916389465332}, "stop_new_stages": null}
@@ -42,3 +41,4 @@
 {"stage": "gpt", "pid": 514248, "optimizer_steps": 52806, "stage_steps": {"quantizer": 1000, "gpt": 7106, "sasrec": 44700}, "progress": {"step": 7120, "epochs": 23, "processed_examples": 1821892, "loss": 0.6388988494873047, "gradient_norm": 4.321954250335693}, "stop_new_stages": null}
 {"stage": "gpt", "pid": 514248, "optimizer_steps": 52898, "stage_steps": {"quantizer": 1000, "gpt": 7198, "sasrec": 44700}, "progress": {"step": 7200, "epochs": 24, "processed_examples": 1842336, "loss": 0.5137486457824707, "gradient_norm": 3.926679849624634}, "stop_new_stages": null}
 {"stage": "gpt", "pid": 514248, "optimizer_steps": 53020, "stage_steps": {"quantizer": 1000, "gpt": 7320, "sasrec": 44700}, "progress": {"step": 7320, "epochs": 24, "processed_examples": 1873056, "loss": 0.5852382183074951, "gradient_norm": 4.346187591552734}, "stop_new_stages": null}
+{"stage": "gpt", "pid": 514248, "optimizer_steps": 53143, "stage_steps": {"quantizer": 1000, "gpt": 7443, "sasrec": 44700}, "progress": {"step": 7450, "epochs": 25, "processed_examples": 1906300, "loss": 0.6782053112983704, "gradient_norm": 4.773383140563965}, "stop_new_stages": null}
