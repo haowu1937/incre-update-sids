@@ -1,6 +1,6 @@
 # History-aware SID Update Experiment Report
 
-Last updated: 2026-10-22. Current pipeline: Amazon Beauty / frozen Llama7B content features / content-only RQ-VAE / TIGER.
+Last updated: 2026-10-27. The completed Llama content-RQ/TIGER results are retained below. The new SASRec CF-LETTER-adapted line has passed Base-only acceptance; its Update/Historical/Future stages have not run.
 
 ## Primary downstream results
 
@@ -19,6 +19,17 @@ All six conditions use the same 11775-item Update deployment catalog, beam=20, s
 
 This is the main table previously located in Section 5.3. Maintain it here as completed downstream results become available. The two retuned History-aware Future conditions are now completed from the user-returned compact. “Selected Update step” is the checkpoint used for Future, not the training budget: all three fine-tuning arms trained 2000 steps; the original Base/Plain arms selected 500 and the History-aware arm selected 2000. The old Plain and retuned History-aware RQ recipes differ, so those rows do not isolate the historical penalty. Evaluation details, the servable-query table, and checkpoint selection are in [Section 5](#5-completed-baseplain-future-evaluation).
 
+
+### Latest CF-LETTER-adapted Base validation
+
+Job `cf-letter-base-001` passed the server scientific verifier. Full denominator: **9,192 Base validation queries**, including 503 unavailable targets as misses; 8,689 targets are servable (94.527850%). These are new Base recommendation results, not Future or frozen-teacher compatibility scores. Both models use the same Base catalog and raw 20-event histories.
+
+| Model | Actual training steps | Selected step / epoch | Recall@5 | Recall@10 | Recall@20 | NDCG@5 | NDCG@10 | NDCG@20 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| SASRec CF source | 44,700 | 37,250 / 125 | 1.566580% | 2.991732% | 5.036989% | 0.008203680 | 0.012750642 | 0.017899974 |
+| CF SID + GPT retriever | 8,940 | 1,192 / 4 | 1.958225% | 3.111401% | 4.862924% | 0.012056704 | 0.015726218 | 0.020088908 |
+
+The CF quantizer completed 1,000 steps: hard reconstruction MSE=0.002218748, 53.30% below the mean-vector baseline. All three 512-entry books are used; 10,554 semantic codes cover 10,924 unique full SIDs, with a largest semantic bucket of 71 / suffix capacity 512. GPT trained for 30 epochs but the fixed validation probe selected epoch 4; the terminal checkpoint is not the deployed Base reference. See Section 6.23 for the curve analysis and evidence boundaries.
 
 ### Latest Base validation compatibility ranking
 
@@ -1017,3 +1028,70 @@ All query masks, selected checkpoints and scores refer to the new 20-event, four
 CF quantizer hard reconstruction MSE: 0.00221874751; mean-vector baseline: 0.00475102915; maximum semantic bucket: 71.
 
 The server verifier recomputed validation aggregates from saved query records, reproduced the CF export and hard reconstruction, and checked fixed-query selected-GPT NLL after an independent CPU reload when that stage completed. GPU reload parity and historical-input readiness remain bounded implementation checks; no historical optimization has run. The previous Future table is unchanged. Base scope stops here; no Update/Future job is queued.
+
+<!-- cf-letter-base-cloud:ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb -->
+
+### 6.23 Completed CF-LETTER Base acceptance and curve review (2026-10-27)
+
+The Base scope completed without a Runner upgrade. Task code was
+`5f56e68b9b9ca09b825b9274007078aefb701fa3`; the installed generic Runner remained
+`fe790d49ce65db558433bba7d6c4e759279fa2aa`. All 12 server preflight tests passed,
+including actual Torch/transformers models. The server scientific verifier produced
+its report at `ac88401c1abb326b1406196d73b105160de4a5d0`; the durable receipt is
+`verified_and_reported`, control mode is `plan_completed`, and no next job is set.
+
+Actual steps were SASRec 44,700 + CF quantizer 1,000 + GPT 8,940 = **54,640**,
+matching the reservation exactly. The reported bundle time was 4,358.27 seconds
+(72.64 minutes); maximum observed GPU memory was 6,440 MiB. No uncertain step
+intent or resource stop was reported. Bound original inputs were unchanged.
+No Update, Historical, anchor holdout or Future training/scoring ran.
+
+SASRec selected step 37,250 / epoch 125 from 31 fixed-probe observations; GPT
+selected step 1,192 / epoch 4 from 16 observations. Cloud recomputation confirms
+both are the earliest maximum of the declared probe full-denominator NDCG@10.
+The exported CF table and downstream Base checkpoint are selected weights, not
+terminal weights. The complete Base validation metrics are in the separate top
+Base table; the existing six-row Future table is unchanged. CF SID + GPT obtains
+Recall@10=3.111401% and NDCG@10=0.015726218, versus 2.991732% and 0.012750642
+for the SASRec source. This is a descriptive system comparison, not a controlled
+attribution to tokenization, since model size, objective and decoding differ.
+
+The CF quantizer's complete-catalog hard reconstruction MSE decreases from
+0.003605380 to 0.002218748 (38.46%); it is 53.30% below the mean-vector baseline
+of 0.004751029. Native total loss decreases from 0.018433030 to 0.012625291.
+All three codebooks use 512 / 512 entries at the endpoint. There are 10,554
+semantic triples for 10,924 items (duplicate-assignment fraction 3.387038%),
+10,924 unique full SIDs, and a largest bucket of 71 within the fixed 512 suffix
+capacity. This Base run shows neither capacity overflow nor complete codebook
+collapse; it does not establish incremental-update stability. The data audit
+reports 376 catalog items with no positive-target exposure in the existing Base
+queries; this does not imply no history/negative-sample exposure, and those rows
+remain in the fixed catalog.
+
+The GPT curve shows an important limit. At selected epoch 4, fixed training-probe
+token CE is 2.134469 and validation-probe NDCG@10 is 0.019109254. By epoch 30,
+training-probe CE falls to 0.133469 while validation-probe NDCG@10 falls to
+0.006954328 and validation sequence NLL rises from 11.226407 to 16.562013.
+These fixed-cohort observations are consistent with later overfitting or
+miscalibration; minibatch fluctuations are not used to make that conclusion.
+The predeclared selection rule correctly retains epoch 4. This observation does
+not trigger a new learning-rate, epoch-budget or model-size search.
+
+Cloud evidence: the exact request, contract, immutable scope, result and all four
+returned artifact byte hashes match the receipt; the declared scientific manifest
+hash and code identities match; optimizer sums, ledger, all saved probe selection
+points, full/servable denominators and aggregate metric arithmetic were checked.
+The compact artifact hash is
+`ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb`;
+the curve-table hash is
+`f3d1f481e46ef6129635c3d1fe8adafb24c6a88fea14a01e4c78fc2f33e9b847`.
+Per-query reaggregation, raw data integrity, GPU reloads and independent CPU model
+NLL/CF reconstruction checks were executed by the reviewed task-SHA server verifier.
+The cloud has not loaded the real Beauty checkpoints or independently recomputed
+per-query predictions. Historical input-embedding parity and nonzero gradients
+are readiness checks only; no historical-damage benefit has been tested here.
+
+All binary artifacts, query records and complete logs remain under
+`/home/hao/frec/git-lab-buffer/workspaces/cf-letter-base-001/outputs/cf-base`.
+The authorized Base chain is accepted and stopped. No retry, budget recycling,
+CF refresh, historical optimization or downstream Future task is queued.
