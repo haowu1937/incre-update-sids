@@ -1,0 +1,12 @@
+{
+  "protocol_version": 1,
+  "scope_id": "cf-letter-base-v1",
+  "max_optimizer_steps": 54640,
+  "max_parallel": 1,
+  "authorization": "Hao: first accept only the Base chain; SASRec <=150 epochs, CF-RQ <=1000 steps, Base GPT <=30 epochs; no Update/Historical/Future.",
+  "allowed_splits": [
+    "base_train",
+    "base_val"
+  ],
+  "stop_after_base": true
+}

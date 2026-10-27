@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "plan_completed",
+  "mode": "queued",
   "pause_requested": false,
-  "active_job_id": "history-joint-convergence-001",
-  "lease": {
-    "token": "cf-letter-base-dispatch-2026-10-27T16:05:54.604Z",
-    "owner": "web-cf-letter-base",
-    "acquired_at": "2026-10-27T16:05:54.605Z",
-    "expires_at_unix": 1793118054.605
-  },
+  "active_job_id": "cf-letter-base-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -25,17 +20,17 @@
     }
   },
   "plan": [
-    "calibrate_concurrency",
-    "train_only_parameter_screen",
-    "faithful_candidate_extensions",
-    "conditional_second_seed_confirmation",
+    "base_data_acceptance",
+    "sasrec_base",
+    "cf_quantizer_base",
+    "gpt_base",
     "verify_report_and_stop"
   ],
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
-  "request_sha256": "98cfccdd745ff7770389d7ea03cdac7b17c57a882ef492cb7f10e2602da430d5",
+  "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+  "request_sha256": "bfdf426456eaf99fd5e76a923cf54e99f4de00eede363056dbb74affcee2a2b5",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -498,6 +493,88 @@
         "read_existing_gradient_logs",
         "controlled_train_side_diagnostic"
       ]
+    },
+    {
+      "scope_id": "history-joint-convergence-v1",
+      "status": "completed",
+      "max_optimizer_steps": 30400,
+      "optimizer_steps_spent": 21400,
+      "real_model_preflight_passed": true,
+      "checks_log_sha256": "e8fdc3c974e69beddcf4a3de1eb07761c17ded2c4b48a77ae303a1d664420491",
+      "code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+      "source_manifest": "e4e2596c24ddf01b5dcd915d4b6cd5abe92e8a1a3650192022022172995c33b1",
+      "attached_at": "2026-10-23T10:09:26.291173+00:00",
+      "backup": "/home/hao/frec/git-lab-buffer/scope-upgrade-backups/joint-convergence-1bc0b437973cea3b6e9293611eac2e39f7771983",
+      "result_receipt": {
+        "scope_id": "history-joint-convergence-v1",
+        "job_id": "history-joint-convergence-001",
+        "status": "verified_and_reported",
+        "code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+        "request_sha256": "98cfccdd745ff7770389d7ea03cdac7b17c57a882ef492cb7f10e2602da430d5",
+        "artifact_sha256": "1d34004ae25f2216edd0586b5dcd9ef83501fcf646e10227db063163775f26d5",
+        "report_commit_sha": "d4db394f32a1157256e71dfb19e1c640f360e96e",
+        "actual_optimizer_steps": 21400,
+        "processed_at": "2026-10-23T13:44:35.386881+00:00",
+        "next_job_id": null,
+        "evidence": "Server verified local counters, bound curves and training-only selection arithmetic; no independent cloud model recomputation."
+      },
+      "cloud_analysis_receipt": {
+        "schema_version": 1,
+        "scope_id": "history-joint-convergence-v1",
+        "job_id": "history-joint-convergence-001",
+        "phase": "cloud_curve_analysis",
+        "status": "verified_and_analyzed",
+        "code_sha": "1bc0b437973cea3b6e9293611eac2e39f7771983",
+        "request_sha256": "98cfccdd745ff7770389d7ea03cdac7b17c57a882ef492cb7f10e2602da430d5",
+        "artifact_sha256": "1d34004ae25f2216edd0586b5dcd9ef83501fcf646e10227db063163775f26d5",
+        "report_commit_sha": "f1e013e09f11901f5e15f5aff35c94efde2f2881",
+        "report_marker": "<!-- joint-convergence-cloud:1d34004ae25f2216edd0586b5dcd9ef83501fcf646e10227db063163775f26d5 -->",
+        "actual_optimizer_steps": 21400,
+        "unused_optimizer_steps": 9000,
+        "next_job_id": null,
+        "source_refs": {
+          "vibe-dev_before_analysis": "d4db394f32a1157256e71dfb19e1c640f360e96e",
+          "lab-requests_before_claim": "f9633fa4d01d289d08060cca36cdcbcf9eda22c5",
+          "lab-results": "4770ffcd6dd728edf3720dc7fdbba6fa0b5b87ad"
+        },
+        "checks": {
+          "mailbox_raw_hashes": true,
+          "request_result_receipt_identity": true,
+          "curve_selection_arithmetic": true,
+          "phase_step_arithmetic": true,
+          "runtime_authorization_and_prior_helpers": true
+        },
+        "monitor_rows_verified": 544,
+        "scientific_outcome": {
+          "tail_stability_passed": true,
+          "H_relative_reduction": 0.013324721567720466,
+          "required_H_relative_reduction": 0.05,
+          "eligible_final_candidate": false,
+          "confirmation_run": false
+        },
+        "raw_sha256": {
+          "request.json": "98cfccdd745ff7770389d7ea03cdac7b17c57a882ef492cb7f10e2602da430d5",
+          "result.json": "8e5d3d3193065b2a67f6b9c21b135d7c6ab7bcdbdab7e01c99e4e133a67542bc",
+          "compact.json": "1d34004ae25f2216edd0586b5dcd9ef83501fcf646e10227db063163775f26d5",
+          "screen-curves.json": "c0a803a6f2ed8d408d27dac960d455dadc3e90549508e3e7e15427d9b98023ea",
+          "extended-curves.json": "ebf89a40d69bfcaa1c8d8e0c46fb0340d1999c44a1790249a63fbac182efb7f4",
+          "confirmation-curves.json": "971d280501270d56420aebac1fb2a21260143536399de9aa53707ed635c0bc2c",
+          "receipt.json": "c3d38afe3ec1bb6378838cdb3f658fa67bef6b6ba4a0873b7db2ded58026b5bd",
+          "runtime-install.json": "7054e20eeb5f56314b08e6aaf2992d7eafd8925ed7a72e09a3f047dada141857",
+          "upgrade-authorization.json": "897a111e127bf71ab00028db95cf53f38fbfa109fde12ed517117a49ebc548a2"
+        },
+        "curve_figure_sha256": "2d01aec1ac23a274ac4e303ad0d4b9ceb9e85a732ac0f92dd0fa6093e58e1dbb",
+        "evidence_boundary": "Cloud rechecked raw Git bytes, all returned epoch curves and selection/budget arithmetic. Checkpoint reloads, local durable counters and per-update capacity enforcement remain reviewed-source server evidence; no cloud model reload or per-query recomputation.",
+        "processed_at": "2026-10-23T14:48:32.490Z"
+      },
+      "controller_plan": [
+        "calibrate_concurrency",
+        "train_only_parameter_screen",
+        "faithful_candidate_extensions",
+        "conditional_second_seed_confirmation",
+        "verify_report_and_stop"
+      ],
+      "archived_at": "2026-10-27T16:07:52.245Z"
     }
   ],
   "core_runtime_upgrade": {
@@ -530,7 +607,45 @@
       "status": "design_only",
       "code_sha": "8b4a5d8f7dcbf082323baaee2b1d979ba70a5318",
       "record_path": "scope-proposals/cf-letter-adapted-v1.json",
-      "execution_authorized": false
+      "execution_authorized": false,
+      "authorized_subset": {
+        "scope_id": "cf-letter-base-v1",
+        "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+        "optimizer_step_cap": 54640,
+        "full_study_execution_authorized": false
+      }
     }
+  },
+  "active_scope": "cf-letter-base-v1",
+  "task_dispatch": {
+    "protocol_version": 1,
+    "contract_path": "task-contracts/cf-letter-base-001.json",
+    "contract_sha256": "d468e76eb33177a7729b5a25d734278a78e28e8fe94e723fb4e4785096b0de5c"
+  },
+  "task_scope_ledger": {
+    "cf-letter-base-v1": {
+      "scope_sha256": "f52c0b73c1e2af7c72c8899c518be4f47717f8c94e39789e919d44f4bcf7aa0f",
+      "reservations": {
+        "cf-letter-base-001": 54640
+      },
+      "actual_steps": {}
+    }
+  },
+  "current_scope": {
+    "scope_id": "cf-letter-base-v1",
+    "authorization": "Hao: 先验收Base链路",
+    "authorized_at": "2026-10-27T16:07:52.246Z",
+    "manifest": "docs/experiments/cf_letter_base_acceptance.json",
+    "max_optimizer_steps": 54640,
+    "max_parallel": 1,
+    "stop_after_base": true,
+    "update_historical_future_authorized": false
+  },
+  "latest_task_delivery": {
+    "job_id": "cf-letter-base-001",
+    "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+    "local_protocol_contract_checks_passed": 7,
+    "real_model_preflight": "mandatory on server; pending",
+    "installed_runner_changes": false
   }
 }

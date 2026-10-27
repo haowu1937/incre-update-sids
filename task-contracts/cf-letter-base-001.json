@@ -1,0 +1,27 @@
+{
+  "protocol_version": 1,
+  "scope_id": "cf-letter-base-v1",
+  "job_id": "cf-letter-base-001",
+  "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+  "request_sha256": "bfdf426456eaf99fd5e76a923cf54e99f4de00eede363056dbb74affcee2a2b5",
+  "scope_path": "task-scopes/cf-letter-base-v1.json",
+  "scope_sha256": "f52c0b73c1e2af7c72c8899c518be4f47717f8c94e39789e919d44f4bcf7aa0f",
+  "manifest": {
+    "path": "docs/experiments/cf_letter_base_acceptance.json",
+    "sha256": "cb533a505884d810ddbbc3250f75a84b5f3f9a2ebfdfd26160f73d76ace9f688"
+  },
+  "preflight": [
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_base.py",
+      "--require-torch"
+    ]
+  ],
+  "verifier": "verify_cf_letter_base.py",
+  "optimizer_step_reservation": 54640,
+  "input_sha256": {
+    "/home/hao/frec/git-lab-buffer/main-deployment.json": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694"
+  }
+}
