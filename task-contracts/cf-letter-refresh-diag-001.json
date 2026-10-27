@@ -1,0 +1,34 @@
+{
+  "protocol_version": 1,
+  "scope_id": "cf-letter-refresh-diag-v1",
+  "job_id": "cf-letter-refresh-diag-001",
+  "code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
+  "request_sha256": "1bc6324c43d90c8384aa664e0a41c879e1dca12f6ded7cca489f271930a866ef",
+  "scope_path": "task-scopes/cf-letter-refresh-diag-v1.json",
+  "scope_sha256": "98099223afda66f57853aa0423a922a659b586ded948f81a37c9d3d89354299b",
+  "manifest": {
+    "path": "docs/experiments/cf_letter_refresh_diagnostic.json",
+    "sha256": "20912002a3d18b49dca67d920645aeb7025ba3cbfd151aa58ad20183c4d1e1f4"
+  },
+  "preflight": [
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_base.py",
+      "--require-torch"
+    ],
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_refresh.py",
+      "--require-torch"
+    ]
+  ],
+  "verifier": "verify_cf_letter_refresh.py",
+  "optimizer_step_reservation": 12240,
+  "input_sha256": {
+    "/home/hao/frec/git-lab-buffer/main-deployment.json": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694"
+  }
+}

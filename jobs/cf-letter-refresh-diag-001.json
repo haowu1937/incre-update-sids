@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "job_id": "cf-letter-refresh-diag-001",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
+  "created_at": "2026-10-27T21:18:49.096654+00:00",
+  "timeout_seconds": 86400,
+  "argv": [
+    "python",
+    "-u",
+    "-B",
+    "run_cf_letter_refresh.py",
+    "--deployment",
+    "/home/hao/frec/git-lab-buffer/main-deployment.json",
+    "--output",
+    "outputs/cf-refresh"
+  ],
+  "artifacts": [
+    "outputs/task-runtime.json",
+    "outputs/cf-refresh/compact.json",
+    "outputs/cf-refresh/data_audit.json",
+    "outputs/cf-refresh/curves.json"
+  ]
+}

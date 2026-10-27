@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "plan_completed",
+  "mode": "queued",
   "pause_requested": false,
-  "active_job_id": "cf-letter-base-001",
-  "lease": {
-    "token": "cf-refresh-dispatch-2026-10-27T21:17:50.535Z",
-    "owner": "web-cf-refresh",
-    "acquired_at": "2026-10-27T21:17:50.535Z",
-    "expires_at_unix": 1793136770.535
-  },
+  "active_job_id": "cf-letter-refresh-diag-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -43,17 +38,16 @@
     }
   },
   "plan": [
-    "base_data_acceptance",
-    "sasrec_base",
-    "cf_quantizer_base",
-    "gpt_base",
+    "new_base_anchor_reference",
+    "shared_sasrec_refresh",
+    "frozen_quantizer_feature_only_diagnostic",
     "verify_report_and_stop"
   ],
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
-  "request_sha256": "bfdf426456eaf99fd5e76a923cf54e99f4de00eede363056dbb74affcee2a2b5",
+  "code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
+  "request_sha256": "1bc6324c43d90c8384aa664e0a41c879e1dca12f6ded7cca489f271930a866ef",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -598,6 +592,83 @@
         "verify_report_and_stop"
       ],
       "archived_at": "2026-10-27T16:07:52.245Z"
+    },
+    {
+      "scope_id": "cf-letter-base-v1",
+      "authorization": "Hao: 先验收Base链路",
+      "authorized_at": "2026-10-27T16:07:52.246Z",
+      "manifest": "docs/experiments/cf_letter_base_acceptance.json",
+      "max_optimizer_steps": 54640,
+      "max_parallel": 1,
+      "stop_after_base": true,
+      "update_historical_future_authorized": false,
+      "status": "completed_and_analyzed",
+      "completed_job_id": "cf-letter-base-001",
+      "receipt": {
+        "status": "verified_and_reported",
+        "job_id": "cf-letter-base-001",
+        "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+        "contract_sha256": "d468e76eb33177a7729b5a25d734278a78e28e8fe94e723fb4e4785096b0de5c",
+        "request_sha256": "bfdf426456eaf99fd5e76a923cf54e99f4de00eede363056dbb74affcee2a2b5",
+        "result_sha256": "1aa85663ccd19bea39cb475ec102d968b2bddcfd68cb481adee614026da15569",
+        "actual_optimizer_steps": 54640,
+        "report_commit_sha": "ac88401c1abb326b1406196d73b105160de4a5d0",
+        "artifacts_sha256": {
+          "artifacts/cf-letter-base-001/outputs/task-runtime.json": "fce15dcb42955044acf586511ab35757eacce2929ab621cdb502c151907fc0fc",
+          "artifacts/cf-letter-base-001/outputs/cf-base/compact.json": "ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb",
+          "artifacts/cf-letter-base-001/outputs/cf-base/data_audit.json": "7de0f166e75a9c9bbbd660bce7912fb10fc59611c3f76e6bdb9d7c8d2752203a",
+          "artifacts/cf-letter-base-001/outputs/cf-base/curves.json": "f3d1f481e46ef6129635c3d1fe8adafb24c6a88fea14a01e4c78fc2f33e9b847"
+        },
+        "processed_at": "2026-10-27T17:28:31.978467+00:00",
+        "next_job_id": null
+      },
+      "cloud_analysis_receipt": {
+        "schema_version": 1,
+        "scope_id": "cf-letter-base-v1",
+        "job_id": "cf-letter-base-001",
+        "phase": "cloud_base_acceptance_analysis",
+        "status": "verified_and_analyzed",
+        "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+        "request_sha256": "bfdf426456eaf99fd5e76a923cf54e99f4de00eede363056dbb74affcee2a2b5",
+        "contract_sha256": "d468e76eb33177a7729b5a25d734278a78e28e8fe94e723fb4e4785096b0de5c",
+        "result_sha256": "1aa85663ccd19bea39cb475ec102d968b2bddcfd68cb481adee614026da15569",
+        "artifact_sha256": {
+          "artifacts/cf-letter-base-001/outputs/task-runtime.json": "fce15dcb42955044acf586511ab35757eacce2929ab621cdb502c151907fc0fc",
+          "artifacts/cf-letter-base-001/outputs/cf-base/compact.json": "ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb",
+          "artifacts/cf-letter-base-001/outputs/cf-base/data_audit.json": "7de0f166e75a9c9bbbd660bce7912fb10fc59611c3f76e6bdb9d7c8d2752203a",
+          "artifacts/cf-letter-base-001/outputs/cf-base/curves.json": "f3d1f481e46ef6129635c3d1fe8adafb24c6a88fea14a01e4c78fc2f33e9b847"
+        },
+        "actual_optimizer_steps": 54640,
+        "report_commit_sha": "4f8d24afb9f851c791b1181f0d54f25dd4d2da1c",
+        "report_marker": "<!-- cf-letter-base-cloud:ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb -->",
+        "checks": {
+          "raw_hashes_and_code_identity": true,
+          "immutable_scope_manifest_and_budget": true,
+          "earliest_fixed_probe_selection": true,
+          "full_and_servable_denominator_arithmetic": true,
+          "checkpoint_and_feature_digest_lineage": true,
+          "all_declared_stage_gates_passed": true,
+          "existing_future_table_unchanged": true,
+          "report_readback_equal": true
+        },
+        "scientific_outcome": {
+          "base_chain_accepted": true,
+          "gpt_selected_epoch": 4,
+          "gpt_selected_step": 1192,
+          "gpt_actual_epochs": 30,
+          "sasrec_selected_epoch": 125,
+          "all_three_codebooks_used": 512,
+          "max_semantic_bucket": 71,
+          "full_sids_unique": 10924,
+          "gpt_late_overfitting_signal": true,
+          "historical_benefit_tested": false,
+          "future_tested": false
+        },
+        "evidence_boundary": "Cloud rechecked raw Git bytes, the complete returned probe curves, selection/step/metric arithmetic and report readback. Per-query aggregates, real model/data checks and independent CPU checkpoint NLL/CF reconstruction are reviewed task-SHA server-verifier evidence; no cloud Beauty checkpoint or per-query prediction recomputation.",
+        "processed_at": "2026-10-27T21:00:48.814Z",
+        "next_job_id": null
+      },
+      "archived_at": "2026-10-27T21:19:14.178Z"
     }
   ],
   "core_runtime_upgrade": {
@@ -636,14 +707,20 @@
         "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
         "optimizer_step_cap": 54640,
         "full_study_execution_authorized": false
+      },
+      "next_authorized_subset": {
+        "scope_id": "cf-letter-refresh-diag-v1",
+        "code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
+        "optimizer_step_cap": 12240,
+        "remaining_full_study_authorized": false
       }
     }
   },
-  "active_scope": "cf-letter-base-v1",
+  "active_scope": "cf-letter-refresh-diag-v1",
   "task_dispatch": {
     "protocol_version": 1,
-    "contract_path": "task-contracts/cf-letter-base-001.json",
-    "contract_sha256": "d468e76eb33177a7729b5a25d734278a78e28e8fe94e723fb4e4785096b0de5c"
+    "contract_path": "task-contracts/cf-letter-refresh-diag-001.json",
+    "contract_sha256": "efaa01a74a4b0c9bfff67963947e17e1b849436e54562137ff72ec49d313dbc8"
   },
   "task_scope_ledger": {
     "cf-letter-base-v1": {
@@ -654,24 +731,47 @@
       "actual_steps": {
         "cf-letter-base-001": 54640
       }
+    },
+    "cf-letter-refresh-diag-v1": {
+      "scope_sha256": "98099223afda66f57853aa0423a922a659b586ded948f81a37c9d3d89354299b",
+      "reservations": {
+        "cf-letter-refresh-diag-001": 12240
+      },
+      "actual_steps": {}
     }
   },
   "current_scope": {
-    "scope_id": "cf-letter-base-v1",
-    "authorization": "Hao: 先验收Base链路",
-    "authorized_at": "2026-10-27T16:07:52.246Z",
-    "manifest": "docs/experiments/cf_letter_base_acceptance.json",
-    "max_optimizer_steps": 54640,
+    "scope_id": "cf-letter-refresh-diag-v1",
+    "authorization": "Hao: 继续 the proposed limited shared CF refresh and feature-only diagnostic",
+    "authorized_at": "2026-10-27T21:19:14.178Z",
+    "manifest": "docs/experiments/cf_letter_refresh_diagnostic.json",
+    "max_optimizer_steps": 12240,
     "max_parallel": 1,
-    "stop_after_base": true,
-    "update_historical_future_authorized": false,
-    "status": "completed_and_analyzed"
+    "stop_after_diagnostic": true,
+    "quantizer_gpt_historical_holdout_future_authorized": false,
+    "predecessor_read_only": {
+      "job_id": "cf-letter-base-001",
+      "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+      "compact_sha256": "ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb",
+      "audit_sha256": "7de0f166e75a9c9bbbd660bce7912fb10fc59611c3f76e6bdb9d7c8d2752203a",
+      "sasrec_step": 37250,
+      "gpt_step": 1192,
+      "files_sha256": {
+        "sasrec/selected.pth": "67efbca4a5de09ce56f51a21d8cf2eeaad1564f37def0bfb3af339d01193d530",
+        "gpt/selected.pth": "00fb8499f12c8478b83f2050d2b96134f82c9c897c2ce9c12a13b41a0e2f23d7",
+        "quantizer/selected.pth": "2634c57d494363b3bcc6eb21a366c47ff3106306fefde29a3555d42c71d972d3",
+        "cf_embeddings.npy": "0b6ca1fdd9a561a8c64f24736626d0326ca4543e0eaf865cd5af4df88d778d88",
+        "item_sids.npy": "7cade2b867d2a441148b44505243d97dce2999191e5f2f49a14b36ce2f7ee3e1",
+        "quantizer/semantic_codes.npy": "9479d0dc1b14773fa7896c58d2dd9c1fd4f06b5bc9350f432caa50bb753710cd"
+      }
+    },
+    "status": "queued"
   },
   "latest_task_delivery": {
-    "job_id": "cf-letter-base-001",
-    "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
-    "local_protocol_contract_checks_passed": 7,
-    "real_model_preflight": "mandatory on server; pending",
+    "job_id": "cf-letter-refresh-diag-001",
+    "code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
+    "local_protocol_contract_checks_passed": 14,
+    "real_model_preflight": "seven mandatory actual-model tests across two suites; pending on server",
     "installed_runner_changes": false
   },
   "cloud_analysis_receipts": {
