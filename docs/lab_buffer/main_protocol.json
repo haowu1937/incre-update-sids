@@ -11,18 +11,17 @@
   "project": "/home/hao/frec/graph-informed-sids-web",
   "python": "/home/hao/miniconda3/envs/frec-gpu/bin/python",
   "plan": [
-    "base_data_acceptance",
-    "sasrec_base",
-    "cf_quantizer_base",
-    "gpt_base",
+    "new_base_anchor_reference",
+    "shared_sasrec_refresh",
+    "frozen_quantizer_feature_only_diagnostic",
     "verify_report_and_stop"
   ],
-  "new_training_steps_authorized": 54640,
+  "new_training_steps_authorized": 12240,
   "new_future_prediction_passes_authorized": 0,
   "acceptance_timeout_seconds": 86400,
   "max_diagnosed_repair_jobs": 0,
   "same_fault_automatic_retry": false,
-  "selection_metric": "fixed 512-query Base validation probe full-denominator NDCG@10; earliest tie",
+  "selection_metric": "fixed 512-query Update-validation probe, old I0 catalog, full-denominator NDCG@10; earliest tie",
   "beam": 20,
   "topk": [
     5,
@@ -34,11 +33,11 @@
   "web_controller": "docs/lab_buffer/CONTROLLER.md",
   "persistent_state": "lab-requests:control/main.json",
   "stop_after_plan": true,
-  "revision": 4,
-  "active_scope": "cf-letter-base-v1",
-  "scope_manifest": "docs/experiments/cf_letter_base_acceptance.json",
+  "revision": 5,
+  "active_scope": "cf-letter-refresh-diag-v1",
+  "scope_manifest": "docs/experiments/cf_letter_refresh_diagnostic.json",
   "scope_authorized_at": "2026-10-27",
-  "optimizer_steps_scope": "Base only: SASRec + CF residual quantizer + GPT; no old-budget recycling",
+  "optimizer_steps_scope": "SASRec cumulative Base+Update refresh only; no budget recycling",
   "max_parallel": 1,
   "task_runtime": {
     "protocol_version": 1,
@@ -51,13 +50,19 @@
   },
   "allowed_splits": [
     "base_train",
-    "base_val"
+    "update_train",
+    "update_val"
   ],
   "catalog_items": 10924,
   "suffix_capacity": 512,
-  "wall_seconds": 43200,
-  "update_training_authorized": false,
+  "wall_seconds": 14400,
+  "update_training_authorized": true,
   "historical_training_authorized": false,
   "holdout_evaluation_authorized": false,
-  "future_evaluation_authorized": false
+  "future_evaluation_authorized": false,
+  "update_training_components": [
+    "sasrec"
+  ],
+  "quantizer_training_authorized": false,
+  "gpt_training_authorized": false
 }

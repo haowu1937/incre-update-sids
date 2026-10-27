@@ -108,7 +108,7 @@ def fixed_loss(model,data,indices,device,role,encoded=None):
         return float(model.nll(tensor(prefix[indices],device),tensor(mask[indices],device),tensor(targets[indices],device)).mean()/4)
 
 
-def evaluate(model,data,indices,p,device,role,directory=None,mapping=None):
+def evaluate(model,data,indices,p,device,role,directory=None,mapping=None,catalog_size=None):
     chosen=[int(i) for i in indices if data['targets'][i]>0];all_records={}
     if role=='gpt':
         prefix,mask,target=gpt_arrays(data,mapping,p['quantizer']['capacity'],p['gpt']['user_buckets'])
@@ -117,7 +117,7 @@ def evaluate(model,data,indices,p,device,role,directory=None,mapping=None):
         for start in range(0,len(chosen),p['eval_batch_size']):
             idx=np.asarray(chosen[start:start+p['eval_batch_size']])
             if role=='sasrec':
-                hidden=model(tensor(data['history'][idx],device));scores=hidden@model.items.weight[1:].T
+                hidden=model(tensor(data['history'][idx],device));scores=hidden@model.items.weight[1:catalog_size+1 if catalog_size is not None else None].T
                 predictions=scores.topk(max(p['topk']),dim=-1).indices+1
                 nll=torch.nn.functional.cross_entropy(scores,tensor(data['targets'][idx]-1,device),reduction='none')
                 predicted=predictions.cpu().tolist()

@@ -1,5 +1,49 @@
 # Main SID experiment controller, protocol sid-main-v1
 
+## Current scope amendment, 2026-10-27: shared CF refresh diagnostic
+
+Hao said "继续" after the explicitly proposed limited next stage. Authorize only
+`cf-letter-refresh-diag-v1`, job `cf-letter-refresh-diag-001`, settings in
+`docs/experiments/cf_letter_refresh_diagnostic.json`. The completed Base receipt
+and its 54,640 spent steps stay immutable. New budget: 12,240 SASRec steps / 30
+cumulative Base_train + Update_train epochs, seed 2026, LR 1e-4, reset AdamW,
+unchanged original item rows/hidden weights, append training-observed CF rows.
+Select on a fixed 512-query Update-validation old-I0 full-denominator NDCG@10 probe
+at step 0 and every two epochs; earliest ties win. New CF embeddings are exported
+once from that selected state. No quantizer/GPT fitting, Plain/Historical update,
+holdout/Future scoring, parameter scan or automatic retry. Four-hour guard stops
+subsequent stages without killing a live child. Finish diagnostic/report and stop.
+
+The accepted Base task is an explicit read-only predecessor, not a host raw-data
+root extension. Its exact job ID, metadata hashes and selected artifact hashes are
+bound inside the scientific manifest and scope. The SHA-pinned task copies only
+those files into its own outputs/inputs/base, verifies before/after copy and again
+at final acceptance, and never modifies their source workspace. As with deployed
+protocol files, transitive dependency validation belongs to task code/verifier;
+the generic host directly binds main-deployment.json and the task manifest.
+No installed helper, policy/read-root, cron, task ID gate or dependency adapter is
+changed. Keep the current generic Runner and all existing tasks/receipts.
+
+First recreate the exact existing 4,096 E1 anchor_train identities, but compute
+fresh old four-digit NLL with selected Base GPT at epoch 4; do not reuse old TIGER
+NLL. Check same-map full-SID H=0. Then run SASRec refresh and apply frozen Base
+codebooks to the new old-item embeddings. Keep old targets, mask, positions and
+I0 fixed; full new historical SIDs retain unchanged-prefix suffixes and reserve
+all old slots before appending movers. Report true hard H, signed delta NLL,
+training-user bootstrap intervals, drift, churn, reconstruction and suffix capacity.
+New CF training rows receive no serving SID in this diagnostic. Capacity overflow
+is a preserved diagnostic outcome; never wrap/expand/retry to force feasibility.
+
+Manual/hourly entry rereads this amendment, active manifest, generic dispatch,
+request/result and shared receipts. One immutable task bundle advances its own
+stages; do not enqueue separate follow-up arms. On success the task verifier
+reaggregates saved query/H records, checks warm-start/counters/export/source hashes
+and independent CPU NLL/reconstruction before the generic observer reports and
+marks plan_completed. Preserve existing Base/Future tables. Distinguish training
+anchor diagnostic evidence from held-out generalization or historical-loss benefit.
+Failures/uncertain states preserve evidence and pause dispatch. Previous scope
+amendments below are historical and do not authorize extra work.
+
 ## Current scope amendment, 2026-10-27: Base CF-LETTER acceptance only
 
 Hao explicitly requested "先验收Base链路". The current scope is `cf-letter-base-v1`,

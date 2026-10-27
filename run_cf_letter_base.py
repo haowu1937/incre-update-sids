@@ -31,7 +31,7 @@ def gpu():
     return set(int(s.strip()) for s in a.stdout.splitlines() if s.strip()),int(b.stdout.strip())
 
 
-def paused(root):
+def paused(root,job_id=JOB):
     root=Path(root)
     if (root/'PAUSED.json').exists():return True
     config=read(root/'config.json');branch=config['requests_branch'];repo=str(root/'transport.git')
@@ -40,7 +40,7 @@ def paused(root):
     subprocess.run(['git','--git-dir='+repo,'fetch','--quiet','--no-write-fetch-head','origin',
         '+refs/heads/'+branch+':refs/remotes/origin/'+branch],env=env,capture_output=True,check=True,timeout=45)
     state=json.loads(subprocess.check_output(['git','--git-dir='+repo,'show','refs/remotes/origin/'+branch+':control/main.json'],env=env,timeout=10))
-    return state['pause_requested'] or state['active_job_id']!=JOB
+    return state['pause_requested'] or state['active_job_id']!=job_id
 
 
 def child(role,output,p):

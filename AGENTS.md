@@ -1,5 +1,11 @@
 # 项目协作规则
 
+## CF 刷新诊断（2026-10-27 最新“继续”，覆盖已完成 Base 的停止条件）
+
+用户确认继续上一条建议，仅执行新 Base anchor_train 参考、SASRec 累积刷新与冻结量化器的 feature-only 诊断。配置见 `docs/experiments/cf_letter_refresh_diagnostic.json`，scope=`cf-letter-refresh-diag-v1`，job=`cf-letter-refresh-diag-001`。新增上限 12,240 steps / 30 cumulative epochs，Base train + Update train、seed2026、lr1e-4、串行；固定 Update-validation 512-query probe，旧 I0 catalog 的 full-denominator NDCG@10 选模，earliest tie。量化器/GPT 不训练，不运行 Plain/Historical、anchor_holdout 或 Future，不自动调参/重跑。完成报告后停止。
+
+明确授权只读复用已验收 `cf-letter-base-001` 的 SHA 绑定产物：任务 manifest 列明 predecessor ID、selected checkpoints 与 table 的完整 hashes；任务驱动/科学 verifier 执行依赖复制前后与源输入结束时的 transitive checks，新副本仅在新 job 输出目录。host 的直接原始数据 binding 仍是既有 main-deployment.json；不扩大 host policy、不改 installed helper、read roots 或 cron，不要求用户升级 Runner。旧任务/主工作区/产物保留。用既有 E1 anchor_train 的同一批查询身份，重新计算新 Base GPT 的四 token 旧 NLL，验证 same-map H=0；仅重编码历史，固定旧 target/mask/positions/I0。按旧槽位保留规则检查完整 suffix，溢出报告负结果，不静默扩容。服务器必须先通过两个真实 CPU preflight suites；云端 skip 不算通过。
+
 ## Base 链路验收（2026-10-27 最新授权，覆盖方案未执行状态）
 
 用户明确“先验收Base链路”。当前仅授权 `cf-letter-base-v1`：SASRec 最多 150 epochs / 44,700 steps，冻结 CF 表的直接残差量化器 1,000 steps，GPT/LETTER-style Base 生成模型最多 30 epochs / 8,940 steps；总上限 54,640，seed=2026，串行，12h 后不启动下一阶段。配置见 `docs/experiments/cf_letter_base_acceptance.json`。只读既有 Base train/Base validation；以固定 512-query Base validation probe 的 full-denominator NDCG@10 选 checkpoint，最早平局优先。完整 Base validation 仅在选定后报告。无 Update、Historical、holdout 或 Future 执行，不调参、不自动重跑，不回收旧 scope 的剩余预算。

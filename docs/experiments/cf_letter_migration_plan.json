@@ -151,5 +151,12 @@
     "authorized_at": "2026-10-27",
     "optimizer_step_cap": 54640,
     "remaining_full_study_authorized": false
+  },
+  "next_authorized_subset": {
+    "scope_id": "cf-letter-refresh-diag-v1",
+    "manifest": "docs/experiments/cf_letter_refresh_diagnostic.json",
+    "authorized_at": "2026-10-27",
+    "optimizer_step_cap": 12240,
+    "remaining_full_study_authorized": false
   }
 }

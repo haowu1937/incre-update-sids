@@ -1095,3 +1095,61 @@ All binary artifacts, query records and complete logs remain under
 `/home/hao/frec/git-lab-buffer/workspaces/cf-letter-base-001/outputs/cf-base`.
 The authorized Base chain is accepted and stopped. No retry, budget recycling,
 CF refresh, historical optimization or downstream Future task is queued.
+
+<!-- cf-letter-refresh-implementation:v1 -->
+
+### 6.24 Shared CF refresh diagnostic: implemented, pending server execution
+
+Hao confirmed the limited next stage after Base acceptance. Scope
+`cf-letter-refresh-diag-v1`, job `cf-letter-refresh-diag-001`, authorizes only:
+(1) a fresh anchor_train reference under selected Base GPT, (2) shared SASRec CF
+refresh, and (3) frozen-quantizer feature-only damage measurement. Settings are in
+`docs/experiments/cf_letter_refresh_diagnostic.json`. No Plain/Historical quantizer
+training, GPT fine-tuning, anchor holdout or Future scoring is included.
+
+SASRec starts from the accepted Base selected checkpoint (step 37,250, epoch 125).
+Original item rows and all hidden weights must match before fitting; new CF rows
+are appended only for actual permitted training input/positive occurrences.
+Reset AdamW uses LR=1e-4, weight decay=0.01, batch=256, max gradient norm=1,
+seed=2026. Fit the cumulative 76,252 Base_train + 28,023 Update_train queries
+for at most 30 epochs / **12,240 additional steps**, with one serial child.
+The four-hour guard stops subsequent stages without terminating a live one.
+The fixed 512-query Update-validation old-I0 full-denominator NDCG@10 probe selects
+among initialization and every second completed epoch; earliest ties win.
+Only that selected state is exported as E1. No historical H or Future metric
+selects the SASRec checkpoint or any hyperparameter.
+
+The exact previous 4,096 E1 anchor_train query identities are retained and verified
+against the immutable source. The selected Base GPT (step 1,192, epoch 4) supplies
+a new reference NLL, summing four target digits without EOS. Old TIGER reference
+NLL is not reused. Same-map hard full-SID H must reproduce zero. Applying frozen
+Base codebooks to E1 then changes history SIDs only: target, attention mask,
+raw positions, user hash and old 10,924-item I0 addresses stay fixed. Semantic
+movers append after all reserved old suffix slots; unchanged prefixes keep their
+old suffixes. Capacity failure is a valid diagnostic outcome with no hidden
+expansion or retry. New CF rows receive no serving SID in this stage.
+
+The task reports signed delta NLL and positive-part H on full anchor_train,
+training-user bootstrap intervals, embedding drift, semantic/full-SID churn,
+per-book use, hard reconstruction on old/all fitting rows, exposure and full-SID
+capacity. These are training-cohort diagnostics, not an effectiveness test of the
+historical penalty or a new downstream/Future result. The existing Base and Future
+tables remain unchanged.
+
+All dependencies and outputs stay in the new independent workspace. Exact accepted
+Base artifact hashes and predecessor ID are scientific-manifest/scope bindings;
+the task copies the authorized read-only predecessor artifacts into its own
+outputs and checks their source bytes before/after. The generic host continues to
+bind the existing deployment and task manifest. No installed Runner/helper,
+policy/read-root or cron change is required, and no main-workspace input is edited.
+The verifier checks raw query identities, step ledger, reset/expanded warm start,
+selected CF export, suffix allocation and H/metric arithmetic, plus CPU reloads
+of SASRec/GPT likelihoods and canonical hard reconstruction.
+
+Local evidence: 14 protocol/contract tests passed across the Base and refresh
+suites. Seven actual Torch/transformers tests are unavailable in the cloud and
+must pass on the server before real fitting, including tiny actual refresh and
+same-map/frozen-teacher checks. Python 3.10 syntax and whitespace checks pass.
+Real refresh steps and diagnostic results remain **not_run** until returned server
+evidence. The task reports its outcome and stops; remaining migration arms are
+still unapproved. No completed task or old reservation is reused.
