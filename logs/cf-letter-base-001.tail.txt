@@ -1,10 +1,4 @@
--------------------------------------------------------------
-Ran 12 tests in 8.891s
-
-OK
-{"stage": "sasrec", "pid": 472740, "optimizer_steps": 0, "stage_steps": {}, "progress": {}, "stop_new_stages": null}
-{"stage": "sasrec", "pid": 472740, "optimizer_steps": 859, "stage_steps": {"sasrec": 859}, "progress": {"step": 1040, "epochs": 3, "processed_examples": 266132, "loss": 1.1613057851791382, "gradient_norm": 0.44345322251319885}, "stop_new_stages": null}
-{"stage": "sasrec", "pid": 472740, "optimizer_steps": 2096, "stage_steps": {"sasrec": 2096}, "progress": {"step": 2260, "epochs": 7, "processed_examples": 578308, "loss": 1.0423165559768677, "gradient_norm": 0.6431272029876709}, "stop_new_stages": null}
+": {"step": 2260, "epochs": 7, "processed_examples": 578308, "loss": 1.0423165559768677, "gradient_norm": 0.6431272029876709}, "stop_new_stages": null}
 {"stage": "sasrec", "pid": 472740, "optimizer_steps": 3319, "stage_steps": {"sasrec": 3319}, "progress": {"step": 3500, "epochs": 11, "processed_examples": 895604, "loss": 0.9263648390769958, "gradient_norm": 0.736210286617279}, "stop_new_stages": null}
 {"stage": "sasrec", "pid": 472740, "optimizer_steps": 4669, "stage_steps": {"sasrec": 4669}, "progress": {"step": 4880, "epochs": 16, "processed_examples": 1248704, "loss": 0.8787411451339722, "gradient_norm": 0.8933432698249817}, "stop_new_stages": null}
 {"stage": "sasrec", "pid": 472740, "optimizer_steps": 6022, "stage_steps": {"sasrec": 6022}, "progress": {"step": 6200, "epochs": 20, "processed_examples": 1586480, "loss": 0.704967737197876, "gradient_norm": 0.8067330718040466}, "stop_new_stages": null}
@@ -47,3 +41,5 @@ OK
 {"stage": "gpt", "pid": 514248, "optimizer_steps": 45862, "stage_steps": {"quantizer": 1000, "gpt": 162, "sasrec": 44700}, "progress": {"step": 160, "epochs": 0, "processed_examples": 40960, "loss": 3.240251064300537, "gradient_norm": 1.4723647832870483}, "stop_new_stages": null}
 {"stage": "gpt", "pid": 514248, "optimizer_steps": 45953, "stage_steps": {"quantizer": 1000, "gpt": 253, "sasrec": 44700}, "progress": {"step": 260, "epochs": 0, "processed_examples": 66560, "loss": 3.1119253635406494, "gradient_norm": 2.043872356414795}, "stop_new_stages": null}
 {"stage": "gpt", "pid": 514248, "optimizer_steps": 46074, "stage_steps": {"quantizer": 1000, "gpt": 374, "sasrec": 44700}, "progress": {"step": 380, "epochs": 1, "processed_examples": 97244, "loss": 2.7770960330963135, "gradient_norm": 2.147127866744995}, "stop_new_stages": null}
+{"stage": "gpt", "pid": 514248, "optimizer_steps": 46197, "stage_steps": {"quantizer": 1000, "gpt": 497, "sasrec": 44700}, "progress": {"step": 500, "epochs": 1, "processed_examples": 127964, "loss": 2.722944498062134, "gradient_norm": 2.2490768432617188}, "stop_new_stages": null}
+{"stage": "gpt", "pid": 514248, "optimizer_steps": 46296, "stage_steps": {"quantizer": 1000, "gpt": 596, "sasrec": 44700}, "progress": {"step": 600, "epochs": 2, "processed_examples": 153528, "loss": 2.564105749130249, "gradient_norm": 2.3057701587677}, "stop_new_stages": null}
