@@ -6,15 +6,20 @@
   "request_sha256": "bfdf426456eaf99fd5e76a923cf54e99f4de00eede363056dbb74affcee2a2b5",
   "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
   "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
-  "status": "running",
+  "status": "completed",
   "started_at": "2026-10-27T16:14:09.215487+00:00",
-  "updated_at": "2026-10-27T17:26:23.964076+00:00",
-  "exit_code": null,
+  "updated_at": "2026-10-27T17:27:16.603313+00:00",
+  "exit_code": 0,
   "pid": 472021,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-base-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-base-001.log",
   "log_tail": "logs/cf-letter-base-001.tail.txt",
-  "artifacts": [],
+  "artifacts": [
+    "artifacts/cf-letter-base-001/outputs/task-runtime.json",
+    "artifacts/cf-letter-base-001/outputs/cf-base/compact.json",
+    "artifacts/cf-letter-base-001/outputs/cf-base/data_audit.json",
+    "artifacts/cf-letter-base-001/outputs/cf-base/curves.json"
+  ],
   "training_started": true,
   "actual_code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
   "argv": [
@@ -31,5 +36,12 @@
     "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-base-001"
   ],
   "process_started": true,
-  "elapsed_seconds": 4323.59
+  "elapsed_seconds": 4376.229,
+  "artifacts_sha256": {
+    "artifacts/cf-letter-base-001/outputs/task-runtime.json": "fce15dcb42955044acf586511ab35757eacce2929ab621cdb502c151907fc0fc",
+    "artifacts/cf-letter-base-001/outputs/cf-base/compact.json": "ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb",
+    "artifacts/cf-letter-base-001/outputs/cf-base/data_audit.json": "7de0f166e75a9c9bbbd660bce7912fb10fc59611c3f76e6bdb9d7c8d2752203a",
+    "artifacts/cf-letter-base-001/outputs/cf-base/curves.json": "f3d1f481e46ef6129635c3d1fe8adafb24c6a88fea14a01e4c78fc2f33e9b847"
+  },
+  "finished_at": "2026-10-27T17:27:16.603287+00:00"
 }

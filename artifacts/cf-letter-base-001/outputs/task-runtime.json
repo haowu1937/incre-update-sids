@@ -1,0 +1,12 @@
+{
+  "protocol_version": 1,
+  "job_id": "cf-letter-base-001",
+  "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+  "contract_sha256": "d468e76eb33177a7729b5a25d734278a78e28e8fe94e723fb4e4785096b0de5c",
+  "status": "completed",
+  "checks_completed": 1,
+  "command_started": true,
+  "started_at": "2026-10-27T16:14:20.474510+00:00",
+  "original_inputs_unchanged": true,
+  "finished_at": "2026-10-27T17:27:16.484309+00:00"
+}
