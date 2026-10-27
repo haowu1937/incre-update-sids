@@ -11,3 +11,5 @@ OK
 {"stage": "sasrec", "pid": 472740, "optimizer_steps": 0, "stage_steps": {}, "progress": {}, "stop_new_stages": null}
 {"stage": "sasrec", "pid": 472740, "optimizer_steps": 859, "stage_steps": {"sasrec": 859}, "progress": {"step": 1040, "epochs": 3, "processed_examples": 266132, "loss": 1.1613057851791382, "gradient_norm": 0.44345322251319885}, "stop_new_stages": null}
 {"stage": "sasrec", "pid": 472740, "optimizer_steps": 2096, "stage_steps": {"sasrec": 2096}, "progress": {"step": 2260, "epochs": 7, "processed_examples": 578308, "loss": 1.0423165559768677, "gradient_norm": 0.6431272029876709}, "stop_new_stages": null}
+{"stage": "sasrec", "pid": 472740, "optimizer_steps": 3319, "stage_steps": {"sasrec": 3319}, "progress": {"step": 3500, "epochs": 11, "processed_examples": 895604, "loss": 0.9263648390769958, "gradient_norm": 0.736210286617279}, "stop_new_stages": null}
+{"stage": "sasrec", "pid": 472740, "optimizer_steps": 4669, "stage_steps": {"sasrec": 4669}, "progress": {"step": 4880, "epochs": 16, "processed_examples": 1248704, "loss": 0.8787411451339722, "gradient_norm": 0.8933432698249817}, "stop_new_stages": null}
