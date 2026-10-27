@@ -4,7 +4,12 @@
   "mode": "queued",
   "pause_requested": false,
   "active_job_id": "cf-letter-refresh-diag-001",
-  "lease": null,
+  "lease": {
+    "token": "8ecc910ebc664bcf80956d69700a184e",
+    "owner": "versioned-task-observer",
+    "acquired_at": "2026-10-27T21:28:00.953791+00:00",
+    "expires_at_unix": 1793137380.9538186
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -125,7 +130,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -458,7 +463,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
