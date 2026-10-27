@@ -6,15 +6,20 @@
   "request_sha256": "1bc6324c43d90c8384aa664e0a41c879e1dca12f6ded7cca489f271930a866ef",
   "code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
   "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
-  "status": "running",
+  "status": "completed",
   "started_at": "2026-10-27T21:20:07.849329+00:00",
-  "updated_at": "2026-10-27T21:27:19.470462+00:00",
-  "exit_code": null,
+  "updated_at": "2026-10-27T21:27:38.535868+00:00",
+  "exit_code": 0,
   "pid": 755912,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-refresh-diag-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-refresh-diag-001.log",
   "log_tail": "logs/cf-letter-refresh-diag-001.tail.txt",
-  "artifacts": [],
+  "artifacts": [
+    "artifacts/cf-letter-refresh-diag-001/outputs/task-runtime.json",
+    "artifacts/cf-letter-refresh-diag-001/outputs/cf-refresh/compact.json",
+    "artifacts/cf-letter-refresh-diag-001/outputs/cf-refresh/data_audit.json",
+    "artifacts/cf-letter-refresh-diag-001/outputs/cf-refresh/curves.json"
+  ],
   "training_started": true,
   "actual_code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
   "argv": [
@@ -31,5 +36,12 @@
     "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-refresh-diag-001"
   ],
   "process_started": true,
-  "elapsed_seconds": 420.328
+  "elapsed_seconds": 439.393,
+  "artifacts_sha256": {
+    "artifacts/cf-letter-refresh-diag-001/outputs/task-runtime.json": "1195cfb46713f5c496bdeeda311b110cd357295794cae62537bbcc468c65e501",
+    "artifacts/cf-letter-refresh-diag-001/outputs/cf-refresh/compact.json": "ca3e8ca977b712aef504b7b8c4854fb5b4a7b40d9a2682a50950486a3639a58a",
+    "artifacts/cf-letter-refresh-diag-001/outputs/cf-refresh/data_audit.json": "0042a34954f28c926fbf5491b9773bd6bd2ac33887ca338e7337ebd438a47ca5",
+    "artifacts/cf-letter-refresh-diag-001/outputs/cf-refresh/curves.json": "7e2ad91b1d6c4b9ab33566d91f768b2bdfd016fe372729afdc19375bc23401da"
+  },
+  "finished_at": "2026-10-27T21:27:38.535845+00:00"
 }
