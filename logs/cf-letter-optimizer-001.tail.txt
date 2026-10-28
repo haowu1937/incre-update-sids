@@ -51,3 +51,4 @@ OK
 {"active_pids": [1593377, 1593378], "pending": ["h_lr1e4_b0", "h_lr3e5_b0", "h_lr1e5_b0"], "optimizer_steps": 2000, "stage_steps": {"h_lr1e5_b09": 1000, "h_lr3e5_b09": 1000}, "stop_new_arms": null}
 {"active_pids": [1617077, 1617078], "pending": ["h_lr1e5_b0"], "optimizer_steps": 2058, "stage_steps": {"h_lr3e5_b0": 29, "h_lr1e4_b0": 29, "h_lr1e5_b09": 1000, "h_lr3e5_b09": 1000}, "stop_new_arms": null}
 {"active_pids": [1617077, 1617078], "pending": ["h_lr1e5_b0"], "optimizer_steps": 2162, "stage_steps": {"h_lr3e5_b0": 81, "h_lr1e4_b0": 81, "h_lr1e5_b09": 1000, "h_lr3e5_b09": 1000}, "stop_new_arms": null}
+{"active_pids": [1617077, 1617078], "pending": ["h_lr1e5_b0"], "optimizer_steps": 2270, "stage_steps": {"h_lr3e5_b0": 135, "h_lr1e4_b0": 135, "h_lr1e5_b09": 1000, "h_lr3e5_b09": 1000}, "stop_new_arms": null}
