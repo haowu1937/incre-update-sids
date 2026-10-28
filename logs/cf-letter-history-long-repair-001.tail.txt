@@ -37,3 +37,4 @@ OK
 {"pid": 1328155, "optimizer_steps": 1440, "branches": {"completed_branches": 1, "optimizer_steps": 1000}, "stop_new_branches": null}
 {"pid": 1328155, "optimizer_steps": 1525, "branches": {"completed_branches": 1, "optimizer_steps": 1000}, "stop_new_branches": null}
 {"pid": 1328155, "optimizer_steps": 1606, "branches": {"completed_branches": 1, "optimizer_steps": 1000}, "stop_new_branches": null}
+{"pid": 1328155, "optimizer_steps": 1690, "branches": {"completed_branches": 1, "optimizer_steps": 1000}, "stop_new_branches": null}
