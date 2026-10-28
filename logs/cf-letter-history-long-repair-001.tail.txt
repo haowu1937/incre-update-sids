@@ -30,3 +30,5 @@ OK
 {"pid": 1328155, "optimizer_steps": 876, "branches": {}, "stop_new_branches": null}
 {"pid": 1328155, "optimizer_steps": 960, "branches": {}, "stop_new_branches": null}
 {"pid": 1328155, "optimizer_steps": 1030, "branches": {"completed_branches": 1, "optimizer_steps": 1000}, "stop_new_branches": null}
+{"pid": 1328155, "optimizer_steps": 1117, "branches": {"completed_branches": 1, "optimizer_steps": 1000}, "stop_new_branches": null}
+{"pid": 1328155, "optimizer_steps": 1194, "branches": {"completed_branches": 1, "optimizer_steps": 1000}, "stop_new_branches": null}
