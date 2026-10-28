@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "queued",
+  "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "cf-letter-history-long-repair-001",
-  "lease": {
-    "token": "ab928f425e8a474a800e7604308744eb",
-    "owner": "versioned-task-observer",
-    "acquired_at": "2026-10-28T12:29:23.110785+00:00",
-    "expires_at_unix": 1793191463.1108136
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -66,6 +61,27 @@
       "result_sha256": "b2449c2d6674d2ce80632a4367caf1d8289b96717dfffec4ce4e78539b41f71e",
       "reason": "ValueError('Task failed/interrupted; preserve evidence and diagnose before any new job')",
       "processed_at": "2026-10-28T11:52:12.835009+00:00",
+      "next_job_id": null
+    },
+    "cf-letter-history-long-repair-001": {
+      "status": "verified_and_reported",
+      "job_id": "cf-letter-history-long-repair-001",
+      "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+      "contract_sha256": "f09fca24f697ad728d31cc39e27bb953bd486b290a07bd00e42abbf8f4f34cc7",
+      "request_sha256": "35299b286889ee480ab9b1e02166e8e118b69acb4b493e567b3449178d5f39f6",
+      "result_sha256": "d2c49aed8ae78419093e645df7e9a0df5f08196b793196e8b60980536674e908",
+      "actual_optimizer_steps": 3000,
+      "report_commit_sha": "97044c63dfd941b9fa15a1317db6471e817bb64a",
+      "artifacts_sha256": {
+        "artifacts/cf-letter-history-long-repair-001/outputs/task-runtime.json": "fe1f37e3dc5b44a857cec92d3429a088495577137552cedd38a3b2dc3d419829",
+        "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/compact.json": "84490dc7aa8074fa4d9b8d2183e94a19f8e4031ffcc2c5bb59f915ee61788c0f",
+        "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/data_audit.json": "7ff81a2f17da0d72aa423be32f06d781fc543dbea8d6ecced3d92308ac4c66e1",
+        "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/gradient_calibration.json": "d86803581c42ee8276732dc9cb00c48e5a381afd32b2406eb8ffb18cfabf5407",
+        "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/h_only_curves.json": "d0f7fcbfcc8ade8cc9939f58f45936f77d58e5a2674b9799c2bc08c133a8fb86",
+        "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/rq_only_curves.json": "025302ee3b3b30c2a50c110b333d6c71092c71bd78369afa3f81f1e2e6996d19",
+        "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/mixed_curves.json": "578ad04e6d1bba0f748941d12768c3c5c552ea4a87710b02d0874e6638555446"
+      },
+      "processed_at": "2026-10-28T12:38:28.341402+00:00",
       "next_job_id": null
     }
   },
@@ -898,7 +914,9 @@
       "reservations": {
         "cf-letter-history-long-repair-001": 3000
       },
-      "actual_steps": {}
+      "actual_steps": {
+        "cf-letter-history-long-repair-001": 3000
+      }
     }
   },
   "current_scope": {
