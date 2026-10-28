@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "plan_completed",
+  "mode": "queued",
   "pause_requested": false,
-  "active_job_id": "cf-letter-history-long-repair-001",
-  "lease": {
-    "token": "web-optimizer-dispatch-2026-10-28T14:15:47.384Z",
-    "owner": "web-user-authorized-7000-step-optimizer-study",
-    "acquired_at": "2026-10-28T14:15:47.385Z",
-    "expires_at_unix": 1793197847.385
-  },
+  "active_job_id": "cf-letter-optimizer-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -91,18 +86,17 @@
     }
   },
   "plan": [
-    "reproduce_fixed_C0_E1_positive_H",
-    "calibrate_lambda_on_training_only",
-    "h_only_1000",
-    "rq_only_1000",
-    "mixed_1000",
+    "reuse_accepted_H_only_control",
+    "five_H_only_optimizer_arms",
+    "training_only_screen_gate",
+    "conditional_matched_RQ_only_and_Mixed",
     "verify_analyze_report_and_stop"
   ],
-  "repairs_used": 1,
+  "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
-  "request_sha256": "35299b286889ee480ab9b1e02166e8e118b69acb4b493e567b3449178d5f39f6",
+  "code_sha": "278c7b185fce251e0512e4f1f8ba8d66e430846e",
+  "request_sha256": "72c42dab81e4382b582cbfb0f3845ccba57823adaa11b9225356fcef8a4c89bd",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -833,6 +827,119 @@
         "next_job_id": null
       },
       "repair_code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3"
+    },
+    {
+      "scope_id": "cf-letter-history-long-repair-v1",
+      "status": "completed_and_analyzed",
+      "authorization": "Diagnosed zero-step serialization repair within existing user-authorized three-arm plan and 3000-step budget",
+      "manifest": "docs/experiments/cf_letter_history_long.json",
+      "max_optimizer_steps": 3000,
+      "max_parallel": 1,
+      "budget_family": "cf-letter-history-long-v1",
+      "zero_step_repair_of": {
+        "job_id": "cf-letter-history-long-001",
+        "code_sha": "cd459d741a421a4e4ad411a73b125fd73ff1ced6",
+        "runtime_sha256": "9bbf29c46c680b910cd078cdd876ebc7153a79d4253bda9bd390294f28f55ca0",
+        "result_sha256": "b2449c2d6674d2ce80632a4367caf1d8289b96717dfffec4ce4e78539b41f71e",
+        "actual_Beauty_optimizer_steps": 0,
+        "diagnosis": "Encoded hash users and raw user identities collided under anchor_users in prepared.npz; use separate encoded/raw namespaces with a pure round-trip regression. Real Beauty command never started."
+      },
+      "trainable_components": [
+        "three_codebooks"
+      ],
+      "steps_per_arm": 1000,
+      "arms": [
+        "h_only",
+        "rq_only",
+        "mixed"
+      ],
+      "sasrec_gpt_training_authorized": false,
+      "validation_holdout_future_authorized": false,
+      "stop_after_diagnostic": true,
+      "completed_job_id": "cf-letter-history-long-repair-001",
+      "cloud_analysis_receipt": {
+        "schema_version": 1,
+        "scope_id": "cf-letter-history-long-repair-v1",
+        "job_id": "cf-letter-history-long-repair-001",
+        "phase": "cloud_three_arm_long_analysis",
+        "status": "verified_and_analyzed",
+        "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+        "request_sha256": "35299b286889ee480ab9b1e02166e8e118b69acb4b493e567b3449178d5f39f6",
+        "contract_sha256": "f09fca24f697ad728d31cc39e27bb953bd486b290a07bd00e42abbf8f4f34cc7",
+        "result_sha256": "d2c49aed8ae78419093e645df7e9a0df5f08196b793196e8b60980536674e908",
+        "artifacts_sha256": {
+          "artifacts/cf-letter-history-long-repair-001/outputs/task-runtime.json": "fe1f37e3dc5b44a857cec92d3429a088495577137552cedd38a3b2dc3d419829",
+          "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/compact.json": "84490dc7aa8074fa4d9b8d2183e94a19f8e4031ffcc2c5bb59f915ee61788c0f",
+          "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/data_audit.json": "7ff81a2f17da0d72aa423be32f06d781fc543dbea8d6ecced3d92308ac4c66e1",
+          "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/gradient_calibration.json": "d86803581c42ee8276732dc9cb00c48e5a381afd32b2406eb8ffb18cfabf5407",
+          "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/h_only_curves.json": "d0f7fcbfcc8ade8cc9939f58f45936f77d58e5a2674b9799c2bc08c133a8fb86",
+          "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/rq_only_curves.json": "025302ee3b3b30c2a50c110b333d6c71092c71bd78369afa3f81f1e2e6996d19",
+          "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/mixed_curves.json": "578ad04e6d1bba0f748941d12768c3c5c552ea4a87710b02d0874e6638555446"
+        },
+        "actual_optimizer_steps": 3000,
+        "actual_step_family_total": 3000,
+        "failed_original_actual_steps": 0,
+        "report_commit_sha": "99bd7b9fc7b951929433514ac7400fc49a71d694",
+        "report_marker": "<!-- cf-letter-history-long-cloud:84490dc7aa8074fa4d9b8d2183e94a19f8e4031ffcc2c5bb59f915ee61788c0f -->",
+        "checks": {
+          "raw_request_result_contract_scope_manifest_and_seven_artifact_hashes": true,
+          "three_arm_budget_and_no_uncertain_intents": true,
+          "four_probe_lambda_arithmetic": true,
+          "fixed_and_full_monitor_schedules": true,
+          "last_eight_scheduled_stability_arithmetic": true,
+          "paired_gate_arithmetic": true,
+          "server_receipt_and_report_marker": true,
+          "report_readback_equal": true,
+          "forbidden_training_and_evaluation_flags": true
+        },
+        "scientific_outcome": {
+          "initial_full_H": 0.10294729462475516,
+          "endpoint_full_H": {
+            "h_only": 0.23510504653677344,
+            "rq_only": 0.28544789788429625,
+            "mixed": 0.26547677101916634
+          },
+          "tail_assessment": {
+            "eligible": true,
+            "passed": false,
+            "tail_H_relative_reduction_vs_rq_only": 0.07239707446051902,
+            "tail_native_rq_relative_increase": 0.0020415389397006045,
+            "tail_hard_mse_relative_increase": 0.0031064034181038647,
+            "mixed_tail_stable": false
+          },
+          "all_joint_stability_failed": true,
+          "h_only_early_scheduled_minimum": {
+            "step": 60,
+            "H": 0.08537684622569941
+          },
+          "historical_penalty_stable_repair_demonstrated": false,
+          "heldout_future_tested": false
+        },
+        "evidence_boundary": "Cloud checked returned raw hashes, 100 fixed and 34 full monitor points per arm, tail/lambda/paired arithmetic and immutable mailbox identities. Raw per-step batch records, complete suffix recomputation, local input/checkpoint immutability and model likelihood/reconstruction reloads remain reviewed task-SHA server-verifier evidence; no cloud Beauty model reload, individual NLL or bootstrap recomputation.",
+        "processed_at": "2026-10-28 13:19:24 UTC",
+        "next_job_id": null
+      },
+      "receipt": {
+        "status": "verified_and_reported",
+        "job_id": "cf-letter-history-long-repair-001",
+        "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+        "contract_sha256": "f09fca24f697ad728d31cc39e27bb953bd486b290a07bd00e42abbf8f4f34cc7",
+        "request_sha256": "35299b286889ee480ab9b1e02166e8e118b69acb4b493e567b3449178d5f39f6",
+        "result_sha256": "d2c49aed8ae78419093e645df7e9a0df5f08196b793196e8b60980536674e908",
+        "actual_optimizer_steps": 3000,
+        "report_commit_sha": "97044c63dfd941b9fa15a1317db6471e817bb64a",
+        "artifacts_sha256": {
+          "artifacts/cf-letter-history-long-repair-001/outputs/task-runtime.json": "fe1f37e3dc5b44a857cec92d3429a088495577137552cedd38a3b2dc3d419829",
+          "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/compact.json": "84490dc7aa8074fa4d9b8d2183e94a19f8e4031ffcc2c5bb59f915ee61788c0f",
+          "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/data_audit.json": "7ff81a2f17da0d72aa423be32f06d781fc543dbea8d6ecced3d92308ac4c66e1",
+          "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/gradient_calibration.json": "d86803581c42ee8276732dc9cb00c48e5a381afd32b2406eb8ffb18cfabf5407",
+          "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/h_only_curves.json": "d0f7fcbfcc8ade8cc9939f58f45936f77d58e5a2674b9799c2bc08c133a8fb86",
+          "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/rq_only_curves.json": "025302ee3b3b30c2a50c110b333d6c71092c71bd78369afa3f81f1e2e6996d19",
+          "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/mixed_curves.json": "578ad04e6d1bba0f748941d12768c3c5c552ea4a87710b02d0874e6638555446"
+        },
+        "processed_at": "2026-10-28T12:38:28.341402+00:00",
+        "next_job_id": null
+      }
     }
   ],
   "core_runtime_upgrade": {
@@ -883,8 +990,8 @@
   "active_scope": "cf-letter-refresh-diag-v1",
   "task_dispatch": {
     "protocol_version": 1,
-    "contract_path": "task-contracts/cf-letter-history-long-repair-001.json",
-    "contract_sha256": "f09fca24f697ad728d31cc39e27bb953bd486b290a07bd00e42abbf8f4f34cc7"
+    "contract_path": "task-contracts/cf-letter-optimizer-001.json",
+    "contract_sha256": "eeae6237827cbf4a3619239b70aec9b1c3c6e7f75020918eeb95e7d5d94fe16f"
   },
   "task_scope_ledger": {
     "cf-letter-base-v1": {
@@ -922,99 +1029,43 @@
       "actual_steps": {
         "cf-letter-history-long-repair-001": 3000
       }
+    },
+    "cf-letter-optimizer-v1": {
+      "scope_sha256": "0c8f3ec9b7c9af80dde1af79cccbc5c0a68644754a6e9e2ca1a94e9b51ef2332",
+      "reservations": {
+        "cf-letter-optimizer-001": 7000
+      },
+      "actual_steps": {}
     }
   },
   "current_scope": {
-    "scope_id": "cf-letter-history-long-repair-v1",
-    "status": "completed_and_analyzed",
-    "authorization": "Diagnosed zero-step serialization repair within existing user-authorized three-arm plan and 3000-step budget",
-    "manifest": "docs/experiments/cf_letter_history_long.json",
-    "max_optimizer_steps": 3000,
-    "max_parallel": 1,
-    "budget_family": "cf-letter-history-long-v1",
-    "zero_step_repair_of": {
-      "job_id": "cf-letter-history-long-001",
-      "code_sha": "cd459d741a421a4e4ad411a73b125fd73ff1ced6",
-      "runtime_sha256": "9bbf29c46c680b910cd078cdd876ebc7153a79d4253bda9bd390294f28f55ca0",
-      "result_sha256": "b2449c2d6674d2ce80632a4367caf1d8289b96717dfffec4ce4e78539b41f71e",
-      "actual_Beauty_optimizer_steps": 0,
-      "diagnosis": "Encoded hash users and raw user identities collided under anchor_users in prepared.npz; use separate encoded/raw namespaces with a pure round-trip regression. Real Beauty command never started."
+    "scope_id": "cf-letter-optimizer-v1",
+    "status": "queued",
+    "authorization": "Hao explicitly said 下发这个任务 after the proposed five new 1000-step H-only arms plus conditional 2x1000 matched verification; <=7000 new Beauty steps, <=2 parallel, no lambda/STE changes.",
+    "authorized_at": "2026-10-28T14:18:53.103Z",
+    "manifest": "docs/experiments/cf_letter_optimizer.json",
+    "max_optimizer_steps": 7000,
+    "max_parallel": 2,
+    "screen_step_cap": 5000,
+    "conditional_pair_step_cap": 2000,
+    "reused_control": {
+      "job_id": "cf-letter-history-long-repair-001",
+      "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+      "files_sha256": {
+        "compact.json": "84490dc7aa8074fa4d9b8d2183e94a19f8e4031ffcc2c5bb59f915ee61788c0f",
+        "h_only_curves.json": "d0f7fcbfcc8ade8cc9939f58f45936f77d58e5a2674b9799c2bc08c133a8fb86"
+      },
+      "control_name": "reused_h_lr1e4_b09",
+      "lr": 0.0001,
+      "beta1": 0.9
     },
+    "fixed_history_weight": 0.0006386606341359484,
     "trainable_components": [
       "three_codebooks"
     ],
-    "steps_per_arm": 1000,
-    "arms": [
-      "h_only",
-      "rq_only",
-      "mixed"
-    ],
     "sasrec_gpt_training_authorized": false,
     "validation_holdout_future_authorized": false,
-    "stop_after_diagnostic": true,
-    "completed_job_id": "cf-letter-history-long-repair-001",
-    "cloud_analysis_receipt": {
-      "schema_version": 1,
-      "scope_id": "cf-letter-history-long-repair-v1",
-      "job_id": "cf-letter-history-long-repair-001",
-      "phase": "cloud_three_arm_long_analysis",
-      "status": "verified_and_analyzed",
-      "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
-      "request_sha256": "35299b286889ee480ab9b1e02166e8e118b69acb4b493e567b3449178d5f39f6",
-      "contract_sha256": "f09fca24f697ad728d31cc39e27bb953bd486b290a07bd00e42abbf8f4f34cc7",
-      "result_sha256": "d2c49aed8ae78419093e645df7e9a0df5f08196b793196e8b60980536674e908",
-      "artifacts_sha256": {
-        "artifacts/cf-letter-history-long-repair-001/outputs/task-runtime.json": "fe1f37e3dc5b44a857cec92d3429a088495577137552cedd38a3b2dc3d419829",
-        "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/compact.json": "84490dc7aa8074fa4d9b8d2183e94a19f8e4031ffcc2c5bb59f915ee61788c0f",
-        "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/data_audit.json": "7ff81a2f17da0d72aa423be32f06d781fc543dbea8d6ecced3d92308ac4c66e1",
-        "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/gradient_calibration.json": "d86803581c42ee8276732dc9cb00c48e5a381afd32b2406eb8ffb18cfabf5407",
-        "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/h_only_curves.json": "d0f7fcbfcc8ade8cc9939f58f45936f77d58e5a2674b9799c2bc08c133a8fb86",
-        "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/rq_only_curves.json": "025302ee3b3b30c2a50c110b333d6c71092c71bd78369afa3f81f1e2e6996d19",
-        "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/mixed_curves.json": "578ad04e6d1bba0f748941d12768c3c5c552ea4a87710b02d0874e6638555446"
-      },
-      "actual_optimizer_steps": 3000,
-      "actual_step_family_total": 3000,
-      "failed_original_actual_steps": 0,
-      "report_commit_sha": "99bd7b9fc7b951929433514ac7400fc49a71d694",
-      "report_marker": "<!-- cf-letter-history-long-cloud:84490dc7aa8074fa4d9b8d2183e94a19f8e4031ffcc2c5bb59f915ee61788c0f -->",
-      "checks": {
-        "raw_request_result_contract_scope_manifest_and_seven_artifact_hashes": true,
-        "three_arm_budget_and_no_uncertain_intents": true,
-        "four_probe_lambda_arithmetic": true,
-        "fixed_and_full_monitor_schedules": true,
-        "last_eight_scheduled_stability_arithmetic": true,
-        "paired_gate_arithmetic": true,
-        "server_receipt_and_report_marker": true,
-        "report_readback_equal": true,
-        "forbidden_training_and_evaluation_flags": true
-      },
-      "scientific_outcome": {
-        "initial_full_H": 0.10294729462475516,
-        "endpoint_full_H": {
-          "h_only": 0.23510504653677344,
-          "rq_only": 0.28544789788429625,
-          "mixed": 0.26547677101916634
-        },
-        "tail_assessment": {
-          "eligible": true,
-          "passed": false,
-          "tail_H_relative_reduction_vs_rq_only": 0.07239707446051902,
-          "tail_native_rq_relative_increase": 0.0020415389397006045,
-          "tail_hard_mse_relative_increase": 0.0031064034181038647,
-          "mixed_tail_stable": false
-        },
-        "all_joint_stability_failed": true,
-        "h_only_early_scheduled_minimum": {
-          "step": 60,
-          "H": 0.08537684622569941
-        },
-        "historical_penalty_stable_repair_demonstrated": false,
-        "heldout_future_tested": false
-      },
-      "evidence_boundary": "Cloud checked returned raw hashes, 100 fixed and 34 full monitor points per arm, tail/lambda/paired arithmetic and immutable mailbox identities. Raw per-step batch records, complete suffix recomputation, local input/checkpoint immutability and model likelihood/reconstruction reloads remain reviewed task-SHA server-verifier evidence; no cloud Beauty model reload, individual NLL or bootstrap recomputation.",
-      "processed_at": "2026-10-28 13:19:24 UTC",
-      "next_job_id": null
-    }
+    "stop_after_study": true
   },
   "latest_task_delivery": {
     "job_id": "cf-letter-refresh-diag-001",
@@ -1190,14 +1241,13 @@
     }
   },
   "latest_authorized_dispatch": {
-    "job_id": "cf-letter-history-long-repair-001",
-    "scope_id": "cf-letter-history-long-repair-v1",
-    "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
-    "diagnosed_zero_step_repair": true,
-    "new_optimizer_steps": 0,
-    "replacement_step_reservation": 3000,
-    "actual_step_family_cap": 3000,
-    "local_pause_reconciliation_required": true,
+    "job_id": "cf-letter-optimizer-001",
+    "scope_id": "cf-letter-optimizer-v1",
+    "code_sha": "278c7b185fce251e0512e4f1f8ba8d66e430846e",
+    "authorization": "Hao explicitly said 下发这个任务 for the proposed 5000-step screen plus conditional 2000-step pair",
+    "prepared_at": "2026-10-28T14:18:53.103Z",
+    "new_optimizer_steps": 7000,
+    "max_parallel": 2,
     "per_experiment_runner_upgrade": false
   },
   "diagnosed_repairs": [
