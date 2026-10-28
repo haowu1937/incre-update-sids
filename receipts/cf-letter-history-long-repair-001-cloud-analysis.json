@@ -1,0 +1,62 @@
+{
+  "schema_version": 1,
+  "scope_id": "cf-letter-history-long-repair-v1",
+  "job_id": "cf-letter-history-long-repair-001",
+  "phase": "cloud_three_arm_long_analysis",
+  "status": "verified_and_analyzed",
+  "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+  "request_sha256": "35299b286889ee480ab9b1e02166e8e118b69acb4b493e567b3449178d5f39f6",
+  "contract_sha256": "f09fca24f697ad728d31cc39e27bb953bd486b290a07bd00e42abbf8f4f34cc7",
+  "result_sha256": "d2c49aed8ae78419093e645df7e9a0df5f08196b793196e8b60980536674e908",
+  "artifacts_sha256": {
+    "artifacts/cf-letter-history-long-repair-001/outputs/task-runtime.json": "fe1f37e3dc5b44a857cec92d3429a088495577137552cedd38a3b2dc3d419829",
+    "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/compact.json": "84490dc7aa8074fa4d9b8d2183e94a19f8e4031ffcc2c5bb59f915ee61788c0f",
+    "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/data_audit.json": "7ff81a2f17da0d72aa423be32f06d781fc543dbea8d6ecced3d92308ac4c66e1",
+    "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/gradient_calibration.json": "d86803581c42ee8276732dc9cb00c48e5a381afd32b2406eb8ffb18cfabf5407",
+    "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/h_only_curves.json": "d0f7fcbfcc8ade8cc9939f58f45936f77d58e5a2674b9799c2bc08c133a8fb86",
+    "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/rq_only_curves.json": "025302ee3b3b30c2a50c110b333d6c71092c71bd78369afa3f81f1e2e6996d19",
+    "artifacts/cf-letter-history-long-repair-001/outputs/cf-history-long/mixed_curves.json": "578ad04e6d1bba0f748941d12768c3c5c552ea4a87710b02d0874e6638555446"
+  },
+  "actual_optimizer_steps": 3000,
+  "actual_step_family_total": 3000,
+  "failed_original_actual_steps": 0,
+  "report_commit_sha": "99bd7b9fc7b951929433514ac7400fc49a71d694",
+  "report_marker": "<!-- cf-letter-history-long-cloud:84490dc7aa8074fa4d9b8d2183e94a19f8e4031ffcc2c5bb59f915ee61788c0f -->",
+  "checks": {
+    "raw_request_result_contract_scope_manifest_and_seven_artifact_hashes": true,
+    "three_arm_budget_and_no_uncertain_intents": true,
+    "four_probe_lambda_arithmetic": true,
+    "fixed_and_full_monitor_schedules": true,
+    "last_eight_scheduled_stability_arithmetic": true,
+    "paired_gate_arithmetic": true,
+    "server_receipt_and_report_marker": true,
+    "report_readback_equal": true,
+    "forbidden_training_and_evaluation_flags": true
+  },
+  "scientific_outcome": {
+    "initial_full_H": 0.10294729462475516,
+    "endpoint_full_H": {
+      "h_only": 0.23510504653677344,
+      "rq_only": 0.28544789788429625,
+      "mixed": 0.26547677101916634
+    },
+    "tail_assessment": {
+      "eligible": true,
+      "passed": false,
+      "tail_H_relative_reduction_vs_rq_only": 0.07239707446051902,
+      "tail_native_rq_relative_increase": 0.0020415389397006045,
+      "tail_hard_mse_relative_increase": 0.0031064034181038647,
+      "mixed_tail_stable": false
+    },
+    "all_joint_stability_failed": true,
+    "h_only_early_scheduled_minimum": {
+      "step": 60,
+      "H": 0.08537684622569941
+    },
+    "historical_penalty_stable_repair_demonstrated": false,
+    "heldout_future_tested": false
+  },
+  "evidence_boundary": "Cloud checked returned raw hashes, 100 fixed and 34 full monitor points per arm, tail/lambda/paired arithmetic and immutable mailbox identities. Raw per-step batch records, complete suffix recomputation, local input/checkpoint immutability and model likelihood/reconstruction reloads remain reviewed task-SHA server-verifier evidence; no cloud Beauty model reload, individual NLL or bootstrap recomputation.",
+  "processed_at": "2026-10-28 13:19:24 UTC",
+  "next_job_id": null
+}
