@@ -2,11 +2,11 @@
   "worker_id": "server2",
   "mode": "plan_completed",
   "active_job_id": "cf-letter-history-long-repair-001",
-  "runner_status": "completed",
+  "runner_status": "idle",
   "pause_requested": false,
   "extension": {
     "scope_id": "history-joint-convergence-v1",
     "status": "completed"
   },
-  "observed_at": "2026-10-28T12:38:47.347831+00:00"
+  "observed_at": "2026-10-28T12:39:19.618831+00:00"
 }
