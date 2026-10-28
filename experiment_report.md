@@ -1,6 +1,6 @@
 # History-aware SID Update Experiment Report
 
-Last updated: 2026-10-27. The completed Llama content-RQ/TIGER results are retained below. The new SASRec CF-LETTER-adapted line has passed Base-only acceptance; its Update/Historical/Future stages have not run.
+Last updated: 2026-10-28. The completed Llama content-RQ/TIGER results are retained below. The new SASRec CF-LETTER-adapted line has passed Base acceptance and the shared CF refresh diagnostic; quantizer/GPT Update fitting, Historical optimization and new Future evaluation have not run.
 
 ## Primary downstream results
 
@@ -30,6 +30,25 @@ Job `cf-letter-base-001` passed the server scientific verifier. Full denominator
 | CF SID + GPT retriever | 8,940 | 1,192 / 4 | 1.958225% | 3.111401% | 4.862924% | 0.012056704 | 0.015726218 | 0.020088908 |
 
 The CF quantizer completed 1,000 steps: hard reconstruction MSE=0.002218748, 53.30% below the mean-vector baseline. All three 512-entry books are used; 10,554 semantic codes cover 10,924 unique full SIDs, with a largest semantic bucket of 71 / suffix capacity 512. GPT trained for 30 epochs but the fixed validation probe selected epoch 4; the terminal checkpoint is not the deployed Base reference. See Section 6.23 for the curve analysis and evidence boundaries.
+
+### Latest CF refresh diagnostic (training anchors only)
+
+With the same frozen Base GPT and codebook weights, refreshing SASRec CF vectors
+already changes old-item SIDs and increases historical prediction loss. These are
+**4,096 anchor_train queries / 2,648 users**, using fixed old target/mask/catalog
+and four-digit NLL without EOS; they are not new Base validation or Future scores.
+
+| CF input to frozen quantizer | Anchor mean sequence NLL | Positive damage H | Old-item SID change | Old-item reconstruction MSE |
+| --- | ---: | ---: | ---: | ---: |
+| Original Base CF | 7.490371 | 0.000000 | 0.0000% | 0.002218748 |
+| Refreshed CF, selected SASRec epoch 8 | 7.552976 | 0.102947 | 24.9359% | 0.002279873 |
+
+Signed mean delta NLL is +0.062605 (95% training-user cluster bootstrap interval
+[+0.052548, +0.073841]); H has interval [0.094070, 0.112839]. Of 10,924 old items,
+2,724 change full SID. Maximum current bucket=53; required suffix capacity=72/512.
+No quantizer or GPT training occurred, and no new-item serving SID was allocated.
+This isolates damage from CF refresh/re-encoding in this run; it does not establish
+historical-penalty benefit. The diagnostic is verified and stopped; see Section 6.25.
 
 ### Latest Base validation compatibility ranking
 
@@ -1171,3 +1190,85 @@ Feature-only anchor_train H=0.102947295; mean delta sequence NLL=0.0626050102.
 Old-item hard reconstruction MSE=0.00227987268.
 
 Server verification reaggregated query metrics/H, checked exact warm start and CPU likelihood/CF reconstruction. This is training-cohort diagnostic evidence, not historical-penalty benefit or Future ranking. No quantizer/GPT training, holdout/Future scoring or next task. Previous Base and Future tables remain unchanged.
+
+<!-- cf-letter-refresh-cloud:ca3e8ca977b712aef504b7b8c4854fb5b4a7b40d9a2682a50950486a3639a58a -->
+
+### 6.25 Completed shared CF refresh: damage before quantizer updates (2026-10-28)
+
+The limited diagnostic completed and passed its server scientific verifier on
+2026-10-27. Job `cf-letter-refresh-diag-001` used task code
+`18cb948e503609ddfb8228b6a7425b52302acfa3` and the unchanged generic Runner
+`fe790d49ce65db558433bba7d6c4e759279fa2aa`. Both real-model preflight suites
+passed (12 + 9 tests). The original server report/receipt is bound to commit
+`2c823413d3159271055a00ee04b7e5c36633e4d2`; this section adds cloud evidence review.
+No failed attempt, retry or extra optimizer budget was consumed.
+
+SASRec completed 12,240 steps / 30 cumulative epochs on 104,275 permitted
+Base_train + Update_train queries (3,128,250 processed examples). Original item
+rows/hidden weights matched at initialization; AdamW was reset. The 16 fixed
+Update-validation probe points select step 3,264 / epoch 8 by the predeclared
+old-I0 full-denominator NDCG@10 rule, earliest tie. Probe NDCG@10 rises from
+0.003357116 at initialization to 0.007442677 at selection, then ends at
+0.005602449. The exported E1 is the selected table, not epoch 30.
+
+The training vocabulary contains 11,691 CF rows: 10,924 original rows plus 767
+appended identities observed in permitted training inputs/positives. This is not
+the old 11,707-item content catalog; rows are not allocated merely because a
+content embedding exists. Positive-target exposure is zero for 105 retained rows;
+this does not imply zero history/negative exposure. New CF rows receive no serving
+SID in this diagnostic. The dense SASRec Update-validation reference uses the
+fixed old 10,924-item catalog: 2,234/3,280 queries are servable (68.109756%),
+Recall@10=1.128049% and NDCG@10=0.004745465 on the full denominator. These are
+SASRec Update-validation results, not GPT results and not directly comparable to
+the old content-catalog coverage or the previous Base-validation table.
+
+Same-map hard H reproduces exactly zero, and the new Base GPT reference mean NLL
+is 7.490370614 on the original 4,096 anchor_train identities. With frozen Base
+quantizer weights applied to E1, mean NLL becomes 7.552975625, signed mean delta
+NLL=+0.062605010 and H=0.102947295. The server-recomputed 500-replicate training-user
+cluster intervals are [+0.052548218, +0.073840676] for signed delta and
+[0.094070398, 0.112838969] for H. There are 1,690 worsened queries (41.259766%)
+and 1,053 improved queries (25.708008%); 2,743 histories change (66.967773%).
+The positive-part damage and signed delta are distinct: improvements reduce the
+signed mean but do not cancel H. No old TIGER likelihoods were used.
+
+Old embeddings move by mean relative L2=14.733055%, with mean cosine=0.988852628.
+Despite this relatively high cosine, 2,724/10,924 semantic triples and full SIDs
+change (24.935921%). Per-level changes are 5.977664%, 11.580007% and 17.951300%.
+Old-item hard reconstruction MSE increases from 0.002218748 to 0.002279873
+(+2.754941%), and native quantizer total loss increases from 0.012625291 to
+0.012834697. Old-item codebook use is 512/512, 512/512 and 510/512. There is
+no capacity overflow: the largest current semantic bucket is 53 and the maximum
+required suffix width, including reserved old slots, is 72/512. This is drift
+under frozen codebooks, not a codebook-training collapse.
+
+The result establishes a nonzero pre-update damage level for this CF-refresh
+setting. A later matched Plain/Historical comparison must use the same frozen E1,
+Base quantizer and Base GPT, retain the original E0/SID reference likelihood for
+each anchor, and report changes relative to this common starting condition as
+well as absolute H. Do not redefine the post-refresh likelihood as the old
+reference to force H back to zero. This run does not choose lambda/STE, establish
+that a historical penalty will work, or measure held-out/Future generalization.
+Those remaining experiments have not been dispatched.
+
+Cloud review matched raw request/contract/scope/result/manifest byte hashes and
+all four returned artifact hashes; checked the exact 12,240-step ledger, all
+16 probe selection points, cohort counts, CF/checkpoint lineage, signed-NLL and
+per-token arithmetic, integer query/item counts and full/servable metric scaling.
+The compact artifact hash is
+`ca3e8ca977b712aef504b7b8c4854fb5b4a7b40d9a2682a50950486a3639a58a`;
+the curve-table hash is
+`7e2ad91b1d6c4b9ab33566d91f768b2bdfd016fe372729afdc19375bc23401da`.
+The reviewed task-SHA server verifier reaggregated full query-level metrics/H and
+bootstrap intervals, audited suffix allocation, exact warm start and selected
+CF export, and independently reloaded CPU SASRec/GPT likelihoods and canonical
+hard reconstruction. The cloud did not load Beauty checkpoints or independently
+recompute individual NLLs/bootstrap samples. Input/predecessor immutability and
+frozen-model execution remain reviewed-source server evidence.
+
+All full logs, query records, dependency copies and weights remain under
+`/home/hao/frec/git-lab-buffer/workspaces/cf-letter-refresh-diag-001/outputs/cf-refresh`.
+The bundle took 418.32 seconds and reported maximum observed GPU memory=676 MiB.
+The scope is completed and stopped. Existing Base/Future tables are unchanged;
+there is no quantizer/GPT training, Historical optimization, holdout/Future scoring
+or automatic next task.
