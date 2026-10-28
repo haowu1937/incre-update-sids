@@ -24,3 +24,4 @@ OK
 {"pid": 1328155, "optimizer_steps": 390, "branches": {}, "stop_new_branches": null}
 {"pid": 1328155, "optimizer_steps": 479, "branches": {}, "stop_new_branches": null}
 {"pid": 1328155, "optimizer_steps": 558, "branches": {}, "stop_new_branches": null}
+{"pid": 1328155, "optimizer_steps": 637, "branches": {}, "stop_new_branches": null}
