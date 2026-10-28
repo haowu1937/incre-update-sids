@@ -1,0 +1,19 @@
+{
+  "scope_id": "cf-letter-optimizer-audit-v1",
+  "job_id": "cf-letter-optimizer-audit-001",
+  "purpose": "Read-only necessary diagnosis of saved-checkpoint scientific acceptance failure; no new research or retraining",
+  "optimizer_step_cap": 0,
+  "authorization": "Existing authorized experiment checks and failure diagnosis, continued by Hao saying \u7ee7\u7eed; zero optimizer updates, original evidence retained, no acceptance criterion changes.",
+  "source_job_id": "cf-letter-optimizer-001",
+  "source_code_sha": "278c7b185fce251e0512e4f1f8ba8d66e430846e",
+  "source_compact_sha256": "c6aba6844206e53b6e3b5a6f50210fa7554dbb19ff5fb1512f75e446420295c8",
+  "source_index_sha256": "fde984487d98b5f7e582cd0a0929bac82718ea2c26c4c3438ac450a47ad1223a",
+  "source_runtime_sha256": "ace39217549b742572f3c8db8121bb6348506b9bd502eb45322a8ea9bbe0cd7a",
+  "wall_seconds": 14400,
+  "parallel": 1,
+  "original_acceptance_must_remain_blocked": true,
+  "allow_optimizer": false,
+  "allow_criterion_changes": false,
+  "allow_original_writes": false,
+  "model_source_sha256": "8f9d14005e4dfe323e1a31ee4eeb426a579c77023eb946b3aad876354fa80470"
+}

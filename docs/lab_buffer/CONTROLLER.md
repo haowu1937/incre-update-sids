@@ -1,5 +1,14 @@
 # Main SID experiment controller, protocol sid-main-v1
 
+## Current acceptance-blocker diagnostic, 2026-10-28
+
+The optimizer task wrapper completed all five screening arms (reported 5000 steps, no eligible candidate, no paired arms), but the original scientific verifier failed strict CPU full-monitor code equality. Preserve its immutable result, all weights/indices/H and needs_attention receipt. The cause is unconfirmed: investigate backend arithmetic, chunk-dependent nearest choices and checkpoint consistency without relaxing any threshold or treating the original study as accepted. The remaining conditional2000 steps are not available for other work.
+
+Hao's current continue and standing authorization to execute checks/diagnose failures allow only `cf-letter-optimizer-audit-v1` / `cf-letter-optimizer-audit-001`, a **zero-optimizer-step read-only audit**, manifest `docs/experiments/cf_letter_optimizer_audit.json`. Bind original code/compact/local-index hashes; recheck every source file and original durable counters. Measure CPU/saved and full-catalog/old-item-chunk differences at all 170 monitors; GPU-reload implicated points and record conditional float64 distance gaps on sampled saved-prefix residuals. Write only fresh independent diagnostic output. No original assignment, H/RQ criterion, model code or experiment recipe is changed. The new audit receipt validates evidence collection only; original optimizer acceptance remains blocked. No SGD, parameter search, recommender predictions or holdout/Future work.
+
+Reuse generic v1/0-step contract and the shared CAS lease/receipts. No Runner/helper/policy/cron upgrade, no main-checkout change or process termination. The local PAUSED guard caused by the original verifier failure must be precisely reconciled; Git-only dispatch cannot clear it. Prepare the concrete audit before any recovery request. Publish provisional English observations and the blocker, retain old downstream tables and failed receipt, then await audit evidence before deciding a verifier repair. Do not automatically rerun the optimizer matrix or lower the 2% stability criterion.
+
+
 ## Current scope amendment, 2026-10-28: H-only optimizer ablation
 
 Hao explicitly said **下发这个任务** after reviewing the five-new-arm plus conditional-pair plan. Authorize `cf-letter-optimizer-v1`, job `cf-letter-optimizer-001`, manifest `docs/experiments/cf_letter_optimizer.json`, scientific plan in the matching Markdown. New cap=7000 steps: five independent 1000-step H-only arms, then two independent 1000-step RQ-only/Mixed arms only after the declared training-only gate. Reuse the accepted lr1e-4/beta1=.9 H-only control; do not rerun it or recycle old scope budgets. At most two parallel children.

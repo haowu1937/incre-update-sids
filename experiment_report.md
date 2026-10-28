@@ -1352,3 +1352,28 @@ Prepared job `cf-letter-optimizer-001`, scope `cf-letter-optimizer-v1`, after Ha
 All arms independently restore C0/E1 and the frozen Base GPT, with identical original samplers and references. Keep beta2=0.999, epsilon=1e-8, wd=0, clipping=0.1, temperature=0.5, and the accepted STE, residual and native quantizer gradient paths. Screening uses stable last-eight scheduled full monitors, >=5% lower tail H versus initial, and native RQ/hard MSE each within +2% of initial. Lowest eligible tail H wins, then native RQ, then declared order. If none qualifies, stop. Otherwise run the paired arms from C0 with the selected LR/beta1 and unchanged lambda=0.0006386606341359484. No intermediate-minimum checkpoint selection or lambda/STE sweep.
 
 Status at code delivery: **prepared_for_dispatch**, no new Beauty updates observed. New local checks cover exact scope/selection, private-copy concurrency and failure handling, and equivalence of the vectorized read-only suffix audit to the original allocator. Real-model checks remain mandatory server preflight; cloud skips are not passes. All 100 fixed and 34 full monitor points per completed arm fit the unchanged Runner's eight-artifact interface through lossless grouped JSON. No Runner/helper/cron/policy upgrade. No validation ranking, holdout/Future or SASRec/GPT fitting. Preserve previous downstream tables, the zero-step failed attempt and the completed negative diagnostic. Stop after the matrix/conditional pair is verified, analyzed and reported.
+
+
+<!-- cf-letter-optimizer-acceptance-blocker:v1 -->
+
+### 6.30 Optimizer screening completed; checkpoint-index acceptance blocked (2026-10-28)
+
+The server wrapper for `cf-letter-optimizer-001` returned completed at code `278c7b185fce251e0512e4f1f8ba8d66e430846e`, with five screening arms reporting 1000 steps each (5000 total), no resource stop and no uncertain step intent. The training-side selector returned no eligible candidate, so the conditional RQ-only/Mixed pair did not run. The remaining 2000 conditional steps are not reused. Three preflight suites passed before the real-data command.
+
+**Scientific acceptance is blocked.** The read-only verifier rejected CPU full-monitor canonical indices that differ from saved training indices. Source checkpoint/assignment consistency, backend roundoff and batch-chunk effects have not yet been separated; no floating-point cause is claimed. The original needs_attention receipt and all artifacts remain intact. Neither the index-equality check nor the 2% H trend threshold has been relaxed.
+
+The following are **provisional returned observations**, not scientifically accepted checkpoint results. Initial full anchor_train H=0.102947295, native RQ=0.012321118, hard MSE=0.002196955. Tail values use the last eight scheduled monitors, not the step 1000 partial-epoch endpoint.
+
+| LR | beta1 | Endpoint full H | Tail H mean | Tail H reduction vs initial | Tail H trend span | Tail native RQ increase | Tail hard MSE increase | Eligible |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| 3e-5 | 0.9 | 0.129549846 | 0.121356144 | -17.8818% | 13.9037% | +1.9138% | +2.9218% | No |
+| 1e-5 | 0.9 | 0.087607179 | 0.085674517 | +16.7783% | 3.2706% | +0.3259% | +0.4766% | No |
+| 1e-4 | 0 | 0.225744341 | 0.212134346 | -106.0611% | 13.6033% | +12.7950% | +18.6777% | No |
+| 3e-5 | 0 | 0.133391841 | 0.120451668 | -17.0032% | 15.6570% | +1.9036% | +2.9006% | No |
+| 1e-5 | 0 | 0.086996541 | 0.085361878 | +17.0820% | 2.7191% | +0.3241% | +0.4735% | No |
+
+Both 1e-5 settings show lower reported H with small reconstruction cost, but their H trend spans remain above the predeclared 2% limit. These observations motivate further interpretation only after the index discrepancy is diagnosed; they do not justify retrospectively changing the gate or starting the paired arms.
+
+Cloud byte review matched all eight returned artifact hashes and request/scope bindings, recomputed the returned full-curve tail statistics and selector, and confirmed the absent pair. It did not load Beauty checkpoints, independently score original queries or accept canonical assignments. Reported original-input immutability still requires the blocked scientific acceptance to be completed.
+
+Prepared zero-update read-only task `cf-letter-optimizer-audit-001`, manifest `docs/experiments/cf_letter_optimizer_audit.json`, to inspect the same immutable 170 monitoring checkpoints. It will compare CPU/GPU reloads, saved full-catalog versus old-item chunks and sampled float64 distance gaps, while rechecking original hashes and durable counters. It cannot modify source files, assignments or criteria, and cannot mark the original study accepted. No retraining, lambda/STE change, holdout/Future or recommendation evaluation. The local Runner pause created by the verifier failure still requires exact reconciliation before Git scans resume. Existing Base/Future tables are unchanged.

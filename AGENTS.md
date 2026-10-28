@@ -1,5 +1,14 @@
 # 项目协作规则
 
+## Optimizer 验收阻塞：只读诊断（2026-10-28 当前继续）
+
+`cf-letter-optimizer-001`训练wrapper已completed、报告5000步，五组无eligible且配对未跑；科学verifier在CPU full-monitor canonical codes逐项比较时失败，状态needs_diagnosis。保留原request/result/needs_attention receipt、全部checkpoint/索引/H记录，不重训、不改2% H阈值、不把浮点差异当作已确认原因。原7000 scope未完成科学验收，剩余2000不挪用。
+
+当前只允许完成既有实验检查/故障诊断的零optimizer只读任务 `cf-letter-optimizer-audit-001` / `cf-letter-optimizer-audit-v1`，manifest `docs/experiments/cf_letter_optimizer_audit.json`。绑定原compact/index/code SHA，检查所有原文件hash前后不变和原durable5000计数；对170个monitor测CPU与保存codes、完整目录与old-item chunk差异，对涉差异点重载GPU并记录保存prefix条件下float64距离。仅生成独立新诊断输出，不改原产物、原索引、算法或验收标准。原验收必须保持blocked，此任务验收仅确认诊断证据采集，不冒充原实验通过。无optimizer、训练、推荐预测/holdout/Future或新参数实验。
+
+沿用generic v1，0-step reservation；不升级Runner/helper/cron。当前本地PAUSED由原verifier故障触发，Git不能越过；先准备具体任务后仅对精确故障暂停做有证据归档，不清其他暂停或终止进程。GPU外部占用等待。提交英文报告须标明provisional/acceptance blocked，诊断回传后再判断数值或保存逻辑原因，不自动修改通过标准/重跑原实验。
+
+
 ## H-only 学习率／动量消融（2026-10-28 最新明确授权）
 
 用户在审阅5组H-only＋条件性RQ-only/Mixed配对方案后明确“下发这个任务”。授权 `cf-letter-optimizer-v1` / `cf-letter-optimizer-001`，manifest=`docs/experiments/cf_letter_optimizer.json`，说明同名.md。新增预算最多7000 steps（5x1000筛选＋合格时2x1000配对），最多2并行；复用已验收旧H-only lr1e-4/beta1=.9，不重跑旧对照、不回收旧预算。矩阵lr=[1e-4,3e-5,1e-5] x beta1=[.9,0]除旧对照外5组；beta2=.999、eps1e-8、wd0、clip.1、temperature.5，固定原C0/E1/teacher、采样、STE/残差/原RQ梯度路径。
