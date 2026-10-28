@@ -56,3 +56,4 @@ OK
 {"active_pids": [1617077, 1617078], "pending": ["h_lr1e5_b0"], "optimizer_steps": 2490, "stage_steps": {"h_lr3e5_b0": 245, "h_lr1e4_b0": 245, "h_lr1e5_b09": 1000, "h_lr3e5_b09": 1000}, "stop_new_arms": null}
 {"active_pids": [1617077, 1617078], "pending": ["h_lr1e5_b0"], "optimizer_steps": 2600, "stage_steps": {"h_lr3e5_b0": 300, "h_lr1e4_b0": 300, "h_lr1e5_b09": 1000, "h_lr3e5_b09": 1000}, "stop_new_arms": null}
 {"active_pids": [1617077, 1617078], "pending": ["h_lr1e5_b0"], "optimizer_steps": 2720, "stage_steps": {"h_lr3e5_b0": 360, "h_lr1e4_b0": 360, "h_lr1e5_b09": 1000, "h_lr3e5_b09": 1000}, "stop_new_arms": null}
+{"active_pids": [1617077, 1617078], "pending": ["h_lr1e5_b0"], "optimizer_steps": 2838, "stage_steps": {"h_lr3e5_b0": 419, "h_lr1e4_b0": 419, "h_lr1e5_b09": 1000, "h_lr3e5_b09": 1000}, "stop_new_arms": null}
