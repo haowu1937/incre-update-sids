@@ -1,0 +1,9 @@
+{
+  "status": "needs_attention",
+  "job_id": "cf-letter-history-long-001",
+  "request_sha256": "a9a61b7aa4e0a5db20bff3c7629af518adff45a62c4e7825f32f70f7a7aae5a2",
+  "result_sha256": "b2449c2d6674d2ce80632a4367caf1d8289b96717dfffec4ce4e78539b41f71e",
+  "reason": "ValueError('Task failed/interrupted; preserve evidence and diagnose before any new job')",
+  "processed_at": "2026-10-28T11:52:12.835009+00:00",
+  "next_job_id": null
+}

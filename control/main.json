@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "queued",
-  "pause_requested": false,
+  "mode": "needs_diagnosis",
+  "pause_requested": true,
   "active_job_id": "cf-letter-history-long-001",
-  "lease": {
-    "token": "a5e634c252944d8fa68f4eff54949c6b",
-    "owner": "versioned-task-observer",
-    "acquired_at": "2026-10-28T11:51:55.834105+00:00",
-    "expires_at_unix": 1793189215.834129
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -57,6 +52,15 @@
         "artifacts/cf-letter-refresh-diag-001/outputs/cf-refresh/curves.json": "7e2ad91b1d6c4b9ab33566d91f768b2bdfd016fe372729afdc19375bc23401da"
       },
       "processed_at": "2026-10-27T21:28:56.351386+00:00",
+      "next_job_id": null
+    },
+    "cf-letter-history-long-001": {
+      "status": "needs_attention",
+      "job_id": "cf-letter-history-long-001",
+      "request_sha256": "a9a61b7aa4e0a5db20bff3c7629af518adff45a62c4e7825f32f70f7a7aae5a2",
+      "result_sha256": "b2449c2d6674d2ce80632a4367caf1d8289b96717dfffec4ce4e78539b41f71e",
+      "reason": "ValueError('Task failed/interrupted; preserve evidence and diagnose before any new job')",
+      "processed_at": "2026-10-28T11:52:12.835009+00:00",
       "next_job_id": null
     }
   },
