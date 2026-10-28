@@ -1,5 +1,14 @@
 # 项目协作规则
 
+## CF 码本三组长程诊断（2026-10-28 最新明确授权）
+
+用户审阅 H-only / RQ-only / Mixed 各1000步方案后明确“开始下发实验任务”。授权 `cf-letter-history-long-v1` / `cf-letter-history-long-001`，总上限3000码本optimizer steps；配置见 `docs/experiments/cf_letter_history_long.json`，说明见同名.md。覆盖旧refresh完成停止条件及未执行60步proposal；不复用旧预算、不执行旧proposal。
+
+三组同一Base C0 + 已验收固定E1（11691x64）独立reset，仅更新3x512x64码本；冻结selected Base GPT(1192步/epoch4)、CF和SASRec。AdamW reset、lr1e-4、weight_decay=0、clip0.1、temperature0.5；相同content batch4096及rotating anchor_train batch128顺序。四个正H训练batch校准一次lambda0=0.1*median(gQ/gH)，任一零/非有限则保留并停止，不扫描λ/STE。原E0旧reference/target/mask/positions/I0不变；初始全anchor H须复现0.10294729462475516。每步记录真实batchH及梯度/裁剪，固定128条每10步，全4096条与全目录RQ/MSE每10完整内容epoch（30步）；0/1000端点评估，末8个scheduled monitor按预声明阈值分析。每步完整suffix容量检查，保留rejected/last_valid，不扩容。只读Base_train/Update_train；无validation排名、holdout/Future、推荐模型训练或SASRec更新。串行、4h后不启动下一arm，已运行继续。
+
+沿用已安装generic v1 Runner，完整SHA/contract/scope/reservation原子下发；不改host/helper/policy/cron，不要求手动升级，不动主工作区和旧产物。Base+refresh为manifest逐文件hash绑定的只读依赖，在新独立输出中复制和复核。服务器真实CPU preflight通过后才启动Beauty；独立verifier验收原始H/容量/模型与预算，英文报告和receipt去重，完成本轮后停止。下面旧scope记录为历史。
+
+
 ## CF 刷新诊断（2026-10-27 最新“继续”，覆盖已完成 Base 的停止条件）
 
 用户确认继续上一条建议，仅执行新 Base anchor_train 参考、SASRec 累积刷新与冻结量化器的 feature-only 诊断。配置见 `docs/experiments/cf_letter_refresh_diagnostic.json`，scope=`cf-letter-refresh-diag-v1`，job=`cf-letter-refresh-diag-001`。新增上限 12,240 steps / 30 cumulative epochs，Base train + Update train、seed2026、lr1e-4、串行；固定 Update-validation 512-query probe，旧 I0 catalog 的 full-denominator NDCG@10 选模，earliest tie。量化器/GPT 不训练，不运行 Plain/Historical、anchor_holdout 或 Future，不自动调参/重跑。完成报告后停止。

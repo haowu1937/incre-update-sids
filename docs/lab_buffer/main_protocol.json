@@ -11,17 +11,19 @@
   "project": "/home/hao/frec/graph-informed-sids-web",
   "python": "/home/hao/miniconda3/envs/frec-gpu/bin/python",
   "plan": [
-    "new_base_anchor_reference",
-    "shared_sasrec_refresh",
-    "frozen_quantizer_feature_only_diagnostic",
-    "verify_report_and_stop"
+    "reproduce_fixed_C0_E1_positive_H",
+    "calibrate_lambda_on_training_only",
+    "h_only_1000",
+    "rq_only_1000",
+    "mixed_1000",
+    "verify_analyze_report_and_stop"
   ],
-  "new_training_steps_authorized": 12240,
+  "new_training_steps_authorized": 3000,
   "new_future_prediction_passes_authorized": 0,
   "acceptance_timeout_seconds": 86400,
   "max_diagnosed_repair_jobs": 0,
   "same_fault_automatic_retry": false,
-  "selection_metric": "fixed 512-query Update-validation probe, old I0 catalog, full-denominator NDCG@10; earliest tie",
+  "selection_metric": "none; fixed endpoint and predeclared training-side stability/efficacy only",
   "beam": 20,
   "topk": [
     5,
@@ -33,11 +35,11 @@
   "web_controller": "docs/lab_buffer/CONTROLLER.md",
   "persistent_state": "lab-requests:control/main.json",
   "stop_after_plan": true,
-  "revision": 5,
-  "active_scope": "cf-letter-refresh-diag-v1",
-  "scope_manifest": "docs/experiments/cf_letter_refresh_diagnostic.json",
-  "scope_authorized_at": "2026-10-27",
-  "optimizer_steps_scope": "SASRec cumulative Base+Update refresh only; no budget recycling",
+  "revision": 6,
+  "active_scope": "cf-letter-history-long-v1",
+  "scope_manifest": "docs/experiments/cf_letter_history_long.json",
+  "scope_authorized_at": "2026-10-28",
+  "optimizer_steps_scope": "Three reset quantizer arms only; no SASRec/GPT updates or old-budget recycling",
   "max_parallel": 1,
   "task_runtime": {
     "protocol_version": 1,
@@ -50,19 +52,18 @@
   },
   "allowed_splits": [
     "base_train",
-    "update_train",
-    "update_val"
+    "update_train"
   ],
   "catalog_items": 10924,
   "suffix_capacity": 512,
   "wall_seconds": 14400,
   "update_training_authorized": true,
-  "historical_training_authorized": false,
+  "historical_training_authorized": true,
   "holdout_evaluation_authorized": false,
   "future_evaluation_authorized": false,
   "update_training_components": [
-    "sasrec"
+    "three_codebooks"
   ],
-  "quantizer_training_authorized": false,
+  "quantizer_training_authorized": true,
   "gpt_training_authorized": false
 }

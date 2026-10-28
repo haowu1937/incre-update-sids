@@ -117,8 +117,10 @@ def load_data(deployment,p):
     for split in ('base_train','update_train'):
         if np.any(arrays[split]['targets']==0):raise ValueError('Unknown fitting positive')
     cumulative={k:np.concatenate([arrays['base_train'][k],arrays['update_train'][k]]) for k in arrays['base_train']}
-    val=arrays['update_val'];val['targets']=np.where(val['targets']<=len(old),val['targets'],0)
-    probe=sorted(sorted(range(len(val['targets'])),key=lambda i:hashlib.sha256((str(p['seed'])+':'+str(val['samples'][i])).encode()).hexdigest())[:p['probe_size']])
+    val=arrays.get('update_val');probe=[]
+    if val is not None:
+        val['targets']=np.where(val['targets']<=len(old),val['targets'],0)
+        probe=sorted(sorted(range(len(val['targets'])),key=lambda i:hashlib.sha256((str(p['seed'])+':'+str(val['samples'][i])).encode()).hexdigest())[:p['probe_size']])
     anchors=anchor_indices(raw['base_train'],p['anchor_size'],p['seed'])
     old_map={item:i+1 for i,item in enumerate(old)}
     anchor_data=encode_rows([raw['base_train'][i] for i in anchors],old_map,p['history'],p['gpt']['user_buckets'])
@@ -133,7 +135,7 @@ def load_data(deployment,p):
     return dict(train=cumulative,val=val,probe=np.asarray(probe,dtype=np.int64),anchors=anchor_data,
         anchor_users=np.asarray([raw['base_train'][i]['user'] for i in anchors]),anchor_source_rows=anchors),dict(
         input_sha256=binding,protocol_sha256=manifest['protocol_sha256'],items=items,old_items=old,
-        allowed_query_splits=p['allowed_query_splits'],probe_sample_ids=val['samples'][probe].tolist(),
+        allowed_query_splits=p['allowed_query_splits'],probe_sample_ids=val['samples'][probe].tolist() if val is not None else [],
         anchor_sample_ids=anchor_data['samples'].tolist(),positive_exposure=positive.tolist(),history_exposure=history.tolist())
 
 

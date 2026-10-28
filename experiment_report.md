@@ -1,6 +1,6 @@
 # History-aware SID Update Experiment Report
 
-Last updated: 2026-10-28. The completed Llama content-RQ/TIGER results are retained below. The new SASRec CF-LETTER-adapted line has passed Base acceptance and the shared CF refresh diagnostic; quantizer/GPT Update fitting, Historical optimization and new Future evaluation have not run.
+Last updated: 2026-10-28. The completed Llama content-RQ/TIGER results are retained below. The new SASRec CF-LETTER-adapted line has passed Base acceptance and the shared CF refresh diagnostic; the next three-arm codebook diagnostic is prepared for dispatch. No new codebook result, recommender Update fitting or Future evaluation is claimed.
 
 ## Primary downstream results
 
@@ -1272,3 +1272,16 @@ The bundle took 418.32 seconds and reported maximum observed GPU memory=676 MiB.
 The scope is completed and stopped. Existing Base/Future tables are unchanged;
 there is no quantizer/GPT training, Historical optimization, holdout/Future scoring
 or automatic next task.
+
+
+<!-- cf-letter-history-long-plan:v1 -->
+
+### 6.26 Authorized three-arm CF codebook loss diagnostic (2026-10-28)
+
+Prepared H-only, RQ-only and Mixed for 1,000 steps each, total reservation 3,000. Hao explicitly requested dispatch after reviewing the longer diagnostic plan. Scope `cf-letter-history-long-v1`, job `cf-letter-history-long-001`; exact configuration and measurements are in [the plan](docs/experiments/cf_letter_history_long.md). This replaces the unexecuted five-step/60-step direction proposal, not the completed old Llama diagnostic.
+
+Each arm independently restores the same Base C0 and accepted E1 table (11,691 x 64); only three codebooks train. Selected Base GPT, E1 and SASRec remain frozen. Reset AdamW, constant LR=1e-4, weight decay=0, gradient clipping=0.1, temperature=0.5 and paired rotating samplers. Lambda is calibrated once from four training-only positive-H probes. Original E0 NLL reference and old targets/masks/I0 stay fixed; initial full H must reproduce 0.10294729462475516. No lambda/STE scan or recommender fitting.
+
+Actual training-batch H is logged every step; fixed-128 H every ten steps; full-4096 H and full-catalog native RQ/hard MSE every ten completed content epochs, plus endpoints. Last-eight scheduled monitors assess finite-window stability; Mixed efficacy additionally requires >=5% lower tail H versus RQ-only with native RQ and hard MSE within +2%. Complete SID capacity is checked after every update. This does not guarantee convergence. No holdout, ranking validation or Future selection/scoring is included. Existing downstream tables and earlier negative results remain unchanged.
+
+Local checks passed 19 protocol checks across Base/refresh/long suites and 13 generic-runtime tests. Nine actual-model checks were unavailable locally because Torch/transformers are absent; the task requires Base+long CPU preflight, including seven real-model checks, on the server before any Beauty optimizer step. The long suite also exercises the read-only verifier on tiny real models. Status at code delivery: **prepared_for_dispatch**, actual new Beauty steps **not yet observed**. Reuse the installed generic Runner; no server upgrade or manual experiment command is required. Stop after verified analysis/reporting; no automatic next task.

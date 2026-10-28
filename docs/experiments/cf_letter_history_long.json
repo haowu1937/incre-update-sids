@@ -1,0 +1,149 @@
+{
+  "schema_version": 1,
+  "scope_id": "cf-letter-history-long-v1",
+  "job_id": "cf-letter-history-long-001",
+  "seed": 2026,
+  "allowed_query_splits": [
+    "base_train",
+    "update_train"
+  ],
+  "expected_queries": {
+    "base_train": 76252,
+    "update_train": 28023
+  },
+  "old_catalog_items": 10924,
+  "history": 20,
+  "batch_size": 256,
+  "eval_batch_size": 16,
+  "probe_size": 512,
+  "anchor_size": 4096,
+  "bootstrap_replicates": 500,
+  "topk": [
+    5,
+    10,
+    20
+  ],
+  "lr": 0.0001,
+  "weight_decay": 0.0,
+  "max_grad_norm": 0.1,
+  "sasrec": {
+    "dim": 64,
+    "layers": 2,
+    "heads": 2,
+    "ffn": 256,
+    "dropout": 0.3,
+    "epochs": 0,
+    "step_cap": 0,
+    "eval_every_epochs": 2
+  },
+  "gpt": {
+    "d_model": 768,
+    "layers": 4,
+    "heads": 6,
+    "ffn": 1024,
+    "dropout": 0.1,
+    "user_buckets": 8000
+  },
+  "quantizer": {
+    "dim": 64,
+    "books": 3,
+    "capacity": 512,
+    "commitment": 0.25,
+    "outer_weight": 1.0
+  },
+  "optimizer_step_cap": 3000,
+  "wall_seconds": 14400,
+  "gpu_memory_limit_mib": 24576,
+  "parallel": 1,
+  "cohort": "exact existing E1 anchor_train identities; original deterministic user-half/sample hash selection; no anchor_holdout scoring",
+  "reference": "frozen selected Base GPT; old full target SID, mask, positions and I0 catalog; sum four target digit NLL, no EOS",
+  "full_sid_policy": "retain old prefix slots; append movers after all reserved previous slots; old I0 only; no SID allocation for new CF training rows",
+  "quantizer_training": true,
+  "gpt_training": false,
+  "historical_training": "bounded diagnostic only",
+  "holdout_evaluation": false,
+  "future_evaluation": false,
+  "retry": false,
+  "predecessor": {
+    "job_id": "cf-letter-base-001",
+    "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+    "compact_sha256": "ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb",
+    "audit_sha256": "7de0f166e75a9c9bbbd660bce7912fb10fc59611c3f76e6bdb9d7c8d2752203a",
+    "sasrec_step": 37250,
+    "gpt_step": 1192,
+    "files_sha256": {
+      "sasrec/selected.pth": "67efbca4a5de09ce56f51a21d8cf2eeaad1564f37def0bfb3af339d01193d530",
+      "gpt/selected.pth": "00fb8499f12c8478b83f2050d2b96134f82c9c897c2ce9c12a13b41a0e2f23d7",
+      "quantizer/selected.pth": "2634c57d494363b3bcc6eb21a366c47ff3106306fefde29a3555d42c71d972d3",
+      "cf_embeddings.npy": "0b6ca1fdd9a561a8c64f24736626d0326ca4543e0eaf865cd5af4df88d778d88",
+      "item_sids.npy": "7cade2b867d2a441148b44505243d97dce2999191e5f2f49a14b36ce2f7ee3e1",
+      "quantizer/semantic_codes.npy": "9479d0dc1b14773fa7896c58d2dd9c1fd4f06b5bc9350f432caa50bb753710cd"
+    }
+  },
+  "steps_per_branch": 1000,
+  "full_anchor_steps": [
+    0,
+    1000
+  ],
+  "fixed_anchor_queries": 128,
+  "gradient_probe_batches": 4,
+  "content_batch_size": 4096,
+  "temperature": 0.5,
+  "optimizers": [
+    {
+      "name": "adamw",
+      "lrs": [
+        0.0001
+      ],
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08,
+      "weight_decay": 0.0
+    }
+  ],
+  "objectives": [
+    "h_only",
+    "rq_only",
+    "mixed"
+  ],
+  "history_weight": "fixed lambda0=0.1*median(g_Q_norm/g_H_norm) from four positive-H training-only probes; require all four finite nonzero; no sweep",
+  "distance_scales": "Base E0 row-distance std per level, median; frozen",
+  "full_training_authorized": false,
+  "lambda_sweep_authorized": false,
+  "validation_evaluation": false,
+  "sasrec_training": false,
+  "refresh_predecessor": {
+    "job_id": "cf-letter-refresh-diag-001",
+    "code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
+    "compact_sha256": "ca3e8ca977b712aef504b7b8c4854fb5b4a7b40d9a2682a50950486a3639a58a",
+    "files_sha256": {
+      "refreshed_cf_embeddings.npy": "f84610ab068b81111e49a0dd168a308e0a54b318805ad724aced81bdc13935ce",
+      "feature_only/semantic_codes.npy": "b1ef54b33dfc2cabeb88ae7e7f5205bc8433d05e17c7e29e9605334ed92e93e9",
+      "feature_only/item_sids.npy": "f218dfb5f375b252b0266312e67c28970e4a669be339d7dc02da6985220a5023",
+      "baseline/old_anchor_nll.npy": "f35c100a74452fabae01f4832c14da941bebea310ef12e8de945e9ceafee0ce5"
+    },
+    "expected_initial_full_H": 0.10294729462475516
+  },
+  "distance_scale_items_cap": 4096,
+  "purpose": "Three matched 1000-step training-only loss trajectories; finite-window stability and hard-H efficacy diagnostic",
+  "status": "execution_authorized_by_Hao_2026-10-28",
+  "execution_authorized": true,
+  "anchor_batch_size": 128,
+  "fixed_monitor_every_steps": 10,
+  "full_monitor_every_epochs": 10,
+  "authorization": "Hao requested H-only/RQ-only/Mixed with longer diagnostics, reviewed the 3 x 1000 step plan, then explicitly said: \u5f00\u59cb\u4e0b\u53d1\u5b9e\u9a8c\u4efb\u52a1.",
+  "stability": {
+    "tail_monitors": 8,
+    "rq_relative_drift_max": 0.02,
+    "rq_cv_max": 0.03,
+    "H_relative_drift_max": 0.02,
+    "H_relative_range_max": 0.1,
+    "near_zero_H": 1e-08,
+    "mixed_H_reduction_min": 0.05,
+    "mixed_rq_increase_max": 0.02,
+    "mixed_mse_increase_max": 0.02
+  },
+  "expected_training_items": 11691
+}

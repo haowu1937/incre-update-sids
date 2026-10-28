@@ -1,5 +1,16 @@
 # Main SID experiment controller, protocol sid-main-v1
 
+## Current scope amendment, 2026-10-28: three longer loss trajectories
+
+Hao explicitly said **开始下发实验任务** after reviewing three 1,000-step arms. Authorize only `cf-letter-history-long-v1`, job `cf-letter-history-long-001`; manifest `docs/experiments/cf_letter_history_long.json`, scientific plan in the matching Markdown. New reservation=3,000 codebook steps, serial. The old 60-step direction proposal is not dispatched. Prior Base/CF-refresh receipts, budgets and negative results remain intact.
+
+Restore identical Base C0 + accepted fixed E1 for H-only / RQ-only / Mixed, each with reset AdamW, LR1e-4, weight_decay=0, clipping0.1, temperature0.5, seed2026. Only three codebooks train; selected Base GPT and E1/SASRec remain frozen. Same rotating content/anchor samplers; old four-digit reference/target/mask/positions/I0. Initial full H must reproduce 0.10294729462475516. Four training probes set lambda0 once to 0.1*median(gQ/gH); require all finite nonzero positive-H probes, otherwise preserve and stop. No parameter scan or automatic extension/retry.
+
+Every-step actual batch H/gradient/clipping is distinct from fixed128-query H every10steps and full4096-query H/full-catalog native RQ/hard MSE every10 completed content epochs (30steps). Endpoints0/1000; last eight scheduled full monitors use the declared stability and paired-efficacy thresholds. Recompute complete suffix capacity each step; preserve rejected/last-valid states and stop an infeasible arm without expansion. This is a finite-window training diagnostic, not holdout generalization or Future ranking.
+
+Only Base_train and Update_train, no validation ranking, anchor_holdout/Future or recommender/SASRec fitting. Reuse installed generic v1, exact SHA-bound read-only predecessors and deployed main-deployment.json. Independent output only, no host/root/helper/cron upgrades and no main-workspace changes. Mandatory real-model CPU preflight precedes Beauty. GPU foreign occupancy waits; four-hour guard stops later arms without killing the current one. The read-only task verifier reaggregates NLL/capacity, independently reloads checkpoint losses and initial/final GPT likelihoods, then generic observer reports under the shared lease. Manual/hourly entries share CAS/receipts and never duplicate dispatch. Preserve the top downstream tables. Verify, analyze, report, and stop with next_job_id=null. Old amendments below are historical.
+
+
 ## Current scope amendment, 2026-10-27: shared CF refresh diagnostic
 
 Hao said "继续" after the explicitly proposed limited next stage. Authorize only
