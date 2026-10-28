@@ -4,7 +4,12 @@
   "mode": "needs_diagnosis",
   "pause_requested": true,
   "active_job_id": "cf-letter-optimizer-001",
-  "lease": null,
+  "lease": {
+    "token": "88d58d592b574f6a8768a1872dfb10d7",
+    "owner": "versioned-task-observer",
+    "acquired_at": "2026-10-28T14:52:17.762401+00:00",
+    "expires_at_unix": 1793200037.7624304
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
