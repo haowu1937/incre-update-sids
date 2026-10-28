@@ -1,0 +1,12 @@
+{
+  "protocol_version": 1,
+  "job_id": "cf-letter-history-long-001",
+  "code_sha": "cd459d741a421a4e4ad411a73b125fd73ff1ced6",
+  "contract_sha256": "6013ef0f887724dc4e2bf8ffccdee49c44f38dcc5c0feba4a656d073ad6c2827",
+  "status": "failed",
+  "checks_completed": 1,
+  "command_started": false,
+  "started_at": "2026-10-28T11:51:19.930057+00:00",
+  "error": "CalledProcessError: Command '['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-u', '-B', 'tests/incremental/test_cf_letter_history_long.py', '--require-torch']' returned non-zero exit status 1.",
+  "finished_at": "2026-10-28T11:51:33.459387+00:00"
+}
