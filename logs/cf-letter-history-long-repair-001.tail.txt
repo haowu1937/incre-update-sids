@@ -17,3 +17,5 @@ Ran 8 tests in 6.392s
 
 OK
 {"pid": 1328155, "optimizer_steps": 0, "branches": {}, "stop_new_branches": null}
+{"pid": 1328155, "optimizer_steps": 67, "branches": {}, "stop_new_branches": null}
+{"pid": 1328155, "optimizer_steps": 150, "branches": {}, "stop_new_branches": null}
