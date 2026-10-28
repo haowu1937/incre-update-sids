@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "scope_id": "cf-letter-refresh-diag-v1",
+  "job_id": "cf-letter-refresh-diag-001",
+  "phase": "cloud_feature_refresh_analysis",
+  "status": "verified_and_analyzed",
+  "code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
+  "contract_sha256": "efaa01a74a4b0c9bfff67963947e17e1b849436e54562137ff72ec49d313dbc8",
+  "request_sha256": "1bc6324c43d90c8384aa664e0a41c879e1dca12f6ded7cca489f271930a866ef",
+  "result_sha256": "f99dbb98a11df0c541ea32a29aeb33227f133cf4b4069d1c528bcbd8f764417a",
+  "artifacts_sha256": {
+    "artifacts/cf-letter-refresh-diag-001/outputs/task-runtime.json": "1195cfb46713f5c496bdeeda311b110cd357295794cae62537bbcc468c65e501",
+    "artifacts/cf-letter-refresh-diag-001/outputs/cf-refresh/compact.json": "ca3e8ca977b712aef504b7b8c4854fb5b4a7b40d9a2682a50950486a3639a58a",
+    "artifacts/cf-letter-refresh-diag-001/outputs/cf-refresh/data_audit.json": "0042a34954f28c926fbf5491b9773bd6bd2ac33887ca338e7337ebd438a47ca5",
+    "artifacts/cf-letter-refresh-diag-001/outputs/cf-refresh/curves.json": "7e2ad91b1d6c4b9ab33566d91f768b2bdfd016fe372729afdc19375bc23401da"
+  },
+  "actual_optimizer_steps": 12240,
+  "report_commit_sha": "4df32e29ab1d215e23c648ab7067695002020145",
+  "report_marker": "<!-- cf-letter-refresh-cloud:ca3e8ca977b712aef504b7b8c4854fb5b4a7b40d9a2682a50950486a3639a58a -->",
+  "checks": {
+    "raw_request_contract_scope_result_manifest_hashes": true,
+    "all_four_returned_artifact_hashes": true,
+    "step_budget_and_epoch_arithmetic": true,
+    "all_sixteen_fixed_probe_points": true,
+    "earliest_maximum_selection": true,
+    "cohort_and_summary_arithmetic": true,
+    "full_servable_metric_scaling": true,
+    "accepted_predecessor_and_selected_feature_lineage": true,
+    "base_and_future_tables_unchanged": true,
+    "report_readback_equal": true
+  },
+  "scientific_outcome": {
+    "same_map_H": 0,
+    "feature_only_H": 0.10294729462475516,
+    "signed_delta_NLL": 0.06260501020005904,
+    "signed_delta_user_cluster_ci95": [
+      0.05254821765575487,
+      0.07384067612949635
+    ],
+    "semantic_changed_items": 2724,
+    "old_catalog_items": 10924,
+    "maximum_current_collision_bucket": 53,
+    "maximum_required_suffix_capacity": 72,
+    "suffix_capacity": 512,
+    "training_cf_rows": 11691,
+    "new_cf_rows": 767,
+    "selected_sasrec_epoch": 8,
+    "selected_sasrec_step": 3264,
+    "quantizer_GPT_training": false,
+    "historical_penalty_tested": false,
+    "holdout_or_future_evaluated": false
+  },
+  "evidence_boundary": "Cloud verified raw Git bytes, all returned fixed-probe curve points and step/selection/cohort/metric summary arithmetic. Full per-query H/bootstrap, source/checkpoint immutability and CPU model likelihood/CF reconstruction are reviewed task-SHA server-verifier evidence; the cloud did not load Beauty models or independently recompute individual NLLs/bootstrap samples.",
+  "processed_at": "2026-10-28T08:06:09.475Z",
+  "next_job_id": null
+}
