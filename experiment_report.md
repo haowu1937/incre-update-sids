@@ -1296,3 +1296,20 @@ The server received `cf-letter-history-long-001` at `cd459d741a421a4e4ad411a73b1
 The returned pinned task runtime is failed, checks_completed=1, **command_started=false**; actual new Beauty diagnostic steps=**0**. Preserve the request/result, logs, runtime artifact and failure receipt. Raw evidence and diagnosis are committed in `docs/experiments/cf_letter_history_long_failure.json`.
 
 Implemented disjoint encoded/raw NPZ namespaces through one shared writer/reader and a pure NumPy regression. The replacement `cf-letter-history-long-repair-001` requires the exact failed runtime SHA and no prior diagnostic output; the three-arm recipe and original **3000 actual-step family cap remain unchanged**. No Runner/helper/cron or main-workspace modification. Initial reservations remain historical; the failed attempt spent zero. Actual server CPU preflight must still pass again. Status: **repair prepared for dispatch; local Runner pause requires reconciliation**, not running. The installed main_service automatically wrote PAUSED.json on observing failure; its early scan guard cannot receive a Git-only resume. A narrow exact-failure pause archival is required. No H/RQ/Future result is claimed.
+
+<!-- lab-task:cf-letter-history-long-repair-001:f09fca24f697ad728d31cc39e27bb953bd486b290a07bd00e42abbf8f4f34cc7 -->
+
+### CF codebook H-only / RQ-only / Mixed long diagnostic
+
+Job `cf-letter-history-long-repair-001`; code `6aad22abe4a926b28a98052a9871b3fba99246f3`. Actual codebook updates: 3000 / 3000. Outcome: `three_arm_diagnostic_completed`.
+Identical C0 and fixed E1; frozen selected Base GPT. Initial full anchor_train H=0.102947295; fixed training-calibrated lambda=0.0006386606341359484. AdamW LR=1e-4, weight decay=0, clipping=0.1, temperature=0.5.
+
+| Arm | Steps | Last measured full H (step) | Native RQ loss | Hard MSE | Tail stable | Capacity feasible |
+| --- | ---: | --- | ---: | ---: | --- | --- |
+| h_only | 1000 | 0.23510504653677344 (1000) | 0.01419839328774688 | 0.0026806711684912443 | False | True |
+| rq_only | 1000 | 0.28544789788429625 (1000) | 0.011248636012861048 | 0.0019241445697844028 | False | True |
+| mixed | 1000 | 0.26547677101916634 (1000) | 0.011269451465891674 | 0.001929527148604393 | False | True |
+
+Paired tail assessment: `{"eligible": true, "mixed_tail_stable": false, "passed": false, "tail_H_relative_reduction_vs_rq_only": 0.07239707446051902, "tail_hard_mse_relative_increase": 0.0031064034181038647, "tail_native_rq_relative_increase": 0.0020415389397006045}`.
+
+Training minibatch H is separate from fixed-128 and full-4096 hard-H curves. Full monitors run every ten completed content epochs and at the endpoint; stability uses the last eight scheduled epoch monitors, excluding an incidental final partial epoch. These are finite-window diagnostics, not guaranteed asymptotic convergence or held-out generalization. No lambda/STE scan, SASRec/GPT fitting, ranking validation, anchor holdout or Future scoring ran. Existing downstream tables remain unchanged. The scope ends here; no automatic extension or next task.
