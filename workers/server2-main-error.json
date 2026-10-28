@@ -1,5 +1,5 @@
 {
   "status": "main_service_error",
-  "error": "ValueError: Task failed/interrupted; preserve evidence and diagnose before any new job",
+  "error": "CalledProcessError: Command '['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-u', '-B', '/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py', '--context', '/home/hao/frec/git-lab-buffer/task-verifications/cf-letter-optimizer-001/context.json', '--output', '/home/hao/frec/git-lab-buffer/task-verifications/cf-letter-optimizer-001/result.json']' returned non-zero exit status 1.",
   "new_jobs_paused": true
 }
