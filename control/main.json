@@ -4,12 +4,7 @@
   "mode": "needs_diagnosis",
   "pause_requested": true,
   "active_job_id": "cf-letter-optimizer-001",
-  "lease": {
-    "token": "88d58d592b574f6a8768a1872dfb10d7",
-    "owner": "versioned-task-observer",
-    "acquired_at": "2026-10-28T14:52:17.762401+00:00",
-    "expires_at_unix": 1793200037.7624304
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -95,9 +90,9 @@
       "request_sha256": "72c42dab81e4382b582cbfb0f3845ccba57823adaa11b9225356fcef8a4c89bd",
       "result_sha256": "347f36dbc18e348598694cf1a7d488a8febbc0e729c8ae5e01d993fdb40c0a76",
       "reason": "CalledProcessError(1, ['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-u', '-B', '/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py', '--context', '/home/hao/frec/git-lab-buffer/task-verifications/cf-letter-optimizer-001/context.json', '--output', '/home/hao/frec/git-lab-buffer/task-verifications/cf-letter-optimizer-001/result.json'])",
-      "processed_at": "2026-10-28T14:52:04.951395+00:00",
+      "processed_at": "2026-10-28T14:52:51.751715+00:00",
       "next_job_id": null,
-      "verifier_log_tail": "Traceback (most recent call last):\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 191, in <module>\n    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--context',required=True);parser.add_argument('--output',required=True);a=parser.parse_args();save(a.output,verify(a.context))\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 156, in verify\n    verified=verify_arm(output/'arms'/result['case']['name'],data,binding,p,result['case'],r['code_sha']);full.append(verified)\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 93, in verify_arm\n    if not np.array_equal(canonical.numpy(),np.load(directory/f'catalog_codes_{step}.npy',allow_pickle=False)):raise ValueError('CPU full-monitor canonical codes differ')\nValueError: CPU full-monitor canonical codes differ\n"
+      "verifier_log_tail": "Traceback (most recent call last):\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 191, in <module>\n    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--context',required=True);parser.add_argument('--output',required=True);a=parser.parse_args();save(a.output,verify(a.context))\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 156, in verify\n    verified=verify_arm(output/'arms'/result['case']['name'],data,binding,p,result['case'],r['code_sha']);full.append(verified)\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 93, in verify_arm\n    if not np.array_equal(canonical.numpy(),np.load(directory/f'catalog_codes_{step}.npy',allow_pickle=False)):raise ValueError('CPU full-monitor canonical codes differ')\nValueError: CPU full-monitor canonical codes differ\nTraceback (most recent call last):\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 191, in <module>\n    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--context',required=True);parser.add_argument('--output',required=True);a=parser.parse_args();save(a.output,verify(a.context))\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 156, in verify\n    verified=verify_arm(output/'arms'/result['case']['name'],data,binding,p,result['case'],r['code_sha']);full.append(verified)\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 93, in verify_arm\n    if not np.array_equal(canonical.numpy(),np.load(directory/f'catalog_codes_{step}.npy',allow_pickle=False)):raise ValueError('CPU full-monitor canonical codes differ')\nValueError: CPU full-monitor canonical codes differ\n"
     }
   },
   "plan": [
