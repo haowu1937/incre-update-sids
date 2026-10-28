@@ -4,7 +4,12 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "cf-letter-refresh-diag-001",
-  "lease": null,
+  "lease": {
+    "token": "web-cf-history-long-2026-10-28T11:44:57.856Z",
+    "owner": "web-authorized-cf-history-long-dispatch",
+    "acquired_at": "2026-10-28T11:44:57.856Z",
+    "expires_at_unix": 1793188797.856
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
