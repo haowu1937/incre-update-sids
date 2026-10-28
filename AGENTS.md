@@ -1,5 +1,14 @@
 # 项目协作规则
 
+## H-only 学习率／动量消融（2026-10-28 最新明确授权）
+
+用户在审阅5组H-only＋条件性RQ-only/Mixed配对方案后明确“下发这个任务”。授权 `cf-letter-optimizer-v1` / `cf-letter-optimizer-001`，manifest=`docs/experiments/cf_letter_optimizer.json`，说明同名.md。新增预算最多7000 steps（5x1000筛选＋合格时2x1000配对），最多2并行；复用已验收旧H-only lr1e-4/beta1=.9，不重跑旧对照、不回收旧预算。矩阵lr=[1e-4,3e-5,1e-5] x beta1=[.9,0]除旧对照外5组；beta2=.999、eps1e-8、wd0、clip.1、temperature.5，固定原C0/E1/teacher、采样、STE/残差/原RQ梯度路径。
+
+筛选只用最后8个scheduled完整anchor_train/RQ监测点：原joint稳定标准＋尾部平均H较初始下降>=5%，native RQ及hard MSE较初始各<=+2%，1000步完成、全程suffix可行。最低尾部H、再最低RQ、再声明顺序平局。无合格则停止；有合格才用其lr/beta1独立重启配对RQ-only/Mixed各1000，lambda固定旧值0.0006386606341359484，不扫描/重校准。原始E0 reference/target/mask/I0不变，四token无EOS。原每步/固定128每10步/全4096每10完整内容epoch监测和失败证据保留。
+
+沿用已安装generic v1、原子SHA/contract/scope/reservation，不升级Runner/helper/cron/policy，不切主工作区。绑定Base、refresh、已验收旧对照的只读依赖，所有新输出独立；硬链接只在新job已复制的私有输入间。每个arm启动前持久预算领取，最多2个受管GPU子进程，外部GPU等待，4h/暂停/状态不明后不启动新arm，运行中的完成，不终止。8个bounded产物内无损分组所有曲线。服务器Base+long+optimizer真实CPU preflight通过才训练，独立科学verifier验收后英文报告/receipt去重；手动和小时入口共享状态。无holdout/Future/排名、推荐模型/SASRec训练、额外seed、自动重跑或延长。完整矩阵/条件配对验收分析后停止；以下旧scope为历史。
+
+
 ## 同预算零步软件修复（2026-10-28）
 
 首发 `cf-letter-history-long-001` 在真实CPU preflight停止：encoded user hash与raw user ID共用prepared.npz的anchor_users键。task-runtime的command_started=false，真实Beauty steps=0；原失败与receipt保留。新job `cf-letter-history-long-repair-001` / scope `cf-letter-history-long-repair-v1`仅修复序列化键命名空间，不改实验/λ/STE，实际step家族总上限仍3000。任务先校验旧失败runtime完整SHA及无真实输出，才允许替代执行。新增纯NumPy round-trip regression，真实tiny verifier仍为必须通过项。不要重复旧job、删除失败或升级Runner。服务器因main_service异常自动写本地PAUSED，Git下发不能绕过；仅可核对精确失败后归档对应暂停，不触碰其他暂停/进程/记录。已准备最小恢复命令；不能将排队称为已恢复运行。

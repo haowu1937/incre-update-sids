@@ -11,19 +11,18 @@
   "project": "/home/hao/frec/graph-informed-sids-web",
   "python": "/home/hao/miniconda3/envs/frec-gpu/bin/python",
   "plan": [
-    "reproduce_fixed_C0_E1_positive_H",
-    "calibrate_lambda_on_training_only",
-    "h_only_1000",
-    "rq_only_1000",
-    "mixed_1000",
+    "reuse_accepted_H_only_control",
+    "five_H_only_optimizer_arms",
+    "training_only_screen_gate",
+    "conditional_matched_RQ_only_and_Mixed",
     "verify_analyze_report_and_stop"
   ],
-  "new_training_steps_authorized": 3000,
+  "new_training_steps_authorized": 7000,
   "new_future_prediction_passes_authorized": 0,
   "acceptance_timeout_seconds": 86400,
-  "max_diagnosed_repair_jobs": 1,
+  "max_diagnosed_repair_jobs": 0,
   "same_fault_automatic_retry": false,
-  "selection_metric": "none; fixed endpoint and predeclared training-side stability/efficacy only",
+  "selection_metric": "training-only last-eight scheduled H/RQ/MSE eligibility, then lowest eligible H, RQ, declared order",
   "beam": 20,
   "topk": [
     5,
@@ -35,12 +34,12 @@
   "web_controller": "docs/lab_buffer/CONTROLLER.md",
   "persistent_state": "lab-requests:control/main.json",
   "stop_after_plan": true,
-  "revision": 7,
-  "active_scope": "cf-letter-history-long-repair-v1",
-  "scope_manifest": "docs/experiments/cf_letter_history_long.json",
+  "revision": 8,
+  "active_scope": "cf-letter-optimizer-v1",
+  "scope_manifest": "docs/experiments/cf_letter_optimizer.json",
   "scope_authorized_at": "2026-10-28",
-  "optimizer_steps_scope": "Three reset quantizer arms only; no SASRec/GPT updates or old-budget recycling",
-  "max_parallel": 1,
+  "optimizer_steps_scope": "Five new H-only arms and conditional two-arm pair only; no old-budget recycling",
+  "max_parallel": 2,
   "task_runtime": {
     "protocol_version": 1,
     "specification": "docs/lab_buffer/task_runtime_v1.md",
@@ -65,8 +64,5 @@
     "three_codebooks"
   ],
   "quantizer_training_authorized": true,
-  "gpt_training_authorized": false,
-  "budget_family": "cf-letter-history-long-v1",
-  "actual_step_family_cap": 3000,
-  "zero_step_repair_of": "cf-letter-history-long-001"
+  "gpt_training_authorized": false
 }
