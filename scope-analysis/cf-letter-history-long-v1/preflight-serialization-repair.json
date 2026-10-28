@@ -1,0 +1,11 @@
+{
+  "failed_job_id": "cf-letter-history-long-001",
+  "failed_code_sha": "cd459d741a421a4e4ad411a73b125fd73ff1ced6",
+  "failed_result_sha256": "b2449c2d6674d2ce80632a4367caf1d8289b96717dfffec4ce4e78539b41f71e",
+  "failed_runtime_sha256": "9bbf29c46c680b910cd078cdd876ebc7153a79d4253bda9bd390294f28f55ca0",
+  "actual_Beauty_optimizer_steps": 0,
+  "repair_job_id": "cf-letter-history-long-repair-001",
+  "diagnosis": "Encoded hash users and raw user identities collided under anchor_users in prepared.npz; use separate encoded/raw namespaces with a pure round-trip regression. Real Beauty command never started.",
+  "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+  "local_pause_reconciliation_required": true
+}

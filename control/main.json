@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "needs_diagnosis",
-  "pause_requested": true,
-  "active_job_id": "cf-letter-history-long-001",
-  "lease": {
-    "token": "web-zero-step-cf-repair-2026-10-28T11:58:24.873Z",
-    "owner": "web-diagnosed-serialization-repair-within-original-budget",
-    "acquired_at": "2026-10-28T11:58:24.873Z",
-    "expires_at_unix": 1793189604.873
-  },
+  "mode": "queued",
+  "pause_requested": false,
+  "active_job_id": "cf-letter-history-long-repair-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -77,11 +72,11 @@
     "mixed_1000",
     "verify_analyze_report_and_stop"
   ],
-  "repairs_used": 0,
+  "repairs_used": 1,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "cd459d741a421a4e4ad411a73b125fd73ff1ced6",
-  "request_sha256": "a9a61b7aa4e0a5db20bff3c7629af518adff45a62c4e7825f32f70f7a7aae5a2",
+  "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+  "request_sha256": "35299b286889ee480ab9b1e02166e8e118b69acb4b493e567b3449178d5f39f6",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -749,6 +744,69 @@
         "processed_at": "2026-10-27T21:28:56.351386+00:00",
         "next_job_id": null
       }
+    },
+    {
+      "scope_id": "cf-letter-history-long-v1",
+      "status": "failed_preflight_diagnosed_zero_Beauty_steps",
+      "authorization": "Hao requested H-only/RQ-only/Mixed with longer diagnostics, reviewed the 3 x 1000 step plan, then explicitly said: 开始下发实验任务.",
+      "authorized_at": "2026-10-28T11:49:57.022Z",
+      "manifest": "docs/experiments/cf_letter_history_long.json",
+      "max_optimizer_steps": 3000,
+      "max_parallel": 1,
+      "trainable_components": [
+        "three_codebooks"
+      ],
+      "steps_per_arm": 1000,
+      "arms": [
+        "h_only",
+        "rq_only",
+        "mixed"
+      ],
+      "sasrec_gpt_training_authorized": false,
+      "validation_holdout_future_authorized": false,
+      "predecessor_read_only": [
+        {
+          "job_id": "cf-letter-base-001",
+          "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+          "compact_sha256": "ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb",
+          "audit_sha256": "7de0f166e75a9c9bbbd660bce7912fb10fc59611c3f76e6bdb9d7c8d2752203a",
+          "sasrec_step": 37250,
+          "gpt_step": 1192,
+          "files_sha256": {
+            "sasrec/selected.pth": "67efbca4a5de09ce56f51a21d8cf2eeaad1564f37def0bfb3af339d01193d530",
+            "gpt/selected.pth": "00fb8499f12c8478b83f2050d2b96134f82c9c897c2ce9c12a13b41a0e2f23d7",
+            "quantizer/selected.pth": "2634c57d494363b3bcc6eb21a366c47ff3106306fefde29a3555d42c71d972d3",
+            "cf_embeddings.npy": "0b6ca1fdd9a561a8c64f24736626d0326ca4543e0eaf865cd5af4df88d778d88",
+            "item_sids.npy": "7cade2b867d2a441148b44505243d97dce2999191e5f2f49a14b36ce2f7ee3e1",
+            "quantizer/semantic_codes.npy": "9479d0dc1b14773fa7896c58d2dd9c1fd4f06b5bc9350f432caa50bb753710cd"
+          }
+        },
+        {
+          "job_id": "cf-letter-refresh-diag-001",
+          "code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
+          "compact_sha256": "ca3e8ca977b712aef504b7b8c4854fb5b4a7b40d9a2682a50950486a3639a58a",
+          "files_sha256": {
+            "refreshed_cf_embeddings.npy": "f84610ab068b81111e49a0dd168a308e0a54b318805ad724aced81bdc13935ce",
+            "feature_only/semantic_codes.npy": "b1ef54b33dfc2cabeb88ae7e7f5205bc8433d05e17c7e29e9605334ed92e93e9",
+            "feature_only/item_sids.npy": "f218dfb5f375b252b0266312e67c28970e4a669be339d7dc02da6985220a5023",
+            "baseline/old_anchor_nll.npy": "f35c100a74452fabae01f4832c14da941bebea310ef12e8de945e9ceafee0ce5"
+          },
+          "expected_initial_full_H": 0.10294729462475516
+        }
+      ],
+      "stop_after_diagnostic": true,
+      "failed_job_id": "cf-letter-history-long-001",
+      "actual_optimizer_steps": 0,
+      "failure_receipt": {
+        "status": "needs_attention",
+        "job_id": "cf-letter-history-long-001",
+        "request_sha256": "a9a61b7aa4e0a5db20bff3c7629af518adff45a62c4e7825f32f70f7a7aae5a2",
+        "result_sha256": "b2449c2d6674d2ce80632a4367caf1d8289b96717dfffec4ce4e78539b41f71e",
+        "reason": "ValueError('Task failed/interrupted; preserve evidence and diagnose before any new job')",
+        "processed_at": "2026-10-28T11:52:12.835009+00:00",
+        "next_job_id": null
+      },
+      "repair_code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3"
     }
   ],
   "core_runtime_upgrade": {
@@ -799,8 +857,8 @@
   "active_scope": "cf-letter-refresh-diag-v1",
   "task_dispatch": {
     "protocol_version": 1,
-    "contract_path": "task-contracts/cf-letter-history-long-001.json",
-    "contract_sha256": "6013ef0f887724dc4e2bf8ffccdee49c44f38dcc5c0feba4a656d073ad6c2827"
+    "contract_path": "task-contracts/cf-letter-history-long-repair-001.json",
+    "contract_sha256": "f09fca24f697ad728d31cc39e27bb953bd486b290a07bd00e42abbf8f4f34cc7"
   },
   "task_scope_ledger": {
     "cf-letter-base-v1": {
@@ -826,17 +884,34 @@
       "reservations": {
         "cf-letter-history-long-001": 3000
       },
+      "actual_steps": {
+        "cf-letter-history-long-001": 0
+      }
+    },
+    "cf-letter-history-long-repair-v1": {
+      "scope_sha256": "fe1b21c512ed4be0e5a58959308a3066d4678240bcc69cf866eed903451e0df3",
+      "reservations": {
+        "cf-letter-history-long-repair-001": 3000
+      },
       "actual_steps": {}
     }
   },
   "current_scope": {
-    "scope_id": "cf-letter-history-long-v1",
-    "status": "queued",
-    "authorization": "Hao requested H-only/RQ-only/Mixed with longer diagnostics, reviewed the 3 x 1000 step plan, then explicitly said: 开始下发实验任务.",
-    "authorized_at": "2026-10-28T11:49:57.022Z",
+    "scope_id": "cf-letter-history-long-repair-v1",
+    "status": "queued_pending_local_pause_reconciliation",
+    "authorization": "Diagnosed zero-step serialization repair within existing user-authorized three-arm plan and 3000-step budget",
     "manifest": "docs/experiments/cf_letter_history_long.json",
     "max_optimizer_steps": 3000,
     "max_parallel": 1,
+    "budget_family": "cf-letter-history-long-v1",
+    "zero_step_repair_of": {
+      "job_id": "cf-letter-history-long-001",
+      "code_sha": "cd459d741a421a4e4ad411a73b125fd73ff1ced6",
+      "runtime_sha256": "9bbf29c46c680b910cd078cdd876ebc7153a79d4253bda9bd390294f28f55ca0",
+      "result_sha256": "b2449c2d6674d2ce80632a4367caf1d8289b96717dfffec4ce4e78539b41f71e",
+      "actual_Beauty_optimizer_steps": 0,
+      "diagnosis": "Encoded hash users and raw user identities collided under anchor_users in prepared.npz; use separate encoded/raw namespaces with a pure round-trip regression. Real Beauty command never started."
+    },
     "trainable_components": [
       "three_codebooks"
     ],
@@ -848,36 +923,6 @@
     ],
     "sasrec_gpt_training_authorized": false,
     "validation_holdout_future_authorized": false,
-    "predecessor_read_only": [
-      {
-        "job_id": "cf-letter-base-001",
-        "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
-        "compact_sha256": "ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb",
-        "audit_sha256": "7de0f166e75a9c9bbbd660bce7912fb10fc59611c3f76e6bdb9d7c8d2752203a",
-        "sasrec_step": 37250,
-        "gpt_step": 1192,
-        "files_sha256": {
-          "sasrec/selected.pth": "67efbca4a5de09ce56f51a21d8cf2eeaad1564f37def0bfb3af339d01193d530",
-          "gpt/selected.pth": "00fb8499f12c8478b83f2050d2b96134f82c9c897c2ce9c12a13b41a0e2f23d7",
-          "quantizer/selected.pth": "2634c57d494363b3bcc6eb21a366c47ff3106306fefde29a3555d42c71d972d3",
-          "cf_embeddings.npy": "0b6ca1fdd9a561a8c64f24736626d0326ca4543e0eaf865cd5af4df88d778d88",
-          "item_sids.npy": "7cade2b867d2a441148b44505243d97dce2999191e5f2f49a14b36ce2f7ee3e1",
-          "quantizer/semantic_codes.npy": "9479d0dc1b14773fa7896c58d2dd9c1fd4f06b5bc9350f432caa50bb753710cd"
-        }
-      },
-      {
-        "job_id": "cf-letter-refresh-diag-001",
-        "code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
-        "compact_sha256": "ca3e8ca977b712aef504b7b8c4854fb5b4a7b40d9a2682a50950486a3639a58a",
-        "files_sha256": {
-          "refreshed_cf_embeddings.npy": "f84610ab068b81111e49a0dd168a308e0a54b318805ad724aced81bdc13935ce",
-          "feature_only/semantic_codes.npy": "b1ef54b33dfc2cabeb88ae7e7f5205bc8433d05e17c7e29e9605334ed92e93e9",
-          "feature_only/item_sids.npy": "f218dfb5f375b252b0266312e67c28970e4a669be339d7dc02da6985220a5023",
-          "baseline/old_anchor_nll.npy": "f35c100a74452fabae01f4832c14da941bebea310ef12e8de945e9ceafee0ce5"
-        },
-        "expected_initial_full_H": 0.10294729462475516
-      }
-    ],
     "stop_after_diagnostic": true
   },
   "latest_task_delivery": {
@@ -992,12 +1037,44 @@
     }
   },
   "latest_authorized_dispatch": {
-    "job_id": "cf-letter-history-long-001",
-    "scope_id": "cf-letter-history-long-v1",
-    "code_sha": "cd459d741a421a4e4ad411a73b125fd73ff1ced6",
-    "authorization": "Hao explicitly said 开始下发实验任务 after the three 1000-step plan",
-    "prepared_at": "2026-10-28T11:49:57.022Z",
-    "new_optimizer_steps": 3000,
+    "job_id": "cf-letter-history-long-repair-001",
+    "scope_id": "cf-letter-history-long-repair-v1",
+    "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+    "diagnosed_zero_step_repair": true,
+    "new_optimizer_steps": 0,
+    "replacement_step_reservation": 3000,
+    "actual_step_family_cap": 3000,
+    "local_pause_reconciliation_required": true,
     "per_experiment_runner_upgrade": false
+  },
+  "diagnosed_repairs": [
+    {
+      "failed_job_id": "cf-letter-history-long-001",
+      "failed_code_sha": "cd459d741a421a4e4ad411a73b125fd73ff1ced6",
+      "failed_result_sha256": "b2449c2d6674d2ce80632a4367caf1d8289b96717dfffec4ce4e78539b41f71e",
+      "failed_runtime_sha256": "9bbf29c46c680b910cd078cdd876ebc7153a79d4253bda9bd390294f28f55ca0",
+      "actual_Beauty_optimizer_steps": 0,
+      "repair_job_id": "cf-letter-history-long-repair-001",
+      "diagnosis": "Encoded hash users and raw user identities collided under anchor_users in prepared.npz; use separate encoded/raw namespaces with a pure round-trip regression. Real Beauty command never started.",
+      "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+      "local_pause_reconciliation_required": true
+    }
+  ],
+  "task_budget_families": {
+    "cf-letter-history-long-v1": {
+      "max_actual_optimizer_steps": 3000,
+      "failed_zero_step_attempt": {
+        "job_id": "cf-letter-history-long-001",
+        "scope_id": "cf-letter-history-long-v1",
+        "actual_optimizer_steps": 0,
+        "runtime_sha256": "9bbf29c46c680b910cd078cdd876ebc7153a79d4253bda9bd390294f28f55ca0"
+      },
+      "replacement": {
+        "job_id": "cf-letter-history-long-repair-001",
+        "scope_id": "cf-letter-history-long-repair-v1",
+        "reservation": 3000
+      },
+      "rule": "Replacement may run only after exact prior preflight command_started=false and absent prior diagnostic output; no additional actual-step budget"
+    }
   }
 }

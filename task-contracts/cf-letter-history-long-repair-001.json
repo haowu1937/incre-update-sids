@@ -1,0 +1,34 @@
+{
+  "protocol_version": 1,
+  "scope_id": "cf-letter-history-long-repair-v1",
+  "job_id": "cf-letter-history-long-repair-001",
+  "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+  "request_sha256": "35299b286889ee480ab9b1e02166e8e118b69acb4b493e567b3449178d5f39f6",
+  "scope_path": "task-scopes/cf-letter-history-long-repair-v1.json",
+  "scope_sha256": "fe1b21c512ed4be0e5a58959308a3066d4678240bcc69cf866eed903451e0df3",
+  "manifest": {
+    "path": "docs/experiments/cf_letter_history_long.json",
+    "sha256": "228ac52e2e3151dfee73a197c8c6f460d31da9c6a5e24430f79a5fd475ea460a"
+  },
+  "preflight": [
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_base.py",
+      "--require-torch"
+    ],
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_history_long.py",
+      "--require-torch"
+    ]
+  ],
+  "verifier": "verify_cf_letter_history_long.py",
+  "optimizer_step_reservation": 3000,
+  "input_sha256": {
+    "/home/hao/frec/git-lab-buffer/main-deployment.json": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694"
+  }
+}

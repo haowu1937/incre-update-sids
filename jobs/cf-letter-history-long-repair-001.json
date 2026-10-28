@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "job_id": "cf-letter-history-long-repair-001",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+  "created_at": "2026-10-28T12:00:16.879116+00:00",
+  "timeout_seconds": 86400,
+  "argv": [
+    "python",
+    "-u",
+    "-B",
+    "run_cf_letter_history_long.py",
+    "--deployment",
+    "/home/hao/frec/git-lab-buffer/main-deployment.json",
+    "--output",
+    "outputs/cf-history-long"
+  ],
+  "artifacts": [
+    "outputs/task-runtime.json",
+    "outputs/cf-history-long/compact.json",
+    "outputs/cf-history-long/data_audit.json",
+    "outputs/cf-history-long/gradient_calibration.json",
+    "outputs/cf-history-long/h_only_curves.json",
+    "outputs/cf-history-long/rq_only_curves.json",
+    "outputs/cf-history-long/mixed_curves.json"
+  ]
+}
