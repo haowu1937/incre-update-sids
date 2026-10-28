@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "needs_diagnosis",
-  "pause_requested": true,
-  "active_job_id": "cf-letter-optimizer-001",
-  "lease": {
-    "token": "web-read-only-index-audit-2026-10-28T16:45:08.794Z",
-    "owner": "web-necessary-read-only-acceptance-diagnosis-zero-steps",
-    "acquired_at": "2026-10-28T16:45:08.798Z",
-    "expires_at_unix": 1793206808.798
-  },
+  "mode": "queued",
+  "pause_requested": false,
+  "active_job_id": "cf-letter-optimizer-audit-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -101,17 +96,14 @@
     }
   },
   "plan": [
-    "reuse_accepted_H_only_control",
-    "five_H_only_optimizer_arms",
-    "training_only_screen_gate",
-    "conditional_matched_RQ_only_and_Mixed",
-    "verify_analyze_report_and_stop"
+    "audit_existing_checkpoint_indices_read_only",
+    "report_diagnostic_evidence_and_stop"
   ],
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "278c7b185fce251e0512e4f1f8ba8d66e430846e",
-  "request_sha256": "72c42dab81e4382b582cbfb0f3845ccba57823adaa11b9225356fcef8a4c89bd",
+  "code_sha": "e648205d62554a2944cdfb1336c7e981b684ea44",
+  "request_sha256": "d1296f414aa156325eda2c8e1f17e318197d79fdd7554ab31b4271e0bb6a101e",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -1005,8 +997,8 @@
   "active_scope": "cf-letter-refresh-diag-v1",
   "task_dispatch": {
     "protocol_version": 1,
-    "contract_path": "task-contracts/cf-letter-optimizer-001.json",
-    "contract_sha256": "eeae6237827cbf4a3619239b70aec9b1c3c6e7f75020918eeb95e7d5d94fe16f"
+    "contract_path": "task-contracts/cf-letter-optimizer-audit-001.json",
+    "contract_sha256": "41f343af0e7885722fe96931ec48054806643bca563ab29a85ab0cc9ebd9b095"
   },
   "task_scope_ledger": {
     "cf-letter-base-v1": {
@@ -1050,37 +1042,32 @@
       "reservations": {
         "cf-letter-optimizer-001": 7000
       },
+      "actual_steps": {},
+      "reported_steps": {
+        "cf-letter-optimizer-001": 5000
+      }
+    },
+    "cf-letter-optimizer-audit-v1": {
+      "scope_sha256": "0fd79c589733ca4d868983e56a114226ad92e80f5e4180af61e100e674df8811",
+      "reservations": {
+        "cf-letter-optimizer-audit-001": 0
+      },
       "actual_steps": {}
     }
   },
   "current_scope": {
-    "scope_id": "cf-letter-optimizer-v1",
-    "status": "queued",
-    "authorization": "Hao explicitly said 下发这个任务 after the proposed five new 1000-step H-only arms plus conditional 2x1000 matched verification; <=7000 new Beauty steps, <=2 parallel, no lambda/STE changes.",
-    "authorized_at": "2026-10-28T14:18:53.103Z",
-    "manifest": "docs/experiments/cf_letter_optimizer.json",
-    "max_optimizer_steps": 7000,
-    "max_parallel": 2,
-    "screen_step_cap": 5000,
-    "conditional_pair_step_cap": 2000,
-    "reused_control": {
-      "job_id": "cf-letter-history-long-repair-001",
-      "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
-      "files_sha256": {
-        "compact.json": "84490dc7aa8074fa4d9b8d2183e94a19f8e4031ffcc2c5bb59f915ee61788c0f",
-        "h_only_curves.json": "d0f7fcbfcc8ade8cc9939f58f45936f77d58e5a2674b9799c2bc08c133a8fb86"
-      },
-      "control_name": "reused_h_lr1e4_b09",
-      "lr": 0.0001,
-      "beta1": 0.9
-    },
-    "fixed_history_weight": 0.0006386606341359484,
-    "trainable_components": [
-      "three_codebooks"
-    ],
-    "sasrec_gpt_training_authorized": false,
-    "validation_holdout_future_authorized": false,
-    "stop_after_study": true
+    "scope_id": "cf-letter-optimizer-audit-v1",
+    "status": "queued_pending_original_failure_pause_reconciliation",
+    "authorization": "Existing authorized experiment checks and failure diagnosis, continued by Hao saying 继续; zero optimizer updates, original evidence retained, no acceptance criterion changes.",
+    "manifest": "docs/experiments/cf_letter_optimizer_audit.json",
+    "max_optimizer_steps": 0,
+    "max_parallel": 1,
+    "source_job_id": "cf-letter-optimizer-001",
+    "source_acceptance": "blocked",
+    "original_writes_authorized": false,
+    "criterion_changes_authorized": false,
+    "retraining_authorized": false,
+    "stop_after_audit": true
   },
   "latest_task_delivery": {
     "job_id": "cf-letter-refresh-diag-001",
@@ -1256,13 +1243,13 @@
     }
   },
   "latest_authorized_dispatch": {
-    "job_id": "cf-letter-optimizer-001",
-    "scope_id": "cf-letter-optimizer-v1",
-    "code_sha": "278c7b185fce251e0512e4f1f8ba8d66e430846e",
-    "authorization": "Hao explicitly said 下发这个任务 for the proposed 5000-step screen plus conditional 2000-step pair",
-    "prepared_at": "2026-10-28T14:18:53.103Z",
-    "new_optimizer_steps": 7000,
-    "max_parallel": 2,
+    "job_id": "cf-letter-optimizer-audit-001",
+    "scope_id": "cf-letter-optimizer-audit-v1",
+    "code_sha": "e648205d62554a2944cdfb1336c7e981b684ea44",
+    "necessary_read_only_failure_diagnosis": true,
+    "new_optimizer_steps": 0,
+    "source_original_acceptance": "blocked",
+    "local_pause_reconciliation_required": true,
     "per_experiment_runner_upgrade": false
   },
   "diagnosed_repairs": [
@@ -1294,5 +1281,51 @@
       },
       "rule": "Replacement may run only after exact prior preflight command_started=false and absent prior diagnostic output; no additional actual-step budget"
     }
-  }
+  },
+  "blocked_scope_history": [
+    {
+      "scope_id": "cf-letter-optimizer-v1",
+      "status": "scientific_acceptance_blocked",
+      "authorization": "Hao explicitly said 下发这个任务 after the proposed five new 1000-step H-only arms plus conditional 2x1000 matched verification; <=7000 new Beauty steps, <=2 parallel, no lambda/STE changes.",
+      "authorized_at": "2026-10-28T14:18:53.103Z",
+      "manifest": "docs/experiments/cf_letter_optimizer.json",
+      "max_optimizer_steps": 7000,
+      "max_parallel": 2,
+      "screen_step_cap": 5000,
+      "conditional_pair_step_cap": 2000,
+      "reused_control": {
+        "job_id": "cf-letter-history-long-repair-001",
+        "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+        "files_sha256": {
+          "compact.json": "84490dc7aa8074fa4d9b8d2183e94a19f8e4031ffcc2c5bb59f915ee61788c0f",
+          "h_only_curves.json": "d0f7fcbfcc8ade8cc9939f58f45936f77d58e5a2674b9799c2bc08c133a8fb86"
+        },
+        "control_name": "reused_h_lr1e4_b09",
+        "lr": 0.0001,
+        "beta1": 0.9
+      },
+      "fixed_history_weight": 0.0006386606341359484,
+      "trainable_components": [
+        "three_codebooks"
+      ],
+      "sasrec_gpt_training_authorized": false,
+      "validation_holdout_future_authorized": false,
+      "stop_after_study": true,
+      "source_job_id": "cf-letter-optimizer-001",
+      "reported_optimizer_steps": 5000,
+      "pair_ran": false,
+      "receipt": {
+        "status": "needs_attention",
+        "job_id": "cf-letter-optimizer-001",
+        "request_sha256": "72c42dab81e4382b582cbfb0f3845ccba57823adaa11b9225356fcef8a4c89bd",
+        "result_sha256": "347f36dbc18e348598694cf1a7d488a8febbc0e729c8ae5e01d993fdb40c0a76",
+        "reason": "CalledProcessError(1, ['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-u', '-B', '/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py', '--context', '/home/hao/frec/git-lab-buffer/task-verifications/cf-letter-optimizer-001/context.json', '--output', '/home/hao/frec/git-lab-buffer/task-verifications/cf-letter-optimizer-001/result.json'])",
+        "processed_at": "2026-10-28T14:52:51.751715+00:00",
+        "next_job_id": null,
+        "verifier_log_tail": "Traceback (most recent call last):\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 191, in <module>\n    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--context',required=True);parser.add_argument('--output',required=True);a=parser.parse_args();save(a.output,verify(a.context))\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 156, in verify\n    verified=verify_arm(output/'arms'/result['case']['name'],data,binding,p,result['case'],r['code_sha']);full.append(verified)\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 93, in verify_arm\n    if not np.array_equal(canonical.numpy(),np.load(directory/f'catalog_codes_{step}.npy',allow_pickle=False)):raise ValueError('CPU full-monitor canonical codes differ')\nValueError: CPU full-monitor canonical codes differ\nTraceback (most recent call last):\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 191, in <module>\n    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--context',required=True);parser.add_argument('--output',required=True);a=parser.parse_args();save(a.output,verify(a.context))\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 156, in verify\n    verified=verify_arm(output/'arms'/result['case']['name'],data,binding,p,result['case'],r['code_sha']);full.append(verified)\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 93, in verify_arm\n    if not np.array_equal(canonical.numpy(),np.load(directory/f'catalog_codes_{step}.npy',allow_pickle=False)):raise ValueError('CPU full-monitor canonical codes differ')\nValueError: CPU full-monitor canonical codes differ\n"
+      },
+      "failure_evidence": "docs/experiments/cf_letter_optimizer_acceptance_failure.json",
+      "report_commit_sha": "e648205d62554a2944cdfb1336c7e981b684ea44"
+    }
+  ]
 }

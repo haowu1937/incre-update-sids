@@ -1,0 +1,27 @@
+{
+  "protocol_version": 1,
+  "scope_id": "cf-letter-optimizer-audit-v1",
+  "job_id": "cf-letter-optimizer-audit-001",
+  "code_sha": "e648205d62554a2944cdfb1336c7e981b684ea44",
+  "request_sha256": "d1296f414aa156325eda2c8e1f17e318197d79fdd7554ab31b4271e0bb6a101e",
+  "scope_path": "task-scopes/cf-letter-optimizer-audit-v1.json",
+  "scope_sha256": "0fd79c589733ca4d868983e56a114226ad92e80f5e4180af61e100e674df8811",
+  "manifest": {
+    "path": "docs/experiments/cf_letter_optimizer_audit.json",
+    "sha256": "0aa96b50e29bbf7fd0e7564f90207ebc3e98848110c3620e1f0437926d95892e"
+  },
+  "preflight": [
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_optimizer_audit.py",
+      "--require-torch"
+    ]
+  ],
+  "verifier": "audit_cf_letter_optimizer.py",
+  "optimizer_step_reservation": 0,
+  "input_sha256": {
+    "/home/hao/frec/git-lab-buffer/main-deployment.json": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694"
+  }
+}
