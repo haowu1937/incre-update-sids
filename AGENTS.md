@@ -1,8 +1,13 @@
 # 项目协作规则
 
+## 同预算零步软件修复（2026-10-28）
+
+首发 `cf-letter-history-long-001` 在真实CPU preflight停止：encoded user hash与raw user ID共用prepared.npz的anchor_users键。task-runtime的command_started=false，真实Beauty steps=0；原失败与receipt保留。新job `cf-letter-history-long-repair-001` / scope `cf-letter-history-long-repair-v1`仅修复序列化键命名空间，不改实验/λ/STE，实际step家族总上限仍3000。任务先校验旧失败runtime完整SHA及无真实输出，才允许替代执行。新增纯NumPy round-trip regression，真实tiny verifier仍为必须通过项。不要重复旧job、删除失败或升级Runner。服务器因main_service异常自动写本地PAUSED，Git下发不能绕过；仅可核对精确失败后归档对应暂停，不触碰其他暂停/进程/记录。已准备最小恢复命令；不能将排队称为已恢复运行。
+
+
 ## CF 码本三组长程诊断（2026-10-28 最新明确授权）
 
-用户审阅 H-only / RQ-only / Mixed 各1000步方案后明确“开始下发实验任务”。授权 `cf-letter-history-long-v1` / `cf-letter-history-long-001`，总上限3000码本optimizer steps；配置见 `docs/experiments/cf_letter_history_long.json`，说明见同名.md。覆盖旧refresh完成停止条件及未执行60步proposal；不复用旧预算、不执行旧proposal。
+用户审阅 H-only / RQ-only / Mixed 各1000步方案后明确“开始下发实验任务”。授权 `cf-letter-history-long-repair-v1` / `cf-letter-history-long-repair-001`，总上限3000码本optimizer steps；配置见 `docs/experiments/cf_letter_history_long.json`，说明见同名.md。覆盖旧refresh完成停止条件及未执行60步proposal；不复用旧预算、不执行旧proposal。
 
 三组同一Base C0 + 已验收固定E1（11691x64）独立reset，仅更新3x512x64码本；冻结selected Base GPT(1192步/epoch4)、CF和SASRec。AdamW reset、lr1e-4、weight_decay=0、clip0.1、temperature0.5；相同content batch4096及rotating anchor_train batch128顺序。四个正H训练batch校准一次lambda0=0.1*median(gQ/gH)，任一零/非有限则保留并停止，不扫描λ/STE。原E0旧reference/target/mask/positions/I0不变；初始全anchor H须复现0.10294729462475516。每步记录真实batchH及梯度/裁剪，固定128条每10步，全4096条与全目录RQ/MSE每10完整内容epoch（30步）；0/1000端点评估，末8个scheduled monitor按预声明阈值分析。每步完整suffix容量检查，保留rejected/last_valid，不扩容。只读Base_train/Update_train；无validation排名、holdout/Future、推荐模型训练或SASRec更新。串行、4h后不启动下一arm，已运行继续。
 

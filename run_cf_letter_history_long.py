@@ -14,7 +14,7 @@ import numpy as np
 
 from genrec.cf_letter_protocol import encoded,read,save,sha
 from genrec.cf_letter_refresh_protocol import load_data,transfer_predecessor
-from genrec.cf_letter_history_long_protocol import JOB,SCOPE,plan,transfer_refresh
+from genrec.cf_letter_history_long_protocol import JOB,SCOPE,plan,transfer_refresh,save_anchors,load_anchors,verify_zero_step_preflight
 from run_cf_letter_base import counts,gpu,paused
 
 ROOT=Path(__file__).resolve().parent
@@ -28,8 +28,7 @@ def child(output,p):
     torch.set_num_threads(1);seed_all(p['seed'])
     if not torch.cuda.is_available():raise RuntimeError('Real CF direction diagnostic requires CUDA')
     torch.cuda.set_device(0);torch.cuda.reset_peak_memory_stats()
-    with np.load(output/'prepared.npz',allow_pickle=False) as file:
-        data=dict(anchors={k:file['anchor_'+k] for k in ('history','targets','users','samples')},anchor_users=file['anchor_users'],anchor_source_rows=file['anchor_source_rows'])
+    data=load_anchors(output/'prepared.npz')
     engine=Engine(output,data,read(output/'binding.json'),p,'cuda:0');result=engine.run()
     result.update(peak_cuda_allocated_bytes=torch.cuda.max_memory_allocated(),peak_cuda_reserved_bytes=torch.cuda.max_memory_reserved())
     save(output/'diagnostic_summary.json',result)
@@ -46,9 +45,10 @@ def run(deployment,output,p):
     for name in ('compact','data_audit','gradient_calibration','h_only_curves','rq_only_curves','mixed_curves'):save(output/(name+'.json'),report if name=='compact' else {})
     try:
         if shutil.disk_usage(output).free<6*1024**3:raise RuntimeError('Insufficient independent output space')
+        proof=verify_zero_step_preflight(root,p)
         base=transfer_predecessor(root,output,p);refresh=transfer_refresh(root,output,p);data,binding=load_data(deployment,p)
-        binding['input_sha256'].update(base);binding['input_sha256'].update(refresh);save(output/'binding.json',binding)
-        flat={'anchor_'+k:v for k,v in data['anchors'].items()};flat.update(anchor_users=data['anchor_users'],anchor_source_rows=data['anchor_source_rows']);np.savez(output/'prepared.npz',**flat)
+        binding['input_sha256'].update(base);binding['input_sha256'].update(refresh);binding['input_sha256'].update(proof);save(output/'binding.json',binding)
+        save_anchors(output/'prepared.npz',data)
         audit=dict(status='verified',allowed_query_splits=p['allowed_query_splits'],input_sha256=binding['input_sha256'],protocol_sha256=binding['protocol_sha256'],
             training_items=len(binding['items']),old_catalog_items=len(binding['old_items']),anchor_train_queries=len(data['anchor_users']),anchor_users=len(set(data['anchor_users'])),
             anchor_sample_ids_sha256=hashlib.sha256(encoded(binding['anchor_sample_ids'])).hexdigest(),training_items_sha256=hashlib.sha256(encoded(binding['items'])).hexdigest(),

@@ -18,6 +18,19 @@ HAVE=importlib.util.find_spec('torch') is not None and importlib.util.find_spec(
 
 
 class Protocol(unittest.TestCase):
+    def test_anchor_serialization_keeps_hash_users_and_raw_users_distinct(self):
+        from genrec.cf_letter_history_long_protocol import save_anchors,load_anchors,verify_zero_step_preflight
+        data=dict(anchors=dict(history=np.array([[0,1]]),targets=np.array([2]),users=np.array([7]),samples=np.array(['sample'])),anchor_users=np.array(['raw-user']),anchor_source_rows=np.array([3]))
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);save_anchors(root/'prepared.npz',data);restored=load_anchors(root/'prepared.npz')
+            for k,v in data['anchors'].items():self.assertTrue(np.array_equal(restored['anchors'][k],v))
+            self.assertTrue(np.array_equal(restored['anchor_users'],data['anchor_users']))
+            p=plan(ROOT);proof=p['zero_step_repair_of'];source=root/'workspaces'/proof['job_id']/'outputs';source.mkdir(parents=True)
+            runtime=dict(job_id=proof['job_id'],code_sha=proof['code_sha'],status='failed',command_started=False,checks_completed=1)
+            save(source/'task-runtime.json',runtime);proof['runtime_sha256']=sha(source/'task-runtime.json')
+            self.assertEqual(len(verify_zero_step_preflight(root,p)),1)
+            runtime['command_started']=True;save(source/'task-runtime.json',runtime);proof['runtime_sha256']=sha(source/'task-runtime.json')
+            with self.assertRaises(ValueError):verify_zero_step_preflight(root,p)
     def test_stability_requires_full_epoch_tail_and_rejects_batch_noise(self):
         from genrec.cf_letter_history_long_protocol import tail_stability,paired_assessment
         settings=plan(ROOT)['stability']
@@ -174,8 +187,8 @@ class RealModels(unittest.TestCase):
             import verify_cf_letter_history_long as verifier
             from unittest.mock import patch
             from genrec.cf_letter_history_long_protocol import JOB,SCOPE
-            prepared={'anchor_'+k:v for k,v in data['anchors'].items()}
-            prepared.update(anchor_users=data['anchor_users'],anchor_source_rows=data['anchor_source_rows']);np.savez(output/'prepared.npz',**prepared)
+            from genrec.cf_letter_history_long_protocol import save_anchors
+            save_anchors(output/'prepared.npz',data)
             save(output/'data_audit.json',dict(allowed_query_splits=p['allowed_query_splits'],anchor_train_queries=16,training_items=52,input_sha256={}))
             result.update(stage=SCOPE,job_id=JOB,code_sha=os.environ.get('LAB_BUFFER_CODE_SHA'),execution_status='completed',original_inputs_unchanged=True,uncertain_step_records=[],diagnostic_only=True,
                 **{k:False for k in ('gpt_training_performed','sasrec_training_performed','downstream_training_performed','validation_evaluated','holdout_evaluated','future_evaluated')})

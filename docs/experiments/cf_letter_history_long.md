@@ -2,7 +2,7 @@
 
 Authorized by Hao on 2026-10-28: after reviewing H-only / RQ-only / Mixed with longer diagnostics, Hao said **开始下发实验任务**. This supersedes the unexecuted 60-step direction proposal. It does not authorize the remaining migration study, parameter sweeps or downstream training.
 
-Scope `cf-letter-history-long-v1`; job `cf-letter-history-long-001`. The immutable manifest is `cf_letter_history_long.json`. One serial bundle reserves **3,000 optimizer steps: three independent arms of 1,000 steps**. Equal steps and sampling do not imply equal compute. Each arm's runtime is recorded.
+Scope `cf-letter-history-long-repair-v1`; job `cf-letter-history-long-repair-001`. The immutable manifest is `cf_letter_history_long.json`. One serial bundle reserves **3,000 optimizer steps: three independent arms of 1,000 steps**. Equal steps and sampling do not imply equal compute. Each arm's runtime is recorded.
 
 ## Fixed starting state and objectives
 
@@ -34,10 +34,17 @@ Capacity failure preserves the rejected checkpoint, last valid checkpoint, codes
 
 ## Execution and evidence boundary
 
-Use the installed generic v1 Runner without changing installed helpers, policy/read roots, cron or the main project checkout. Bind complete code SHA, manifest, deployed main-deployment.json, accepted Base and refresh dependency hashes. Read-only accepted files are copied into this job's own output and rechecked at completion. Output: `/home/hao/frec/git-lab-buffer/workspaces/cf-letter-history-long-001/outputs/cf-history-long`.
+Use the installed generic v1 Runner without changing installed helpers, policy/read roots, cron or the main project checkout. Bind complete code SHA, manifest, deployed main-deployment.json, accepted Base and refresh dependency hashes. Read-only accepted files are copied into this job's own output and rechecked at completion. Output: `/home/hao/frec/git-lab-buffer/workspaces/cf-letter-history-long-repair-001/outputs/cf-history-long`.
 
 Wait for external GPU work. The existing four-hour guard stops new arms while a live arm finishes; the outer task timeout is 86,400 seconds. No process is terminated. Maximum GPU memory guard=24,576 MiB; execution is serial to preserve the paired setup.
 
 Mandatory server CPU preflight: Base model suite and the new long-diagnostic suite, including real GPT/codebook gradients, three independent resets, rotating sampling, monitor schedule, checkpoints and scientific-verifier acceptance on tiny real models. Cloud skips are not real-model passes. The task's read-only verifier reaggregates raw batch/fixed/full NLL, independently regenerates suffix capacity for every step, reloads monitoring checkpoints for native loss/MSE and checks CPU initial/final GPT NLL before the generic observer commits the English report and receipt.
 
 Only Base_train and Update_train are accessed. No validation ranking, anchor_holdout, Future, SASRec fitting or recommender fitting. Existing Base/Future tables and all old negative evidence remain intact. Stop after this diagnostic is verified, analyzed and reported; next_job_id=null.
+
+
+## First-attempt failure and same-budget repair
+
+The original `cf-letter-history-long-001` at `cd459d741a421a4e4ad411a73b125fd73ff1ced6` failed actual CPU preflight; no Beauty command or update ran. The production and tiny-fixture NPZ writer overwrote encoded user hashes with raw identities under the same key. Use one shared serializer with disjoint `encoded_anchor_*` and `raw_anchor_users` names, plus a pure NumPy round-trip regression. Actual-model checks remain mandatory; none is removed or bypassed.
+
+The replacement is `cf-letter-history-long-repair-001`, scope `cf-letter-history-long-repair-v1`, within the original 3000 actual-step family budget. Its driver requires the exact failed runtime hash, command_started=false and absence of old diagnostic output before any new data command. Keep the original reservation/failure immutable and record zero actual steps. No hyperparameter or training plan changes. The server also wrote a local PAUSED file after observing failure. Git cannot clear that installed early scan guard; a narrow evidence-checked pause archival is needed before the unchanged Runner can receive the repair. This is not a Runner installation or helper upgrade.

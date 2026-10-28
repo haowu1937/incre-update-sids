@@ -7,8 +7,8 @@ import numpy as np
 from genrec.cf_letter_protocol import encoded,read,safe_file,sha
 
 MANIFEST='docs/experiments/cf_letter_history_long.json'
-SCOPE='cf-letter-history-long-v1'
-JOB='cf-letter-history-long-001'
+SCOPE='cf-letter-history-long-repair-v1'
+JOB='cf-letter-history-long-repair-001'
 
 
 def cases(p):
@@ -38,7 +38,7 @@ def submission(code_sha,deployment_sha,root,repository):
         argv=['python','-u','-B','run_cf_letter_history_long.py','--deployment',str(root/'main-deployment.json'),'--output','outputs/cf-history-long'],
         artifacts=['outputs/task-runtime.json',*[f'outputs/cf-history-long/{n}.json' for n in ('compact','data_audit','gradient_calibration','h_only_curves','rq_only_curves','mixed_curves')]])
     scope=dict(protocol_version=1,scope_id=SCOPE,max_optimizer_steps=3000,max_parallel=1,authorization=p['authorization'],
-        allowed_query_splits=p['allowed_query_splits'],predecessor_read_only=[p['predecessor'],p['refresh_predecessor']],stop_after_diagnostic=True)
+        budget_family=p['budget_family'],zero_step_repair_of=p['zero_step_repair_of'],allowed_query_splits=p['allowed_query_splits'],predecessor_read_only=[p['predecessor'],p['refresh_predecessor']],stop_after_diagnostic=True)
     contract=dict(protocol_version=1,scope_id=SCOPE,job_id=JOB,code_sha=code_sha,request_sha256=digest(request),scope_path='task-scopes/'+SCOPE+'.json',scope_sha256=digest(scope),
         manifest=dict(path=MANIFEST,sha256=sha(Path(repository)/MANIFEST)),
         preflight=[['python','-u','-B','tests/incremental/test_cf_letter_base.py','--require-torch'],['python','-u','-B','tests/incremental/test_cf_letter_history_long.py','--require-torch']],
@@ -48,6 +48,29 @@ def submission(code_sha,deployment_sha,root,repository):
 
 def indices_sha(indices):
     return hashlib.sha256(np.asarray(indices,dtype='<i8').tobytes()).hexdigest()
+
+
+def save_anchors(path,data):
+    flat={'encoded_anchor_'+k:v for k,v in data['anchors'].items()}
+    flat.update(raw_anchor_users=data['anchor_users'],anchor_source_rows=data['anchor_source_rows'])
+    np.savez(path,**flat)
+
+
+def load_anchors(path):
+    with np.load(path,allow_pickle=False) as file:
+        return dict(anchors={k:file['encoded_anchor_'+k] for k in ('history','targets','users','samples')},
+            anchor_users=file['raw_anchor_users'],anchor_source_rows=file['anchor_source_rows'])
+
+
+def verify_zero_step_preflight(root,p):
+    proof=p['zero_step_repair_of'];source=Path(root)/'workspaces'/proof['job_id']/'outputs'
+    path=source/'task-runtime.json'
+    if path.is_symlink() or sha(path)!=proof['runtime_sha256']:raise ValueError('Zero-step failure evidence changed')
+    runtime=read(path)
+    if (runtime['job_id']!=proof['job_id'] or runtime['code_sha']!=proof['code_sha'] or runtime['status']!='failed'
+            or runtime['command_started'] is not False or runtime['checks_completed']!=1 or (source/'cf-history-long').exists()):
+        raise ValueError('Repair requires the exact zero-Beauty-step preflight failure')
+    return {str(path):proof['runtime_sha256']}
 
 
 def tail_stability(monitors,settings):

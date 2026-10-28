@@ -21,7 +21,7 @@
   "new_training_steps_authorized": 3000,
   "new_future_prediction_passes_authorized": 0,
   "acceptance_timeout_seconds": 86400,
-  "max_diagnosed_repair_jobs": 0,
+  "max_diagnosed_repair_jobs": 1,
   "same_fault_automatic_retry": false,
   "selection_metric": "none; fixed endpoint and predeclared training-side stability/efficacy only",
   "beam": 20,
@@ -35,8 +35,8 @@
   "web_controller": "docs/lab_buffer/CONTROLLER.md",
   "persistent_state": "lab-requests:control/main.json",
   "stop_after_plan": true,
-  "revision": 6,
-  "active_scope": "cf-letter-history-long-v1",
+  "revision": 7,
+  "active_scope": "cf-letter-history-long-repair-v1",
   "scope_manifest": "docs/experiments/cf_letter_history_long.json",
   "scope_authorized_at": "2026-10-28",
   "optimizer_steps_scope": "Three reset quantizer arms only; no SASRec/GPT updates or old-budget recycling",
@@ -65,5 +65,8 @@
     "three_codebooks"
   ],
   "quantizer_training_authorized": true,
-  "gpt_training_authorized": false
+  "gpt_training_authorized": false,
+  "budget_family": "cf-letter-history-long-v1",
+  "actual_step_family_cap": 3000,
+  "zero_step_repair_of": "cf-letter-history-long-001"
 }

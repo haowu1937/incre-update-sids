@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np
 from genrec.cf_letter_protocol import read,save,sha
 from genrec.cf_letter_refresh_protocol import load_data,damage,versioned_mapping
-from genrec.cf_letter_history_long_protocol import JOB,SCOPE,cases,plan,indices_sha,tail_stability,paired_assessment
+from genrec.cf_letter_history_long_protocol import JOB,SCOPE,cases,plan,indices_sha,tail_stability,paired_assessment,load_anchors
 ROOT=Path(__file__).resolve().parent
 
 
@@ -26,11 +26,11 @@ def verify(context):
         if sha(path)!=value:raise ValueError('Read-only source changed')
     deployment=next(k for k in c['contract']['input_sha256'] if k.endswith('/main-deployment.json'));data,binding=load_data(deployment,p)
     if audit['allowed_query_splits']!=['base_train','update_train'] or audit['anchor_train_queries']!=p['anchor_size'] or audit['training_items']!=p['expected_training_items']:raise ValueError('Training-only cohort differs')
-    with np.load(output/'prepared.npz',allow_pickle=False) as file:
-        for key,value in data['anchors'].items():
-            if not np.array_equal(file['anchor_'+key],value):raise ValueError('Prepared anchors differ')
-        for key in ('anchor_users','anchor_source_rows'):
-            if not np.array_equal(file[key],data[key]):raise ValueError('Anchor identities differ')
+    prepared=load_anchors(output/'prepared.npz')
+    for key,value in data['anchors'].items():
+        if not np.array_equal(prepared['anchors'][key],value):raise ValueError('Prepared anchors differ')
+    for key in ('anchor_users','anchor_source_rows'):
+        if not np.array_equal(prepared[key],data[key]):raise ValueError('Anchor identities differ')
     import torch
     from genrec.cf_letter_base_training import Sampler
     from genrec.cf_letter_history_long import public_curves

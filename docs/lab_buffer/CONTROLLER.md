@@ -1,8 +1,13 @@
 # Main SID experiment controller, protocol sid-main-v1
 
+## Zero-step serialization repair, 2026-10-28
+
+First job `cf-letter-history-long-001` failed actual CPU preflight because encoded and raw user identities shared the `anchor_users` NPZ key. Runtime SHA and full logs are retained in `docs/experiments/cf_letter_history_long_failure.json`; command_started=false proves zero Beauty updates. The replacement job/scope below carries the **same 3000 actual-step family cap**, not a new research budget. Preserve the original nominal reservation and failure receipt, record actual zero, and bind replacement execution to the original runtime hash plus absent old diagnostic output. Fix only the serialization namespace; no scientific recipe change. Generic task transport is unchanged. The local main_service PAUSED file prevents all Git scans; remote queue publication alone cannot clear it. Exact local pause reconciliation is required, not another Runner upgrade. Do not claim server recovery without evidence.
+
+
 ## Current scope amendment, 2026-10-28: three longer loss trajectories
 
-Hao explicitly said **开始下发实验任务** after reviewing three 1,000-step arms. Authorize only `cf-letter-history-long-v1`, job `cf-letter-history-long-001`; manifest `docs/experiments/cf_letter_history_long.json`, scientific plan in the matching Markdown. New reservation=3,000 codebook steps, serial. The old 60-step direction proposal is not dispatched. Prior Base/CF-refresh receipts, budgets and negative results remain intact.
+Hao explicitly said **开始下发实验任务** after reviewing three 1,000-step arms. Authorize only `cf-letter-history-long-repair-v1`, job `cf-letter-history-long-repair-001`; manifest `docs/experiments/cf_letter_history_long.json`, scientific plan in the matching Markdown. New reservation=3,000 codebook steps, serial. The old 60-step direction proposal is not dispatched. Prior Base/CF-refresh receipts, budgets and negative results remain intact.
 
 Restore identical Base C0 + accepted fixed E1 for H-only / RQ-only / Mixed, each with reset AdamW, LR1e-4, weight_decay=0, clipping0.1, temperature0.5, seed2026. Only three codebooks train; selected Base GPT and E1/SASRec remain frozen. Same rotating content/anchor samplers; old four-digit reference/target/mask/positions/I0. Initial full H must reproduce 0.10294729462475516. Four training probes set lambda0 once to 0.1*median(gQ/gH); require all finite nonzero positive-H probes, otherwise preserve and stop. No parameter scan or automatic extension/retry.
 
