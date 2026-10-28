@@ -4,7 +4,12 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "cf-letter-history-long-repair-001",
-  "lease": null,
+  "lease": {
+    "token": "web-optimizer-dispatch-2026-10-28T14:15:47.384Z",
+    "owner": "web-user-authorized-7000-step-optimizer-study",
+    "acquired_at": "2026-10-28T14:15:47.385Z",
+    "expires_at_unix": 1793197847.385
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
