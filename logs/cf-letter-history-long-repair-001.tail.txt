@@ -46,3 +46,5 @@ OK
 {"pid": 1328155, "optimizer_steps": 2178, "branches": {"completed_branches": 2, "optimizer_steps": 2000}, "stop_new_branches": null}
 {"pid": 1328155, "optimizer_steps": 2255, "branches": {"completed_branches": 2, "optimizer_steps": 2000}, "stop_new_branches": null}
 {"pid": 1328155, "optimizer_steps": 2336, "branches": {"completed_branches": 2, "optimizer_steps": 2000}, "stop_new_branches": null}
+{"pid": 1328155, "optimizer_steps": 2420, "branches": {"completed_branches": 2, "optimizer_steps": 2000}, "stop_new_branches": null}
+{"pid": 1328155, "optimizer_steps": 2503, "branches": {"completed_branches": 2, "optimizer_steps": 2000}, "stop_new_branches": null}
