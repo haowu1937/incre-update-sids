@@ -1,0 +1,12 @@
+{
+  "protocol_version": 1,
+  "job_id": "cf-letter-history-long-repair-001",
+  "code_sha": "6aad22abe4a926b28a98052a9871b3fba99246f3",
+  "contract_sha256": "f09fca24f697ad728d31cc39e27bb953bd486b290a07bd00e42abbf8f4f34cc7",
+  "status": "completed",
+  "checks_completed": 2,
+  "command_started": true,
+  "started_at": "2026-10-28T12:05:20.073286+00:00",
+  "original_inputs_unchanged": true,
+  "finished_at": "2026-10-28T12:29:00.128458+00:00"
+}
