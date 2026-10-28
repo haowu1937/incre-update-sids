@@ -1,6 +1,6 @@
 # History-aware SID Update Experiment Report
 
-Last updated: 2026-10-28. The completed Llama content-RQ/TIGER results are retained below. The new SASRec CF-LETTER-adapted line has passed Base acceptance and the shared CF refresh diagnostic; the next three-arm codebook diagnostic is prepared for dispatch. No new codebook result, recommender Update fitting or Future evaluation is claimed.
+Last updated: 2026-10-28. The completed Llama content-RQ/TIGER results are retained below. The SASRec CF-LETTER-adapted line has passed Base acceptance, CF refresh acceptance and its three-arm training-only codebook diagnostic; the latter fails the predeclared stable-repair gate. New recommender Update fitting and Future evaluation have not run.
 
 ## Primary downstream results
 
@@ -1313,3 +1313,31 @@ Identical C0 and fixed E1; frozen selected Base GPT. Initial full anchor_train H
 Paired tail assessment: `{"eligible": true, "mixed_tail_stable": false, "passed": false, "tail_H_relative_reduction_vs_rq_only": 0.07239707446051902, "tail_hard_mse_relative_increase": 0.0031064034181038647, "tail_native_rq_relative_increase": 0.0020415389397006045}`.
 
 Training minibatch H is separate from fixed-128 and full-4096 hard-H curves. Full monitors run every ten completed content epochs and at the endpoint; stability uses the last eight scheduled epoch monitors, excluding an incidental final partial epoch. These are finite-window diagnostics, not guaranteed asymptotic convergence or held-out generalization. No lambda/STE scan, SASRec/GPT fitting, ranking validation, anchor holdout or Future scoring ran. Existing downstream tables remain unchanged. The scope ends here; no automatic extension or next task.
+
+<!-- cf-letter-history-long-cloud:84490dc7aa8074fa4d9b8d2183e94a19f8e4031ffcc2c5bb59f915ee61788c0f -->
+
+### 6.28 Three-arm long diagnostic: relative mitigation without stable hard-H repair (2026-10-28)
+
+Job `cf-letter-history-long-repair-001` completed all three independent 1,000-step arms and passed the task-SHA server scientific verifier. The accepted server report is commit `97044c63dfd941b9fa15a1317db6471e817bb64a`. The original attempt failed CPU preflight with zero Beauty updates; its failure, request, receipt and nominal reservation are retained. The replacement spent exactly 3,000 actual codebook steps within the original family cap, with no uncertain step intent. No further task is authorized.
+
+All arms restored the same Base C0, fixed accepted E1 (11,691 x 64), reset AdamW and paired sampling. Only the three codebooks trained. Selected Base GPT, SASRec, CF vectors and the original E0 four-digit NLL references remained fixed. Initial full anchor_train H reproduced 0.102947294625 on the original 4,096 queries / 2,648 users. The one-time four-probe calibration recomputes lambda0=0.000638660634136; there was no lambda/STE scan or adaptive weighting.
+
+| Arm | Endpoint full H | Endpoint signed delta NLL | Native RQ loss | Hard MSE (all E1 rows) | Last-eight full-monitor H mean | Tail H trend span | Joint stability |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| H-only | 0.235105047 | +0.092519539 | 0.014198393 | 0.002680671 | 0.217281609 | 13.3096% | Failed |
+| RQ-only | 0.285447898 | +0.194572997 | 0.011248636 | 0.001924145 | 0.276949294 | 7.1468% | Failed |
+| Mixed | 0.265476771 | +0.173788772 | 0.011269451 | 0.001929527 | 0.256898976 | 7.3104% | Failed |
+
+The last-eight scheduled monitors are steps 780, 810, 840, 870, 900, 930, 960 and 990. Step 1,000 is a separate endpoint after an incomplete content epoch and does not enter tail stability. All three H trend spans exceed the predeclared 2% limit. RQ-only and Mixed pass native-RQ stability; H-only also fails its RQ trend criterion (3.9755%). Thus no arm passes the joint finite-window criterion, and no asymptotic convergence claim follows.
+
+Mixed lowers tail-mean H by **7.2397%** relative to RQ-only while increasing tail native RQ by **0.2042%** and hard MSE by **0.3106%**, within both +2% reconstruction constraints. The predeclared combined efficacy gate nevertheless **fails because Mixed is not stable**. This is a measured relative attenuation of codebook-update damage; its endpoint and tail H remain above the common CF-refresh starting H. It is neither recovery to the original E0 mapping nor evidence of downstream/held-out benefit.
+
+H-only initially reduces scheduled full H to 0.085376846 at step 60 (17.0674% below the starting H), then rises to 0.235105047 by step 1,000. This early minimum is descriptive, not a retrospectively selected deployment checkpoint. RQ-only improves endpoint native RQ and hard MSE while worsening full H, demonstrating the distinction between reconstruction quality and compatibility with the frozen retriever. H-only's lower final H than the other arms does not establish successful repair relative to the initial state.
+
+At the 34 returned full-monitor update samples, the recorded history-gradient dot actual update is negative in all H-only and Mixed samples, but this does not predict the subsequent discrete full-SID H trajectory. These gradients are sampled training-batch surrogate quantities; the post-update full-cohort H uses hard assignments and suffixes. H-only clipped 166 of 1,000 steps; RQ-only and Mixed clipped zero, and no arm reported a zero history-gradient step. These are gradient-route clues, not a demonstrated causal explanation of the deterioration.
+
+The cloud checked all 100 fixed-128 monitor points and all 34 full-4096 monitor points per arm, recomputed the declared tail statistics, paired gate and four-probe lambda arithmetic, and verified all seven returned artifact hashes plus raw request/result/contract/scope/manifest hashes. The initial state, 3 x 1,000 ledger, no-uncertain-intent record and forbidden-training/evaluation flags agree. All reported complete SIDs are feasible; returned full-monitor maximum reserved suffix widths are 73, 85 and 85 of 512 for H-only, RQ-only and Mixed. These sampled maxima do not replace the server's every-step capacity audit.
+
+The reviewed task-SHA verifier checks raw sampled-batch H/objectives/clipping, shared sampler identities, every-step full suffix allocation, immutable predecessor/input bytes, full query-level H/bootstrap aggregates, canonical checkpoint RQ/MSE, and initial/final CPU GPT NLL on the fixed first 16 queries. Model reloads, raw query/bootstrap reaggregation and the 3,000 per-step local records remain server evidence: the cloud did not load Beauty checkpoints or independently recompute individual model likelihoods. Public curves omit those raw step records; they are not substituted for the retained server logs.
+
+All weights, per-step traces, full-query records and checkpoints remain under `/home/hao/frec/git-lab-buffer/workspaces/cf-letter-history-long-repair-001/outputs/cf-history-long`. The measured bundle runtime is 1,395.78 seconds; H-only/RQ-only/Mixed runtimes are 456.89/455.25/454.87 seconds, so matched steps do not imply identical compute. The existing Base and Future tables are unchanged. This training-only diagnostic is reported and stopped: no recommender/SASRec fitting, validation ranking, holdout/Future scoring, parameter sweep, extension or automatic next job.
