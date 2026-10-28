@@ -1,5 +1,5 @@
 {
   "status": "main_service_error",
-  "error": "RuntimeError: Git operation failed: fetch (see connection/credentials)",
+  "error": "ValueError: Task failed/interrupted; preserve evidence and diagnose before any new job",
   "new_jobs_paused": true
 }
