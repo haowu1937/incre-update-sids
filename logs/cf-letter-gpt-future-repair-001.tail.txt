@@ -1,26 +1,4 @@
-eries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 23216, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 24016, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 24816, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 25616, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 26416, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 27216, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 28016, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 28816, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 29616, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 30416, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 31216, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 32016, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 32816, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 33616, "all_queries": 34189}
-{"phase": "future", "arm": "historical_b09", "queries_done": 16, "all_queries": 34189}
-{"phase": "future", "arm": "historical_b09", "queries_done": 816, "all_queries": 34189}
-{"phase": "future", "arm": "historical_b09", "queries_done": 1616, "all_queries": 34189}
-{"phase": "future", "arm": "historical_b09", "queries_done": 2416, "all_queries": 34189}
-{"phase": "future", "arm": "historical_b09", "queries_done": 3216, "all_queries": 34189}
-{"phase": "future", "arm": "historical_b09", "queries_done": 4016, "all_queries": 34189}
-{"phase": "future", "arm": "historical_b09", "queries_done": 4816, "all_queries": 34189}
-{"phase": "future", "arm": "historical_b09", "queries_done": 5616, "all_queries": 34189}
+09", "queries_done": 5616, "all_queries": 34189}
 {"phase": "future", "arm": "historical_b09", "queries_done": 6416, "all_queries": 34189}
 {"phase": "future", "arm": "historical_b09", "queries_done": 7216, "all_queries": 34189}
 {"phase": "future", "arm": "historical_b09", "queries_done": 8016, "all_queries": 34189}
@@ -140,3 +118,6 @@ eries": 34189}
 {"phase": "future", "arm": "historical_b0", "queries_done": 30416, "all_queries": 34189}
 {"phase": "future", "arm": "historical_b0", "queries_done": 31216, "all_queries": 34189}
 {"phase": "future", "arm": "historical_b0", "queries_done": 32016, "all_queries": 34189}
+{"phase": "future", "arm": "historical_b0", "queries_done": 32816, "all_queries": 34189}
+{"phase": "future", "arm": "historical_b0", "queries_done": 33616, "all_queries": 34189}
+{"stage": "cf-letter-gpt-future-repair-v1", "job_id": "cf-letter-gpt-future-repair-001", "code_sha": "26295b4626a71fd596bc30dbf72233315645631a", "execution_status": "completed", "optimizer_steps_cap": 10000, "quantizer_training_performed": false, "sasrec_training_performed": false, "holdout_evaluated": false, "future_used_for_selection": false, "training_names": ["ft_old", "plain_b09", "historical_b09", "plain_b0", "historical_b0"], "future_names": ["ft_old", "plain_b09", "historical_b09", "plain_b0", "historical_b0"], "max_gpu_memory_mib": 18388, "completed_case_names": ["ft_old", "plain_b09", "historical_b09", "plain_b0", "historical_b0"], "selection_locked_before_future": true, "selection_lock_sha256": "3e57b29293abf61523124608fa76075fa3e9d9dbaca8f2ed09c18f72c63ba367", "research_outcome": "five_locked_GPT_Update_Future_conditions_completed", "stop_new_stages_reason": null, "optimizer_steps_spent": 10000, "stage_step_counts": {"historical_b0": 2000, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "uncertain_step_records": [], "original_inputs_unchanged": true, "runtime_seconds": 6181.791957009991, "local_artifact_index_sha256": "a5ba48e27258a22697300e2ad58bb1502aa2d845e6353df11bbad625b9f98457", "returned_artifact_sha256": {"data_audit": "94f29fb7b8f353bb91f60738f654c09b078ad2cd428a75f7f57a1b03f75197ce", "training": "d8f2c31e522f7cc7b32042607619ea2de8e70641285fe006e5c9528978d830e7", "selection_locked": "3e57b29293abf61523124608fa76075fa3e9d9dbaca8f2ed09c18f72c63ba367", "future": "49d7eae5f91a93d472df1ea9a8cc3241ba8f0a219c3de2e8ee0878bb9415eed9", "comparisons": "2a297ca21e0fd19adb5fac78b19795d0eb5ab00ad93ca9c8cceddfc1bdea42b0"}}

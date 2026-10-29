@@ -1,0 +1,12 @@
+{
+  "protocol_version": 1,
+  "job_id": "cf-letter-gpt-future-repair-001",
+  "code_sha": "26295b4626a71fd596bc30dbf72233315645631a",
+  "contract_sha256": "43229d9a847c55171f07bea93f55598a7793fe405d42aea1f77e59f907155585",
+  "status": "completed",
+  "checks_completed": 2,
+  "command_started": true,
+  "started_at": "2026-10-29T14:26:20.913790+00:00",
+  "original_inputs_unchanged": true,
+  "finished_at": "2026-10-29T16:10:15.547584+00:00"
+}

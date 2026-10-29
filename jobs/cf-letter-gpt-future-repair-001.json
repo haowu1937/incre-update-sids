@@ -6,15 +6,23 @@
   "request_sha256": "e2472fb4d9ec645879f02ee71bfcdd2e11f577beda62f7206f1da2c98254fe4c",
   "code_sha": "26295b4626a71fd596bc30dbf72233315645631a",
   "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
-  "status": "running",
+  "status": "completed",
   "started_at": "2026-10-29T14:26:09.639483+00:00",
-  "updated_at": "2026-10-29T16:09:26.176168+00:00",
-  "exit_code": null,
+  "updated_at": "2026-10-29T16:10:15.647841+00:00",
+  "exit_code": 0,
   "pid": 2692809,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-gpt-future-repair-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-gpt-future-repair-001.log",
   "log_tail": "logs/cf-letter-gpt-future-repair-001.tail.txt",
-  "artifacts": [],
+  "artifacts": [
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/task-runtime.json",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/compact.json",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/data_audit.json",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/training.json",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/selection_locked.json",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/future.json",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/comparisons.json"
+  ],
   "training_started": true,
   "actual_code_sha": "26295b4626a71fd596bc30dbf72233315645631a",
   "argv": [
@@ -31,5 +39,15 @@
     "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-gpt-future-repair-001"
   ],
   "process_started": true,
-  "elapsed_seconds": 6185.39
+  "elapsed_seconds": 6234.861,
+  "artifacts_sha256": {
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/task-runtime.json": "2e3b08c679ec7469a7451e0884c8e82a895937147b86705c0126da23df65a8c4",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/compact.json": "8629100e69cfbf478212b30f8aaded9df74cbf559c1a774d36e7ebd0b64b060d",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/data_audit.json": "94f29fb7b8f353bb91f60738f654c09b078ad2cd428a75f7f57a1b03f75197ce",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/training.json": "d8f2c31e522f7cc7b32042607619ea2de8e70641285fe006e5c9528978d830e7",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/selection_locked.json": "3e57b29293abf61523124608fa76075fa3e9d9dbaca8f2ed09c18f72c63ba367",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/future.json": "49d7eae5f91a93d472df1ea9a8cc3241ba8f0a219c3de2e8ee0878bb9415eed9",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/comparisons.json": "2a297ca21e0fd19adb5fac78b19795d0eb5ab00ad93ca9c8cceddfc1bdea42b0"
+  },
+  "finished_at": "2026-10-29T16:10:15.647818+00:00"
 }
