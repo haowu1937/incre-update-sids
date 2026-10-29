@@ -1,6 +1,4 @@
-": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6457, "stage_steps": {"historical_b09": 1254, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1203}, "stop_new_arms": null}
-{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6566, "stage_steps": {"historical_b09": 1307, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1259}, "stop_new_arms": null}
-{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6673, "stage_steps": {"historical_b09": 1362, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1311}, "stop_new_arms": null}
+0658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6673, "stage_steps": {"historical_b09": 1362, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1311}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6777, "stage_steps": {"historical_b09": 1413, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1364}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6885, "stage_steps": {"historical_b09": 1468, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1417}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6992, "stage_steps": {"historical_b09": 1521, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1471}, "stop_new_arms": null}
@@ -90,3 +88,8 @@ Passing a tuple of `past_key_values` is deprecated and will be removed in Transf
 {"phase": "future", "arm": "plain_b09", "queries_done": 6416, "all_queries": 34189}
 {"phase": "future", "arm": "plain_b09", "queries_done": 7216, "all_queries": 34189}
 {"phase": "future", "arm": "plain_b09", "queries_done": 8016, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b09", "queries_done": 8816, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b09", "queries_done": 9616, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b09", "queries_done": 10416, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b09", "queries_done": 11216, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b09", "queries_done": 12016, "all_queries": 34189}
