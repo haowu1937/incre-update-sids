@@ -1,5 +1,4 @@
-in_b0", "historical_b0"], "optimizer_steps": 419, "stage_steps": {"ft_old": 211, "plain_b09": 208}, "stop_new_arms": null}
-{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 500, "stage_steps": {"ft_old": 250, "plain_b09": 250}, "stop_new_arms": null}
+ical_b0"], "optimizer_steps": 500, "stage_steps": {"ft_old": 250, "plain_b09": 250}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 593, "stage_steps": {"ft_old": 297, "plain_b09": 296}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 697, "stage_steps": {"ft_old": 349, "plain_b09": 348}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 804, "stage_steps": {"ft_old": 403, "plain_b09": 401}, "stop_new_arms": null}
@@ -60,3 +59,4 @@ in_b0", "historical_b0"], "optimizer_steps": 419, "stage_steps": {"ft_old": 211,
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6140, "stage_steps": {"historical_b09": 1095, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1045}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6246, "stage_steps": {"historical_b09": 1147, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1099}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6352, "stage_steps": {"historical_b09": 1200, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1152}, "stop_new_arms": null}
+{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6457, "stage_steps": {"historical_b09": 1254, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1203}, "stop_new_arms": null}
