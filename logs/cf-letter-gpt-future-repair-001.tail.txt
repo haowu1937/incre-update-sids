@@ -60,3 +60,5 @@ OK
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3194, "stage_steps": {"ft_old": 1620, "plain_b09": 1574}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3299, "stage_steps": {"ft_old": 1674, "plain_b09": 1625}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3405, "stage_steps": {"ft_old": 1726, "plain_b09": 1679}, "stop_new_arms": null}
+{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3515, "stage_steps": {"ft_old": 1782, "plain_b09": 1733}, "stop_new_arms": null}
+{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3624, "stage_steps": {"ft_old": 1836, "plain_b09": 1788}, "stop_new_arms": null}
