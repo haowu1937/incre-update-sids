@@ -1423,3 +1423,26 @@ Fixed Mixed lambda=0.0006386606341359484; beta2=0.999, epsilon=1e-8, wd=0, clipp
 Paired assessment: `{"lr1e5_b0": {"eligible": true, "mixed_tail_stable": false, "passed": false, "tail_H_relative_reduction_vs_rq_only": 0.025948041320302928, "tail_hard_mse_relative_increase": 0.00015742361232873314, "tail_native_rq_relative_increase": 0.00013275039867033378}, "lr1e5_b09": {"eligible": true, "mixed_tail_stable": false, "passed": false, "tail_H_relative_reduction_vs_rq_only": 0.023656801471697242, "tail_hard_mse_relative_increase": 0.00018252437831400847, "tail_native_rq_relative_increase": 0.00013350630563158106}}`.
 
 Acceptance reaggregates raw query NLL/H and every-step suffix capacity, checks all scheduled checkpoint indices exactly on production CUDA with the original full-catalog and old-item chunk shapes, verifies native RQ/MSE and CPU initial/final GPT likelihoods, and checks hashes, fresh optimizer state, sampler order and step counts. GPU reload is read-only and authorized by this task manifest. These are training-side finite-window results, not asymptotic convergence or downstream gains. No holdout, validation ranking, Future, SASRec/GPT training, automatic extension, retry or next experiment.
+
+<!-- cf-letter-optimizer-pair-analysis:49ec6a3d761d46fc4340f5cddc070b5163ca0f2bb17597265b270de7226ae4cd -->
+
+### 6.32 Paired results: small relative damage reduction, no joint stability (2026-10-29)
+
+All four arms completed 1000 updates each, consuming exactly 4000 / 4000 new codebook steps. The server passed all four mandatory CPU preflight suites and the production-CUDA scientific verifier, then published its verified receipt and result table above. No resource guard, uncertain update, suffix infeasibility or original-input change was reported. The latest Runner status is idle, with no next task. This acceptance applies to the new paired study; the earlier five-arm screening receipt remains blocked.
+
+Cloud review matched the exact request/result/contract/scope identities, all six returned artifact byte hashes and the manifest binding, recomputed all four returned curves (100 fixed-query points and 34 full-anchor points per arm), and reproduced the tail statistics and paired gates. It did not independently reload Beauty checkpoints or rescore raw server query records; those checks are server-verifier evidence.
+
+Tail means below use the eight scheduled full-anchor monitors at steps780,810,840,870,900,930,960,990. They are distinct from final step1000 and from changing minibatch losses.
+
+| beta1 | Objective | Tail native RQ | Tail full anchor_train H | H fitted trend span | RQ stable | H stable |
+| ---: | --- | ---: | ---: | ---: | --- | --- |
+| 0.9 | RQ-only | 0.011980275 | 0.136118304 | 4.6936% | Yes | No |
+| 0.9 | Mixed | 0.011981874 | 0.132898181 | 5.2627% | Yes | No |
+| 0 | RQ-only | 0.011979795 | 0.136325312 | 4.3502% | Yes | No |
+| 0 | Mixed | 0.011981385 | 0.132787937 | 5.4820% | Yes | No |
+
+Mixed reduces tail H relative to matched RQ-only by **2.3657%** (beta1=0.9) and **2.5948%** (beta1=0), below the predeclared >=5% target. Native RQ costs are only +0.01335% and +0.01328%, and hard-MSE costs are +0.01825% and +0.01574%, respectively. Reconstruction cost therefore passes the paired bound, while history efficacy and stability fail. Both Mixed H trend spans exceed the unchanged2% limit; neither setting meets the joint target.
+
+Initial full H was0.102947295 and native RQ was0.012321118. Mixed tail H is still29.09% /28.99% above that initial damage, while native RQ falls approximately2.75%. At these settings, the penalty modestly reduces damage relative to RQ-only but does not prevent damage from increasing relative to the fixed initial state. Changing beta1 from0.9 to0 does not resolve this outcome in this single-seed comparison. Per-arm reports record zero clipped steps and zero zero-history-gradient steps; these facts do not establish that the STE direction decreases hard H.
+
+No jointly stable RQ/H configuration has been established. This is a negative training-side result, with no new holdout, validation ranking, Future or recommendation-model evaluation. Preserve the original criteria and stop after reporting; no lambda/STE change, extension, retry or new experiment has been dispatched.
