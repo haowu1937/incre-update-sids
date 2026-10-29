@@ -1,12 +1,12 @@
 {
   "worker_id": "server2",
-  "mode": "queued",
+  "mode": "plan_completed",
   "active_job_id": "cf-letter-optimizer-pair-001",
-  "runner_status": "idle",
+  "runner_status": "completed",
   "pause_requested": false,
   "extension": {
     "scope_id": "history-joint-convergence-v1",
     "status": "completed"
   },
-  "observed_at": "2026-10-29T10:00:23.889522+00:00"
+  "observed_at": "2026-10-29T10:02:11.591521+00:00"
 }
