@@ -1,6 +1,4 @@
-zer_steps": 10000, "stage_steps": {"historical_b0": 2000, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
-Passing a tuple of `past_key_values` is deprecated and will be removed in Transformers v4.53.0. You should pass an instance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
-{"phase": "future", "arm": "ft_old", "queries_done": 16, "all_queries": 34189}
+es_done": 16, "all_queries": 34189}
 {"phase": "future", "arm": "ft_old", "queries_done": 816, "all_queries": 34189}
 {"phase": "future", "arm": "ft_old", "queries_done": 1616, "all_queries": 34189}
 {"phase": "future", "arm": "ft_old", "queries_done": 2416, "all_queries": 34189}
@@ -140,3 +138,8 @@ Passing a tuple of `past_key_values` is deprecated and will be removed in Transf
 {"phase": "future", "arm": "plain_b0", "queries_done": 6416, "all_queries": 34189}
 {"phase": "future", "arm": "plain_b0", "queries_done": 7216, "all_queries": 34189}
 {"phase": "future", "arm": "plain_b0", "queries_done": 8016, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 8816, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 9616, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 10416, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 11216, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 12016, "all_queries": 34189}
