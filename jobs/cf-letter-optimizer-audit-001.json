@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "job_id": "cf-letter-optimizer-audit-001",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "request_sha256": "d1296f414aa156325eda2c8e1f17e318197d79fdd7554ab31b4271e0bb6a101e",
+  "code_sha": "e648205d62554a2944cdfb1336c7e981b684ea44",
+  "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
+  "status": "starting",
+  "started_at": "2026-10-29T09:07:08.839758+00:00",
+  "updated_at": "2026-10-29T09:07:08.843918+00:00",
+  "exit_code": null,
+  "pid": null,
+  "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-audit-001",
+  "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-optimizer-audit-001.log",
+  "log_tail": "logs/cf-letter-optimizer-audit-001.tail.txt",
+  "artifacts": [],
+  "training_started": false
+}
