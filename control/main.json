@@ -4,7 +4,12 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "cf-letter-optimizer-pair-001",
-  "lease": null,
+  "lease": {
+    "token": "web-cf-downstream-1793276663248",
+    "owner": "web-cf-downstream-controller",
+    "acquired_at": "2026-10-29T12:24:23.249Z",
+    "expires_at_unix": 1793277563
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
