@@ -4,7 +4,12 @@
   "mode": "queued",
   "pause_requested": false,
   "active_job_id": "cf-letter-gpt-future-repair-001",
-  "lease": null,
+  "lease": {
+    "token": "67e5ef1603054bfc8048ba41ae8a7554",
+    "owner": "versioned-task-observer",
+    "acquired_at": "2026-10-29T16:10:40.043710+00:00",
+    "expires_at_unix": 1793291140.0437376
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
