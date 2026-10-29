@@ -1,0 +1,12 @@
+{
+  "protocol_version": 1,
+  "job_id": "cf-letter-optimizer-pair-001",
+  "code_sha": "47a98285d37864bab9e4405eb776e24e0ff24580",
+  "contract_sha256": "83736d739f210db9879c27027350c96ebe4b820fcd355a7c6c348776d6fb4e41",
+  "status": "completed",
+  "checks_completed": 4,
+  "command_started": true,
+  "started_at": "2026-10-29T09:37:20.224544+00:00",
+  "original_inputs_unchanged": true,
+  "finished_at": "2026-10-29T09:59:25.510970+00:00"
+}

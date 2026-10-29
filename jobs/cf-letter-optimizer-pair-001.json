@@ -6,15 +6,22 @@
   "request_sha256": "6a1575ab49a75e657add092e0b856fd6e9e93fa491566881ce5f6ee867103fc3",
   "code_sha": "47a98285d37864bab9e4405eb776e24e0ff24580",
   "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
-  "status": "running",
+  "status": "completed",
   "started_at": "2026-10-29T09:37:08.471797+00:00",
-  "updated_at": "2026-10-29T09:59:21.157396+00:00",
-  "exit_code": null,
+  "updated_at": "2026-10-29T09:59:32.741037+00:00",
+  "exit_code": 0,
   "pid": 2282436,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-pair-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-optimizer-pair-001.log",
   "log_tail": "logs/cf-letter-optimizer-pair-001.tail.txt",
-  "artifacts": [],
+  "artifacts": [
+    "artifacts/cf-letter-optimizer-pair-001/outputs/task-runtime.json",
+    "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/compact.json",
+    "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/data_audit.json",
+    "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/paired_assessment.json",
+    "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/curves_lr1e5_b09.json",
+    "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/curves_lr1e5_b0.json"
+  ],
   "training_started": true,
   "actual_code_sha": "47a98285d37864bab9e4405eb776e24e0ff24580",
   "argv": [
@@ -31,5 +38,14 @@
     "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-pair-001"
   ],
   "process_started": true,
-  "elapsed_seconds": 1321.033
+  "elapsed_seconds": 1332.616,
+  "artifacts_sha256": {
+    "artifacts/cf-letter-optimizer-pair-001/outputs/task-runtime.json": "fe0c491006bb5af00a172b72fba9adf24bd2fb294884ee0746b163fd479d9bd3",
+    "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/compact.json": "49ec6a3d761d46fc4340f5cddc070b5163ca0f2bb17597265b270de7226ae4cd",
+    "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/data_audit.json": "a66817ef27747c245953d2363a48d3067d1d2e06e51a2aeac8494898a088b3fa",
+    "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/paired_assessment.json": "b24990d45e39bca117cd539d6c7a74cb515ac8c282e42096aade8b4cee6cb2f1",
+    "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/curves_lr1e5_b09.json": "8f8f149d48a65802d6e8dd4f001e7a0edc2c3442f5d673e309b32e257e2473bd",
+    "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/curves_lr1e5_b0.json": "7f4c47e6a7e33932ccd8607ac6690c7b26a0a5fcc13774a930364accf40fc15a"
+  },
+  "finished_at": "2026-10-29T09:59:32.741024+00:00"
 }
