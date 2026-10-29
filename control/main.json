@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "queued",
+  "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "cf-letter-optimizer-audit-001",
-  "lease": {
-    "token": "ae48575cfdf04007900c50948a2ba8fb",
-    "owner": "versioned-task-observer",
-    "acquired_at": "2026-10-29T09:08:27.090704+00:00",
-    "expires_at_unix": 1793265807.0907314
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -98,6 +93,25 @@
       "processed_at": "2026-10-28T14:52:51.751715+00:00",
       "next_job_id": null,
       "verifier_log_tail": "Traceback (most recent call last):\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 191, in <module>\n    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--context',required=True);parser.add_argument('--output',required=True);a=parser.parse_args();save(a.output,verify(a.context))\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 156, in verify\n    verified=verify_arm(output/'arms'/result['case']['name'],data,binding,p,result['case'],r['code_sha']);full.append(verified)\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 93, in verify_arm\n    if not np.array_equal(canonical.numpy(),np.load(directory/f'catalog_codes_{step}.npy',allow_pickle=False)):raise ValueError('CPU full-monitor canonical codes differ')\nValueError: CPU full-monitor canonical codes differ\nTraceback (most recent call last):\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 191, in <module>\n    parser=argparse.ArgumentParser(description=__doc__);parser.add_argument('--context',required=True);parser.add_argument('--output',required=True);a=parser.parse_args();save(a.output,verify(a.context))\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 156, in verify\n    verified=verify_arm(output/'arms'/result['case']['name'],data,binding,p,result['case'],r['code_sha']);full.append(verified)\n  File \"/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-001/verify_cf_letter_optimizer.py\", line 93, in verify_arm\n    if not np.array_equal(canonical.numpy(),np.load(directory/f'catalog_codes_{step}.npy',allow_pickle=False)):raise ValueError('CPU full-monitor canonical codes differ')\nValueError: CPU full-monitor canonical codes differ\n"
+    },
+    "cf-letter-optimizer-audit-001": {
+      "status": "verified_and_reported",
+      "job_id": "cf-letter-optimizer-audit-001",
+      "code_sha": "e648205d62554a2944cdfb1336c7e981b684ea44",
+      "contract_sha256": "41f343af0e7885722fe96931ec48054806643bca563ab29a85ab0cc9ebd9b095",
+      "request_sha256": "d1296f414aa156325eda2c8e1f17e318197d79fdd7554ab31b4271e0bb6a101e",
+      "result_sha256": "eed1a554299e731bba071dadfddc9786658ead8e0955890e65581bbce04e14d6",
+      "actual_optimizer_steps": 0,
+      "report_commit_sha": "08e7a0350aaa7ba3b1d50c3b70fc83fa7dec481e",
+      "artifacts_sha256": {
+        "artifacts/cf-letter-optimizer-audit-001/outputs/task-runtime.json": "317dcb468d24bed4182597bf045cbcd8059ee0649e50fe986333cf244b350eb0",
+        "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/compact.json": "4eddede8e4aaa2fe6b904f3a6021ddf64f37d92d503e9149ebb459c2d26b0d23",
+        "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_1.json": "614c29c9b442d3aff335f56420cebf92e80d9c3b9f42532d8f27b8a15d8a8827",
+        "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_2.json": "d1b6207a739adafea79fa73eb65c07bfd6757d6cce2588d77259ecf8ec98106c",
+        "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_3.json": "6b952c136eca8217bb524c71c8040fed05695cc102f1ff523cc476dfac3b5622"
+      },
+      "processed_at": "2026-10-29T09:09:12.761120+00:00",
+      "next_job_id": null
     }
   },
   "plan": [
@@ -1057,7 +1071,9 @@
       "reservations": {
         "cf-letter-optimizer-audit-001": 0
       },
-      "actual_steps": {}
+      "actual_steps": {
+        "cf-letter-optimizer-audit-001": 0
+      }
     }
   },
   "current_scope": {
