@@ -1,5 +1,4 @@
-istorical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3844, "stage_steps": {"ft_old": 1946, "plain_b09": 1898}, "stop_new_arms": null}
-{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3952, "stage_steps": {"ft_old": 2000, "plain_b09": 1952}, "stop_new_arms": null}
+09", "plain_b0", "historical_b0"], "optimizer_steps": 3952, "stage_steps": {"ft_old": 2000, "plain_b09": 1952}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 4000, "stage_steps": {"ft_old": 2000, "plain_b09": 2000}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 4000, "stage_steps": {"ft_old": 2000, "plain_b09": 2000}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 4000, "stage_steps": {"ft_old": 2000, "plain_b09": 2000}, "stop_new_arms": null}
@@ -58,3 +57,4 @@ istorical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3844, "stage_st
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 9205, "stage_steps": {"historical_b0": 1205, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 9330, "stage_steps": {"historical_b0": 1330, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 9455, "stage_steps": {"historical_b0": 1455, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
+{"active_pids": [2783979], "pending": [], "optimizer_steps": 9578, "stage_steps": {"historical_b0": 1578, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
