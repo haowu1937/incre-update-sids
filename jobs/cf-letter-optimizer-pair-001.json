@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "job_id": "cf-letter-optimizer-pair-001",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "code_sha": "47a98285d37864bab9e4405eb776e24e0ff24580",
+  "created_at": "2026-10-29T09:35:49.371385+00:00",
+  "timeout_seconds": 86400,
+  "argv": [
+    "python",
+    "-u",
+    "-B",
+    "run_cf_letter_optimizer_pair.py",
+    "--deployment",
+    "/home/hao/frec/git-lab-buffer/main-deployment.json",
+    "--output",
+    "outputs/cf-optimizer-pair"
+  ],
+  "artifacts": [
+    "outputs/task-runtime.json",
+    "outputs/cf-optimizer-pair/compact.json",
+    "outputs/cf-optimizer-pair/data_audit.json",
+    "outputs/cf-optimizer-pair/paired_assessment.json",
+    "outputs/cf-optimizer-pair/curves_lr1e5_b09.json",
+    "outputs/cf-optimizer-pair/curves_lr1e5_b0.json"
+  ]
+}

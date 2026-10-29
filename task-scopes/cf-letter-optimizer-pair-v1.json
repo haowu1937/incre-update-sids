@@ -1,0 +1,66 @@
+{
+  "protocol_version": 1,
+  "scope_id": "cf-letter-optimizer-pair-v1",
+  "max_optimizer_steps": 4000,
+  "max_parallel": 2,
+  "authorization": "Hao explicitly requested second-stage paired verification for the two selected LR/beta1 combinations on 2026-10-29. Authorize four fresh independent 1000-step arms, total 4000 new steps, at most two parallel. This supersedes the old conditional stop for these pairs only; no old budget is reused.",
+  "allowed_query_splits": [
+    "base_train",
+    "update_train"
+  ],
+  "predecessor_read_only": [
+    {
+      "job_id": "cf-letter-base-001",
+      "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+      "compact_sha256": "ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb",
+      "audit_sha256": "7de0f166e75a9c9bbbd660bce7912fb10fc59611c3f76e6bdb9d7c8d2752203a",
+      "sasrec_step": 37250,
+      "gpt_step": 1192,
+      "files_sha256": {
+        "sasrec/selected.pth": "67efbca4a5de09ce56f51a21d8cf2eeaad1564f37def0bfb3af339d01193d530",
+        "gpt/selected.pth": "00fb8499f12c8478b83f2050d2b96134f82c9c897c2ce9c12a13b41a0e2f23d7",
+        "quantizer/selected.pth": "2634c57d494363b3bcc6eb21a366c47ff3106306fefde29a3555d42c71d972d3",
+        "cf_embeddings.npy": "0b6ca1fdd9a561a8c64f24736626d0326ca4543e0eaf865cd5af4df88d778d88",
+        "item_sids.npy": "7cade2b867d2a441148b44505243d97dce2999191e5f2f49a14b36ce2f7ee3e1",
+        "quantizer/semantic_codes.npy": "9479d0dc1b14773fa7896c58d2dd9c1fd4f06b5bc9350f432caa50bb753710cd"
+      }
+    },
+    {
+      "job_id": "cf-letter-refresh-diag-001",
+      "code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
+      "compact_sha256": "ca3e8ca977b712aef504b7b8c4854fb5b4a7b40d9a2682a50950486a3639a58a",
+      "files_sha256": {
+        "refreshed_cf_embeddings.npy": "f84610ab068b81111e49a0dd168a308e0a54b318805ad724aced81bdc13935ce",
+        "feature_only/semantic_codes.npy": "b1ef54b33dfc2cabeb88ae7e7f5205bc8433d05e17c7e29e9605334ed92e93e9",
+        "feature_only/item_sids.npy": "f218dfb5f375b252b0266312e67c28970e4a669be339d7dc02da6985220a5023",
+        "baseline/old_anchor_nll.npy": "f35c100a74452fabae01f4832c14da941bebea310ef12e8de945e9ceafee0ce5"
+      },
+      "expected_initial_full_H": 0.10294729462475516
+    },
+    {
+      "job_id": "cf-letter-optimizer-audit-001",
+      "code_sha": "e648205d62554a2944cdfb1336c7e981b684ea44",
+      "files_sha256": {
+        "compact.json": "4eddede8e4aaa2fe6b904f3a6021ddf64f37d92d503e9149ebb459c2d26b0d23",
+        "details_1.json": "614c29c9b442d3aff335f56420cebf92e80d9c3b9f42532d8f27b8a15d8a8827",
+        "details_2.json": "d1b6207a739adafea79fa73eb65c07bfd6757d6cce2588d77259ecf8ec98106c",
+        "details_3.json": "6b952c136eca8217bb524c71c8040fed05695cc102f1ff523cc476dfac3b5622"
+      }
+    }
+  ],
+  "explicit_settings": [
+    {
+      "name": "lr1e5_b09",
+      "lr": 1e-05,
+      "beta1": 0.9
+    },
+    {
+      "name": "lr1e5_b0",
+      "lr": 1e-05,
+      "beta1": 0.0
+    }
+  ],
+  "steps_per_arm": 1000,
+  "old_screen_gate_passed": false,
+  "stop_after_study": true
+}

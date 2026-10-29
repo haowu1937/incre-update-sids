@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "plan_completed",
+  "mode": "queued",
   "pause_requested": false,
-  "active_job_id": "cf-letter-optimizer-audit-001",
-  "lease": {
-    "token": "web-cf-pair-1793266350199",
-    "owner": "web-cf-optimizer-pair-controller",
-    "acquired_at": "2026-10-29T09:32:30.199Z",
-    "expires_at_unix": 1793267250
-  },
+  "active_job_id": "cf-letter-optimizer-pair-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -120,14 +115,14 @@
     }
   },
   "plan": [
-    "audit_existing_checkpoint_indices_read_only",
-    "report_diagnostic_evidence_and_stop"
+    "run_two_explicit_RQ_only_Mixed_pairs",
+    "verify_training_only_results_and_report_then_stop"
   ],
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "e648205d62554a2944cdfb1336c7e981b684ea44",
-  "request_sha256": "d1296f414aa156325eda2c8e1f17e318197d79fdd7554ab31b4271e0bb6a101e",
+  "code_sha": "47a98285d37864bab9e4405eb776e24e0ff24580",
+  "request_sha256": "6a1575ab49a75e657add092e0b856fd6e9e93fa491566881ce5f6ee867103fc3",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -205,7 +200,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -538,7 +533,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -971,6 +966,43 @@
         "processed_at": "2026-10-28T12:38:28.341402+00:00",
         "next_job_id": null
       }
+    },
+    {
+      "scope": {
+        "scope_id": "cf-letter-optimizer-audit-v1",
+        "status": "queued_pending_original_failure_pause_reconciliation",
+        "authorization": "Existing authorized experiment checks and failure diagnosis, continued by Hao saying 继续; zero optimizer updates, original evidence retained, no acceptance criterion changes.",
+        "manifest": "docs/experiments/cf_letter_optimizer_audit.json",
+        "max_optimizer_steps": 0,
+        "max_parallel": 1,
+        "source_job_id": "cf-letter-optimizer-001",
+        "source_acceptance": "blocked",
+        "original_writes_authorized": false,
+        "criterion_changes_authorized": false,
+        "retraining_authorized": false,
+        "stop_after_audit": true
+      },
+      "receipt": {
+        "status": "verified_and_reported",
+        "job_id": "cf-letter-optimizer-audit-001",
+        "code_sha": "e648205d62554a2944cdfb1336c7e981b684ea44",
+        "contract_sha256": "41f343af0e7885722fe96931ec48054806643bca563ab29a85ab0cc9ebd9b095",
+        "request_sha256": "d1296f414aa156325eda2c8e1f17e318197d79fdd7554ab31b4271e0bb6a101e",
+        "result_sha256": "eed1a554299e731bba071dadfddc9786658ead8e0955890e65581bbce04e14d6",
+        "actual_optimizer_steps": 0,
+        "report_commit_sha": "08e7a0350aaa7ba3b1d50c3b70fc83fa7dec481e",
+        "artifacts_sha256": {
+          "artifacts/cf-letter-optimizer-audit-001/outputs/task-runtime.json": "317dcb468d24bed4182597bf045cbcd8059ee0649e50fe986333cf244b350eb0",
+          "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/compact.json": "4eddede8e4aaa2fe6b904f3a6021ddf64f37d92d503e9149ebb459c2d26b0d23",
+          "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_1.json": "614c29c9b442d3aff335f56420cebf92e80d9c3b9f42532d8f27b8a15d8a8827",
+          "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_2.json": "d1b6207a739adafea79fa73eb65c07bfd6757d6cce2588d77259ecf8ec98106c",
+          "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_3.json": "6b952c136eca8217bb524c71c8040fed05695cc102f1ff523cc476dfac3b5622"
+        },
+        "processed_at": "2026-10-29T09:09:12.761120+00:00",
+        "next_job_id": null
+      },
+      "status": "verified_and_reported",
+      "actual_optimizer_steps": 0
     }
   ],
   "core_runtime_upgrade": {
@@ -1021,8 +1053,8 @@
   "active_scope": "cf-letter-refresh-diag-v1",
   "task_dispatch": {
     "protocol_version": 1,
-    "contract_path": "task-contracts/cf-letter-optimizer-audit-001.json",
-    "contract_sha256": "41f343af0e7885722fe96931ec48054806643bca563ab29a85ab0cc9ebd9b095"
+    "contract_path": "task-contracts/cf-letter-optimizer-pair-001.json",
+    "contract_sha256": "83736d739f210db9879c27027350c96ebe4b820fcd355a7c6c348776d6fb4e41"
   },
   "task_scope_ledger": {
     "cf-letter-base-v1": {
@@ -1079,21 +1111,39 @@
       "actual_steps": {
         "cf-letter-optimizer-audit-001": 0
       }
+    },
+    "cf-letter-optimizer-pair-v1": {
+      "scope_sha256": "68d683db1d15622894de3c2acfb8a874ad7abf007a78dafce4d45901f0af84d5",
+      "reservations": {
+        "cf-letter-optimizer-pair-001": 4000
+      },
+      "actual_steps": {}
     }
   },
   "current_scope": {
-    "scope_id": "cf-letter-optimizer-audit-v1",
-    "status": "queued_pending_original_failure_pause_reconciliation",
-    "authorization": "Existing authorized experiment checks and failure diagnosis, continued by Hao saying 继续; zero optimizer updates, original evidence retained, no acceptance criterion changes.",
-    "manifest": "docs/experiments/cf_letter_optimizer_audit.json",
-    "max_optimizer_steps": 0,
-    "max_parallel": 1,
-    "source_job_id": "cf-letter-optimizer-001",
-    "source_acceptance": "blocked",
-    "original_writes_authorized": false,
-    "criterion_changes_authorized": false,
-    "retraining_authorized": false,
-    "stop_after_audit": true
+    "scope_id": "cf-letter-optimizer-pair-v1",
+    "status": "queued",
+    "authorization": "Hao explicitly requested second-stage paired verification for the two selected LR/beta1 combinations on 2026-10-29. Authorize four fresh independent 1000-step arms, total 4000 new steps, at most two parallel. This supersedes the old conditional stop for these pairs only; no old budget is reused.",
+    "manifest": "docs/experiments/cf_letter_optimizer_pair.json",
+    "max_optimizer_steps": 4000,
+    "max_parallel": 2,
+    "pair_settings": [
+      {
+        "name": "lr1e5_b09",
+        "lr": 1e-05,
+        "beta1": 0.9
+      },
+      {
+        "name": "lr1e5_b0",
+        "lr": 1e-05,
+        "beta1": 0.0
+      }
+    ],
+    "fixed_history_weight": 0.0006386606341359484,
+    "old_screen_gate_passed": false,
+    "old_source_acceptance": "blocked",
+    "stop_after_study": true,
+    "automatic_retry": false
   },
   "latest_task_delivery": {
     "job_id": "cf-letter-refresh-diag-001",
@@ -1353,5 +1403,11 @@
       "failure_evidence": "docs/experiments/cf_letter_optimizer_acceptance_failure.json",
       "report_commit_sha": "e648205d62554a2944cdfb1336c7e981b684ea44"
     }
-  ]
+  ],
+  "explicit_scope_authorization": {
+    "date": "2026-10-29",
+    "request": "Proceed with stage two for both selected LR/beta1 combinations",
+    "new_optimizer_step_cap": 4000,
+    "unused_original_conditional_steps_reused": false
+  }
 }
