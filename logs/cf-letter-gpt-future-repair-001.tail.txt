@@ -1,6 +1,4 @@
-cal_b0"], "optimizer_steps": 5099, "stage_steps": {"historical_b09": 559, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 540}, "stop_new_arms": null}
-{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 5207, "stage_steps": {"historical_b09": 612, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 595}, "stop_new_arms": null}
-{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 5312, "stage_steps": {"historical_b09": 666, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 646}, "stop_new_arms": null}
+d": 2000, "plain_b09": 2000, "plain_b0": 646}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 5419, "stage_steps": {"historical_b09": 719, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 700}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 5526, "stage_steps": {"historical_b09": 773, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 753}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 5634, "stage_steps": {"historical_b09": 827, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 807}, "stop_new_arms": null}
@@ -71,3 +69,9 @@ Passing a tuple of `past_key_values` is deprecated and will be removed in Transf
 {"phase": "future", "arm": "ft_old", "queries_done": 15216, "all_queries": 34189}
 {"phase": "future", "arm": "ft_old", "queries_done": 16016, "all_queries": 34189}
 {"phase": "future", "arm": "ft_old", "queries_done": 16816, "all_queries": 34189}
+{"phase": "future", "arm": "ft_old", "queries_done": 17616, "all_queries": 34189}
+{"phase": "future", "arm": "ft_old", "queries_done": 18416, "all_queries": 34189}
+{"phase": "future", "arm": "ft_old", "queries_done": 19216, "all_queries": 34189}
+{"phase": "future", "arm": "ft_old", "queries_done": 20016, "all_queries": 34189}
+{"phase": "future", "arm": "ft_old", "queries_done": 20816, "all_queries": 34189}
+{"phase": "future", "arm": "ft_old", "queries_done": 21616, "all_queries": 34189}
