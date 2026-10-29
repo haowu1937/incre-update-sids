@@ -49,8 +49,9 @@ def child(output,p,name):
 
 
 class Scheduler:
-    def __init__(self,output,deployment,p,report,began):
+    def __init__(self,output,deployment,p,report,began,*,job_id=JOB,child_script="run_cf_letter_optimizer.py",publisher=publish_curves):
         self.output=output;self.deployment=deployment;self.p=p;self.report=report;self.began=began
+        self.job_id=job_id;self.child_script=child_script;self.publisher=publisher
         self.root=Path(read(deployment)['runner_root']);self.stop=None;self.journal=[];self.last_control=0.;self.last_progress=0.
 
     def run(self,recipes):
@@ -64,7 +65,7 @@ class Scheduler:
                 else:
                     value=read(self.output/'arms'/case['name']/'arm_result.json');finished[case['name']]=value['result']
                     shutil.copyfile(self.output/'arms'/case['name']/(case['name']+'_curves.json'),self.output/(case['name']+'_curves.json'))
-                    publish_curves(self.output,self.p)
+                    self.publisher(self.output,self.p)
                     self.report.setdefault('completed_case_names',[]).append(case['name'])
             try:
                 observed,memory=gpu();self.report['max_gpu_memory_mib']=max(self.report['max_gpu_memory_mib'],memory)
@@ -75,7 +76,7 @@ class Scheduler:
             if time.monotonic()-self.began>self.p['wall_seconds']:self.stop=self.stop or 'Four-hour guard; active arms finish'
             if time.monotonic()-self.last_control>=30:
                 try:
-                    if paused(self.root,JOB):self.stop=self.stop or 'Manual pause; active arms finish'
+                    if paused(self.root,self.job_id):self.stop=self.stop or 'Manual pause; active arms finish'
                 except Exception as error:self.stop=self.stop or repr(error)
                 self.last_control=time.monotonic()
             # A successful previous child may have exited between nvidia-smi and poll.
@@ -101,7 +102,7 @@ class Scheduler:
         shutil.copytree(self.output/'inputs',directory/'inputs',copy_function=os.link)
         os.link(self.output/'prepared.npz',directory/'prepared.npz');os.link(self.output/'binding.json',directory/'binding.json')
         save(directory/'case.json',case);self.journal.append(case);save(self.output/'launch_journal.json',self.journal)
-        command=[sys.executable,'-u','-B',str(ROOT/'run_cf_letter_optimizer.py'),'--deployment',str(self.deployment),'--output',str(self.output),'--case',case['name']]
+        command=[sys.executable,'-u','-B',str(ROOT/self.child_script),'--deployment',str(self.deployment),'--output',str(self.output),'--case',case['name']]
         handle=(directory/'train.log').open('x')
         try:process=subprocess.Popen(command,cwd=ROOT,stdout=handle,stderr=subprocess.STDOUT,start_new_session=True)
         except BaseException:

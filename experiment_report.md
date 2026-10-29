@@ -1386,3 +1386,20 @@ Job `cf-letter-optimizer-audit-001`; code `e648205d62554a2944cdfb1336c7e981b684e
 CPU diagnosis checked 170 saved full monitors. CPU mismatch monitors=4, mismatch elements=9; saved full-catalog versus old-item chunk mismatch monitors=0. GPU probes cover 4 implicated monitors; reproduction mismatch monitors=0.
 
 Conditional float64 distances are reported on each sampled saved-prefix residual; samples distinguish exact ties, very small gaps and clearly nonminimal stored choices. No numerical tolerance, original assignment, H selection threshold or training recipe was changed. This report validates collection of diagnostic evidence; it does not accept the original optimizer study or establish a floating-point cause without reviewing the measured gaps and backend reproduction. No model training, ranking/holdout/Future scoring or automatic new experiment.
+
+<!-- cf-letter-optimizer-pair-plan:v1 -->
+
+### 6.31 Explicit second-stage verification at both lr=1e-5 settings (2026-10-29)
+
+Hao requested the second stage for lr=1e-5 with beta1=0.9 and beta1=0. This authorizes four new independent1000-step arms: RQ-only and Mixed for each setting, total4000, parallel<=2. Each restores the same accepted Base C0 plus fixed E1 with fresh AdamW state; no H-only endpoint is continued and no H-only arm is rerun. The previous H-only groups remain ineligible under the old2% H-trend gate. The old scientific acceptance remains blocked and its unused conditional2000 steps are not reused.
+
+| LR | beta1 | RQ-only steps | Mixed steps | Mixed lambda |
+| --- | ---: | ---: | ---: | ---: |
+| 1e-5 | 0.9 | 1000 | 1000 | 0.0006386606341359484 |
+| 1e-5 | 0 | 1000 | 1000 | 0.0006386606341359484 |
+
+Keep beta2=0.999, epsilon=1e-8, weight decay=0, clipping=0.1, temperature=0.5 and seed2026, with unchanged STE, residual/native-RQ gradient routes, old E0 reference/target/mask/positions/I0 and sampler order. Only the three codebooks train. E1, SASRec and the selected Base GPT stay frozen. Record per-step actual batch H/gradients/capacity, fixed128 H every10steps and full4096 H plus full-catalog native RQ/hard MSE every10 completed content epochs. Compare each Mixed arm with its matched RQ-only arm using the original last-eight scheduled stability and paired-efficacy criteria, without intermediate-minimum selection or relaxed thresholds.
+
+Reviewed the returned zero-step audit bytes and measured gaps: four CPU/saved differences, comprising nine semantic digits, occurred among170 monitors. All four implicated GPU checkpoint reloads exactly reproduced saved full-catalog and old-item codes. Saved full-versus-old-item chunks matched at all170 points. The initial differing choices had conditional float64 distance differences of approximately1.3e-9 to1.4e-7; subsequent residual levels can diverge after an earlier code changes. This supports backend-sensitive choices at the measured points, but does not independently accept all original training results. For this new task, require strict production-CUDA checkpoint assignment equality at all monitors and the endpoint, using the original chunk shapes, in addition to raw H reaggregation, native RQ/MSE, source/counter/sampling checks and CPU GPT likelihood checks. Preserve the original failed receipt.
+
+Prepared job `cf-letter-optimizer-pair-001`, manifest `docs/experiments/cf_letter_optimizer_pair.json`. Local protocol/concurrency/budget checks passed; actual model checks remain mandatory server preflight because Torch is unavailable in the cloud. Status at delivery: **prepared for dispatch; new steps not yet observed**. Reuse the installed generic Runner and independent outputs, with no server upgrade. No lambda recalibration, STE change, extra seed, holdout, validation ranking, Future or GPT/SASRec training. Verify, report and stop after these four arms; previous downstream tables remain unchanged.

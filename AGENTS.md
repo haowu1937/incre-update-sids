@@ -1,5 +1,14 @@
 # 项目协作规则
 
+
+## 两组显式第二阶段配对（2026-10-29 最新授权）
+
+Hao明确要求按选出的两组lr/beta进行第二阶段：lr1e-5/beta1=.9和lr1e-5/beta1=0，各从同一Base C0+固定E1独立reset，RQ-only与Mixed各1000步。新scope `cf-letter-optimizer-pair-v1` / job `cf-letter-optimizer-pair-001`，manifest `docs/experiments/cf_letter_optimizer_pair.json`，同名.md。新增4000步、最多2并行；不挪用旧scope剩余2000、不重训H-only，不将旧未通过门槛的组改为eligible。以下旧停止条件只在本次明确配对范围内被覆盖。
+
+固定lambda=0.0006386606341359484、beta2=.999、eps1e-8、wd0、clip.1、temperature.5、原STE/残差/native-RQ路径、old reference/target/mask/I0、同一采样序列。冻结Base GPT、SASRec和E1；只训练3层码本。每步batch H/梯度与容量、固定128每10步、全4096及RQ每10完整内容epoch，末8个scheduled monitor按旧稳定性/配对标准比较，不放宽2% H趋势。只用anchor_train和Base/Update train；无holdout/Future/排名、新seed、lambda重校准、自动重跑或延长。验收报告后停止。
+
+只读audit现已verified：170点中CPU差异4点9元素，4点GPU全部复现，原full/old chunk无差异。新任务必须绑定该审计hash及已验收Base/refresh；旧实验原needs_attention及验收blocked保留。新科学verifier按显式授权在同训练CUDA/原chunk上逐项严格重载所有monitor/final assignments；generic默认CPU可由此任务脚本在首次torch import前显式启用CUDA，不修改host/helper/cron。GPU占用等待、不终止其他进程。CPU继续重聚合原始NLL/H与抽样GPT重载。服务器四个真实CPU preflight通过才训练，云端skip不算通过。共享CAS状态/receipt，独立输出与完整SHA/预算绑定，沿用generic v1，无Runner升级。
+
 ## Optimizer 验收阻塞：只读诊断（2026-10-28 当前继续）
 
 `cf-letter-optimizer-001`训练wrapper已completed、报告5000步，五组无eligible且配对未跑；科学verifier在CPU full-monitor canonical codes逐项比较时失败，状态needs_diagnosis。保留原request/result/needs_attention receipt、全部checkpoint/索引/H记录，不重训、不改2% H阈值、不把浮点差异当作已确认原因。原7000 scope未完成科学验收，剩余2000不挪用。

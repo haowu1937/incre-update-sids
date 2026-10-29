@@ -12,7 +12,7 @@ from genrec.cf_letter_suffix_audit import SuffixAudit
 ROOT=Path(__file__).resolve().parent
 
 
-def verify_arm(output,data,binding,p,case,code_sha):
+def verify_arm(output,data,binding,p,case,code_sha,*,assignment_device="cpu",gpu_guard=None):
     output=Path(output);r=read(output/'arm_result.json')
     if r['case']!=case or r['code_sha']!=code_sha or not r['teacher_unchanged'] or not r['cf_embeddings_unchanged']:raise ValueError('Arm identity/freeze differs')
     prepared=load_anchors(output/'prepared.npz')
@@ -23,7 +23,7 @@ def verify_arm(output,data,binding,p,case,code_sha):
     import torch
     from genrec.cf_letter_base_training import Sampler
     from genrec.cf_letter_history_long import public_curves
-    from genrec.cf_letter_refresh_training import teacher,paired_nll,frozen_quantizer
+    from genrec.cf_letter_refresh_training import teacher,paired_nll,frozen_quantizer,quantize
     from genrec.cf_letter_models import CollaborativeRQ
     torch.set_num_threads(1)
     order=torch.randperm(p['anchor_size'],generator=torch.Generator().manual_seed(p['seed']+77)).numpy();fixed=order[:p['fixed_anchor_queries']]
@@ -89,12 +89,16 @@ def verify_arm(output,data,binding,p,case,code_sha):
             codes=np.load(directory/f'semantic_codes_{step}.npy',allow_pickle=False);mapping,capacity=suffix_audit(codes)
             if capacity!=monitor['capacity'] or not np.array_equal(mapping,np.load(directory/f'item_sids_{step}.npy',allow_pickle=False)):raise ValueError('Full-monitor mapping differs')
             saved_monitor=torch.load(directory/f'monitor_{step}.pth',map_location='cpu',weights_only=False)
-            q=CollaborativeRQ(torch.tensor(features),p['quantizer']);q.load_state_dict(saved_monitor['model']);metrics,canonical=q.audit()
-            if not np.array_equal(canonical.numpy(),np.load(directory/f'catalog_codes_{step}.npy',allow_pickle=False)):raise ValueError('CPU full-monitor canonical codes differ')
-            if not np.array_equal(canonical[:len(previous)].numpy(),codes):raise ValueError('Old-item monitor codes differ')
+            if saved_monitor['step']!=step or saved_monitor['code_sha']!=code_sha or not np.array_equal(saved_monitor['model']['features'].numpy(),features):raise ValueError('Monitoring checkpoint identity/features differ')
+            q=CollaborativeRQ(torch.tensor(features),p['quantizer']);q.load_state_dict(saved_monitor['model']);q=q.to(assignment_device)
+            if gpu_guard:gpu_guard()
+            metrics,canonical=q.audit();canonical=canonical.cpu()
+            if not np.array_equal(canonical.numpy(),np.load(directory/f'catalog_codes_{step}.npy',allow_pickle=False)):raise ValueError(assignment_device+' full-monitor canonical codes differ')
+            old_canonical=canonical[:len(previous)].numpy() if assignment_device=='cpu' else quantize(q,q.features[:len(previous)],assignment_device)[0]
+            if not np.array_equal(old_canonical,codes):raise ValueError('Old-item monitor codes differ')
             for key in ('total_loss','quantization_loss','reconstruction_mse'):
                 if not math.isclose(metrics[key],monitor['rq'][key],rel_tol=2e-5,abs_tol=1e-8):raise ValueError('CPU full-monitor loss differs')
-            restored=sum(q.books[i][canonical[:len(previous),i]] for i in range(3))
+            restored=sum(q.books[i][torch.tensor(old_canonical[:,i],device=assignment_device)] for i in range(3))
             old_mse=float((restored-q.features[:len(previous)]).square().mean())
             if not math.isclose(old_mse,monitor['old_item_reconstruction_mse'],rel_tol=2e-5,abs_tol=1e-8):raise ValueError('CPU old-item reconstruction differs')
             if monitor['gradients']!=trajectory[step-1]['gradient_components']:raise ValueError('Full-monitor gradients differ from actual update trace')
@@ -103,9 +107,13 @@ def verify_arm(output,data,binding,p,case,code_sha):
         last=torch.load(directory/'last.pth',map_location='cpu',weights_only=False)
         if last['step']!=result['optimizer_steps'] or not np.array_equal(last['model']['features'].numpy(),features) or last['sampler']['processed']!=content.processed or last['anchor_sampler']['processed']!=anchors.processed:raise ValueError('Endpoint checkpoint/samplers differ')
         if result['capacity_feasible']:
-            q=CollaborativeRQ(torch.tensor(features),p['quantizer']);q.load_state_dict(last['model']);metrics,codes=q.audit()
+            final_checkpoint=torch.load(directory/f"monitor_{p['steps_per_branch']}.pth",map_location='cpu',weights_only=False)
+            if any(not torch.equal(v,final_checkpoint['model'][k]) for k,v in last['model'].items()):raise ValueError('Final model differs from final monitoring checkpoint')
+            q=CollaborativeRQ(torch.tensor(features),p['quantizer']);q.load_state_dict(last['model']);q=q.to(assignment_device)
+            if gpu_guard:gpu_guard()
+            metrics,codes=q.audit();codes=codes.cpu()
             final=full_result['monitors'][-1]
-            if not np.array_equal(codes.numpy(),np.load(directory/f"catalog_codes_{p['steps_per_branch']}.npy",allow_pickle=False)):raise ValueError('Canonical CPU final assignments differ')
+            if not np.array_equal(codes.numpy(),np.load(directory/f"catalog_codes_{p['steps_per_branch']}.npy",allow_pickle=False)):raise ValueError(assignment_device+' final assignments differ')
             for key in ('total_loss','quantization_loss','reconstruction_mse'):
                 if not math.isclose(metrics[key],final['rq'][key],rel_tol=2e-5,abs_tol=1e-8):raise ValueError('CPU final native loss/reconstruction differs')
     model,state=teacher(output,p,'cpu');small={k:v[:16] for k,v in data['anchors'].items()}

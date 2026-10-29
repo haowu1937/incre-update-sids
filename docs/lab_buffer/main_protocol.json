@@ -11,15 +11,15 @@
   "project": "/home/hao/frec/graph-informed-sids-web",
   "python": "/home/hao/miniconda3/envs/frec-gpu/bin/python",
   "plan": [
-    "audit_existing_checkpoint_indices_read_only",
-    "report_diagnostic_evidence_and_stop"
+    "run_two_explicit_RQ_only_Mixed_pairs",
+    "verify_training_only_results_and_report_then_stop"
   ],
-  "new_training_steps_authorized": 0,
+  "new_training_steps_authorized": 4000,
   "new_future_prediction_passes_authorized": 0,
   "acceptance_timeout_seconds": 86400,
   "max_diagnosed_repair_jobs": 0,
   "same_fault_automatic_retry": false,
-  "selection_metric": "none; diagnosis only, original criteria unchanged",
+  "selection_metric": "training-only last-eight scheduled full-anchor/RQ stability and paired efficacy; no parameter selection on holdout/Future",
   "beam": 20,
   "topk": [
     5,
@@ -31,12 +31,12 @@
   "web_controller": "docs/lab_buffer/CONTROLLER.md",
   "persistent_state": "lab-requests:control/main.json",
   "stop_after_plan": true,
-  "revision": 9,
-  "active_scope": "cf-letter-optimizer-audit-v1",
-  "scope_manifest": "docs/experiments/cf_letter_optimizer_audit.json",
-  "scope_authorized_at": "2026-10-28",
-  "optimizer_steps_scope": "Zero-update read-only diagnosis of existing optimizer-study acceptance failure; original study remains blocked",
-  "max_parallel": 1,
+  "revision": 10,
+  "active_scope": "cf-letter-optimizer-pair-v1",
+  "scope_manifest": "docs/experiments/cf_letter_optimizer_pair.json",
+  "scope_authorized_at": "2026-10-29",
+  "optimizer_steps_scope": "Four fresh independent 1000-step codebook arms; explicit second-stage authorization, old screening gate/receipt unchanged",
+  "max_parallel": 2,
   "task_runtime": {
     "protocol_version": 1,
     "specification": "docs/lab_buffer/task_runtime_v1.md",
@@ -53,11 +53,14 @@
   "catalog_items": 10924,
   "suffix_capacity": 512,
   "wall_seconds": 14400,
-  "update_training_authorized": false,
-  "historical_training_authorized": false,
+  "update_training_authorized": true,
+  "historical_training_authorized": true,
   "holdout_evaluation_authorized": false,
   "future_evaluation_authorized": false,
-  "update_training_components": [],
-  "quantizer_training_authorized": false,
-  "gpt_training_authorized": false
+  "update_training_components": [
+    "three_codebooks"
+  ],
+  "quantizer_training_authorized": true,
+  "gpt_training_authorized": false,
+  "gpu_scientific_reload_authorized": true
 }
