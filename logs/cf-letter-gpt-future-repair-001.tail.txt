@@ -1,6 +1,4 @@
-, "stage_steps": {"historical_b09": 1033, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1000}, "stop_new_arms": null}
-{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6140, "stage_steps": {"historical_b09": 1095, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1045}, "stop_new_arms": null}
-{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6246, "stage_steps": {"historical_b09": 1147, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1099}, "stop_new_arms": null}
+pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6246, "stage_steps": {"historical_b09": 1147, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1099}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6352, "stage_steps": {"historical_b09": 1200, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1152}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6457, "stage_steps": {"historical_b09": 1254, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1203}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 6566, "stage_steps": {"historical_b09": 1307, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1259}, "stop_new_arms": null}
@@ -85,3 +83,7 @@ Passing a tuple of `past_key_values` is deprecated and will be removed in Transf
 {"phase": "future", "arm": "ft_old", "queries_done": 33616, "all_queries": 34189}
 {"phase": "future", "arm": "plain_b09", "queries_done": 16, "all_queries": 34189}
 {"phase": "future", "arm": "plain_b09", "queries_done": 816, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b09", "queries_done": 1616, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b09", "queries_done": 2416, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b09", "queries_done": 3216, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b09", "queries_done": 4016, "all_queries": 34189}
