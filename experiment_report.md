@@ -1,6 +1,6 @@
 # History-aware SID Update Experiment Report
 
-Last updated: 2026-10-28. The completed Llama content-RQ/TIGER results are retained below. The SASRec CF-LETTER-adapted line has passed Base acceptance, CF refresh acceptance and its three-arm training-only codebook diagnostic; the latter fails the predeclared stable-repair gate. New recommender Update fitting and Future evaluation have not run.
+Last updated: 2026-10-29. Existing Llama/TIGER Future results are retained. The CF/GPT line completed its four-arm paired codebook study without joint RQ/H stability. Hao authorized five fixed-budget GPT Update / Future comparisons; execution and acceptance are pending.
 
 ## Primary downstream results
 
@@ -19,6 +19,25 @@ All six conditions use the same 11775-item Update deployment catalog, beam=20, s
 
 This is the main table previously located in Section 5.3. Maintain it here as completed downstream results become available. The two retuned History-aware Future conditions are now completed from the user-returned compact. “Selected Update step” is the checkpoint used for Future, not the training budget: all three fine-tuning arms trained 2000 steps; the original Base/Plain arms selected 500 and the History-aware arm selected 2000. The old Plain and retuned History-aware RQ recipes differ, so those rows do not isolate the historical penalty. Evaluation details, the servable-query table, and checkpoint selection are in [Section 5](#5-completed-baseplain-future-evaluation).
 
+
+
+### CF/GPT Update + Future: common old-item catalog
+
+<!-- cf-letter-downstream-primary:v1 -->
+
+Status: authorized for dispatch, no new downstream results observed. All five arms will use the same10924-item I0 catalog,20 raw history events and four target digits. These results belong to a separate protocol from the extended-catalog Llama/TIGER table above. Full Future denominator34189; coverage will be measured, not copied from the old pipeline.
+
+| Mapping | Actual GPT Update steps | Selected Update step | Coverage | Recall@5 | Recall@10 | Recall@20 | NDCG@5 | NDCG@10 | NDCG@20 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| FT-old: original C0(E0) SIDs | Pending | — | — | — | — | — | — | — | — |
+| Plain,lr1e-5,beta1=0.9 | Pending | — | — | — | — | — | — | — | — |
+| Historical,lr1e-5,beta1=0.9 | Pending | — | — | — | — | — | — | — | — |
+| Plain,lr1e-5,beta1=0 | Pending | — | — | — | — | — | — | — | — |
+| Historical,lr1e-5,beta1=0 | Pending | — | — | — | — | — | — | — | — |
+
+Recall will be shown as percentages and NDCG in raw units. Actual training is2000 per arm; selection may choose0/100/250/500/1000/2000 using Update validation only.
+
+<!-- /cf-letter-downstream-primary:v1 -->
 
 ### Latest CF-LETTER-adapted Base validation
 
@@ -1446,3 +1465,15 @@ Mixed reduces tail H relative to matched RQ-only by **2.3657%** (beta1=0.9) and 
 Initial full H was0.102947295 and native RQ was0.012321118. Mixed tail H is still29.09% /28.99% above that initial damage, while native RQ falls approximately2.75%. At these settings, the penalty modestly reduces damage relative to RQ-only but does not prevent damage from increasing relative to the fixed initial state. Changing beta1 from0.9 to0 does not resolve this outcome in this single-seed comparison. Per-arm reports record zero clipped steps and zero zero-history-gradient steps; these facts do not establish that the STE direction decreases hard H.
 
 No jointly stable RQ/H configuration has been established. This is a negative training-side result, with no new holdout, validation ranking, Future or recommendation-model evaluation. Preserve the original criteria and stop after reporting; no lambda/STE change, extension, retry or new experiment has been dispatched.
+
+<!-- cf-letter-gpt-future-plan:v1 -->
+
+### 6.33 Authorized fixed-budget GPT Update and Future comparison (2026-10-29)
+
+Hao explicitly requested dispatch after reviewing the five-arm plan. Job `cf-letter-gpt-future-001`, manifest `docs/experiments/cf_letter_downstream.json`. Freeze the original FT-old map and all four accepted RQ-only/Mixed step1000 full-SID maps; do not extend codebook fitting or select an intermediate low-H checkpoint. Train five GPT copies independently from the same selected Base step1192,2000 updates each, new total cap10000. No RQ/CF/SASRec training. The negative joint-stability result remains; downstream comparison does not require a convergence claim.
+
+Reset AdamW lr1e-4,wd0.01,beta(.9,.999),epsilon1e-8,batch256,clip1,FP32,seed2026 with fixed model architecture and query order. Fit only identical Update targets in the common Base I0 catalog10924; use each arm's current map for both history and target. Preserve20 raw events before masking, interior positions and four target digits without EOS. Select among0/100/250/500/1000/2000 on the same512-query Update-validation full-denominator NDCG@10, earliest tie, after actually fitting2000. Report full3280 Update validation on selected weights.
+
+Lock all five selected-model/mapping/probe identities before reading Future. Evaluate the same34189 prequential queries with fixed I0,beam20,no seen filtering; outside-I0 targets count as misses. Report full/common-served Recall/NDCG5/10/20,coverage,NLL and unavailable history, plus Historical-minus-matched-Plain and versusFT-old paired user-cluster95% intervals (500 draws). Future cannot change training settings or checkpoint selection. One engineering seed.
+
+The accepted same-architecture Base GPT observed a6440MiB peak; training permits at most two owned children with24576MiB aggregate protection, while Future passes run serially. Reuse generic v1 without a Runner upgrade, immutable SHA-bound accepted inputs and independent outputs. Server preflight must pass actual Base and tiny five-arm GPT/beam/selection-lock/Future/scientific-verifier tests; cloud skips are not passes. Large checkpoints/query records stay local and seven bounded artifacts are returned. Status at delivery: prepared for dispatch, new GPT steps not yet observed. After verified result analysis, fill the new separate CF/GPT primary table and stop; no extra seed, retry, parameter scan or automatic next experiment.

@@ -1,6 +1,17 @@
 # 项目协作规则
 
 
+## 五组GPT Update微调与Future（2026-10-29 最新明确授权）
+
+Hao审阅五组下游方案后明确“下发这个任务”。授权job `cf-letter-gpt-future-001` / scope `cf-letter-gpt-future-v1`，manifest `docs/experiments/cf_letter_downstream.json`，同名.md。五组FT-old/Plain-.9/Historical-.9/Plain-0/Historical-0，各GPT Update2000步，新增总上限10000，Future完整预测5次。直接冻结已验收四个码本step1000的完整SID，FT-old保留C0(E0)原SID；旧H/RQ联合稳定性失败结论不改，旧screening needs_attention不改。不再训练RQ/SASRec/CF、不重跑H-only、不回收旧预算。
+
+五组均从同一Base GPT selected1192步独立warm start，reset AdamW lr1e-4,wd.01,beta(.9,.999),eps1e-8,batch256,clip1,FP32,seed2026。相同训练查询/采样顺序。仅GPT训练；无EOS，目标四token CE，无H项。候选目录固定I0=10924，Update仅训练target属于I0的同一批查询；原始20条历史先截断后mask、保留内部位置；推荐history与target用各组相同当前映射，不用历史损伤的old target条件。
+
+实际每组训练2000；0/100/250/500/1000/2000用同一512条Update-val full-denominator NDCG@10选模、最早平局，selected可0。选定后完整3280条Update val报告。所有五组选模SHA与映射锁定后才能读取Future；完整34189条均保留，outside-I0计miss，报告共同可服务分母、覆盖率、Recall/NDCG5/10/20、beam20、无seen过滤。主对比每beta的Historical−Plain，附相对FT-old对比/用户聚类bootstrap95%CI(500次)。Future不调参、不改预算/选模/候选集。
+
+沿用generic v1、不升级host/helper/policy/cron、不切主工作区。SHA绑定只读Base与已验收pair依赖，独立输出与原子领取/预算/receipt。Base同架构峰值6440MiB支持最多2个GPT训练子进程，总24576MiB保护；Future串行。GPU外部占用等待，未知/暂停/20h guard后不启动新阶段，活跃阶段继续，不终止。七个bounded JSON产物保留全部原始本地证据。服务器必须先过实际Base及五组tiny CPU训练/锁定Future/科学verifier检查；云端skip不算通过。验收后英文报告顶部单独CF/GPT Future表，与旧Llama/TIGER协议分开。完成五组/报告后停止，不扩展、延长、重跑或追加seed。下面旧scope是历史。
+
+
 ## 两组显式第二阶段配对（2026-10-29 最新授权）
 
 Hao明确要求按选出的两组lr/beta进行第二阶段：lr1e-5/beta1=.9和lr1e-5/beta1=0，各从同一Base C0+固定E1独立reset，RQ-only与Mixed各1000步。新scope `cf-letter-optimizer-pair-v1` / job `cf-letter-optimizer-pair-001`，manifest `docs/experiments/cf_letter_optimizer_pair.json`，同名.md。新增4000步、最多2并行；不挪用旧scope剩余2000、不重训H-only，不将旧未通过门槛的组改为eligible。以下旧停止条件只在本次明确配对范围内被覆盖。

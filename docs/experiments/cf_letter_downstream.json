@@ -1,0 +1,113 @@
+{
+  "seed": 2026,
+  "history": 20,
+  "eval_batch_size": 16,
+  "probe_size": 512,
+  "topk": [
+    5,
+    10,
+    20
+  ],
+  "gpt": {
+    "d_model": 768,
+    "layers": 4,
+    "heads": 6,
+    "ffn": 1024,
+    "dropout": 0.1,
+    "user_buckets": 8000
+  },
+  "quantizer": {
+    "dim": 64,
+    "books": 3,
+    "capacity": 512,
+    "commitment": 0.25,
+    "outer_weight": 1.0
+  },
+  "predecessor": {
+    "job_id": "cf-letter-base-001",
+    "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+    "compact_sha256": "ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb",
+    "audit_sha256": "7de0f166e75a9c9bbbd660bce7912fb10fc59611c3f76e6bdb9d7c8d2752203a",
+    "sasrec_step": 37250,
+    "gpt_step": 1192,
+    "files_sha256": {
+      "sasrec/selected.pth": "67efbca4a5de09ce56f51a21d8cf2eeaad1564f37def0bfb3af339d01193d530",
+      "gpt/selected.pth": "00fb8499f12c8478b83f2050d2b96134f82c9c897c2ce9c12a13b41a0e2f23d7",
+      "quantizer/selected.pth": "2634c57d494363b3bcc6eb21a366c47ff3106306fefde29a3555d42c71d972d3",
+      "cf_embeddings.npy": "0b6ca1fdd9a561a8c64f24736626d0326ca4543e0eaf865cd5af4df88d778d88",
+      "item_sids.npy": "7cade2b867d2a441148b44505243d97dce2999191e5f2f49a14b36ce2f7ee3e1",
+      "quantizer/semantic_codes.npy": "9479d0dc1b14773fa7896c58d2dd9c1fd4f06b5bc9350f432caa50bb753710cd"
+    }
+  },
+  "scope_id": "cf-letter-gpt-future-v1",
+  "job_id": "cf-letter-gpt-future-001",
+  "execution_authorized": true,
+  "authorization": "Hao explicitly said 下发这个任务 after reviewing five independent GPT Update fine-tuning arms (2000 steps each) and five selected-checkpoint Future evaluations with common I0 catalog on 2026-10-29.",
+  "optimizer_step_cap": 10000,
+  "steps_per_arm": 2000,
+  "batch_size": 256,
+  "lr": 0.0001,
+  "weight_decay": 0.01,
+  "betas": [
+    0.9,
+    0.999
+  ],
+  "eps": 1e-08,
+  "max_grad_norm": 1.0,
+  "selection_steps": [
+    0,
+    100,
+    250,
+    500,
+    1000,
+    2000
+  ],
+  "selection_metric": "ndcg@10",
+  "bootstrap_replicates": 500,
+  "beam": 20,
+  "old_catalog_items": 10924,
+  "expected_queries": {
+    "update_train": 28023,
+    "update_val": 3280,
+    "future_test": 34189
+  },
+  "parallel": 2,
+  "wall_seconds": 72000,
+  "gpu_memory_limit_mib": 24576,
+  "quantizer_training": false,
+  "sasrec_training": false,
+  "lambda_sweep": false,
+  "retry": false,
+  "holdout_evaluation": false,
+  "future_evaluation": true,
+  "pair_predecessor": {
+    "job_id": "cf-letter-optimizer-pair-001",
+    "code_sha": "47a98285d37864bab9e4405eb776e24e0ff24580",
+    "compact_sha256": "49ec6a3d761d46fc4340f5cddc070b5163ca0f2bb17597265b270de7226ae4cd",
+    "index_sha256": "7728adfe14ff3950793195ee3ff56a88411f0c47ab1f8f94f73eb995170ec2ef",
+    "steps": 1000
+  },
+  "arms": [
+    {
+      "name": "ft_old",
+      "source": null
+    },
+    {
+      "name": "plain_b09",
+      "source": "lr1e5_b09_rq_only"
+    },
+    {
+      "name": "historical_b09",
+      "source": "lr1e5_b09_mixed"
+    },
+    {
+      "name": "plain_b0",
+      "source": "lr1e5_b0_rq_only"
+    },
+    {
+      "name": "historical_b0",
+      "source": "lr1e5_b0_mixed"
+    }
+  ],
+  "parallel_evidence": "Accepted same-architecture Base GPT observed peak6440MiB; allow at most2 owned training children and24576MiB aggregate guard. Future serial."
+}

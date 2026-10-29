@@ -11,15 +11,17 @@
   "project": "/home/hao/frec/graph-informed-sids-web",
   "python": "/home/hao/miniconda3/envs/frec-gpu/bin/python",
   "plan": [
-    "run_two_explicit_RQ_only_Mixed_pairs",
-    "verify_training_only_results_and_report_then_stop"
+    "five_GPT_Update_adaptations",
+    "lock_all_selections",
+    "five_Future_evaluations",
+    "verify_report_and_stop"
   ],
-  "new_training_steps_authorized": 4000,
-  "new_future_prediction_passes_authorized": 0,
+  "new_training_steps_authorized": 10000,
+  "new_future_prediction_passes_authorized": 5,
   "acceptance_timeout_seconds": 86400,
   "max_diagnosed_repair_jobs": 0,
   "same_fault_automatic_retry": false,
-  "selection_metric": "training-only last-eight scheduled full-anchor/RQ stability and paired efficacy; no parameter selection on holdout/Future",
+  "selection_metric": "fixed512 Update-validation full-denominator NDCG@10 at0/100/250/500/1000/2000; earliest tie",
   "beam": 20,
   "topk": [
     5,
@@ -31,11 +33,11 @@
   "web_controller": "docs/lab_buffer/CONTROLLER.md",
   "persistent_state": "lab-requests:control/main.json",
   "stop_after_plan": true,
-  "revision": 10,
-  "active_scope": "cf-letter-optimizer-pair-v1",
-  "scope_manifest": "docs/experiments/cf_letter_optimizer_pair.json",
+  "revision": 11,
+  "active_scope": "cf-letter-gpt-future-v1",
+  "scope_manifest": "docs/experiments/cf_letter_downstream.json",
   "scope_authorized_at": "2026-10-29",
-  "optimizer_steps_scope": "Four fresh independent 1000-step codebook arms; explicit second-stage authorization, old screening gate/receipt unchanged",
+  "optimizer_steps_scope": "Five independently warm-started GPT Update arms,2000 each; no codebook or CF updates",
   "max_parallel": 2,
   "task_runtime": {
     "protocol_version": 1,
@@ -47,20 +49,21 @@
     "core_migration": "installed fe790d49ce65db558433bba7d6c4e759279fa2aa; no per-task upgrade"
   },
   "allowed_splits": [
-    "base_train",
-    "update_train"
+    "update_train",
+    "update_val",
+    "future_test"
   ],
   "catalog_items": 10924,
   "suffix_capacity": 512,
-  "wall_seconds": 14400,
+  "wall_seconds": 72000,
   "update_training_authorized": true,
-  "historical_training_authorized": true,
+  "historical_training_authorized": false,
   "holdout_evaluation_authorized": false,
-  "future_evaluation_authorized": false,
+  "future_evaluation_authorized": true,
   "update_training_components": [
-    "three_codebooks"
+    "GPT_all_parameters"
   ],
-  "quantizer_training_authorized": true,
-  "gpt_training_authorized": false,
-  "gpu_scientific_reload_authorized": true
+  "quantizer_training_authorized": false,
+  "gpt_training_authorized": true,
+  "gpu_scientific_reload_authorized": false
 }

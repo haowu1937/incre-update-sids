@@ -49,9 +49,9 @@ def child(output,p,name):
 
 
 class Scheduler:
-    def __init__(self,output,deployment,p,report,began,*,job_id=JOB,child_script="run_cf_letter_optimizer.py",publisher=publish_curves):
+    def __init__(self,output,deployment,p,report,began,*,job_id=JOB,child_script="run_cf_letter_optimizer.py",publisher=publish_curves,counter=counters):
         self.output=output;self.deployment=deployment;self.p=p;self.report=report;self.began=began
-        self.job_id=job_id;self.child_script=child_script;self.publisher=publisher
+        self.job_id=job_id;self.child_script=child_script;self.publisher=publisher;self.counter=counter
         self.root=Path(read(deployment)['runner_root']);self.stop=None;self.journal=[];self.last_control=0.;self.last_progress=0.
 
     def run(self,recipes):
@@ -73,7 +73,7 @@ class Scheduler:
                 if memory>self.p['gpu_memory_limit_mib']:self.stop=self.stop or 'GPU memory guard; active arms finish'
             except Exception as error:
                 observed=set();memory=0;self.stop=self.stop or repr(error)
-            if time.monotonic()-self.began>self.p['wall_seconds']:self.stop=self.stop or 'Four-hour guard; active arms finish'
+            if time.monotonic()-self.began>self.p['wall_seconds']:self.stop=self.stop or 'Task wall guard; active arms finish'
             if time.monotonic()-self.last_control>=30:
                 try:
                     if paused(self.root,self.job_id):self.stop=self.stop or 'Manual pause; active arms finish'
@@ -89,7 +89,7 @@ class Scheduler:
             if self.stop:
                 save(self.output/'stop-new-arms.json',dict(reason=self.stop));pending=[]
             if time.monotonic()-self.last_progress>=30:
-                total,steps,intents=counters(self.output);value=dict(active_pids=sorted(active),pending=[v['name'] for v in pending],optimizer_steps=total,stage_steps=steps,stop_new_arms=self.stop)
+                total,steps,intents=self.counter(self.output);value=dict(active_pids=sorted(active),pending=[v['name'] for v in pending],optimizer_steps=total,stage_steps=steps,stop_new_arms=self.stop)
                 save(self.output/'progress.json',value);print(json.dumps(value),flush=True);self.last_progress=time.monotonic()
             if pending or active:time.sleep(2)
         if failure:raise RuntimeError(failure)
