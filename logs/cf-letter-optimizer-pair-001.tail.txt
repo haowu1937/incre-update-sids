@@ -41,3 +41,4 @@ Ran 4 tests in 6.951s
 
 OK
 {"active_pids": [2282789, 2282790], "pending": ["lr1e5_b0_rq_only", "lr1e5_b0_mixed"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
+{"active_pids": [2282789, 2282790], "pending": ["lr1e5_b0_rq_only", "lr1e5_b0_mixed"], "optimizer_steps": 60, "stage_steps": {"lr1e5_b09_mixed": 30, "lr1e5_b09_rq_only": 30}, "stop_new_arms": null}
