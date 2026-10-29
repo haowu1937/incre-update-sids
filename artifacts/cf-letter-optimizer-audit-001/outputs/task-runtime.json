@@ -1,0 +1,12 @@
+{
+  "protocol_version": 1,
+  "job_id": "cf-letter-optimizer-audit-001",
+  "code_sha": "e648205d62554a2944cdfb1336c7e981b684ea44",
+  "contract_sha256": "41f343af0e7885722fe96931ec48054806643bca563ab29a85ab0cc9ebd9b095",
+  "status": "completed",
+  "checks_completed": 1,
+  "command_started": true,
+  "started_at": "2026-10-29T09:07:20.705303+00:00",
+  "original_inputs_unchanged": true,
+  "finished_at": "2026-10-29T09:08:04.152233+00:00"
+}

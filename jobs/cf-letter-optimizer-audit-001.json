@@ -6,15 +6,21 @@
   "request_sha256": "d1296f414aa156325eda2c8e1f17e318197d79fdd7554ab31b4271e0bb6a101e",
   "code_sha": "e648205d62554a2944cdfb1336c7e981b684ea44",
   "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
-  "status": "running",
+  "status": "completed",
   "started_at": "2026-10-29T09:07:08.839758+00:00",
-  "updated_at": "2026-10-29T09:07:20.659152+00:00",
-  "exit_code": null,
+  "updated_at": "2026-10-29T09:08:04.191629+00:00",
+  "exit_code": 0,
   "pid": 2266698,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-audit-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-optimizer-audit-001.log",
   "log_tail": "logs/cf-letter-optimizer-audit-001.tail.txt",
-  "artifacts": [],
+  "artifacts": [
+    "artifacts/cf-letter-optimizer-audit-001/outputs/task-runtime.json",
+    "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/compact.json",
+    "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_1.json",
+    "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_2.json",
+    "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_3.json"
+  ],
   "training_started": true,
   "actual_code_sha": "e648205d62554a2944cdfb1336c7e981b684ea44",
   "argv": [
@@ -31,5 +37,13 @@
     "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-optimizer-audit-001"
   ],
   "process_started": true,
-  "elapsed_seconds": 0.055
+  "elapsed_seconds": 43.587,
+  "artifacts_sha256": {
+    "artifacts/cf-letter-optimizer-audit-001/outputs/task-runtime.json": "317dcb468d24bed4182597bf045cbcd8059ee0649e50fe986333cf244b350eb0",
+    "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/compact.json": "4eddede8e4aaa2fe6b904f3a6021ddf64f37d92d503e9149ebb459c2d26b0d23",
+    "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_1.json": "614c29c9b442d3aff335f56420cebf92e80d9c3b9f42532d8f27b8a15d8a8827",
+    "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_2.json": "d1b6207a739adafea79fa73eb65c07bfd6757d6cce2588d77259ecf8ec98106c",
+    "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_3.json": "6b952c136eca8217bb524c71c8040fed05695cc102f1ff523cc476dfac3b5622"
+  },
+  "finished_at": "2026-10-29T09:08:04.191605+00:00"
 }
