@@ -1377,3 +1377,12 @@ Both 1e-5 settings show lower reported H with small reconstruction cost, but the
 Cloud byte review matched all eight returned artifact hashes and request/scope bindings, recomputed the returned full-curve tail statistics and selector, and confirmed the absent pair. It did not load Beauty checkpoints, independently score original queries or accept canonical assignments. Reported original-input immutability still requires the blocked scientific acceptance to be completed.
 
 Prepared zero-update read-only task `cf-letter-optimizer-audit-001`, manifest `docs/experiments/cf_letter_optimizer_audit.json`, to inspect the same immutable 170 monitoring checkpoints. It will compare CPU/GPU reloads, saved full-catalog versus old-item chunks and sampled float64 distance gaps, while rechecking original hashes and durable counters. It cannot modify source files, assignments or criteria, and cannot mark the original study accepted. No retraining, lambda/STE change, holdout/Future or recommendation evaluation. The local Runner pause created by the verifier failure still requires exact reconciliation before Git scans resume. Existing Base/Future tables are unchanged.
+
+<!-- lab-task:cf-letter-optimizer-audit-001:41f343af0e7885722fe96931ec48054806643bca563ab29a85ab0cc9ebd9b095 -->
+
+### Read-only diagnosis of optimizer-study checkpoint indices
+
+Job `cf-letter-optimizer-audit-001`; code `e648205d62554a2944cdfb1336c7e981b684ea44`. Optimizer steps=0. Original `cf-letter-optimizer-001` artifacts are unchanged; its scientific acceptance remains **blocked**.
+CPU diagnosis checked 170 saved full monitors. CPU mismatch monitors=4, mismatch elements=9; saved full-catalog versus old-item chunk mismatch monitors=0. GPU probes cover 4 implicated monitors; reproduction mismatch monitors=0.
+
+Conditional float64 distances are reported on each sampled saved-prefix residual; samples distinguish exact ties, very small gaps and clearly nonminimal stored choices. No numerical tolerance, original assignment, H selection threshold or training recipe was changed. This report validates collection of diagnostic evidence; it does not accept the original optimizer study or establish a floating-point cause without reviewing the measured gaps and backend reproduction. No model training, ranking/holdout/Future scoring or automatic new experiment.
