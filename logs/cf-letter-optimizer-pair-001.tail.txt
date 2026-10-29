@@ -1,0 +1,43 @@
+.........Passing a tuple of `past_key_values` is deprecated and will be removed in Transformers v4.53.0. You should pass an instance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
+..{"stage": "sasrec", "step": 2, "epoch": 1, "validation": {"all_queries": 8, "servable_queries": 7, "unavailable_targets": 1, "full_denominator": {"recall@5": 0.125, "recall@10": 0.125, "recall@20": 0.5, "ndcg@5": 0.0625, "ndcg@10": 0.0625, "ndcg@20": 0.15877976930341497}, "conditional_on_servable": {"recall@5": 0.14285714285714285, "recall@10": 0.14285714285714285, "recall@20": 0.5714285714285714, "ndcg@5": 0.07142857142857142, "ndcg@10": 0.07142857142857142, "ndcg@20": 0.1814625934896171}, "mean_sequence_nll_servable": 3.470700911113194, "invalid_predictions": 0, "ranking_catalog": "base_train", "seen_item_filter": false, "nll_target_tokens": 1, "examples_with_all_history_unavailable": 0, "num_beams": null}}
+{"stage": "sasrec", "step": 4, "epoch": 2, "validation": {"all_queries": 8, "servable_queries": 7, "unavailable_targets": 1, "full_denominator": {"recall@5": 0.125, "recall@10": 0.125, "recall@20": 0.5, "ndcg@5": 0.07886621919643219, "ndcg@10": 0.07886621919643219, "ndcg@20": 0.17514598849984717}, "conditional_on_servable": {"recall@5": 0.14285714285714285, "recall@10": 0.14285714285714285, "recall@20": 0.5714285714285714, "ndcg@5": 0.09013282193877965, "ndcg@10": 0.09013282193877965, "ndcg@20": 0.20016684399982534}, "mean_sequence_nll_servable": 3.470400639942714, "invalid_predictions": 0, "ranking_catalog": "base_train", "seen_item_filter": false, "nll_target_tokens": 1, "examples_with_all_history_unavailable": 0, "num_beams": null}}
+{"stage": "gpt", "step": 2, "epoch": 1, "validation": {"all_queries": 8, "servable_queries": 7, "unavailable_targets": 1, "full_denominator": {"recall@5": 0.0, "recall@10": 0.25, "recall@20": 0.625, "ndcg@5": 0.0, "ndcg@10": 0.08395900798671888, "ndcg@20": 0.17522553927450363}, "conditional_on_servable": {"recall@5": 0.0, "recall@10": 0.2857142857142857, "recall@20": 0.7142857142857143, "ndcg@5": 0.0, "ndcg@10": 0.09595315198482157, "ndcg@20": 0.20025775917086128}, "mean_sequence_nll_servable": 19.934153693062918, "invalid_predictions": 0, "ranking_catalog": "base_train", "seen_item_filter": false, "nll_target_tokens": 4, "examples_with_all_history_unavailable": 0, "num_beams": 20}}
+{"stage": "gpt", "step": 4, "epoch": 2, "validation": {"all_queries": 8, "servable_queries": 7, "unavailable_targets": 1, "full_denominator": {"recall@5": 0.0, "recall@10": 0.25, "recall@20": 0.625, "ndcg@5": 0.0, "ndcg@10": 0.08395900798671888, "ndcg@20": 0.17467509512431698}, "conditional_on_servable": {"recall@5": 0.0, "recall@10": 0.2857142857142857, "recall@20": 0.7142857142857143, "ndcg@5": 0.0, "ndcg@10": 0.09595315198482157, "ndcg@20": 0.19962868014207655}, "mean_sequence_nll_servable": 19.91360010419573, "invalid_predictions": 0, "ranking_catalog": "base_train", "seen_item_filter": false, "nll_target_tokens": 4, "examples_with_all_history_unavailable": 0, "num_beams": 20}}
+.
+----------------------------------------------------------------------
+Ran 12 tests in 5.736s
+
+OK
+......{"branch": "h_only", "step": 10, "epoch": 2, "train_batch_H": 0.0011937618255615234, "fixed_H": 0.0013523101806640625, "full_H": 0.0014361143112182617}
+{"branch": "rq_only", "step": 10, "epoch": 2, "train_batch_H": 0.0009577274322509766, "fixed_H": 0.001697540283203125, "full_H": 0.0014456510543823242}
+{"branch": "mixed", "step": 10, "epoch": 2, "train_batch_H": 0.0008721351623535156, "fixed_H": 0.0012874603271484375, "full_H": 0.0012782812118530273}
+..
+----------------------------------------------------------------------
+Ran 8 tests in 6.450s
+
+OK
+....{"active_pids": [100, 101], "pending": ["h_lr1e4_b0"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
+{"active_pids": [100, 101], "pending": ["h_lr1e4_b0"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
+...{"branch": "h_lr3e5_b09", "step": 10, "epoch": 2, "train_batch_H": 0.0011937618255615234, "fixed_H": 0.0013523101806640625, "full_H": 0.0013910531997680664}
+{"branch": "h_lr1e5_b09", "step": 10, "epoch": 2, "train_batch_H": 0.0012938976287841797, "fixed_H": 0.0014524459838867188, "full_H": 0.0014411211013793945}
+{"branch": "h_lr1e4_b0", "step": 10, "epoch": 2, "train_batch_H": 0.001600503921508789, "fixed_H": 0.0016446113586425781, "full_H": 0.0015145540237426758}
+{"branch": "h_lr3e5_b0", "step": 10, "epoch": 2, "train_batch_H": 0.001600503921508789, "fixed_H": 0.0018422603607177734, "full_H": 0.0016739368438720703}
+{"branch": "h_lr1e5_b0", "step": 10, "epoch": 2, "train_batch_H": 0.0014863014221191406, "fixed_H": 0.0019087791442871094, "full_H": 0.0017304420471191406}
+{"branch": "pair_rq_only", "step": 10, "epoch": 2, "train_batch_H": 0.0008039474487304688, "fixed_H": 0.002053976058959961, "full_H": 0.0014861822128295898}
+{"branch": "pair_mixed", "step": 10, "epoch": 2, "train_batch_H": 0.001882791519165039, "fixed_H": 0.0026979446411132812, "full_H": 0.0019472837448120117}
+.
+----------------------------------------------------------------------
+Ran 8 tests in 9.301s
+
+OK
+..{"active_pids": [200, 201], "pending": ["lr1e5_b0_rq_only", "lr1e5_b0_mixed"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
+.{"branch": "lr1e5_b09_rq_only", "step": 10, "epoch": 2, "train_batch_H": 0.0008039474487304688, "fixed_H": 0.001697540283203125, "full_H": 0.0014456510543823242}
+{"branch": "lr1e5_b09_mixed", "step": 10, "epoch": 2, "train_batch_H": 0.0010724067687988281, "fixed_H": 0.0017285346984863281, "full_H": 0.0012907981872558594}
+{"branch": "lr1e5_b0_rq_only", "step": 10, "epoch": 2, "train_batch_H": 0.0008039474487304688, "fixed_H": 0.002053976058959961, "full_H": 0.0014861822128295898}
+{"branch": "lr1e5_b0_mixed", "step": 10, "epoch": 2, "train_batch_H": 0.001882791519165039, "fixed_H": 0.0026979446411132812, "full_H": 0.0019472837448120117}
+.
+----------------------------------------------------------------------
+Ran 4 tests in 6.951s
+
+OK
+{"active_pids": [2282789, 2282790], "pending": ["lr1e5_b0_rq_only", "lr1e5_b0_mixed"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
