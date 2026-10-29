@@ -4,7 +4,12 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "cf-letter-gpt-future-repair-001",
-  "lease": null,
+  "lease": {
+    "token": "cloud-downstream-analysis-20261029T162915",
+    "owner": "cloud-downstream-analysis",
+    "acquired_at": "2026-10-29T16:29:15+00:00",
+    "expires_at_unix": 1793292255
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -252,7 +257,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -585,7 +590,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -1067,12 +1072,12 @@
         "pair_settings": [
           {
             "name": "lr1e5_b09",
-            "lr": 1e-05,
+            "lr": 0.00001,
             "beta1": 0.9
           },
           {
             "name": "lr1e5_b0",
-            "lr": 1e-05,
+            "lr": 0.00001,
             "beta1": 0
           }
         ],
