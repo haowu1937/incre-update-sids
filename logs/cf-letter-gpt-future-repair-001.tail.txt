@@ -1,6 +1,4 @@
-er_steps": 2116, "stage_steps": {"ft_old": 1080, "plain_b09": 1036}, "stop_new_arms": null}
-{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 2225, "stage_steps": {"ft_old": 1133, "plain_b09": 1092}, "stop_new_arms": null}
-{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 2333, "stage_steps": {"ft_old": 1189, "plain_b09": 1144}, "stop_new_arms": null}
+: 2333, "stage_steps": {"ft_old": 1189, "plain_b09": 1144}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 2442, "stage_steps": {"ft_old": 1242, "plain_b09": 1200}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 2549, "stage_steps": {"ft_old": 1297, "plain_b09": 1252}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 2656, "stage_steps": {"ft_old": 1351, "plain_b09": 1305}, "stop_new_arms": null}
@@ -59,3 +57,5 @@ er_steps": 2116, "stage_steps": {"ft_old": 1080, "plain_b09": 1036}, "stop_new_a
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 7844, "stage_steps": {"historical_b09": 1947, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1897}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 7954, "stage_steps": {"historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 1954}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 8000, "stage_steps": {"historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
+{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 8000, "stage_steps": {"historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
+{"active_pids": [2740659, 2783979], "pending": [], "optimizer_steps": 8000, "stage_steps": {"historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
