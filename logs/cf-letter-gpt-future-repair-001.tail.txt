@@ -26,3 +26,5 @@ Ran 8 tests in 17.097s
 
 OK
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
+{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 39, "stage_steps": {"ft_old": 20, "plain_b09": 19}, "stop_new_arms": null}
+{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 145, "stage_steps": {"ft_old": 73, "plain_b09": 72}, "stop_new_arms": null}
