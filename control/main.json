@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "needs_diagnosis",
-  "pause_requested": true,
-  "active_job_id": "cf-letter-gpt-future-001",
-  "lease": {
-    "token": "web-cf-downstream-repair-1793277598023",
-    "owner": "web-cf-downstream-repair",
-    "acquired_at": "2026-10-29T12:39:58.023Z",
-    "expires_at_unix": 1793278498
-  },
+  "mode": "queued",
+  "pause_requested": false,
+  "active_job_id": "cf-letter-gpt-future-repair-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -157,8 +152,8 @@
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "e4e5476d3581eb28e3c0e5ef2d852d04f2f3c2ae",
-  "request_sha256": "24dcd4fadba3319bfa5a78dc8f5fb58878d552eb9a2aa0d82f4350dc96b2660e",
+  "code_sha": "26295b4626a71fd596bc30dbf72233315645631a",
+  "request_sha256": "e2472fb4d9ec645879f02ee71bfcdd2e11f577beda62f7206f1da2c98254fe4c",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -236,7 +231,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -569,7 +564,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -1051,12 +1046,12 @@
         "pair_settings": [
           {
             "name": "lr1e5_b09",
-            "lr": 0.00001,
+            "lr": 1e-05,
             "beta1": 0.9
           },
           {
             "name": "lr1e5_b0",
-            "lr": 0.00001,
+            "lr": 1e-05,
             "beta1": 0
           }
         ],
@@ -1141,8 +1136,8 @@
   "active_scope": "cf-letter-refresh-diag-v1",
   "task_dispatch": {
     "protocol_version": 1,
-    "contract_path": "task-contracts/cf-letter-gpt-future-001.json",
-    "contract_sha256": "d264085d414c605644c37bb510d4846fb10f2b2607a442b0d5faff7c84b81141"
+    "contract_path": "task-contracts/cf-letter-gpt-future-repair-001.json",
+    "contract_sha256": "43229d9a847c55171f07bea93f55598a7793fe405d42aea1f77e59f907155585"
   },
   "task_scope_ledger": {
     "cf-letter-base-v1": {
@@ -1214,55 +1209,43 @@
       "reservations": {
         "cf-letter-gpt-future-001": 10000
       },
-      "actual_steps": {}
+      "actual_steps": {
+        "cf-letter-gpt-future-001": 0
+      }
+    },
+    "cf-letter-gpt-future-repair-v1": {
+      "scope_sha256": "e3e929ff924859d471d10bc47d3fb3075809f31392625bb1f89ec9ec5eb9cff6",
+      "reservations": {
+        "cf-letter-gpt-future-repair-001": 10000
+      },
+      "actual_steps": {},
+      "family": "cf-letter-gpt-future",
+      "family_actual_cap": 10000,
+      "original_job_actual_steps": 0
     }
   },
   "current_scope": {
-    "scope_id": "cf-letter-gpt-future-v1",
-    "status": "queued",
-    "authorization": "Hao explicitly said 下发这个任务 after reviewing five independent GPT Update fine-tuning arms (2000 steps each) and five selected-checkpoint Future evaluations with common I0 catalog on 2026-10-29.",
-    "manifest": "docs/experiments/cf_letter_downstream.json",
+    "scope_id": "cf-letter-gpt-future-repair-v1",
+    "status": "queued_pending_exact_local_pause_reconciliation",
+    "authorization": "Hao explicitly said 下发这个任务 after reviewing five independent GPT Update fine-tuning arms (2000 steps each) and five selected-checkpoint Future evaluations with common I0 catalog on 2026-10-29. One diagnosed report-formatting repair under the standing in-scope software-repair authorization; original task failed preflight with zero Beauty steps, same remaining10000-step family budget and identical experiment recipe.",
+    "manifest": "docs/experiments/cf_letter_downstream_repair.json",
     "max_optimizer_steps": 10000,
     "max_parallel": 2,
+    "family_actual_step_cap": 10000,
+    "original_actual_steps": 0,
+    "zero_step_repair_of": {
+      "job_id": "cf-letter-gpt-future-001",
+      "code_sha": "e4e5476d3581eb28e3c0e5ef2d852d04f2f3c2ae",
+      "runtime_sha256": "efa3b7e5930de728fd2d6e3f1240e74b6e210e4850c8003a061dc6eaadad0591",
+      "result_sha256": "14d5592103e401699dd58bd554c74c2d6d22b6c083b5da80aa6a864733066566",
+      "actual_optimizer_steps": 0
+    },
     "components_trained": [
       "GPT_all_parameters"
     ],
-    "arms": [
-      {
-        "name": "ft_old",
-        "source": null
-      },
-      {
-        "name": "plain_b09",
-        "source": "lr1e5_b09_rq_only"
-      },
-      {
-        "name": "historical_b09",
-        "source": "lr1e5_b09_mixed"
-      },
-      {
-        "name": "plain_b0",
-        "source": "lr1e5_b0_rq_only"
-      },
-      {
-        "name": "historical_b0",
-        "source": "lr1e5_b0_mixed"
-      }
-    ],
-    "steps_per_arm": 2000,
-    "catalog": "common Base I0",
-    "catalog_items": 10924,
     "full_future_passes": 5,
-    "no_RQ_or_SASRec_training": true,
-    "selection_steps": [
-      0,
-      100,
-      250,
-      500,
-      1000,
-      2000
-    ],
-    "future_used_for_selection": false,
+    "steps_per_arm": 2000,
+    "catalog_items": 10924,
     "stop_after_study": true,
     "automatic_retry": false
   },
@@ -1523,6 +1506,68 @@
       },
       "failure_evidence": "docs/experiments/cf_letter_optimizer_acceptance_failure.json",
       "report_commit_sha": "e648205d62554a2944cdfb1336c7e981b684ea44"
+    },
+    {
+      "scope": {
+        "scope_id": "cf-letter-gpt-future-v1",
+        "status": "queued",
+        "authorization": "Hao explicitly said 下发这个任务 after reviewing five independent GPT Update fine-tuning arms (2000 steps each) and five selected-checkpoint Future evaluations with common I0 catalog on 2026-10-29.",
+        "manifest": "docs/experiments/cf_letter_downstream.json",
+        "max_optimizer_steps": 10000,
+        "max_parallel": 2,
+        "components_trained": [
+          "GPT_all_parameters"
+        ],
+        "arms": [
+          {
+            "name": "ft_old",
+            "source": null
+          },
+          {
+            "name": "plain_b09",
+            "source": "lr1e5_b09_rq_only"
+          },
+          {
+            "name": "historical_b09",
+            "source": "lr1e5_b09_mixed"
+          },
+          {
+            "name": "plain_b0",
+            "source": "lr1e5_b0_rq_only"
+          },
+          {
+            "name": "historical_b0",
+            "source": "lr1e5_b0_mixed"
+          }
+        ],
+        "steps_per_arm": 2000,
+        "catalog": "common Base I0",
+        "catalog_items": 10924,
+        "full_future_passes": 5,
+        "no_RQ_or_SASRec_training": true,
+        "selection_steps": [
+          0,
+          100,
+          250,
+          500,
+          1000,
+          2000
+        ],
+        "future_used_for_selection": false,
+        "stop_after_study": true,
+        "automatic_retry": false
+      },
+      "receipt": {
+        "status": "needs_attention",
+        "job_id": "cf-letter-gpt-future-001",
+        "request_sha256": "24dcd4fadba3319bfa5a78dc8f5fb58878d552eb9a2aa0d82f4350dc96b2660e",
+        "result_sha256": "14d5592103e401699dd58bd554c74c2d6d22b6c083b5da80aa6a864733066566",
+        "reason": "ValueError('Task failed/interrupted; preserve evidence and diagnose before any new job')",
+        "processed_at": "2026-10-29T12:31:25.840817+00:00",
+        "next_job_id": null
+      },
+      "status": "preflight_failed_zero_real_steps",
+      "actual_optimizer_steps": 0
     }
   ],
   "explicit_scope_authorization": {
@@ -1557,5 +1602,13 @@
       "next_job_id": null
     }
   },
-  "next_job_id": null
+  "next_job_id": null,
+  "zero_step_failure_reconciliation": {
+    "job_id": "cf-letter-gpt-future-001",
+    "runtime_sha256": "efa3b7e5930de728fd2d6e3f1240e74b6e210e4850c8003a061dc6eaadad0591",
+    "result_sha256": "14d5592103e401699dd58bd554c74c2d6d22b6c083b5da80aa6a864733066566",
+    "actual_optimizer_steps": 0,
+    "exact_cause": "Report formatter requested production@5 from tiny@1/2/4 metrics; configured-cutoff report regression added",
+    "local_pause_requires_exact_archival": true
+  }
 }

@@ -1,0 +1,48 @@
+{
+  "protocol_version": 1,
+  "scope_id": "cf-letter-gpt-future-repair-v1",
+  "max_optimizer_steps": 10000,
+  "max_parallel": 2,
+  "authorization": "Hao explicitly said 下发这个任务 after reviewing five independent GPT Update fine-tuning arms (2000 steps each) and five selected-checkpoint Future evaluations with common I0 catalog on 2026-10-29. One diagnosed report-formatting repair under the standing in-scope software-repair authorization; original task failed preflight with zero Beauty steps, same remaining10000-step family budget and identical experiment recipe.",
+  "allowed_query_splits": [
+    "update_train",
+    "update_val",
+    "future_test"
+  ],
+  "catalog": "common Base train I0,10924 items",
+  "predecessor_read_only": [
+    {
+      "job_id": "cf-letter-base-001",
+      "code_sha": "5f56e68b9b9ca09b825b9274007078aefb701fa3",
+      "compact_sha256": "ff051c739b8af53ffc305fee72ee2dc56fc512e0e0493e34005c7dd580de18bb",
+      "audit_sha256": "7de0f166e75a9c9bbbd660bce7912fb10fc59611c3f76e6bdb9d7c8d2752203a",
+      "sasrec_step": 37250,
+      "gpt_step": 1192,
+      "files_sha256": {
+        "sasrec/selected.pth": "67efbca4a5de09ce56f51a21d8cf2eeaad1564f37def0bfb3af339d01193d530",
+        "gpt/selected.pth": "00fb8499f12c8478b83f2050d2b96134f82c9c897c2ce9c12a13b41a0e2f23d7",
+        "quantizer/selected.pth": "2634c57d494363b3bcc6eb21a366c47ff3106306fefde29a3555d42c71d972d3",
+        "cf_embeddings.npy": "0b6ca1fdd9a561a8c64f24736626d0326ca4543e0eaf865cd5af4df88d778d88",
+        "item_sids.npy": "7cade2b867d2a441148b44505243d97dce2999191e5f2f49a14b36ce2f7ee3e1",
+        "quantizer/semantic_codes.npy": "9479d0dc1b14773fa7896c58d2dd9c1fd4f06b5bc9350f432caa50bb753710cd"
+      }
+    },
+    {
+      "job_id": "cf-letter-optimizer-pair-001",
+      "code_sha": "47a98285d37864bab9e4405eb776e24e0ff24580",
+      "compact_sha256": "49ec6a3d761d46fc4340f5cddc070b5163ca0f2bb17597265b270de7226ae4cd",
+      "index_sha256": "7728adfe14ff3950793195ee3ff56a88411f0c47ab1f8f94f73eb995170ec2ef",
+      "steps": 1000
+    }
+  ],
+  "future_passes": 5,
+  "stop_after_study": true,
+  "zero_step_repair_of": {
+    "job_id": "cf-letter-gpt-future-001",
+    "code_sha": "e4e5476d3581eb28e3c0e5ef2d852d04f2f3c2ae",
+    "runtime_sha256": "efa3b7e5930de728fd2d6e3f1240e74b6e210e4850c8003a061dc6eaadad0591",
+    "result_sha256": "14d5592103e401699dd58bd554c74c2d6d22b6c083b5da80aa6a864733066566",
+    "actual_optimizer_steps": 0
+  },
+  "family_actual_step_cap": 10000
+}
