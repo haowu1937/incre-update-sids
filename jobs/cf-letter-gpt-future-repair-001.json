@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "job_id": "cf-letter-gpt-future-repair-001",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "request_sha256": "e2472fb4d9ec645879f02ee71bfcdd2e11f577beda62f7206f1da2c98254fe4c",
+  "code_sha": "26295b4626a71fd596bc30dbf72233315645631a",
+  "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
+  "status": "starting",
+  "started_at": "2026-10-29T14:26:09.639483+00:00",
+  "updated_at": "2026-10-29T14:26:09.641407+00:00",
+  "exit_code": null,
+  "pid": null,
+  "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-gpt-future-repair-001",
+  "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-gpt-future-repair-001.log",
+  "log_tail": "logs/cf-letter-gpt-future-repair-001.tail.txt",
+  "artifacts": [],
+  "training_started": false
+}
