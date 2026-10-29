@@ -1,6 +1,4 @@
-ld": 1351, "plain_b09": 1305}, "stop_new_arms": null}
-{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 2765, "stage_steps": {"ft_old": 1405, "plain_b09": 1360}, "stop_new_arms": null}
-{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 2871, "stage_steps": {"ft_old": 1459, "plain_b09": 1412}, "stop_new_arms": null}
+9": 1412}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 2977, "stage_steps": {"ft_old": 1511, "plain_b09": 1466}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3084, "stage_steps": {"ft_old": 1566, "plain_b09": 1518}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3194, "stage_steps": {"ft_old": 1620, "plain_b09": 1574}, "stop_new_arms": null}
@@ -59,3 +57,5 @@ ld": 1351, "plain_b09": 1305}, "stop_new_arms": null}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 8077, "stage_steps": {"historical_b0": 77, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 8178, "stage_steps": {"historical_b0": 178, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 8279, "stage_steps": {"historical_b0": 279, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
+{"active_pids": [2783979], "pending": [], "optimizer_steps": 8400, "stage_steps": {"historical_b0": 400, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
+{"active_pids": [2783979], "pending": [], "optimizer_steps": 8500, "stage_steps": {"historical_b0": 500, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
