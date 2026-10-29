@@ -1,8 +1,4 @@
-re", "arm": "ft_old", "queries_done": 16016, "all_queries": 34189}
-{"phase": "future", "arm": "ft_old", "queries_done": 16816, "all_queries": 34189}
-{"phase": "future", "arm": "ft_old", "queries_done": 17616, "all_queries": 34189}
-{"phase": "future", "arm": "ft_old", "queries_done": 18416, "all_queries": 34189}
-{"phase": "future", "arm": "ft_old", "queries_done": 19216, "all_queries": 34189}
+m": "ft_old", "queries_done": 19216, "all_queries": 34189}
 {"phase": "future", "arm": "ft_old", "queries_done": 20016, "all_queries": 34189}
 {"phase": "future", "arm": "ft_old", "queries_done": 20816, "all_queries": 34189}
 {"phase": "future", "arm": "ft_old", "queries_done": 21616, "all_queries": 34189}
@@ -142,3 +138,7 @@ re", "arm": "ft_old", "queries_done": 16016, "all_queries": 34189}
 {"phase": "future", "arm": "plain_b0", "queries_done": 25616, "all_queries": 34189}
 {"phase": "future", "arm": "plain_b0", "queries_done": 26416, "all_queries": 34189}
 {"phase": "future", "arm": "plain_b0", "queries_done": 27216, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 28016, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 28816, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 29616, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 30416, "all_queries": 34189}
