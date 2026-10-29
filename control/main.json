@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "queued",
+  "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "cf-letter-optimizer-pair-001",
-  "lease": {
-    "token": "0f458c2bce3848808d1032c550132c5c",
-    "owner": "versioned-task-observer",
-    "acquired_at": "2026-10-29T09:59:55.659477+00:00",
-    "expires_at_unix": 1793268895.6594913
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -116,6 +111,26 @@
         "artifacts/cf-letter-optimizer-audit-001/outputs/cf-optimizer-audit/details_3.json": "6b952c136eca8217bb524c71c8040fed05695cc102f1ff523cc476dfac3b5622"
       },
       "processed_at": "2026-10-29T09:09:12.761120+00:00",
+      "next_job_id": null
+    },
+    "cf-letter-optimizer-pair-001": {
+      "status": "verified_and_reported",
+      "job_id": "cf-letter-optimizer-pair-001",
+      "code_sha": "47a98285d37864bab9e4405eb776e24e0ff24580",
+      "contract_sha256": "83736d739f210db9879c27027350c96ebe4b820fcd355a7c6c348776d6fb4e41",
+      "request_sha256": "6a1575ab49a75e657add092e0b856fd6e9e93fa491566881ce5f6ee867103fc3",
+      "result_sha256": "1d0aaf562b471f1635e330d1001e5393275cd2f574377f60ec458620147f49c5",
+      "actual_optimizer_steps": 4000,
+      "report_commit_sha": "67c06d8695d409221d181a68f9e7114f11073ae0",
+      "artifacts_sha256": {
+        "artifacts/cf-letter-optimizer-pair-001/outputs/task-runtime.json": "fe0c491006bb5af00a172b72fba9adf24bd2fb294884ee0746b163fd479d9bd3",
+        "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/compact.json": "49ec6a3d761d46fc4340f5cddc070b5163ca0f2bb17597265b270de7226ae4cd",
+        "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/data_audit.json": "a66817ef27747c245953d2363a48d3067d1d2e06e51a2aeac8494898a088b3fa",
+        "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/paired_assessment.json": "b24990d45e39bca117cd539d6c7a74cb515ac8c282e42096aade8b4cee6cb2f1",
+        "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/curves_lr1e5_b09.json": "8f8f149d48a65802d6e8dd4f001e7a0edc2c3442f5d673e309b32e257e2473bd",
+        "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/curves_lr1e5_b0.json": "7f4c47e6a7e33932ccd8607ac6690c7b26a0a5fcc13774a930364accf40fc15a"
+      },
+      "processed_at": "2026-10-29T10:01:54.532574+00:00",
       "next_job_id": null
     }
   },
@@ -1122,7 +1137,9 @@
       "reservations": {
         "cf-letter-optimizer-pair-001": 4000
       },
-      "actual_steps": {}
+      "actual_steps": {
+        "cf-letter-optimizer-pair-001": 4000
+      }
     }
   },
   "current_scope": {
