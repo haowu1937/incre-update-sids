@@ -37,3 +37,5 @@ OK
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 804, "stage_steps": {"ft_old": 403, "plain_b09": 401}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 910, "stage_steps": {"ft_old": 456, "plain_b09": 454}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 1000, "stage_steps": {"ft_old": 500, "plain_b09": 500}, "stop_new_arms": null}
+{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 1078, "stage_steps": {"ft_old": 546, "plain_b09": 532}, "stop_new_arms": null}
+{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 1186, "stage_steps": {"ft_old": 600, "plain_b09": 586}, "stop_new_arms": null}
