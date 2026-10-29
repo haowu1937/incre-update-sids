@@ -1403,3 +1403,23 @@ Keep beta2=0.999, epsilon=1e-8, weight decay=0, clipping=0.1, temperature=0.5 an
 Reviewed the returned zero-step audit bytes and measured gaps: four CPU/saved differences, comprising nine semantic digits, occurred among170 monitors. All four implicated GPU checkpoint reloads exactly reproduced saved full-catalog and old-item codes. Saved full-versus-old-item chunks matched at all170 points. The initial differing choices had conditional float64 distance differences of approximately1.3e-9 to1.4e-7; subsequent residual levels can diverge after an earlier code changes. This supports backend-sensitive choices at the measured points, but does not independently accept all original training results. For this new task, require strict production-CUDA checkpoint assignment equality at all monitors and the endpoint, using the original chunk shapes, in addition to raw H reaggregation, native RQ/MSE, source/counter/sampling checks and CPU GPT likelihood checks. Preserve the original failed receipt.
 
 Prepared job `cf-letter-optimizer-pair-001`, manifest `docs/experiments/cf_letter_optimizer_pair.json`. Local protocol/concurrency/budget checks passed; actual model checks remain mandatory server preflight because Torch is unavailable in the cloud. Status at delivery: **prepared for dispatch; new steps not yet observed**. Reuse the installed generic Runner and independent outputs, with no server upgrade. No lambda recalibration, STE change, extra seed, holdout, validation ranking, Future or GPT/SASRec training. Verify, report and stop after these four arms; previous downstream tables remain unchanged.
+
+<!-- lab-task:cf-letter-optimizer-pair-001:83736d739f210db9879c27027350c96ebe4b820fcd355a7c6c348776d6fb4e41 -->
+
+### Explicit two-setting RQ-only / Mixed verification
+
+Job `cf-letter-optimizer-pair-001`; code `47a98285d37864bab9e4405eb776e24e0ff24580`. New codebook steps: 4000 / 4000. Frozen C0/E1/Base GPT; fresh reset optimizer for every arm.
+Hao explicitly authorized both lr=1e-5/beta1 settings after the original screening found no eligible candidate. This is a new paired scope; the old 2% stability gate and blocked scientific receipt remain unchanged.
+
+| Setting | Objective | Steps | Final full H | Tail H mean | Tail native RQ | Tail hard MSE | Joint tail stable |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| lr1e5_b09 | rq_only | 1000 | 0.13964783516712487 | 0.13611830442823702 | 0.01198027491986527 | 0.0021114599949214607 | False |
+| lr1e5_b09 | mixed | 1000 | 0.13614308775868267 | 0.13289818072371418 | 0.011981874362110272 | 0.002111845387844369 | False |
+| lr1e5_b0 | rq_only | 1000 | 0.13997216755524278 | 0.13632531157782068 | 0.01197979469698884 | 0.002111282665282488 | False |
+| lr1e5_b0 | mixed | 1000 | 0.13675530976615846 | 0.13278793675999623 | 0.011981385019510854 | 0.0021116150310263038 | False |
+
+Fixed Mixed lambda=0.0006386606341359484; beta2=0.999, epsilon=1e-8, wd=0, clipping=0.1, temperature=0.5. No lambda calibration, STE/residual/native-RQ change or H-only retraining.
+
+Paired assessment: `{"lr1e5_b0": {"eligible": true, "mixed_tail_stable": false, "passed": false, "tail_H_relative_reduction_vs_rq_only": 0.025948041320302928, "tail_hard_mse_relative_increase": 0.00015742361232873314, "tail_native_rq_relative_increase": 0.00013275039867033378}, "lr1e5_b09": {"eligible": true, "mixed_tail_stable": false, "passed": false, "tail_H_relative_reduction_vs_rq_only": 0.023656801471697242, "tail_hard_mse_relative_increase": 0.00018252437831400847, "tail_native_rq_relative_increase": 0.00013350630563158106}}`.
+
+Acceptance reaggregates raw query NLL/H and every-step suffix capacity, checks all scheduled checkpoint indices exactly on production CUDA with the original full-catalog and old-item chunk shapes, verifies native RQ/MSE and CPU initial/final GPT likelihoods, and checks hashes, fresh optimizer state, sampler order and step counts. GPU reload is read-only and authorized by this task manifest. These are training-side finite-window results, not asymptotic convergence or downstream gains. No holdout, validation ranking, Future, SASRec/GPT training, automatic extension, retry or next experiment.
