@@ -1,5 +1,4 @@
-{"historical_b09": 18, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 18}, "stop_new_arms": null}
-{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 4142, "stage_steps": {"historical_b09": 71, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 71}, "stop_new_arms": null}
+storical_b09": 71, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 71}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 4213, "stage_steps": {"historical_b09": 113, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 100}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 4325, "stage_steps": {"historical_b09": 170, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 155}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 4431, "stage_steps": {"historical_b09": 223, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 208}, "stop_new_arms": null}
@@ -57,4 +56,5 @@
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 9700, "stage_steps": {"historical_b0": 1700, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 9824, "stage_steps": {"historical_b0": 1824, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 9945, "stage_steps": {"historical_b0": 1945, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
+{"active_pids": [2783979], "pending": [], "optimizer_steps": 10000, "stage_steps": {"historical_b0": 2000, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 10000, "stage_steps": {"historical_b0": 2000, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
