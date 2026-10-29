@@ -25,7 +25,7 @@ def temporal_fixture(root):
     names=['protocol_manifest.json','registries.json',*[s+'.jsonl' for s in protocol['examples']]]
     save(directory/'summary.json',dict(execution_status='completed',protocol_sha256=protocol['manifest']['protocol_sha256'],artifact_files_sha256={n:sha(directory/n) for n in names}))
     deployment=root/'main-deployment.json';save(deployment,dict(project=str(project),protocol_dir=str(directory),runner_root=str(root),input_sha256={str(directory/n):sha(directory/n) for n in [*names,'summary.json']}))
-    p=plan(ROOT);p.update(old_catalog_items=len(protocol['registries']['base_train']['id2item'])-1,
+    p=plan(ROOT);p.pop('zero_step_repair_of',None);p.update(old_catalog_items=len(protocol['registries']['base_train']['id2item'])-1,
         expected_queries={s:len(protocol['examples'][s]) for s in ('update_train','update_val','future_test')},history=2,probe_size=4,
         batch_size=4,eval_batch_size=2,steps_per_arm=4,optimizer_step_cap=20,selection_steps=[0,1,2,4],selection_metric='ndcg@2',topk=[1,2,4],beam=4,bootstrap_replicates=10)
     p['gpt'].update(d_model=16,layers=1,heads=2,ffn=32,user_buckets=8);p['quantizer'].update(dim=8,capacity=4)
@@ -36,6 +36,28 @@ def lock_fixture(p):return dict(job_id=p['job_id'],future_used_for_selection=Fal
 
 
 class Protocol(unittest.TestCase):
+    def test_report_uses_configured_cutoffs_for_tiny_and_production(self):
+        from genrec.cf_letter_downstream_protocol import future_table
+        for cutoffs in ([1,2,4],[5,10,20]):
+            p=plan(ROOT);p['topk']=cutoffs
+            training={v['name']:{'optimizer_steps':4} for v in p['arms']}
+            future={v['name']:dict(selected_update_step=2,coverage=.5,full_denominator={f'{m}@{k}':.1 for m in ('recall','ndcg') for k in cutoffs}) for v in p['arms']}
+            table=future_table(training,future,p);self.assertEqual(len(table),7)
+            self.assertIn('Recall@'+str(cutoffs[0]),table[0]);self.assertIn('NDCG@'+str(cutoffs[-1]),table[0])
+            self.assertTrue(all(len(row.split('|'))==len(table[0].split('|')) for row in table))
+
+    def test_repair_requires_exact_zero_real_update_evidence(self):
+        from genrec.cf_letter_downstream_protocol import verify_zero_step_failure
+        p=plan(ROOT)
+        with tempfile.TemporaryDirectory() as tmp:
+            root=Path(tmp);proof=p['zero_step_repair_of'];path=root/'workspaces'/proof['job_id']/'outputs/task-runtime.json'
+            runtime=dict(job_id=proof['job_id'],code_sha=proof['code_sha'],status='failed',checks_completed=1,command_started=False)
+            save(path,runtime);proof['runtime_sha256']=sha(path);verify_zero_step_failure(root,p)
+            runtime['command_started']=True;save(path,runtime);proof['runtime_sha256']=sha(path)
+            with self.assertRaises(ValueError):verify_zero_step_failure(root,p)
+            runtime['command_started']=False;save(path,runtime);proof['runtime_sha256']=sha(path);(path.parent/'cf-downstream').mkdir()
+            with self.assertRaises(ValueError):verify_zero_step_failure(root,p)
+
     def test_new_entry_scheduler_enforces_two_children_and_counts_single_level_steps(self):
         import time
         import run_cf_letter_optimizer as scheduler_module

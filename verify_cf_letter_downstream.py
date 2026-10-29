@@ -5,7 +5,7 @@ import math
 from pathlib import Path
 import numpy as np
 from genrec.cf_letter_protocol import read,save,sha,safe_file,gpt_arrays
-from genrec.cf_letter_downstream_protocol import JOB,SCOPE,plan,cases,load_training,load_stage,valid_lock,check_mapping,select,aggregate,paired,load_arrays
+from genrec.cf_letter_downstream_protocol import JOB,SCOPE,plan,cases,load_training,load_stage,valid_lock,check_mapping,select,aggregate,paired,load_arrays,future_table,verify_zero_step_failure
 from run_cf_letter_downstream import counters
 ROOT=Path(__file__).resolve().parent
 
@@ -26,6 +26,9 @@ def verify(context):
     audit=read(output/'data_audit.json')
     for path,value in audit['input_sha256'].items():
         if sha(path)!=value:raise ValueError('Original source changed')
+    if 'zero_step_repair_of' in p:
+        root=Path(c['workspace']).parent.parent
+        verify_zero_step_failure(root,p)
     for name in ('gpt/selected.pth','item_sids.npy'):
         if sha(output/'inputs/base'/name)!=p['predecessor']['files_sha256'][name]:raise ValueError('Copied Base changed')
     pairdir=output/'inputs/pair'
@@ -118,10 +121,7 @@ def verify(context):
     for before,after in [('plain_b09','historical_b09'),('plain_b0','historical_b0'),*[('ft_old',name) for name in names if name!='ft_old']]:pairs[after+'_minus_'+before]=paired(future_rows[before],future_rows[after],p)
     if pairs!=read(output/'comparisons.json'):raise ValueError('Paired user bootstrap differs')
     lines=['### CF/GPT Update adaptation and locked Future evaluation','',f'Job `{JOB}`; code `{r["code_sha"]}`. Actual new GPT updates={total}; five independent arms, common I0={p["old_catalog_items"]} items, four current SID digits,20 raw history events. No RQ/SASRec fitting. All selections locked before Future.',
-        '', '| Mapping | Actual GPT Update steps | Selected Update step | Coverage | Recall@5 | Recall@10 | Recall@20 | NDCG@5 | NDCG@10 | NDCG@20 |',
-        '| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |']
-    for name in names:
-        f=fut[name];m=f['full_denominator'];lines.append('| '+name+' | '+str(p['steps_per_arm'])+' | '+str(f['selected_update_step'])+' | '+str(f['coverage'])+' | '+' | '.join(str(m[k]) for k in ('recall@5','recall@10','recall@20','ndcg@5','ndcg@10','ndcg@20'))+' |')
+        '',*future_table(training,fut,p)]
     lines+=['','Recall values in this appended table are fractions. The controller maintains the separate CF/GPT block in the primary table with Recall percentages. These results are not directly interchangeable with the old Llama/TIGER extended-catalog protocol.',
         '', 'Each GPT restores the exact Base weights with reset AdamW, lr1e-4,wd0.01,beta=(0.9,0.999),batch256,clip1,seed2026. Full fixed512-query Update-validation NDCG@10 selects0/100/250/500/1000/2000, earliest tie; actual fitting always completes2000. Current-arm history and target use the same frozen full-SID mapping. All original Future queries remain in the full denominator; outside-I0 targets are misses, with common served metrics also saved. No seen-item filtering or Future tuning.',
         '', 'Primary paired Future comparisons (Historical minus matched Plain), user-cluster bootstrap95% intervals:',

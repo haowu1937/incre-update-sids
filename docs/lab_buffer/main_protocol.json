@@ -33,9 +33,9 @@
   "web_controller": "docs/lab_buffer/CONTROLLER.md",
   "persistent_state": "lab-requests:control/main.json",
   "stop_after_plan": true,
-  "revision": 11,
-  "active_scope": "cf-letter-gpt-future-v1",
-  "scope_manifest": "docs/experiments/cf_letter_downstream.json",
+  "revision": 12,
+  "active_scope": "cf-letter-gpt-future-repair-v1",
+  "scope_manifest": "docs/experiments/cf_letter_downstream_repair.json",
   "scope_authorized_at": "2026-10-29",
   "optimizer_steps_scope": "Five independently warm-started GPT Update arms,2000 each; no codebook or CF updates",
   "max_parallel": 2,
@@ -65,5 +65,7 @@
   ],
   "quantizer_training_authorized": false,
   "gpt_training_authorized": true,
-  "gpu_scientific_reload_authorized": false
+  "gpu_scientific_reload_authorized": false,
+  "zero_step_repair_of": "cf-letter-gpt-future-001",
+  "family_actual_step_cap": 10000
 }

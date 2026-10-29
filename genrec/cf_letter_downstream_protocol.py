@@ -8,9 +8,9 @@ import numpy as np
 from genrec.cf_letter_protocol import read,save,sha,safe_file,encoded,encode_rows,metrics
 from genrec.future_protocol import validate_stage,check_registry_prefixes
 
-JOB='cf-letter-gpt-future-001'
-SCOPE='cf-letter-gpt-future-v1'
-MANIFEST='docs/experiments/cf_letter_downstream.json'
+JOB='cf-letter-gpt-future-repair-001'
+SCOPE='cf-letter-gpt-future-repair-v1'
+MANIFEST='docs/experiments/cf_letter_downstream_repair.json'
 NAMES=['ft_old','plain_b09','historical_b09','plain_b0','historical_b0']
 
 
@@ -34,6 +34,27 @@ def plan(root):
 
 
 def cases(p):return [dict(v,steps=p['steps_per_arm'],phase='gpt_update') for v in p['arms']]
+
+
+def verify_zero_step_failure(root,p):
+    proof=p['zero_step_repair_of'];source=Path(root)/'workspaces'/proof['job_id']/'outputs';path=safe_file(source,'task-runtime.json')
+    if sha(path)!=proof['runtime_sha256']:raise ValueError('Original preflight-failure evidence changed')
+    r=read(path)
+    if (r['status']!='failed' or r['job_id']!=proof['job_id'] or r['code_sha']!=proof['code_sha']
+        or r['command_started'] is not False or r['checks_completed']!=1 or (source/'cf-downstream').exists()):raise ValueError('Repair requires proven zero real GPT steps')
+    return {str(path):proof['runtime_sha256']}
+
+
+def future_table(training,future,p):
+    """Use the configured cutoffs for both tiny preflight and production reports."""
+    keys=[f'{metric}@{k}' for metric in ('recall','ndcg') for k in p['topk']]
+    columns=['Mapping','Actual GPT Update steps','Selected Update step','Coverage',*[k.replace('recall','Recall').replace('ndcg','NDCG') for k in keys]]
+    lines=['| '+' | '.join(columns)+' |','| --- | '+' | '.join(['---:']*(len(columns)-1))+' |']
+    for arm in p['arms']:
+        name=arm['name'];f=future[name];m=f['full_denominator']
+        values=[name,training[name]['optimizer_steps'],f['selected_update_step'],f['coverage'],*[m[k] for k in keys]]
+        lines.append('| '+' | '.join(map(str,values))+' |')
+    return lines
 
 
 def select(curve,p):
@@ -179,6 +200,7 @@ def submission(code_sha,deployment_sha,root,repository):
     scope=dict(protocol_version=1,scope_id=SCOPE,max_optimizer_steps=10000,max_parallel=2,authorization=p['authorization'],
         allowed_query_splits=['update_train','update_val','future_test'],catalog='common Base train I0,10924 items',
         predecessor_read_only=[p['predecessor'],p['pair_predecessor']],future_passes=5,stop_after_study=True)
+    scope.update(zero_step_repair_of=p['zero_step_repair_of'],family_actual_step_cap=10000)
     contract=dict(protocol_version=1,scope_id=SCOPE,job_id=JOB,code_sha=code_sha,request_sha256=digest(request),scope_path='task-scopes/'+SCOPE+'.json',scope_sha256=digest(scope),
         manifest=dict(path=MANIFEST,sha256=sha(Path(repository)/MANIFEST)),preflight=[['python','-u','-B','tests/incremental/test_cf_letter_base.py','--require-torch'],
         ['python','-u','-B','tests/incremental/test_cf_letter_downstream.py','--require-torch']],verifier='verify_cf_letter_downstream.py',optimizer_step_reservation=10000,

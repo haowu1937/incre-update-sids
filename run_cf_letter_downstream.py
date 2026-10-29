@@ -9,7 +9,7 @@ import time
 import traceback
 import numpy as np
 from genrec.cf_letter_protocol import read,save,sha
-from genrec.cf_letter_downstream_protocol import JOB,SCOPE,plan,cases,transfer,load_training,load_stage,save_arrays,load_arrays,valid_lock,paired
+from genrec.cf_letter_downstream_protocol import JOB,SCOPE,plan,cases,transfer,load_training,load_stage,save_arrays,load_arrays,valid_lock,paired,verify_zero_step_failure
 from run_cf_letter_optimizer import Scheduler
 from run_cf_letter_base import gpu,paused
 ROOT=Path(__file__).resolve().parent
@@ -87,7 +87,7 @@ def run(deployment,output,p):
     try:
         import shutil
         if shutil.disk_usage(output).free<12*1024**3:raise RuntimeError('Need12GiB free for five GPT runs/checkpoints')
-        bound.update(transfer(root,output,p));train,val,probe,binding=load_training(deployment,p);bound.update(binding['input_sha256']);binding['input_sha256']=dict(bound)
+        bound.update(verify_zero_step_failure(root,p));bound.update(transfer(root,output,p));train,val,probe,binding=load_training(deployment,p);bound.update(binding['input_sha256']);binding['input_sha256']=dict(bound)
         arrays={**{'train_'+k:v for k,v in train.items()},**{'val_'+k:v for k,v in val.items()},'probe':probe};save_arrays(output/'prepared.npz',arrays)
         binding['prepared_sha256']=sha(output/'prepared.npz');save(output/'binding.json',binding);save(output/'data_audit.json',binding)
         scheduler=Scheduler(output,deployment,p,report,began,job_id=JOB,child_script='run_cf_letter_downstream.py',publisher=publish_training,counter=counters)

@@ -1,6 +1,15 @@
 # Main SID experiment controller, protocol sid-main-v1
 
 
+## Zero-real-step report-formatting repair,2026-10-29
+
+The original downstream job failed actual CPU preflight only. The tiny end-to-end scenario uses topk1/2/4; after all its model/lock/metric checks the verifier report hard-coded recall@5 and raised KeyError. Runtime SHA efa3b7e5930de728fd2d6e3f1240e74b6e210e4850c8003a061dc6eaadad0591 proves command_started=false/checks_completed=1; actual Beauty steps and real Future passes are zero. Evidence is in docs/experiments/cf_letter_downstream_failure.json. Keep the immutable original job/result/needs_attention receipt and all artifacts.
+
+Under Hao's existing in-scope failure-repair authorization, replace it once with `cf-letter-gpt-future-repair-001`, scope `cf-letter-gpt-future-repair-v1`, manifest docs/experiments/cf_letter_downstream_repair.json. Only report configured metric cutoffs and add tiny/production pure regressions; production5/10/20, all five scientific conditions, selection and every budget remain unchanged. Original/replacement actual family cap=10000 GPT steps and five real Future passes, original actual0. The replacement checks the original exact runtime, command never started and original real output absent before doing any work; the verifier rechecks the same proof. Do not skip the actual-model preflight or relabel synthetic test predictions as real Future.
+
+The installed main_service creates local PAUSED on this failure, before subsequent Git fetch. Git-only queue publication cannot clear it. First finish and queue the concrete repair, then only reconcile this exact pause under runner.lock with matching failed runtime/status/reason/time and preserve the pause in resolved-pauses. No Runner/helper/policy/cron upgrade, main-workspace changes or process termination. The existing cron resumes after that local archival. Waiting for reconciliation is not running; report the dependency once and finish quiet rounds without polling. If the repair fails, preserve evidence and stop rather than dispatching another automatically. The approved five-arm plan below otherwise applies unchanged; update the separate CF/GPT primary table after scientific acceptance and stop.
+
+
 ## Latest explicit authorization, 2026-10-29: five GPT Update / Future arms
 
 Hao approved the five-arm plan by saying **下发这个任务**. Authorize only `cf-letter-gpt-future-v1` / `cf-letter-gpt-future-001`, manifest `docs/experiments/cf_letter_downstream.json` and same-name Markdown: FT-old plus the four accepted step1000 Plain/Mixed maps at lr1e-5,beta1=.9/0. New GPT cap10000 (5x2000), five full Future passes; no RQ/SASRec/CF fitting or H-only rerun. Prior loss convergence failures and the earlier blocked screening receipt stay unchanged. This explicit scope supersedes the completed paired-study stop only for this downstream plan.

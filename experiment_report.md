@@ -25,7 +25,7 @@ This is the main table previously located in Section 5.3. Maintain it here as co
 
 <!-- cf-letter-downstream-primary:v1 -->
 
-Status: authorized for dispatch, no new downstream results observed. All five arms will use the same10924-item I0 catalog,20 raw history events and four target digits. These results belong to a separate protocol from the extended-catalog Llama/TIGER table above. Full Future denominator34189; coverage will be measured, not copied from the old pipeline.
+Status: original task failed CPU preflight before any real-data command; zero Beauty updates/Future passes. A report-formatting repair is prepared within the same budget; no downstream results observed. All five arms will use the same10924-item I0 catalog,20 raw history events and four target digits. These results belong to a separate protocol from the extended-catalog Llama/TIGER table above. Full Future denominator34189; coverage will be measured, not copied from the old pipeline.
 
 | Mapping | Actual GPT Update steps | Selected Update step | Coverage | Recall@5 | Recall@10 | Recall@20 | NDCG@5 | NDCG@10 | NDCG@20 |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -1477,3 +1477,15 @@ Reset AdamW lr1e-4,wd0.01,beta(.9,.999),epsilon1e-8,batch256,clip1,FP32,seed2026
 Lock all five selected-model/mapping/probe identities before reading Future. Evaluate the same34189 prequential queries with fixed I0,beam20,no seen filtering; outside-I0 targets count as misses. Report full/common-served Recall/NDCG5/10/20,coverage,NLL and unavailable history, plus Historical-minus-matched-Plain and versusFT-old paired user-cluster95% intervals (500 draws). Future cannot change training settings or checkpoint selection. One engineering seed.
 
 The accepted same-architecture Base GPT observed a6440MiB peak; training permits at most two owned children with24576MiB aggregate protection, while Future passes run serially. Reuse generic v1 without a Runner upgrade, immutable SHA-bound accepted inputs and independent outputs. Server preflight must pass actual Base and tiny five-arm GPT/beam/selection-lock/Future/scientific-verifier tests; cloud skips are not passes. Large checkpoints/query records stay local and seven bounded artifacts are returned. Status at delivery: prepared for dispatch, new GPT steps not yet observed. After verified result analysis, fill the new separate CF/GPT primary table and stop; no extra seed, retry, parameter scan or automatic next experiment.
+
+<!-- cf-letter-gpt-future-preflight-failure:v1 -->
+
+### 6.34 Zero-real-step downstream preflight failure and report-only repair (2026-10-29)
+
+Original job `cf-letter-gpt-future-001`, code `e4e5476d3581eb28e3c0e5ef2d852d04f2f3c2ae`, exited1 in the second mandatory CPU preflight. Its tiny five-arm test completed its model fitting, constrained generation, selection lock, query/checkpoint checks and paired arithmetic, then failed while formatting the report: configured at1/2/4 metrics were indexed as recall@5. This is a report implementation error, not a real-data loss or recommendation result.
+
+Verified the exact returned runtime/result bytes and hashes. Runtime command_started=false,checks_completed=1,status=failed. Actual Beauty GPT updates=0 and real Future passes=0; synthetic200-query test messages are not results on the34189-query dataset. Original artifacts and the needs_attention receipt remain preserved.
+
+Fix only configured-cutoff report formatting, with a new pure regression for both1/2/4 and5/10/20. Production parameters, cutoffs, five frozen mappings, common I0, actual2000 and fixed-probe selection per arm remain unchanged. Prepared replacement `cf-letter-gpt-future-repair-001` under manifest docs/experiments/cf_letter_downstream_repair.json; original/replacement actual family cap remains10000 GPT steps and five Future passes. It requires the exact original zero-command runtime and absent original real output before starting, and again at acceptance. No optimizer budget has yet been consumed.
+
+The installed main_service paused local scanning after the failed task. Git cannot remove that local guard, so the concrete repair must wait for exact local pause archival under the existing lock; no Runner/helper/cron upgrade or main-workspace change. No real training has resumed yet. If the replacement fails, preserve evidence and stop, without repeated automatic repairs. The scientific plan and existing negative loss findings remain unchanged.

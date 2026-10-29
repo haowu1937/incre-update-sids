@@ -1,6 +1,15 @@
 # 项目协作规则
 
 
+## 本次下游零实训步软件修复（2026-10-29）
+
+首发 `cf-letter-gpt-future-001` 在真实CPU预检的最后报告格式化阶段失败：tiny配置1/2/4，formatter硬编码5/10/20。runtime完整SHA=efa3b7e5930de728fd2d6e3f1240e74b6e210e4850c8003a061dc6eaadad0591，command_started=false、checks_completed=1，真实Beauty GPT/Future均0。保留原worktree/log/request/result/needs_attention，不把测试的200条synthetic Future当成真实数据。
+
+用户已有范围内诊断修复、新job_id重跑授权。本次仅修formatter按p.topk动态生成，新增tiny/production纯回归；生产设置完全不变。新job `cf-letter-gpt-future-repair-001` / scope `cf-letter-gpt-future-repair-v1`，manifest `docs/experiments/cf_letter_downstream_repair.json`，原实验方案在cf_letter_downstream.md，故障证据在cf_letter_downstream_failure.json。原家族总实际预算仍10000GPT步+5次真实Future；旧scope actual0，不回收为额外研究。启动和验收必须核对原runtime完整hash、未开始command、原real output不存在。真实tiny五组完整验收仍必须过，不跳过失败检查。
+
+沿用generic v1，无host/helper/cron升级。本地main_service失败即写PAUSED，在fetch前阻止扫描；Git不能自行解除。修复具体排队后，仅对精确故障time/reason/runtime/status匹配的本地暂停做有锁归档，留全部现场，不清其他暂停/终止进程。用户需运行一次精确恢复命令，不是Runner升级；恢复后现有cron自动处理替代任务。若替代仍失败，保留证据并停止，不循环重跑。
+
+
 ## 五组GPT Update微调与Future（2026-10-29 最新明确授权）
 
 Hao审阅五组下游方案后明确“下发这个任务”。授权job `cf-letter-gpt-future-001` / scope `cf-letter-gpt-future-v1`，manifest `docs/experiments/cf_letter_downstream.json`，同名.md。五组FT-old/Plain-.9/Historical-.9/Plain-0/Historical-0，各GPT Update2000步，新增总上限10000，Future完整预测5次。直接冻结已验收四个码本step1000的完整SID，FT-old保留C0(E0)原SID；旧H/RQ联合稳定性失败结论不改，旧screening needs_attention不改。不再训练RQ/SASRec/CF、不重跑H-only、不回收旧预算。
