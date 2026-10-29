@@ -1,0 +1,21 @@
+{
+  "status": "verified_and_reported",
+  "job_id": "cf-letter-gpt-future-repair-001",
+  "code_sha": "26295b4626a71fd596bc30dbf72233315645631a",
+  "contract_sha256": "43229d9a847c55171f07bea93f55598a7793fe405d42aea1f77e59f907155585",
+  "request_sha256": "e2472fb4d9ec645879f02ee71bfcdd2e11f577beda62f7206f1da2c98254fe4c",
+  "result_sha256": "f4088a405d6b2f01c39ba0d109746ac8922b9bd00b7b8b894556a408de6ea37f",
+  "actual_optimizer_steps": 10000,
+  "report_commit_sha": "a2b947baca21117eed346f25723449aad805b43f",
+  "artifacts_sha256": {
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/task-runtime.json": "2e3b08c679ec7469a7451e0884c8e82a895937147b86705c0126da23df65a8c4",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/compact.json": "8629100e69cfbf478212b30f8aaded9df74cbf559c1a774d36e7ebd0b64b060d",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/data_audit.json": "94f29fb7b8f353bb91f60738f654c09b078ad2cd428a75f7f57a1b03f75197ce",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/training.json": "d8f2c31e522f7cc7b32042607619ea2de8e70641285fe006e5c9528978d830e7",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/selection_locked.json": "3e57b29293abf61523124608fa76075fa3e9d9dbaca8f2ed09c18f72c63ba367",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/future.json": "49d7eae5f91a93d472df1ea9a8cc3241ba8f0a219c3de2e8ee0878bb9415eed9",
+    "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/comparisons.json": "2a297ca21e0fd19adb5fac78b19795d0eb5ab00ad93ca9c8cceddfc1bdea42b0"
+  },
+  "processed_at": "2026-10-29T16:12:26.513012+00:00",
+  "next_job_id": null
+}
