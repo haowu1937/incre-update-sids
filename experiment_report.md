@@ -1,6 +1,6 @@
 # History-aware SID Update Experiment Report
 
-Last updated: 2026-10-29. Existing Llama/TIGER Future results are retained. The CF/GPT line completed its four-arm paired codebook study without joint RQ/H stability. Hao authorized five fixed-budget GPT Update / Future comparisons; execution and acceptance are pending.
+Last updated: 2026-10-29. Existing Llama/TIGER Future results are retained. The CF/GPT line completed its four-arm paired codebook study without joint RQ/H stability. The five fixed-budget GPT Update / Future comparisons are now verified and reported; matched historical-penalty NDCG@10 gains are not established.
 
 ## Primary downstream results
 
@@ -25,17 +25,17 @@ This is the main table previously located in Section 5.3. Maintain it here as co
 
 <!-- cf-letter-downstream-primary:v1 -->
 
-Status: original task failed CPU preflight before any real-data command; zero Beauty updates/Future passes. A report-formatting repair is prepared within the same budget; no downstream results observed. All five arms will use the same10924-item I0 catalog,20 raw history events and four target digits. These results belong to a separate protocol from the extended-catalog Llama/TIGER table above. Full Future denominator34189; coverage will be measured, not copied from the old pipeline.
+Verified and reported on 2026-10-29: five GPT Update arms, 10000 actual updates and five full Future passes. Common I0 catalog=10924; full denominator=34189 queries, served=20281, unavailable targets=13908 counted as misses. Coverage=59.320249%. These results use a separate catalog/protocol from the extended-catalog Llama/TIGER table above.
 
 | Mapping | Actual GPT Update steps | Selected Update step | Coverage | Recall@5 | Recall@10 | Recall@20 | NDCG@5 | NDCG@10 | NDCG@20 |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| FT-old: original C0(E0) SIDs | Pending | — | — | — | — | — | — | — | — |
-| Plain,lr1e-5,beta1=0.9 | Pending | — | — | — | — | — | — | — | — |
-| Historical,lr1e-5,beta1=0.9 | Pending | — | — | — | — | — | — | — | — |
-| Plain,lr1e-5,beta1=0 | Pending | — | — | — | — | — | — | — | — |
-| Historical,lr1e-5,beta1=0 | Pending | — | — | — | — | — | — | — | — |
+| FT-old: original C0(E0) SIDs | 2000 | 250 | 59.320249% | 0.675656% | 1.237240% | 1.994794% | 0.004020170015 | 0.005816194284 | 0.007737786721 |
+| Plain, lr1e-5, beta1=0.9 | 2000 | 250 | 59.320249% | 0.742929% | 1.275264% | 2.038667% | 0.004445055967 | 0.006156421457 | 0.008079779016 |
+| Historical, lr1e-5, beta1=0.9 | 2000 | 250 | 59.320249% | 0.734154% | 1.324988% | 2.032818% | 0.004370220192 | 0.006262911584 | 0.008043950622 |
+| Plain, lr1e-5, beta1=0 | 2000 | 250 | 59.320249% | 0.722455% | 1.313288% | 2.062067% | 0.004313334323 | 0.006212234431 | 0.008092132197 |
+| Historical, lr1e-5, beta1=0 | 2000 | 250 | 59.320249% | 0.716605% | 1.304513% | 2.041592% | 0.004287552409 | 0.006186972486 | 0.008051356587 |
 
-Recall will be shown as percentages and NDCG in raw units. Actual training is2000 per arm; selection may choose0/100/250/500/1000/2000 using Update validation only.
+All arms actually trained 2000 steps; fixed512-query Update-validation NDCG@10 selected step250 for all five, using earliest ties. Model/mapping identities were locked before Future. Recall is a percentage; NDCG is raw. Historical-minus-matched-Plain NDCG@10 differences are +0.000106490 (beta1=0.9) and -0.000025262 (beta1=0); both user-cluster 95% intervals include zero. See the accepted task report and analysis below. One engineering seed; no automatic follow-up.
 
 <!-- /cf-letter-downstream-primary:v1 -->
 
@@ -1513,3 +1513,22 @@ Primary paired Future comparisons (Historical minus matched Plain), user-cluster
 `historical_b0_minus_plain_b0`: `{"bootstrap_replicates": 500, "bootstrap_unit": "user; query-weighted clusters", "metrics": {"ndcg@10": {"absolute_difference": -2.5261944991386687e-05, "ci95": [-0.00023208508068094872, 0.00019850048665546967], "relative_change": -0.004066482884776421}, "ndcg@20": {"absolute_difference": -4.0775609640258064e-05, "ci95": [-0.00027072338474012263, 0.0001815251392011031], "relative_change": -0.005038920354678447}, "ndcg@5": {"absolute_difference": -2.5781913852403028e-05, "ci95": [-0.00027126570332953006, 0.00023047443907222448], "relative_change": -0.00597725840877718}, "recall@10": {"absolute_difference": -8.774752113252801e-05, "ci95": [-0.0005269318947117422, 0.00031243543874414216], "relative_change": -0.0066815144766146995}, "recall@20": {"absolute_difference": -0.00020474421597589868, "ci95": [-0.0008078060429181738, 0.00035094521543158806], "relative_change": -0.009929078014184398}, "recall@5": {"absolute_difference": -5.8498347421685335e-05, "ci95": [-0.0004695001564477066, 0.00039580142734686844], "relative_change": -0.008097165991902832}}, "queries": 34189, "users": 9717}`.
 
 Acceptance checked raw metrics/query identities, map and source hashes, full fitting order and counters, global selection lock, earliest-tie selection and independent CPU selected-model likelihood samples. Single engineering seed; no convergence claim or cross-seed confirmation. Earlier negative RQ/H results and the old blocked screening receipt remain unchanged. Report and stop; no automatic next experiment.
+
+
+<!-- cf-letter-downstream-analysis:8629100e69cfbf478212b30f8aaded9df74cbf559c1a774d36e7ebd0b64b060d -->
+
+### 6.35 Five-arm downstream analysis and evidence boundary (2026-10-29)
+
+The replacement completed exactly 10000 GPT updates (2000 per arm) and five real Future passes. The original attempt performed zero Beauty updates and zero real Future passes, so the shared family cap remains 10000, not 20000. Its original needs_attention receipt is preserved. Both mandatory real CPU preflight suites passed before production; synthetic test predictions are not part of the Future table. The server scientific receipt, task marker, returned raw hashes, scope ledger and source-immutability evidence were checked. No uncertain optimizer intents or resource-stop reason was reported; peak GPU memory was18388MiB against24576MiB.
+
+Cloud review verified the exact request/result/contract/scope/manifest byte hashes and all seven artifact byte hashes. It independently reproduced selection from all six returned probe candidates per arm, model/mapping links across training/lock/Future, full-versus-served denominator arithmetic and all six paired-comparison point estimates/relative changes. All five choose step250, even though all fitted2000 steps. The returned fixed-probe curves decline at later checkpoints, which supports retaining the validation-selected model rather than using the terminal model; it is not a claim of sufficient training-loss convergence.
+
+The common Future denominator is34189 queries across9717 users. There are20281 servable targets and13908 outside-I0 misses, coverage59.320249%;3002 queries have no available history after masking. All arms use beam20,20 raw events before masking, preserved interior positions, four target digits without EOS, identical candidate catalog and zero invalid predictions. The smaller fixed old-item catalog makes these rows unsuitable for a direct causal comparison against the older11775-item Llama/TIGER table with different coverage.
+
+For beta1=0.9, Historical versus Plain increases Recall@10 by0.049724 percentage points (relative+3.8991%; user-cluster95% interval[+0.002940,+0.099819] percentage points). NDCG@10 increases0.000106490 (relative+1.7297%), but its interval[-0.000116122,+0.000351958] includes zero. Recall/NDCG at5 and20 have negative point estimates with intervals crossing zero. For beta1=0, Historical has slightly lower point estimates at all six cutoffs; NDCG@10 difference=-0.000025262, interval[-0.000232085,+0.000198500]. Thus the matched comparisons do not demonstrate a consistent ranking benefit from the historical penalty. These are per-metric500-draw user-cluster intervals, not cross-seed uncertainty or multiplicity-adjusted evidence.
+
+Relative to FT-old, Historical beta1=0.9 has NDCG@10+0.000446717 (relative+7.6806%, interval[+0.000018350,+0.000927641]). This auxiliary contrast changes the refreshed mapping as well as its update recipe; it cannot isolate the historical penalty. The matched Plain comparison remains necessary. The earlier failure of joint RQ/H stability and the old blocked screening acceptance are retained; downstream acceptance does not retroactively accept that old study.
+
+Raw per-query aggregation, paired bootstrap resampling, every-step sampling/reset/counter checks, all-five lock-before-Future chronology, source/checkpoint immutability and independent selected-GPT CPU NLL samples are task-SHA server-verifier evidence. Cloud did not reload Beauty checkpoints, rescore raw predictions or independently regenerate bootstrap draws. The artifact index and source hashes identify local evidence retained on the server. The top CF/GPT table now reports actual versus selected steps, measured coverage, Recall percentages and raw NDCG; previous Base and Llama/TIGER results are preserved.
+
+The authorized plan is complete. next_job_id=null; no additional training, Future pass, seed, tuning, retry or budget extension is dispatched.
