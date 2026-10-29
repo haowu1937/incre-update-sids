@@ -1,4 +1,4 @@
-ecall@20": 0.625, "ndcg@5": 0.0, "ndcg@10": 0.08395900798671888, "ndcg@20": 0.17467509512431698}, "conditional_on_servable": {"recall@5": 0.0, "recall@10": 0.2857142857142857, "recall@20": 0.7142857142857143, "ndcg@5": 0.0, "ndcg@10": 0.09595315198482157, "ndcg@20": 0.19962868014207655}, "mean_sequence_nll_servable": 19.91360010419573, "invalid_predictions": 0, "ranking_catalog": "base_train", "seen_item_filter": false, "nll_target_tokens": 4, "examples_with_all_history_unavailable": 0, "num_beams": 20}}
+er": false, "nll_target_tokens": 4, "examples_with_all_history_unavailable": 0, "num_beams": 20}}
 .
 ----------------------------------------------------------------------
 Ran 12 tests in 7.840s
@@ -74,3 +74,5 @@ OK
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 4715, "stage_steps": {"historical_b09": 358, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 357}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 4821, "stage_steps": {"historical_b09": 411, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 410}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 4927, "stage_steps": {"historical_b09": 464, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 463}, "stop_new_arms": null}
+{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 5000, "stage_steps": {"historical_b09": 500, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 500}, "stop_new_arms": null}
+{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 5099, "stage_steps": {"historical_b09": 559, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 540}, "stop_new_arms": null}
