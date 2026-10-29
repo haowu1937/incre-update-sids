@@ -1,10 +1,3 @@
-: 3216, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 4016, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 4816, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 5616, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 6416, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 7216, "all_queries": 34189}
-{"phase": "future", "arm": "plain_b09", "queries_done": 8016, "all_queries": 34189}
 {"phase": "future", "arm": "plain_b09", "queries_done": 8816, "all_queries": 34189}
 {"phase": "future", "arm": "plain_b09", "queries_done": 9616, "all_queries": 34189}
 {"phase": "future", "arm": "plain_b09", "queries_done": 10416, "all_queries": 34189}
@@ -141,3 +134,9 @@
 {"phase": "future", "arm": "historical_b0", "queries_done": 12016, "all_queries": 34189}
 {"phase": "future", "arm": "historical_b0", "queries_done": 12816, "all_queries": 34189}
 {"phase": "future", "arm": "historical_b0", "queries_done": 13616, "all_queries": 34189}
+{"phase": "future", "arm": "historical_b0", "queries_done": 14416, "all_queries": 34189}
+{"phase": "future", "arm": "historical_b0", "queries_done": 15216, "all_queries": 34189}
+{"phase": "future", "arm": "historical_b0", "queries_done": 16016, "all_queries": 34189}
+{"phase": "future", "arm": "historical_b0", "queries_done": 16816, "all_queries": 34189}
+{"phase": "future", "arm": "historical_b0", "queries_done": 17616, "all_queries": 34189}
+{"phase": "future", "arm": "historical_b0", "queries_done": 18416, "all_queries": 34189}
