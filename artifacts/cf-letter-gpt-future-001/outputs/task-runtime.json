@@ -1,0 +1,12 @@
+{
+  "protocol_version": 1,
+  "job_id": "cf-letter-gpt-future-001",
+  "code_sha": "e4e5476d3581eb28e3c0e5ef2d852d04f2f3c2ae",
+  "contract_sha256": "d264085d414c605644c37bb510d4846fb10f2b2607a442b0d5faff7c84b81141",
+  "status": "failed",
+  "checks_completed": 1,
+  "command_started": false,
+  "started_at": "2026-10-29T12:30:20.961462+00:00",
+  "error": "CalledProcessError: Command '['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-u', '-B', 'tests/incremental/test_cf_letter_downstream.py', '--require-torch']' returned non-zero exit status 1.",
+  "finished_at": "2026-10-29T12:30:46.671267+00:00"
+}

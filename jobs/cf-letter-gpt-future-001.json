@@ -6,15 +6,17 @@
   "request_sha256": "24dcd4fadba3319bfa5a78dc8f5fb58878d552eb9a2aa0d82f4350dc96b2660e",
   "code_sha": "e4e5476d3581eb28e3c0e5ef2d852d04f2f3c2ae",
   "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
-  "status": "running",
+  "status": "failed",
   "started_at": "2026-10-29T12:30:09.518255+00:00",
-  "updated_at": "2026-10-29T12:30:20.917007+00:00",
-  "exit_code": null,
+  "updated_at": "2026-10-29T12:30:46.767955+00:00",
+  "exit_code": 1,
   "pid": 2511545,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-gpt-future-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-gpt-future-001.log",
   "log_tail": "logs/cf-letter-gpt-future-001.tail.txt",
-  "artifacts": [],
+  "artifacts": [
+    "artifacts/cf-letter-gpt-future-001/outputs/task-runtime.json"
+  ],
   "training_started": true,
   "actual_code_sha": "e4e5476d3581eb28e3c0e5ef2d852d04f2f3c2ae",
   "argv": [
@@ -31,5 +33,9 @@
     "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-gpt-future-001"
   ],
   "process_started": true,
-  "elapsed_seconds": 0.048
+  "elapsed_seconds": 25.899,
+  "artifacts_sha256": {
+    "artifacts/cf-letter-gpt-future-001/outputs/task-runtime.json": "efa3b7e5930de728fd2d6e3f1240e74b6e210e4850c8003a061dc6eaadad0591"
+  },
+  "finished_at": "2026-10-29T12:30:46.767937+00:00"
 }
