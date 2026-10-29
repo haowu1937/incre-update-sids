@@ -4,12 +4,7 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "cf-letter-optimizer-pair-001",
-  "lease": {
-    "token": "web-cf-pair-analysis-1793268854792",
-    "owner": "web-pair-result-analysis",
-    "acquired_at": "2026-10-29T10:14:14.792Z",
-    "expires_at_unix": 1793269754
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -1149,7 +1144,7 @@
   },
   "current_scope": {
     "scope_id": "cf-letter-optimizer-pair-v1",
-    "status": "queued",
+    "status": "completed_and_analyzed",
     "authorization": "Hao explicitly requested second-stage paired verification for the two selected LR/beta1 combinations on 2026-10-29. Authorize four fresh independent 1000-step arms, total 4000 new steps, at most two parallel. This supersedes the old conditional stop for these pairs only; no old budget is reused.",
     "manifest": "docs/experiments/cf_letter_optimizer_pair.json",
     "max_optimizer_steps": 4000,
@@ -1170,7 +1165,10 @@
     "old_screen_gate_passed": false,
     "old_source_acceptance": "blocked",
     "stop_after_study": true,
-    "automatic_retry": false
+    "automatic_retry": false,
+    "actual_optimizer_steps": 4000,
+    "research_outcome": "no_jointly_stable_setting_in_two_pairs",
+    "analysis_report_commit_sha": "9a7a9e0353789bbbd52cef97d95ae5bdae1912e2"
   },
   "latest_task_delivery": {
     "job_id": "cf-letter-refresh-diag-001",
@@ -1436,5 +1434,31 @@
     "request": "Proceed with stage two for both selected LR/beta1 combinations",
     "new_optimizer_step_cap": 4000,
     "unused_original_conditional_steps_reused": false
-  }
+  },
+  "web_analysis_receipts": {
+    "cf-letter-optimizer-pair-001": {
+      "status": "verified_and_analyzed",
+      "job_id": "cf-letter-optimizer-pair-001",
+      "code_sha": "47a98285d37864bab9e4405eb776e24e0ff24580",
+      "request_sha256": "6a1575ab49a75e657add092e0b856fd6e9e93fa491566881ce5f6ee867103fc3",
+      "contract_sha256": "83736d739f210db9879c27027350c96ebe4b820fcd355a7c6c348776d6fb4e41",
+      "result_sha256": "1d0aaf562b471f1635e330d1001e5393275cd2f574377f60ec458620147f49c5",
+      "compact_sha256": "49ec6a3d761d46fc4340f5cddc070b5163ca0f2bb17597265b270de7226ae4cd",
+      "server_report_commit_sha": "67c06d8695d409221d181a68f9e7114f11073ae0",
+      "analysis_report_commit_sha": "9a7a9e0353789bbbd52cef97d95ae5bdae1912e2",
+      "report_marker": "<!-- cf-letter-optimizer-pair-analysis:49ec6a3d761d46fc4340f5cddc070b5163ca0f2bb17597265b270de7226ae4cd -->",
+      "actual_optimizer_steps": 4000,
+      "checks": [
+        "six_artifact_raw_hashes",
+        "immutable_request_result_contract_scope_manifest_bindings",
+        "four_full_and_fixed_curve_tail_statistics",
+        "paired_efficacy_and_stability_arithmetic"
+      ],
+      "evidence_boundary": "Cloud byte/arithmetic review; real checkpoint/production-CUDA reload, raw query reaggregation, per-update suffix and input immutability were verified on the server, not independently re-executed in cloud.",
+      "outcome": "no_jointly_stable_setting_in_two_pairs",
+      "processed_at": "2026-10-29T10:16:25.588Z",
+      "next_job_id": null
+    }
+  },
+  "next_job_id": null
 }
