@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "plan_completed",
+  "mode": "queued",
   "pause_requested": false,
-  "active_job_id": "cf-letter-optimizer-pair-001",
-  "lease": {
-    "token": "web-cf-downstream-1793276663248",
-    "owner": "web-cf-downstream-controller",
-    "acquired_at": "2026-10-29T12:24:23.249Z",
-    "expires_at_unix": 1793277563
-  },
+  "active_job_id": "cf-letter-gpt-future-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -140,14 +135,16 @@
     }
   },
   "plan": [
-    "run_two_explicit_RQ_only_Mixed_pairs",
-    "verify_training_only_results_and_report_then_stop"
+    "five_GPT_Update_adaptations",
+    "lock_all_selections",
+    "five_Future_evaluations",
+    "verify_report_and_stop"
   ],
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "47a98285d37864bab9e4405eb776e24e0ff24580",
-  "request_sha256": "6a1575ab49a75e657add092e0b856fd6e9e93fa491566881ce5f6ee867103fc3",
+  "code_sha": "e4e5476d3581eb28e3c0e5ef2d852d04f2f3c2ae",
+  "request_sha256": "24dcd4fadba3319bfa5a78dc8f5fb58878d552eb9a2aa0d82f4350dc96b2660e",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -225,7 +222,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -558,7 +555,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -1028,6 +1025,58 @@
       },
       "status": "verified_and_reported",
       "actual_optimizer_steps": 0
+    },
+    {
+      "scope": {
+        "scope_id": "cf-letter-optimizer-pair-v1",
+        "status": "completed_and_analyzed",
+        "authorization": "Hao explicitly requested second-stage paired verification for the two selected LR/beta1 combinations on 2026-10-29. Authorize four fresh independent 1000-step arms, total 4000 new steps, at most two parallel. This supersedes the old conditional stop for these pairs only; no old budget is reused.",
+        "manifest": "docs/experiments/cf_letter_optimizer_pair.json",
+        "max_optimizer_steps": 4000,
+        "max_parallel": 2,
+        "pair_settings": [
+          {
+            "name": "lr1e5_b09",
+            "lr": 1e-05,
+            "beta1": 0.9
+          },
+          {
+            "name": "lr1e5_b0",
+            "lr": 1e-05,
+            "beta1": 0
+          }
+        ],
+        "fixed_history_weight": 0.0006386606341359484,
+        "old_screen_gate_passed": false,
+        "old_source_acceptance": "blocked",
+        "stop_after_study": true,
+        "automatic_retry": false,
+        "actual_optimizer_steps": 4000,
+        "research_outcome": "no_jointly_stable_setting_in_two_pairs",
+        "analysis_report_commit_sha": "9a7a9e0353789bbbd52cef97d95ae5bdae1912e2"
+      },
+      "receipt": {
+        "status": "verified_and_reported",
+        "job_id": "cf-letter-optimizer-pair-001",
+        "code_sha": "47a98285d37864bab9e4405eb776e24e0ff24580",
+        "contract_sha256": "83736d739f210db9879c27027350c96ebe4b820fcd355a7c6c348776d6fb4e41",
+        "request_sha256": "6a1575ab49a75e657add092e0b856fd6e9e93fa491566881ce5f6ee867103fc3",
+        "result_sha256": "1d0aaf562b471f1635e330d1001e5393275cd2f574377f60ec458620147f49c5",
+        "actual_optimizer_steps": 4000,
+        "report_commit_sha": "67c06d8695d409221d181a68f9e7114f11073ae0",
+        "artifacts_sha256": {
+          "artifacts/cf-letter-optimizer-pair-001/outputs/task-runtime.json": "fe0c491006bb5af00a172b72fba9adf24bd2fb294884ee0746b163fd479d9bd3",
+          "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/compact.json": "49ec6a3d761d46fc4340f5cddc070b5163ca0f2bb17597265b270de7226ae4cd",
+          "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/data_audit.json": "a66817ef27747c245953d2363a48d3067d1d2e06e51a2aeac8494898a088b3fa",
+          "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/paired_assessment.json": "b24990d45e39bca117cd539d6c7a74cb515ac8c282e42096aade8b4cee6cb2f1",
+          "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/curves_lr1e5_b09.json": "8f8f149d48a65802d6e8dd4f001e7a0edc2c3442f5d673e309b32e257e2473bd",
+          "artifacts/cf-letter-optimizer-pair-001/outputs/cf-optimizer-pair/curves_lr1e5_b0.json": "7f4c47e6a7e33932ccd8607ac6690c7b26a0a5fcc13774a930364accf40fc15a"
+        },
+        "processed_at": "2026-10-29T10:01:54.532574+00:00",
+        "next_job_id": null
+      },
+      "status": "verified_and_analyzed",
+      "actual_optimizer_steps": 4000
     }
   ],
   "core_runtime_upgrade": {
@@ -1078,8 +1127,8 @@
   "active_scope": "cf-letter-refresh-diag-v1",
   "task_dispatch": {
     "protocol_version": 1,
-    "contract_path": "task-contracts/cf-letter-optimizer-pair-001.json",
-    "contract_sha256": "83736d739f210db9879c27027350c96ebe4b820fcd355a7c6c348776d6fb4e41"
+    "contract_path": "task-contracts/cf-letter-gpt-future-001.json",
+    "contract_sha256": "d264085d414c605644c37bb510d4846fb10f2b2607a442b0d5faff7c84b81141"
   },
   "task_scope_ledger": {
     "cf-letter-base-v1": {
@@ -1145,35 +1194,63 @@
       "actual_steps": {
         "cf-letter-optimizer-pair-001": 4000
       }
+    },
+    "cf-letter-gpt-future-v1": {
+      "scope_sha256": "9ceea767a4c006b514f668ca112eead14b0b381b8b546a7687a74c4ddb963aa3",
+      "reservations": {
+        "cf-letter-gpt-future-001": 10000
+      },
+      "actual_steps": {}
     }
   },
   "current_scope": {
-    "scope_id": "cf-letter-optimizer-pair-v1",
-    "status": "completed_and_analyzed",
-    "authorization": "Hao explicitly requested second-stage paired verification for the two selected LR/beta1 combinations on 2026-10-29. Authorize four fresh independent 1000-step arms, total 4000 new steps, at most two parallel. This supersedes the old conditional stop for these pairs only; no old budget is reused.",
-    "manifest": "docs/experiments/cf_letter_optimizer_pair.json",
-    "max_optimizer_steps": 4000,
+    "scope_id": "cf-letter-gpt-future-v1",
+    "status": "queued",
+    "authorization": "Hao explicitly said 下发这个任务 after reviewing five independent GPT Update fine-tuning arms (2000 steps each) and five selected-checkpoint Future evaluations with common I0 catalog on 2026-10-29.",
+    "manifest": "docs/experiments/cf_letter_downstream.json",
+    "max_optimizer_steps": 10000,
     "max_parallel": 2,
-    "pair_settings": [
+    "components_trained": [
+      "GPT_all_parameters"
+    ],
+    "arms": [
       {
-        "name": "lr1e5_b09",
-        "lr": 0.00001,
-        "beta1": 0.9
+        "name": "ft_old",
+        "source": null
       },
       {
-        "name": "lr1e5_b0",
-        "lr": 0.00001,
-        "beta1": 0
+        "name": "plain_b09",
+        "source": "lr1e5_b09_rq_only"
+      },
+      {
+        "name": "historical_b09",
+        "source": "lr1e5_b09_mixed"
+      },
+      {
+        "name": "plain_b0",
+        "source": "lr1e5_b0_rq_only"
+      },
+      {
+        "name": "historical_b0",
+        "source": "lr1e5_b0_mixed"
       }
     ],
-    "fixed_history_weight": 0.0006386606341359484,
-    "old_screen_gate_passed": false,
-    "old_source_acceptance": "blocked",
+    "steps_per_arm": 2000,
+    "catalog": "common Base I0",
+    "catalog_items": 10924,
+    "full_future_passes": 5,
+    "no_RQ_or_SASRec_training": true,
+    "selection_steps": [
+      0,
+      100,
+      250,
+      500,
+      1000,
+      2000
+    ],
+    "future_used_for_selection": false,
     "stop_after_study": true,
-    "automatic_retry": false,
-    "actual_optimizer_steps": 4000,
-    "research_outcome": "no_jointly_stable_setting_in_two_pairs",
-    "analysis_report_commit_sha": "9a7a9e0353789bbbd52cef97d95ae5bdae1912e2"
+    "automatic_retry": false
   },
   "latest_task_delivery": {
     "job_id": "cf-letter-refresh-diag-001",
@@ -1436,9 +1513,10 @@
   ],
   "explicit_scope_authorization": {
     "date": "2026-10-29",
-    "request": "Proceed with stage two for both selected LR/beta1 combinations",
-    "new_optimizer_step_cap": 4000,
-    "unused_original_conditional_steps_reused": false
+    "request": "Dispatch the reviewed five-arm GPT Update fine-tuning and Future evaluation plan",
+    "new_optimizer_step_cap": 10000,
+    "new_full_Future_passes": 5,
+    "old_budgets_reused": false
   },
   "web_analysis_receipts": {
     "cf-letter-optimizer-pair-001": {
