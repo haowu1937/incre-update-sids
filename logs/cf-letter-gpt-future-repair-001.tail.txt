@@ -1,6 +1,4 @@
-orical_b09": 223, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 208}, "stop_new_arms": null}
-{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 4502, "stage_steps": {"historical_b09": 251, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 251}, "stop_new_arms": null}
-{"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 4609, "stage_steps": {"historical_b09": 305, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 304}, "stop_new_arms": null}
+op_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 4715, "stage_steps": {"historical_b09": 358, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 357}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 4821, "stage_steps": {"historical_b09": 411, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 410}, "stop_new_arms": null}
 {"active_pids": [2740658, 2740659], "pending": ["historical_b0"], "optimizer_steps": 4927, "stage_steps": {"historical_b09": 464, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 463}, "stop_new_arms": null}
@@ -61,3 +59,9 @@ Passing a tuple of `past_key_values` is deprecated and will be removed in Transf
 {"phase": "future", "arm": "ft_old", "queries_done": 1616, "all_queries": 34189}
 {"phase": "future", "arm": "ft_old", "queries_done": 2416, "all_queries": 34189}
 {"phase": "future", "arm": "ft_old", "queries_done": 3216, "all_queries": 34189}
+{"phase": "future", "arm": "ft_old", "queries_done": 4016, "all_queries": 34189}
+{"phase": "future", "arm": "ft_old", "queries_done": 4816, "all_queries": 34189}
+{"phase": "future", "arm": "ft_old", "queries_done": 5616, "all_queries": 34189}
+{"phase": "future", "arm": "ft_old", "queries_done": 6416, "all_queries": 34189}
+{"phase": "future", "arm": "ft_old", "queries_done": 7216, "all_queries": 34189}
+{"phase": "future", "arm": "ft_old", "queries_done": 8016, "all_queries": 34189}
