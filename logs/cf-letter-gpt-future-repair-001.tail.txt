@@ -1,7 +1,4 @@
-: 2000}, "stop_new_arms": null}
-{"active_pids": [2783979], "pending": [], "optimizer_steps": 9700, "stage_steps": {"historical_b0": 1700, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
-{"active_pids": [2783979], "pending": [], "optimizer_steps": 9824, "stage_steps": {"historical_b0": 1824, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
-{"active_pids": [2783979], "pending": [], "optimizer_steps": 9945, "stage_steps": {"historical_b0": 1945, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
+zer_steps": 9945, "stage_steps": {"historical_b0": 1945, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 10000, "stage_steps": {"historical_b0": 2000, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 10000, "stage_steps": {"historical_b0": 2000, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
 Passing a tuple of `past_key_values` is deprecated and will be removed in Transformers v4.53.0. You should pass an instance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
@@ -134,3 +131,9 @@ Passing a tuple of `past_key_values` is deprecated and will be removed in Transf
 {"phase": "future", "arm": "historical_b09", "queries_done": 32016, "all_queries": 34189}
 {"phase": "future", "arm": "historical_b09", "queries_done": 32816, "all_queries": 34189}
 {"phase": "future", "arm": "historical_b09", "queries_done": 33616, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 16, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 816, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 1616, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 2416, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 3216, "all_queries": 34189}
+{"phase": "future", "arm": "plain_b0", "queries_done": 4016, "all_queries": 34189}
