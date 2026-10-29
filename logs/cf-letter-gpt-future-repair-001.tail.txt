@@ -1,6 +1,4 @@
-ll}
-{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3299, "stage_steps": {"ft_old": 1674, "plain_b09": 1625}, "stop_new_arms": null}
-{"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3405, "stage_steps": {"ft_old": 1726, "plain_b09": 1679}, "stop_new_arms": null}
+ve_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3405, "stage_steps": {"ft_old": 1726, "plain_b09": 1679}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3515, "stage_steps": {"ft_old": 1782, "plain_b09": 1733}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3624, "stage_steps": {"ft_old": 1836, "plain_b09": 1788}, "stop_new_arms": null}
 {"active_pids": [2694364, 2694365], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 3734, "stage_steps": {"ft_old": 1892, "plain_b09": 1842}, "stop_new_arms": null}
@@ -59,3 +57,4 @@ ll}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 8618, "stage_steps": {"historical_b0": 618, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 8742, "stage_steps": {"historical_b0": 742, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
 {"active_pids": [2783979], "pending": [], "optimizer_steps": 8863, "stage_steps": {"historical_b0": 863, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
+{"active_pids": [2783979], "pending": [], "optimizer_steps": 8984, "stage_steps": {"historical_b0": 984, "historical_b09": 2000, "ft_old": 2000, "plain_b09": 2000, "plain_b0": 2000}, "stop_new_arms": null}
