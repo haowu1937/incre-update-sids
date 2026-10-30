@@ -1,9 +1,4 @@
-2.370s
-
-OK
-.....Passing a tuple of `past_key_values` is deprecated and will be removed in Transformers v4.53.0. You should pass an instance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
-{"phase": "future", "arm": "s2027_ft_old", "queries_done": 4, "all_queries": 24}
-{"phase": "future", "arm": "s2027_plain", "queries_done": 4, "all_queries": 24}
+: "future", "arm": "s2027_plain", "queries_done": 4, "all_queries": 24}
 {"phase": "future", "arm": "s2027_historical", "queries_done": 4, "all_queries": 24}
 {"phase": "future", "arm": "s2028_ft_old", "queries_done": 4, "all_queries": 24}
 {"phase": "future", "arm": "s2028_plain", "queries_done": 4, "all_queries": 24}
@@ -54,3 +49,4 @@ OK
 {"active_pids": [3378261, 3378262], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3744, "stage_steps": {"s2028_historical": 875, "s2028_plain": 869, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
 {"active_pids": [3378261, 3378262], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3866, "stage_steps": {"s2028_historical": 936, "s2028_plain": 930, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
 {"active_pids": [3378261, 3378262], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3990, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 990, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
+{"active_pids": [3391407, 3391504], "pending": ["s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 4049, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 1000, "s2027_historical": 1000, "s2027_plain": 1000, "s2029_historical": 19, "s2029_plain": 30}, "stop_new_arms": null}
