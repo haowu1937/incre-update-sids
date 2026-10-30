@@ -1,32 +1,4 @@
-416, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 27216, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 28016, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 28816, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 29616, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 30416, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 31216, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 32016, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 32816, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 33616, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 16, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 816, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 1616, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 2416, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 3216, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 4016, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 4816, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 5616, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 6416, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 7216, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 8016, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 8816, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 9616, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 10416, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 11216, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 12016, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 12816, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 13616, "all_queries": 34189}
-{"phase": "future", "arm": "s2031_ft_old", "queries_done": 14416, "all_queries": 34189}
+queries_done": 14416, "all_queries": 34189}
 {"phase": "future", "arm": "s2031_ft_old", "queries_done": 15216, "all_queries": 34189}
 {"phase": "future", "arm": "s2031_ft_old", "queries_done": 16016, "all_queries": 34189}
 {"phase": "future", "arm": "s2031_ft_old", "queries_done": 16816, "all_queries": 34189}
@@ -137,3 +109,4 @@
 {"phase": "future", "arm": "s2031_historical", "queries_done": 32016, "all_queries": 34189}
 {"phase": "future", "arm": "s2031_historical", "queries_done": 32816, "all_queries": 34189}
 {"phase": "future", "arm": "s2031_historical", "queries_done": 33616, "all_queries": 34189}
+{"stage": "cf-letter-multiseed-resume-v1", "job_id": "cf-letter-multiseed-resume-001", "code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843", "execution_status": "completed", "seeds": [2027, 2028, 2029, 2030, 2031], "optimizer_steps_cap": 40000, "new_optimizer_step_cap": 6000, "inherited_optimizer_steps": 34000, "max_gpu_memory_mib": 18388, "completed_case_names": ["s2031_ft_old", "s2031_plain", "s2031_historical"], "future_names": ["s2027_ft_old", "s2027_plain", "s2027_historical", "s2028_ft_old", "s2028_plain", "s2028_historical", "s2029_ft_old", "s2029_plain", "s2029_historical", "s2030_ft_old", "s2030_plain", "s2030_historical", "s2031_ft_old", "s2031_plain", "s2031_historical"], "sasrec_training_performed": false, "base_training_performed": false, "holdout_evaluated": false, "future_used_for_selection": false, "selection_locked_before_future": true, "selection_lock_sha256": "cb6f4948222d42cbf34cd6c877251970ffaff6ea90d5ec98bb860d6d2dc597df", "stop_new_stages_reason": null, "optimizer_steps_spent": 40000, "new_optimizer_steps_spent": 6000, "stage_step_counts": {"rq/s2028_historical": 1000, "rq/s2028_plain": 1000, "rq/s2027_historical": 1000, "rq/s2031_plain": 1000, "rq/s2030_historical": 1000, "rq/s2031_historical": 1000, "rq/s2027_plain": 1000, "rq/s2030_plain": 1000, "rq/s2029_historical": 1000, "rq/s2029_plain": 1000, "gpt/s2028_historical": 2000, "gpt/s2028_plain": 2000, "gpt/s2029_ft_old": 2000, "gpt/s2027_historical": 2000, "gpt/s2031_plain": 2000, "gpt/s2030_historical": 2000, "gpt/s2027_ft_old": 2000, "gpt/s2028_ft_old": 2000, "gpt/s2030_ft_old": 2000, "gpt/s2031_historical": 2000, "gpt/s2031_ft_old": 2000, "gpt/s2027_plain": 2000, "gpt/s2030_plain": 2000, "gpt/s2029_historical": 2000, "gpt/s2029_plain": 2000}, "uncertain_step_records": [], "original_inputs_unchanged": true, "runtime_seconds": 9418.447543448012, "local_artifact_index_sha256": "fa684d5c6fcd60cc479fe702eefcc8bce26ebd4e04dde20b45eec28e6c645ba3", "returned_artifact_sha256": {"data_audit": "88aa55ac1f9e997b60e30f1bdb1dfe482ec91a26676643a177bf64db7533d653", "rq_results": "96a8fbf0ab169dabe42311fc5fefb0c6bb357da2d9ec8e89fe7b301b76e85bf7", "runs": "81cc0b6bdad290b4ae7f6772f2f9b5fda3e39441e09db0c595d2a54dd21a35c6", "selections": "0480d8c5e3c0d088dd4351e32570a6c12b94ef9b3253890e07df82f16c5373e6", "future": "afa842653c75ecdd8c1b3d90743bfe84262ac5451be704ff74feb28f36d79c73", "statistics": "bd964efaa86d0cb1a49491dbeba9ebbbb8f6617f6745331be9e351f72c17c5af"}}

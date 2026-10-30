@@ -6,15 +6,24 @@
   "request_sha256": "0e5c994031e8390877e549c6681a3376e41342d5ce8248757137b055739b43b9",
   "code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
   "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
-  "status": "running",
+  "status": "completed",
   "started_at": "2026-10-30T15:19:07.778196+00:00",
-  "updated_at": "2026-10-30T17:57:27.240773+00:00",
-  "exit_code": null,
+  "updated_at": "2026-10-30T17:58:19.569701+00:00",
+  "exit_code": 0,
   "pid": 3887345,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-multiseed-resume-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-multiseed-resume-001.log",
   "log_tail": "logs/cf-letter-multiseed-resume-001.tail.txt",
-  "artifacts": [],
+  "artifacts": [
+    "artifacts/cf-letter-multiseed-resume-001/outputs/task-runtime.json",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/compact.json",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/data_audit.json",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/rq_results.json",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/runs.json",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/selections.json",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/future.json",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/statistics.json"
+  ],
   "training_started": true,
   "actual_code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
   "argv": [
@@ -31,5 +40,16 @@
     "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-multiseed-resume-001"
   ],
   "process_started": true,
-  "elapsed_seconds": 9488.162
+  "elapsed_seconds": 9540.491,
+  "artifacts_sha256": {
+    "artifacts/cf-letter-multiseed-resume-001/outputs/task-runtime.json": "377b746f2e633b4f95e2c00be23f174b7ba139904f7bb6310766e418cb321829",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/compact.json": "91f2a15c9df6df64fa85c865ba0c4c234f4321f19efa97353984b94fb5456513",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/data_audit.json": "88aa55ac1f9e997b60e30f1bdb1dfe482ec91a26676643a177bf64db7533d653",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/rq_results.json": "96a8fbf0ab169dabe42311fc5fefb0c6bb357da2d9ec8e89fe7b301b76e85bf7",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/runs.json": "81cc0b6bdad290b4ae7f6772f2f9b5fda3e39441e09db0c595d2a54dd21a35c6",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/selections.json": "0480d8c5e3c0d088dd4351e32570a6c12b94ef9b3253890e07df82f16c5373e6",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/future.json": "afa842653c75ecdd8c1b3d90743bfe84262ac5451be704ff74feb28f36d79c73",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/statistics.json": "bd964efaa86d0cb1a49491dbeba9ebbbb8f6617f6745331be9e351f72c17c5af"
+  },
+  "finished_at": "2026-10-30T17:58:19.569674+00:00"
 }
