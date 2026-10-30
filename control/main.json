@@ -4,7 +4,12 @@
   "mode": "needs_diagnosis",
   "pause_requested": true,
   "active_job_id": "cf-letter-multiseed-001",
-  "lease": null,
+  "lease": {
+    "token": "resume-ms-1793373215156-462fc0418d39a",
+    "owner": "web-manual-multiseed-bounded-continuation",
+    "acquired_at": "2026-10-30T15:13:35.156Z",
+    "expires_at_unix": 1793374115.156
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
