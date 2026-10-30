@@ -49,10 +49,11 @@ def child(output,p,name):
 
 
 class Scheduler:
-    def __init__(self,output,deployment,p,report,began,*,job_id=JOB,child_script="run_cf_letter_optimizer.py",publisher=publish_curves,counter=counters):
+    def __init__(self,output,deployment,p,report,began,*,job_id=JOB,child_script="run_cf_letter_optimizer.py",publisher=publish_curves,counter=counters,pause_check=None):
         self.output=output;self.deployment=deployment;self.p=p;self.report=report;self.began=began
         self.job_id=job_id;self.child_script=child_script;self.publisher=publisher;self.counter=counter
         self.root=Path(read(deployment)['runner_root']);self.stop=None;self.journal=[];self.last_control=0.;self.last_progress=0.
+        self.pause_check=pause_check;self.waiting_for_control=False
 
     def run(self,recipes):
         active={};finished={};pending=list(recipes);failure=None
@@ -76,12 +77,14 @@ class Scheduler:
             if time.monotonic()-self.began>self.p['wall_seconds']:self.stop=self.stop or 'Task wall guard; active arms finish'
             if time.monotonic()-self.last_control>=30:
                 try:
-                    if paused(self.root,self.job_id):self.stop=self.stop or 'Manual pause; active arms finish'
+                    decision=self.pause_check() if self.pause_check is not None else paused(self.root,self.job_id)
+                    self.waiting_for_control=decision is None
+                    if decision:self.stop=self.stop or 'Manual pause; active arms finish'
                 except Exception as error:self.stop=self.stop or repr(error)
                 self.last_control=time.monotonic()
             # A successful previous child may have exited between nvidia-smi and poll.
             # Its still-tracked PID is permitted; foreign PIDs never are.
-            while pending and can_launch(active,observed,memory,self.p,bool(self.stop)):
+            while pending and can_launch(active,observed,memory,self.p,bool(self.stop) or self.waiting_for_control):
                 case=pending.pop(0)
                 try:self.start(case,active)
                 except Exception as error:
@@ -91,6 +94,7 @@ class Scheduler:
             if time.monotonic()-self.last_progress>=30:
                 total,steps,intents=self.counter(self.output);value=dict(active_pids=sorted(active),pending=[v['name'] for v in pending],optimizer_steps=total,stage_steps=steps,stop_new_arms=self.stop)
                 save(self.output/'progress.json',value);print(json.dumps(value),flush=True);self.last_progress=time.monotonic()
+                if self.waiting_for_control:print(json.dumps(dict(status='waiting_for_git',pending=[v['name'] for v in pending])),flush=True)
             if pending or active:time.sleep(2)
         if failure:raise RuntimeError(failure)
         return [finished[c['name']] for c in recipes if c['name'] in finished]

@@ -10,7 +10,7 @@ from run_cf_letter_downstream import counters
 ROOT=Path(__file__).resolve().parent
 
 
-def verify(context,*,settings=None,directory=None,job_id=JOB,scope_id=SCOPE,dependency_check=None,comparison_pairs=None):
+def verify(context,*,settings=None,directory=None,job_id=JOB,scope_id=SCOPE,dependency_check=None,comparison_pairs=None,checkpoint_code_shas=None):
     c=read(context);output=Path(directory) if directory is not None else Path(c['workspace'])/'outputs/cf-downstream';p=settings if settings is not None else plan(ROOT);r=read(output/'compact.json')
     if (r['stage']!=scope_id or r['job_id']!=job_id or r['code_sha']!=c['request']['code_sha'] or r['execution_status']!='completed'
         or not r['original_inputs_unchanged'] or not r['selection_locked_before_future'] or r['future_used_for_selection'] is not False
@@ -80,6 +80,8 @@ def verify(context,*,settings=None,directory=None,job_id=JOB,scope_id=SCOPE,depe
         name=case['name'];directory=output/'arms'/name;summary=training[name]
         if summary!=read(directory/'summary.json') or summary['case']!=case:raise ValueError('Training publication differs')
         initial=torch.load(directory/'initial.pth',map_location='cpu',weights_only=False)
+        expected_code=checkpoint_code_shas[name] if checkpoint_code_shas is not None else r['code_sha']
+        if checkpoint_code_shas is not None and initial['code_sha']!=expected_code:raise ValueError('Initial checkpoint source SHA differs')
         if initial['step']!=0 or initial['optimizer']['state'] or any(not torch.equal(initial['model'][k],v) for k,v in base['model'].items()):raise ValueError('Warm start/reset differs')
         group=initial['optimizer']['param_groups'][0]
         if group['lr']!=p['lr'] or group['weight_decay']!=p['weight_decay'] or list(group['betas'])!=p['betas'] or group['eps']!=p['eps']:raise ValueError('GPT optimizer differs')
@@ -99,6 +101,7 @@ def verify(context,*,settings=None,directory=None,job_id=JOB,scope_id=SCOPE,depe
             or sha(output/'mappings'/(name+'.npy'))!=summary['mapping_sha256']
             or lock['arms'][name]!=dict(selected_step=best['step'],selected_sha256=summary['selected_sha256'],mapping_sha256=summary['mapping_sha256'])):raise ValueError('Locked selection differs')
         last=torch.load(directory/'last.pth',map_location='cpu',weights_only=False)
+        if checkpoint_code_shas is not None and last['code_sha']!=expected_code:raise ValueError('Last checkpoint source SHA differs')
         if last['step']!=p['steps_per_arm'] or last['sampler']['processed']!=sampler.processed or summary['processed_examples']!=sampler.processed:raise ValueError('GPT endpoint accounting differs')
         processed.append(sampler.processed)
         _,metric=records(directory/'full_update_validation.jsonl',val,np.arange(len(val['targets'])))
@@ -108,7 +111,7 @@ def verify(context,*,settings=None,directory=None,job_id=JOB,scope_id=SCOPE,depe
         if (fut[name]['selection_lock_sha256']!=lock_sha or fut[name]['model_sha256']!=sha(selected) or fut[name]['mapping_sha256']!=summary['mapping_sha256']
             or fut[name]['selected_update_step']!=best['step'] or fut[name]['selection_locked_before_future'] is not True):raise ValueError('Future used wrong checkpoint/map')
         model,saved=model_from(selected,p,'cpu');model.eval();model.requires_grad_(False)
-        if saved['step']!=best['step'] or saved['code_sha']!=r['code_sha'] or saved['mapping_sha256']!=summary['mapping_sha256']:raise ValueError('Selected checkpoint metadata differs')
+        if saved['step']!=best['step'] or saved['code_sha']!=expected_code or saved['mapping_sha256']!=summary['mapping_sha256']:raise ValueError('Selected checkpoint metadata differs')
         # Recompute fixed likelihoods with current-arm history AND target SID.
         for arrays,path in [(val,directory/'full_update_validation.jsonl'),(future,directory/'future_queries.jsonl')]:
             indices=np.flatnonzero(arrays['targets']>0)[:16];x,m,y=gpt_arrays(arrays,mapping,p['quantizer']['capacity'],p['gpt']['user_buckets'])

@@ -11,10 +11,10 @@ from run_cf_letter_multiseed import total_counters
 ROOT=Path(__file__).resolve().parent
 
 
-def verify(context,*,assignment_device='cuda:0',configuration=None):
+def verify(context,*,assignment_device='cuda:0',configuration=None,directory=None,job_id=JOB,scope_id=SCOPE,rq_code_sha=None,gpt_code_shas=None):
     c=read(context);p=configuration if configuration is not None else plan(ROOT)
-    output=Path(c['workspace'])/'outputs/cf-multiseed';r=read(output/'compact.json');rq=output/'rq';gpt=output/'gpt'
-    if (r['job_id']!=JOB or r['stage']!=SCOPE or r['code_sha']!=c['request']['code_sha'] or r['execution_status']!='completed'
+    output=Path(directory) if directory is not None else Path(c['workspace'])/'outputs/cf-multiseed';r=read(output/'compact.json');rq=output/'rq';gpt=output/'gpt'
+    if (r['job_id']!=job_id or r['stage']!=scope_id or r['code_sha']!=c['request']['code_sha'] or r['execution_status']!='completed'
         or not r['original_inputs_unchanged'] or r['uncertain_step_records'] or not r['selection_locked_before_future']
         or r['future_used_for_selection'] or any(r[k] for k in ('sasrec_training_performed','base_training_performed','holdout_evaluated'))
         or r['seeds']!=p['seeds'] or r['stop_new_stages_reason']):raise ValueError('Multi-seed scope/status differs')
@@ -47,7 +47,7 @@ def verify(context,*,assignment_device='cuda:0',configuration=None):
     for case in rq_cases(p):
         name=case['name'];params=settings(ROOT,p,'rq',case['seed']);folder=rq/'arms'/name
         if results[name]!=read(folder/'arm_result.json'):raise ValueError('RQ publication differs')
-        result=verify_arm(folder,data,binding,params,case,r['code_sha'],assignment_device=assignment_device,gpu_guard=guard)
+        result=verify_arm(folder,data,binding,params,case,rq_code_sha if rq_code_sha is not None else r['code_sha'],assignment_device=assignment_device,gpu_guard=guard)
         if result['optimizer_steps']!=p['rq_steps'] or not result['capacity_feasible']:raise ValueError('Infeasible/incomplete seed')
         print(json.dumps(dict(verification='rq_complete',seed=case['seed'],arm=name)),flush=True)
     def gpt_sources(folder,params):
@@ -66,8 +66,8 @@ def verify(context,*,assignment_device='cuda:0',configuration=None):
     # traces, checkpoints, optimizer resets, all15 lock and CPU likelihood samples.
     from verify_cf_letter_downstream import verify as verify_gpt
     qg=settings(ROOT,p,'gpt')
-    verdict=verify_gpt(context,settings=qg,directory=gpt,job_id=JOB,scope_id=SCOPE,
-                       dependency_check=gpt_sources,comparison_pairs=comparison_pairs(p))
+    verdict=verify_gpt(context,settings=qg,directory=gpt,job_id=job_id,scope_id=scope_id,
+                       dependency_check=gpt_sources,comparison_pairs=comparison_pairs(p),checkpoint_code_shas=gpt_code_shas)
     training=read(gpt/'training.json');future=read(gpt/'future.json');stats=summarize(future,p,qg['topk'])
     stats['per_seed_user_cluster_comparisons']=read(gpt/'comparisons.json')
     if stats!=read(output/'statistics.json') or future!=read(output/'future.json'):raise ValueError('Seed statistics/Future publication differs')
@@ -82,14 +82,14 @@ def verify(context,*,assignment_device='cuda:0',configuration=None):
     if r['future_names']!=[c['name'] for c in gpt_cases(p)] or len(future)!=p['future_passes']:raise ValueError('Missing full Future pass')
     primary=stats['groups']['full_denominator'];paired=stats['paired']['full_denominator']['historical_minus_plain'][p['primary_metric']]
     lines=['### Five-seed CF/LETTER Update and Future comparison','',
-        f'Job `{JOB}`; code `{r["code_sha"]}`. Seeds {p["seeds"]}; actual steps={total}, full Future passes={len(future)}. Codebook beta1=0.9; fixed accepted C0/E1/Base GPT. Pilot2026 and beta1=0 remain historical, excluded from this mean.',
+        f'Job `{job_id}`; code `{r["code_sha"]}`. Seeds {p["seeds"]}; family steps={total}, full Future passes={len(future)}. Codebook beta1=0.9; fixed accepted C0/E1/Base GPT. Pilot2026 and beta1=0 remain historical, excluded from this mean.',
         '', '| Method | Future Recall@10 mean | Seed95%CI | Future NDCG@10 mean | Seed95%CI |', '| --- | ---: | --- | ---: | --- |']
     for method,v in primary.items():
         a=v['recall@10'];b=v['ndcg@10'];lines.append(f'| {method} | {100*a["mean"]:.6f}% | [{100*a["ci95"][0]:.6f}%, {100*a["ci95"][1]:.6f}%] | {b["mean"]:.9f} | [{b["ci95"][0]:.9f}, {b["ci95"][1]:.9f}] |')
     lines+=['', 'Primary paired Historical-minus-Plain Future NDCG@10: `'+json.dumps(paired)+'`.',
         '', 'Student-t95%CI across five seeds (df4), sample SD, equal seed weighting; paired differences are computed within each seed first. Per-seed user-cluster bootstrap intervals are separate evidence. Future has already been observed; this is fixed-recipe repeatability, conditional on one fixed Base/E1, not a fresh blind test or full-pipeline seed study.',
         '', 'Acceptance rechecked all per-update RQ hard SID/suffix evidence and monitoring checkpoints on the original production backend, frozen original targets and teacher likelihoods; all GPT reset/sampling/selection and Future raw queries/paired bootstrap/statistics were independently checked from saved artifacts. Inputs are unchanged. Actual2000 GPT steps and validation-selected steps remain separate. No H convergence claim, parameter selection on Future, additional seed or automatic next task.']
-    return dict(status='verified',job_id=JOB,contract_sha256=c['contract_sha256'],actual_optimizer_steps=total,report_markdown='\n'.join(lines))
+    return dict(status='verified',job_id=job_id,contract_sha256=c['contract_sha256'],actual_optimizer_steps=total,report_markdown='\n'.join(lines))
 
 
 if __name__=='__main__':

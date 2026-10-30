@@ -17,10 +17,10 @@
     "fifteen_Future_evaluations",
     "seed_CI_analysis_report_and_stop"
   ],
-  "new_training_steps_authorized": 40000,
+  "new_training_steps_authorized": 6000,
   "new_future_prediction_passes_authorized": 15,
   "acceptance_timeout_seconds": 86400,
-  "max_diagnosed_repair_jobs": 0,
+  "max_diagnosed_repair_jobs": 1,
   "same_fault_automatic_retry": false,
   "selection_metric": "fixed512 Update-validation full-denominator NDCG@10 at0/100/250/500/1000/2000; earliest tie",
   "beam": 20,
@@ -34,11 +34,11 @@
   "web_controller": "docs/lab_buffer/CONTROLLER.md",
   "persistent_state": "lab-requests:control/main.json",
   "stop_after_plan": true,
-  "revision": 13,
-  "active_scope": "cf-letter-multiseed-v1",
-  "scope_manifest": "docs/experiments/cf_letter_multiseed.json",
+  "revision": 14,
+  "active_scope": "cf-letter-multiseed-resume-v1",
+  "scope_manifest": "docs/experiments/cf_letter_multiseed_resume.json",
   "scope_authorized_at": "2026-10-30",
-  "optimizer_steps_scope": "10000 codebook +30000 GPT; five fixed paired new seeds",
+  "optimizer_steps_scope": "Preserve34000 prior updates; only three missing seed2031 GPT arms(6000 new); original15 Future passes",
   "max_parallel": 2,
   "task_runtime": {
     "protocol_version": 1,
@@ -77,5 +77,7 @@
     2030,
     2031
   ],
-  "cohort_seed": 2026
+  "cohort_seed": 2026,
+  "recovery_of": "cf-letter-multiseed-001",
+  "per_experiment_runner_upgrade": false
 }

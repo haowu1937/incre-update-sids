@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "job_id": "cf-letter-multiseed-resume-001",
+  "scope_id": "cf-letter-multiseed-resume-v1",
+  "execution_authorized": true,
+  "authorization": "Hao said \u7ee7\u7eed after reviewing the recovery plan on2026-10-30: preserve34000 completed updates, train only seed2031 three GPT arms(6000 updates), lock all15 models and run the originally authorized15 Future passes. No Runner upgrade, parameter change or budget extension. One continuation; no automatic retry.",
+  "source_job_id": "cf-letter-multiseed-001",
+  "source_code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
+  "new_step_cap": 6000,
+  "family_step_cap": 40000,
+  "missing_gpt_arms": [
+    "s2031_ft_old",
+    "s2031_plain",
+    "s2031_historical"
+  ],
+  "source_manifest_sha256": "13c1e2244c27806020955f82bbd9e50aaa2cc443c3745760a1d06dc3019a17d1",
+  "failure_evidence_sha256": "0a5af7236aada55e9a5b176860cbedcf9e12985904f531a917ec25d170ab5db3"
+}

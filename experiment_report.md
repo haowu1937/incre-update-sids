@@ -41,7 +41,7 @@ All arms actually trained 2000 steps; fixed512-query Update-validation NDCG@10 s
 
 <!-- cf-letter-multiseed-primary:v1 -->
 
-Five fresh seeds 2027-2031; codebook beta1=0.9; fixed accepted Base/E1. **Paused after a task-control Git fetch failure on 2026-10-30.** Returned records report all 10 codebook arms complete (10000 steps) and 12/15 GPT arms complete (24000 steps). The three seed2031 GPT arms were not launched. No global selection lock or Future pass exists; the final scientific verifier did not run. See Section 6.37.
+Five fresh seeds 2027-2031; codebook beta1=0.9; fixed accepted Base/E1. **Original attempt paused after a task-control Git fetch failure on 2026-10-30; a bounded continuation is prepared for dispatch.** Returned records report all 10 codebook arms complete (10000 steps) and 12/15 GPT arms complete (24000 steps). The three seed2031 GPT arms were not launched. No global selection lock or Future pass exists; the final scientific verifier did not run. See Section 6.37.
 
 | Method | GPT arms completed | Future seeds evaluated | Future Recall@10 mean | Seed95%CI | Future NDCG@10 mean | Seed95%CI |
 | --- | ---: | ---: | ---: | --- | ---: | --- |
@@ -49,7 +49,7 @@ Five fresh seeds 2027-2031; codebook beta1=0.9; fixed accepted Base/E1. **Paused
 | Plain | 4/5 | 0/5 | — | — | — | — |
 | Historical | 4/5 | 0/5 | — | — | — | — |
 
-Pilot2026 and beta1=0 above remain historical and are excluded from the planned five-seed means. Each completed GPT arm fitted2000 updates; selected steps are recorded per seed. Future cells remain unreported. The planned Student-t95%CI requires all five seed scores; the primary contrast remains paired Historical-minus-Plain Future NDCG@10. Common34189 queries and10924-item I0 are unchanged. No seed selection, retry or budget extension is dispatched.
+Pilot2026 and beta1=0 above remain historical and are excluded from the planned five-seed means. Each completed GPT arm fitted2000 updates; selected steps are recorded per seed. Future cells remain unreported. The planned Student-t95%CI requires all five seed scores; the primary contrast remains paired Historical-minus-Plain Future NDCG@10. Common34189 queries and10924-item I0 are unchanged. No seed selection or budget extension is dispatched. The explicitly approved continuation only recovers the three missing GPT arms; see Section 6.38.
 
 <!-- /cf-letter-multiseed-primary:v1 -->
 
@@ -1593,3 +1593,17 @@ Cloud review checked exact request/result/contract/scope byte hashes and all eig
 Failure evidence: [job result](https://github.com/haowu1937/incre-update-sids/blob/e8ee311ef096c2629d8bef346252b5ae81b7790e/jobs/cf-letter-multiseed-001.json), [compact](https://github.com/haowu1937/incre-update-sids/blob/e8ee311ef096c2629d8bef346252b5ae81b7790e/artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/compact.json), [returned log tail](https://github.com/haowu1937/incre-update-sids/blob/e8ee311ef096c2629d8bef346252b5ae81b7790e/logs/cf-letter-multiseed-001.tail.txt). Machine-readable diagnosis and hashes are in `docs/experiments/cf_letter_multiseed_failure.json`. Compact SHA256=`4dac80ba8f86723c910cfe1f235453d03c1632c6e69a8202e0dbe0d3648e62ec`; local artifact-index SHA256=`c3b3bd777e5357d67b30861a4d82a98dc05b8a7d2e2e6eeae3dd6fd5296aac6c`.
 
 Keep dispatch paused and next_job_id=null under the current no-automatic-retry plan. A later reviewed recovery must retain and validate the existing34000 updates, train only the three missing seed2031 GPT arms within the6000 remaining steps, then establish all fifteen selection locks before the already planned Future passes and complete scientific verification. Do not restart all five seeds, change parameters, infer missing Future results or overwrite the original failure. This round changes reporting and diagnosis state only; no Runner upgrade, server command, training, Future pass or replacement task is issued.
+
+<!-- cf-letter-multiseed-resume-plan:v1 -->
+
+### 6.38 Approved same-budget continuation (2026-10-30)
+
+Hao explicitly said “继续” after the recovery plan. The continuation is job `cf-letter-multiseed-resume-001`, scope `cf-letter-multiseed-resume-v1`; manifest and implementation notes are in `docs/experiments/cf_letter_multiseed_resume.json` and same-name Markdown. Preserve the original failed job and its needs_attention receipt. Reuse the10 RQ and12 GPT arms after exact hash, durable-counter and source checks, and fit only seed2031 FT-old/Plain/Historical for2000 steps each. New reservation6000; family actual cap remains40000=34000 inherited+6000 new. No extra parameters, seeds or training are authorized.
+
+The continuation creates an independent output, copies rather than links to original files, and preserves per-checkpoint code identities. It checks the old source and all reused bytes before and after computation. After all fifteen selected models/maps are locked, perform the originally planned fifteen serial Future passes and the unchanged paired five-seed statistics. Final scientific acceptance rechecks the full40000-step family on the original RQ CUDA backend and CPU GPT likelihood/raw-query evidence, while generic accounting charges only6000 new steps. This is not acceptance of the prior failed wrapper.
+
+Task-control Git errors now retain pending arms and enter waiting_for_git with60/120/300/900-second backoff and redacted stderr. Active children finish; fresh remote authorization is required before another stage. Explicit pause, invalid control, child failure and resource/wall guards remain blockers. This is task code; no installed Runner/helper/policy/cron is upgraded. Existing core startup/final-delivery I/O handling is a separate deployment limitation and is not claimed fixed.
+
+Local protocol/regression checks pass, including private copying, exact remaining-budget contract, pending-arm retention across fetch failure/recovery, unchanged-scope checks and precise local pause archival. This environment has no Torch/Transformers; actual-model tests are skipped locally, not claimed passed. The server must pass five mandatory real CPU suites, including an actual mixed-code private-copy/two-seed RQ-to-GPT/lock/Future/full-verifier check, before Beauty training. A preflight failure preserves evidence and stops this continuation.
+
+The one-time server command runs the pinned pause-reconciliation script, validates the original terminal evidence and exact queued6000-step contract, checks noninteractive fetch/write authentication, and archives only this matching local pause. It changes no installed code or cron and starts no process; the existing cron claims the task. As of this code/report delivery, no additional production update or Future pass is observed. The current34,000-step progress and empty Future/CI cells remain in the primary table until verified new results arrive.

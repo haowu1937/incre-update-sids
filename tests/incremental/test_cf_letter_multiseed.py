@@ -80,7 +80,7 @@ class Protocol(unittest.TestCase):
 
 @unittest.skipUnless(HAVE,'Actual multi-seed Torch/GPT/RQ checks mandatory on server')
 class RealModels(unittest.TestCase):
-    def test_actual_two_seed_RQ_to_GPT_global_lock_future_and_scientific_acceptance(self):
+    def test_actual_two_seed_RQ_to_GPT_global_lock_future_and_scientific_acceptance(self,*,resume_fixture=False):
         import torch
         from genrec.cf_letter_base_training import seed_all
         from genrec.cf_letter_optimizer_training import OptimizerEngine
@@ -127,7 +127,16 @@ class RealModels(unittest.TestCase):
             b=dict(input_sha256={},all_update_train_queries=16,eligible_update_train_queries=16,excluded_update_train_queries=0,probe_sample_ids=val['samples'][probe].tolist(),catalog_items=48,training_sample_ids_sha256=digest(train['samples'].tolist()))
             save(gpt/'data_audit.json',b);save_arrays(gpt/'prepared.npz',{**{'train_'+k:v for k,v in train.items()},**{'val_'+k:v for k,v in val.items()},'probe':probe});save_arrays(gpt/'future_prepared.npz',future)
             (gpt/'mappings').mkdir();training={}
-            for case in gpt_cases(p):
+            source_snapshot=None;old_code=os.environ.get('LAB_BUFFER_CODE_SHA');source_output=None
+            for position,case in enumerate(gpt_cases(p)):
+                if resume_fixture and position==3:
+                    from genrec.cf_letter_multiseed_resume_protocol import copy_indexed
+                    source_output=output
+                    source_snapshot={str(f):sha(f) for f in output.rglob('*') if f.is_file()}
+                    index={str(f.relative_to(output)):sha(f) for f in output.rglob('*') if f.is_file()}
+                    output=root/'resumed/outputs/cf-multiseed';output.mkdir(parents=True)
+                    copy_indexed(source_output,output,index);rq=output/'rq';gpt=output/'gpt'
+                    os.environ['LAB_BUFFER_CODE_SHA']='b'*40
                 source=rq/'inputs/base/item_sids.npy' if case['source'] is None else rq/'arms'/case['source']/case['source']/'item_sids_4.npy'
                 shutil.copyfile(source,gpt/'mappings'/(case['name']+'.npy'));params=copy.deepcopy(qg);params['seed']=case['seed']
                 training[case['name']]=train_arm(gpt,case,train,val,probe,params,'cpu',lambda:None)
@@ -148,15 +157,22 @@ class RealModels(unittest.TestCase):
             n,counts,intents=total_counters(output);save(output/'compact.json',dict(stage=SCOPE,job_id=JOB,code_sha=os.environ.get('LAB_BUFFER_CODE_SHA'),execution_status='completed',seeds=p['seeds'],
                 original_inputs_unchanged=True,selection_locked_before_future=True,future_used_for_selection=False,sasrec_training_performed=False,base_training_performed=False,holdout_evaluated=False,
                 stop_new_stages_reason=None,future_names=list(futures),optimizer_steps_spent=n,stage_step_counts=counts,uncertain_step_records=intents,local_artifact_index_sha256=seal(output),returned_artifact_sha256={name:sha(output/(name+'.json')) for name in ARTIFACTS if name!='compact'}))
-            context=root/'context.json';save(context,dict(workspace=str(root),request={'code_sha':os.environ.get('LAB_BUFFER_CODE_SHA')},contract={'input_sha256':{'/fixture/main-deployment.json':'x'}},contract_sha256='fixture'))
+            context=root/'context.json';save(context,dict(workspace=str(output.parent.parent),request={'code_sha':os.environ.get('LAB_BUFFER_CODE_SHA')},contract={'input_sha256':{'/fixture/main-deployment.json':'x'}},contract_sha256='fixture'))
             def configured(root,p,stage,seed=None):
                 q=copy.deepcopy(qr if stage=='rq' else qg);q['seed']=2026 if seed is None else seed;return q
             before={str(f):sha(f) for f in output.rglob('*') if f.is_file()}
             with patch.object(verifier,'settings',side_effect=configured),patch.object(verifier,'load_data',return_value=(data,binding)),patch('verify_cf_letter_downstream.load_training',return_value=(train,val,probe,b)),patch('verify_cf_letter_downstream.load_stage',return_value=(future,{})):
-                verdict=verifier.verify(context,assignment_device='cpu',configuration=p)
+                extra=dict(rq_code_sha=old_code,gpt_code_shas={v['name']:old_code if v['seed']==2027 else 'b'*40 for v in gpt_cases(p)}) if resume_fixture else {}
+                verdict=verifier.verify(context,assignment_device='cpu',configuration=p,**extra)
             self.assertEqual(verdict['status'],'verified');self.assertEqual(verdict['actual_optimizer_steps'],40)
             self.assertTrue(all(sha(f)==v for f,v in before.items()))
             self.assertEqual(len(futures),6);self.assertEqual(list(stats['groups']['full_denominator']),['ft_old','plain','historical'])
+            if resume_fixture:
+                from genrec.cf_letter_multiseed_resume_protocol import check_reused
+                check_reused(output);self.assertTrue(all(sha(f)==v for f,v in source_snapshot.items()))
+                self.assertEqual(total_counters(source_output)[0],28);self.assertEqual(total_counters(output)[0],40)
+                if old_code is None:os.environ.pop('LAB_BUFFER_CODE_SHA',None)
+                else:os.environ['LAB_BUFFER_CODE_SHA']=old_code
 
 
 if __name__=='__main__':
