@@ -1,0 +1,75 @@
+.........Passing a tuple of `past_key_values` is deprecated and will be removed in Transformers v4.53.0. You should pass an instance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
+..{"stage": "sasrec", "step": 2, "epoch": 1, "validation": {"all_queries": 8, "servable_queries": 7, "unavailable_targets": 1, "full_denominator": {"recall@5": 0.125, "recall@10": 0.125, "recall@20": 0.5, "ndcg@5": 0.0625, "ndcg@10": 0.0625, "ndcg@20": 0.15877976930341497}, "conditional_on_servable": {"recall@5": 0.14285714285714285, "recall@10": 0.14285714285714285, "recall@20": 0.5714285714285714, "ndcg@5": 0.07142857142857142, "ndcg@10": 0.07142857142857142, "ndcg@20": 0.1814625934896171}, "mean_sequence_nll_servable": 3.470700911113194, "invalid_predictions": 0, "ranking_catalog": "base_train", "seen_item_filter": false, "nll_target_tokens": 1, "examples_with_all_history_unavailable": 0, "num_beams": null}}
+{"stage": "sasrec", "step": 4, "epoch": 2, "validation": {"all_queries": 8, "servable_queries": 7, "unavailable_targets": 1, "full_denominator": {"recall@5": 0.125, "recall@10": 0.125, "recall@20": 0.5, "ndcg@5": 0.07886621919643219, "ndcg@10": 0.07886621919643219, "ndcg@20": 0.17514598849984717}, "conditional_on_servable": {"recall@5": 0.14285714285714285, "recall@10": 0.14285714285714285, "recall@20": 0.5714285714285714, "ndcg@5": 0.09013282193877965, "ndcg@10": 0.09013282193877965, "ndcg@20": 0.20016684399982534}, "mean_sequence_nll_servable": 3.470400639942714, "invalid_predictions": 0, "ranking_catalog": "base_train", "seen_item_filter": false, "nll_target_tokens": 1, "examples_with_all_history_unavailable": 0, "num_beams": null}}
+{"stage": "gpt", "step": 2, "epoch": 1, "validation": {"all_queries": 8, "servable_queries": 7, "unavailable_targets": 1, "full_denominator": {"recall@5": 0.0, "recall@10": 0.25, "recall@20": 0.625, "ndcg@5": 0.0, "ndcg@10": 0.08395900798671888, "ndcg@20": 0.17522553927450363}, "conditional_on_servable": {"recall@5": 0.0, "recall@10": 0.2857142857142857, "recall@20": 0.7142857142857143, "ndcg@5": 0.0, "ndcg@10": 0.09595315198482157, "ndcg@20": 0.20025775917086128}, "mean_sequence_nll_servable": 19.934153693062918, "invalid_predictions": 0, "ranking_catalog": "base_train", "seen_item_filter": false, "nll_target_tokens": 4, "examples_with_all_history_unavailable": 0, "num_beams": 20}}
+{"stage": "gpt", "step": 4, "epoch": 2, "validation": {"all_queries": 8, "servable_queries": 7, "unavailable_targets": 1, "full_denominator": {"recall@5": 0.0, "recall@10": 0.25, "recall@20": 0.625, "ndcg@5": 0.0, "ndcg@10": 0.08395900798671888, "ndcg@20": 0.17467509512431698}, "conditional_on_servable": {"recall@5": 0.0, "recall@10": 0.2857142857142857, "recall@20": 0.7142857142857143, "ndcg@5": 0.0, "ndcg@10": 0.09595315198482157, "ndcg@20": 0.19962868014207655}, "mean_sequence_nll_servable": 19.91360010419573, "invalid_predictions": 0, "ranking_catalog": "base_train", "seen_item_filter": false, "nll_target_tokens": 4, "examples_with_all_history_unavailable": 0, "num_beams": 20}}
+.
+----------------------------------------------------------------------
+Ran 12 tests in 5.938s
+
+OK
+..{"active_pids": [200, 201], "pending": ["lr1e5_b0_rq_only", "lr1e5_b0_mixed"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
+.{"branch": "lr1e5_b09_rq_only", "step": 10, "epoch": 2, "train_batch_H": 0.0008039474487304688, "fixed_H": 0.001697540283203125, "full_H": 0.0014456510543823242}
+{"branch": "lr1e5_b09_mixed", "step": 10, "epoch": 2, "train_batch_H": 0.0010724067687988281, "fixed_H": 0.0017285346984863281, "full_H": 0.0012907981872558594}
+{"branch": "lr1e5_b0_rq_only", "step": 10, "epoch": 2, "train_batch_H": 0.0008039474487304688, "fixed_H": 0.002053976058959961, "full_H": 0.0014861822128295898}
+{"branch": "lr1e5_b0_mixed", "step": 10, "epoch": 2, "train_batch_H": 0.001882791519165039, "fixed_H": 0.0026979446411132812, "full_H": 0.0019472837448120117}
+.
+----------------------------------------------------------------------
+Ran 4 tests in 7.120s
+
+OK
+...{"active_pids": [300, 301], "pending": ["historical_b09", "plain_b0", "historical_b0"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
+....Passing a tuple of `past_key_values` is deprecated and will be removed in Transformers v4.53.0. You should pass an instance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
+{"phase": "future", "arm": "ft_old", "queries_done": 2, "all_queries": 200}
+{"phase": "future", "arm": "ft_old", "queries_done": 102, "all_queries": 200}
+{"phase": "future", "arm": "plain_b09", "queries_done": 2, "all_queries": 200}
+{"phase": "future", "arm": "plain_b09", "queries_done": 102, "all_queries": 200}
+{"phase": "future", "arm": "historical_b09", "queries_done": 2, "all_queries": 200}
+{"phase": "future", "arm": "historical_b09", "queries_done": 102, "all_queries": 200}
+{"phase": "future", "arm": "plain_b0", "queries_done": 2, "all_queries": 200}
+{"phase": "future", "arm": "plain_b0", "queries_done": 102, "all_queries": 200}
+{"phase": "future", "arm": "historical_b0", "queries_done": 2, "all_queries": 200}
+{"phase": "future", "arm": "historical_b0", "queries_done": 102, "all_queries": 200}
+.
+----------------------------------------------------------------------
+Ran 8 tests in 12.917s
+
+OK
+.....Passing a tuple of `past_key_values` is deprecated and will be removed in Transformers v4.53.0. You should pass an instance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
+{"phase": "future", "arm": "s2027_ft_old", "queries_done": 4, "all_queries": 24}
+{"phase": "future", "arm": "s2027_plain", "queries_done": 4, "all_queries": 24}
+{"phase": "future", "arm": "s2027_historical", "queries_done": 4, "all_queries": 24}
+{"phase": "future", "arm": "s2028_ft_old", "queries_done": 4, "all_queries": 24}
+{"phase": "future", "arm": "s2028_plain", "queries_done": 4, "all_queries": 24}
+{"phase": "future", "arm": "s2028_historical", "queries_done": 4, "all_queries": 24}
+{"verification": "rq_complete", "seed": 2027, "arm": "s2027_plain"}
+{"verification": "rq_complete", "seed": 2027, "arm": "s2027_historical"}
+{"verification": "rq_complete", "seed": 2028, "arm": "s2028_plain"}
+{"verification": "rq_complete", "seed": 2028, "arm": "s2028_historical"}
+.
+----------------------------------------------------------------------
+Ran 6 tests in 10.694s
+
+OK
+.{"status": "waiting_for_git", "stage": "fetch", "failures": 1, "retry_after_seconds": 60, "returncode": 128, "stderr": "fatal https://[redacted]@github.com/repo [redacted] Authorization: [redacted]", "time": 1793373599.8241334, "last_success": null}
+....{"active_pids": [], "pending": ["s2031_ft_old", "s2031_plain", "s2031_historical"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
+{"status": "waiting_for_git", "pending": ["s2031_ft_old", "s2031_plain", "s2031_historical"]}
+{"active_pids": [1, 2], "pending": ["s2031_historical"], "optimizer_steps": 4000, "stage_steps": {"s2031_plain": 2000, "s2031_ft_old": 2000}, "stop_new_arms": null}
+{"active_pids": [3], "pending": [], "optimizer_steps": 6000, "stage_steps": {"s2031_historical": 2000, "s2031_plain": 2000, "s2031_ft_old": 2000}, "stop_new_arms": null}
+{"active_pids": [], "pending": [], "optimizer_steps": 6000, "stage_steps": {"s2031_historical": 2000, "s2031_plain": 2000, "s2031_ft_old": 2000}, "stop_new_arms": null}
+...Passing a tuple of `past_key_values` is deprecated and will be removed in Transformers v4.53.0. You should pass an instance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
+{"phase": "future", "arm": "s2027_ft_old", "queries_done": 4, "all_queries": 24}
+{"phase": "future", "arm": "s2027_plain", "queries_done": 4, "all_queries": 24}
+{"phase": "future", "arm": "s2027_historical", "queries_done": 4, "all_queries": 24}
+{"phase": "future", "arm": "s2028_ft_old", "queries_done": 4, "all_queries": 24}
+{"phase": "future", "arm": "s2028_plain", "queries_done": 4, "all_queries": 24}
+{"phase": "future", "arm": "s2028_historical", "queries_done": 4, "all_queries": 24}
+{"verification": "rq_complete", "seed": 2027, "arm": "s2027_plain"}
+{"verification": "rq_complete", "seed": 2027, "arm": "s2027_historical"}
+{"verification": "rq_complete", "seed": 2028, "arm": "s2028_plain"}
+{"verification": "rq_complete", "seed": 2028, "arm": "s2028_historical"}
+.
+----------------------------------------------------------------------
+Ran 9 tests in 10.422s
+
+OK
