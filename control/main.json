@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "needs_diagnosis",
-  "pause_requested": true,
-  "active_job_id": "cf-letter-multiseed-001",
-  "lease": {
-    "token": "resume-ms-1793373215156-462fc0418d39a",
-    "owner": "web-manual-multiseed-bounded-continuation",
-    "acquired_at": "2026-10-30T15:13:35.156Z",
-    "expires_at_unix": 1793374115.156
-  },
+  "mode": "queued",
+  "pause_requested": false,
+  "active_job_id": "cf-letter-multiseed-resume-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -187,8 +182,8 @@
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
-  "request_sha256": "ae966dc7ecb629bba8528cb649db101d01c8d684899ec9570802b96f70f902d1",
+  "code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
+  "request_sha256": "0e5c994031e8390877e549c6681a3376e41342d5ce8248757137b055739b43b9",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -1196,11 +1191,11 @@
       }
     }
   },
-  "active_scope": "cf-letter-multiseed-v1",
+  "active_scope": "cf-letter-multiseed-resume-v1",
   "task_dispatch": {
     "protocol_version": 1,
-    "contract_path": "task-contracts/cf-letter-multiseed-001.json",
-    "contract_sha256": "60174bce637c88e066f0778ff2e5977af18e1c3c6de2c9130d774e9d7d3090cf"
+    "contract_path": "task-contracts/cf-letter-multiseed-resume-001.json",
+    "contract_sha256": "88724c922ed5c63c032d463e21265d657cb683d6a1a5d766b68032ce6e3a42c3"
   },
   "task_scope_ledger": {
     "cf-letter-base-v1": {
@@ -1294,44 +1289,34 @@
         "cf-letter-multiseed-001": 40000
       },
       "actual_steps": {}
+    },
+    "cf-letter-multiseed-resume-v1": {
+      "scope_sha256": "9de5ec3d208c166b06a975f39fb6eafd525e24c2b58041dfd16f2b643059f4e6",
+      "reservations": {
+        "cf-letter-multiseed-resume-001": 6000
+      },
+      "actual_steps": {}
     }
   },
   "current_scope": {
-    "scope_id": "cf-letter-multiseed-v1",
-    "status": "needs_diagnosis",
-    "authorization": "Hao explicitly said 下发任务 on2026-10-30 after reviewing five fresh seeds2027-2031, three paired FT-old/Plain/Historical conditions at codebook beta1=.9,10000 codebook plus30000 GPT steps and15 locked Future passes. Conditional on fixed accepted Base/E1; no seed selection, parameter tuning or retry.",
-    "manifest": "docs/experiments/cf_letter_multiseed.json",
-    "max_optimizer_steps": 40000,
-    "max_parallel": 2,
-    "seeds": [
-      2027,
-      2028,
-      2029,
-      2030,
-      2031
+    "scope_id": "cf-letter-multiseed-resume-v1",
+    "status": "queued",
+    "manifest": "docs/experiments/cf_letter_multiseed_resume.json",
+    "authorization": "Hao said 继续 after reviewing the recovery plan on2026-10-30: preserve34000 completed updates, train only seed2031 three GPT arms(6000 updates), lock all15 models and run the originally authorized15 Future passes. No Runner upgrade, parameter change or budget extension. One continuation; no automatic retry.",
+    "max_optimizer_steps": 6000,
+    "family_actual_step_cap": 40000,
+    "inherited_optimizer_steps": 34000,
+    "missing_gpt_arms": [
+      "s2031_ft_old",
+      "s2031_plain",
+      "s2031_historical"
     ],
-    "cohort_seed": 2026,
-    "methods": [
-      "ft_old",
-      "plain",
-      "historical"
-    ],
-    "components_trained": [
-      "three_codebooks",
-      "GPT_all_parameters"
-    ],
-    "rq_steps": 10000,
-    "gpt_steps": 30000,
     "full_future_passes": 15,
+    "max_parallel": 2,
     "stop_after_study": true,
     "automatic_retry": false,
-    "next_job_id": null,
-    "reported_optimizer_steps": 34000,
-    "reported_rq_steps": 10000,
-    "reported_gpt_steps": 24000,
-    "remaining_steps_blocked": 6000,
-    "scientific_acceptance": "not_run",
-    "failure_report_commit_sha": "180a4911b574cd2486d977fb20f848701465849c"
+    "server_start_condition": "Exact original local pause reconciliation; existing cron; no Runner upgrade",
+    "next_job_id": null
   },
   "latest_task_delivery": {
     "job_id": "cf-letter-multiseed-001",
@@ -1521,19 +1506,12 @@
     }
   },
   "latest_authorized_dispatch": {
-    "job_id": "cf-letter-multiseed-001",
-    "scope_id": "cf-letter-multiseed-v1",
-    "code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
-    "contract_sha256": "60174bce637c88e066f0778ff2e5977af18e1c3c6de2c9130d774e9d7d3090cf",
-    "created_at": "2026-10-30T10:19:04.458136+00:00",
-    "max_optimizer_steps": 40000,
-    "seeds": [
-      2027,
-      2028,
-      2029,
-      2030,
-      2031
-    ]
+    "job_id": "cf-letter-multiseed-resume-001",
+    "code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
+    "contract_sha256": "88724c922ed5c63c032d463e21265d657cb683d6a1a5d766b68032ce6e3a42c3",
+    "queued_at": "2026-10-30T15:15:13.375Z",
+    "authorization": "Hao: 继续 after the reviewed same-budget recovery plan",
+    "server_claim_observed": false
   },
   "diagnosed_repairs": [
     {
@@ -1563,6 +1541,22 @@
         "reservation": 3000
       },
       "rule": "Replacement may run only after exact prior preflight command_started=false and absent prior diagnostic output; no additional actual-step budget"
+    },
+    "cf-letter-multiseed-v1": {
+      "max_actual_optimizer_steps": 40000,
+      "original_attempt": {
+        "job_id": "cf-letter-multiseed-001",
+        "reported_actual_optimizer_steps": 34000,
+        "result_sha256": "7cf27480e3f50bb2d64d8b6fe61a0bcaea0e4ac808a968fac18684a6fdf3958b",
+        "scientific_acceptance": "pending_whole_family_verification",
+        "original_receipt_preserved": true
+      },
+      "continuation": {
+        "job_id": "cf-letter-multiseed-resume-001",
+        "scope_id": "cf-letter-multiseed-resume-v1",
+        "reservation": 6000
+      },
+      "rule": "No retraining inherited34000; exact durable source validation and whole-family verification plus new-only6000 accounting; original40000 nominal reservation is not recycled into a new research budget."
     }
   },
   "blocked_scope_history": [

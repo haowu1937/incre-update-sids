@@ -1,0 +1,29 @@
+{
+  "schema_version": 1,
+  "job_id": "cf-letter-multiseed-resume-001",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
+  "created_at": "2026-10-30T15:14:28.283478+00:00",
+  "timeout_seconds": 86400,
+  "argv": [
+    "python",
+    "-u",
+    "-B",
+    "run_cf_letter_multiseed_resume.py",
+    "--deployment",
+    "/home/hao/frec/git-lab-buffer/main-deployment.json",
+    "--output",
+    "outputs/cf-multiseed-resume"
+  ],
+  "artifacts": [
+    "outputs/task-runtime.json",
+    "outputs/cf-multiseed-resume/compact.json",
+    "outputs/cf-multiseed-resume/data_audit.json",
+    "outputs/cf-multiseed-resume/rq_results.json",
+    "outputs/cf-multiseed-resume/runs.json",
+    "outputs/cf-multiseed-resume/selections.json",
+    "outputs/cf-multiseed-resume/future.json",
+    "outputs/cf-multiseed-resume/statistics.json"
+  ]
+}

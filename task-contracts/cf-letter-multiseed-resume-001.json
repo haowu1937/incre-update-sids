@@ -1,0 +1,55 @@
+{
+  "protocol_version": 1,
+  "scope_id": "cf-letter-multiseed-resume-v1",
+  "job_id": "cf-letter-multiseed-resume-001",
+  "code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
+  "request_sha256": "0e5c994031e8390877e549c6681a3376e41342d5ce8248757137b055739b43b9",
+  "scope_path": "task-scopes/cf-letter-multiseed-resume-v1.json",
+  "scope_sha256": "9de5ec3d208c166b06a975f39fb6eafd525e24c2b58041dfd16f2b643059f4e6",
+  "manifest": {
+    "path": "docs/experiments/cf_letter_multiseed_resume.json",
+    "sha256": "71f2b5d17b876c60576e7ddb2b6138754ec8f7e079d69b52d1f23fe402c0553e"
+  },
+  "preflight": [
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_base.py",
+      "--require-torch"
+    ],
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_optimizer_pair.py",
+      "--require-torch"
+    ],
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_downstream.py",
+      "--require-torch"
+    ],
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_multiseed.py",
+      "--require-torch"
+    ],
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_multiseed_resume.py",
+      "--require-torch"
+    ]
+  ],
+  "verifier": "verify_cf_letter_multiseed_resume.py",
+  "optimizer_step_reservation": 6000,
+  "input_sha256": {
+    "/home/hao/frec/git-lab-buffer/main-deployment.json": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694"
+  }
+}
