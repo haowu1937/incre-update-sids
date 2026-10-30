@@ -1,5 +1,4 @@
-s2029_plain": 2000}, "stop_new_arms": null}
-{"active_pids": [3948344], "pending": [], "optimizer_steps": 29381, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 2000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_historical": 1381, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
+lain": 2000}, "stop_new_arms": null}
 {"active_pids": [3948344], "pending": [], "optimizer_steps": 29500, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 2000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_historical": 1500, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
 {"active_pids": [3948344], "pending": [], "optimizer_steps": 29616, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 2000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_historical": 1616, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
 {"active_pids": [3948344], "pending": [], "optimizer_steps": 29735, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 2000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_historical": 1735, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
@@ -108,3 +107,8 @@ Passing a tuple of `past_key_values` is deprecated and will be removed in Transf
 {"phase": "future", "arm": "s2027_historical", "queries_done": 9616, "all_queries": 34189}
 {"phase": "future", "arm": "s2027_historical", "queries_done": 10416, "all_queries": 34189}
 {"phase": "future", "arm": "s2027_historical", "queries_done": 11216, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_historical", "queries_done": 12016, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_historical", "queries_done": 12816, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_historical", "queries_done": 13616, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_historical", "queries_done": 14416, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_historical", "queries_done": 15216, "all_queries": 34189}
