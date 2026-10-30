@@ -1,14 +1,4 @@
-tance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
-{"phase": "future", "arm": "ft_old", "queries_done": 2, "all_queries": 200}
-{"phase": "future", "arm": "ft_old", "queries_done": 102, "all_queries": 200}
-{"phase": "future", "arm": "plain_b09", "queries_done": 2, "all_queries": 200}
-{"phase": "future", "arm": "plain_b09", "queries_done": 102, "all_queries": 200}
-{"phase": "future", "arm": "historical_b09", "queries_done": 2, "all_queries": 200}
-{"phase": "future", "arm": "historical_b09", "queries_done": 102, "all_queries": 200}
-{"phase": "future", "arm": "plain_b0", "queries_done": 2, "all_queries": 200}
-{"phase": "future", "arm": "plain_b0", "queries_done": 102, "all_queries": 200}
-{"phase": "future", "arm": "historical_b0", "queries_done": 2, "all_queries": 200}
-{"phase": "future", "arm": "historical_b0", "queries_done": 102, "all_queries": 200}
+00}
 .
 ----------------------------------------------------------------------
 Ran 8 tests in 12.917s
@@ -70,3 +60,5 @@ OK
 {"active_pids": [3893678, 3893679], "pending": ["s2031_historical"], "optimizer_steps": 25377, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 664, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_ft_old": 713, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
 {"active_pids": [3893678, 3893679], "pending": ["s2031_historical"], "optimizer_steps": 25481, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 714, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_ft_old": 767, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
 {"active_pids": [3893678, 3893679], "pending": ["s2031_historical"], "optimizer_steps": 25584, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 767, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_ft_old": 817, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
+{"active_pids": [3893678, 3893679], "pending": ["s2031_historical"], "optimizer_steps": 25687, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 817, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_ft_old": 870, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
+{"active_pids": [3893678, 3893679], "pending": ["s2031_historical"], "optimizer_steps": 25790, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 870, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_ft_old": 920, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
