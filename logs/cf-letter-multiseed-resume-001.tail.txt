@@ -1,10 +1,4 @@
-re", "arm": "s2028_plain", "queries_done": 13616, "all_queries": 34189}
-{"phase": "future", "arm": "s2028_plain", "queries_done": 14416, "all_queries": 34189}
-{"phase": "future", "arm": "s2028_plain", "queries_done": 15216, "all_queries": 34189}
-{"phase": "future", "arm": "s2028_plain", "queries_done": 16016, "all_queries": 34189}
-{"phase": "future", "arm": "s2028_plain", "queries_done": 16816, "all_queries": 34189}
-{"phase": "future", "arm": "s2028_plain", "queries_done": 17616, "all_queries": 34189}
-{"phase": "future", "arm": "s2028_plain", "queries_done": 18416, "all_queries": 34189}
+re", "arm": "s2028_plain", "queries_done": 18416, "all_queries": 34189}
 {"phase": "future", "arm": "s2028_plain", "queries_done": 19216, "all_queries": 34189}
 {"phase": "future", "arm": "s2028_plain", "queries_done": 20016, "all_queries": 34189}
 {"phase": "future", "arm": "s2028_plain", "queries_done": 20816, "all_queries": 34189}
@@ -137,3 +131,9 @@ re", "arm": "s2028_plain", "queries_done": 13616, "all_queries": 34189}
 {"phase": "future", "arm": "s2029_plain", "queries_done": 19216, "all_queries": 34189}
 {"phase": "future", "arm": "s2029_plain", "queries_done": 20016, "all_queries": 34189}
 {"phase": "future", "arm": "s2029_plain", "queries_done": 20816, "all_queries": 34189}
+{"phase": "future", "arm": "s2029_plain", "queries_done": 21616, "all_queries": 34189}
+{"phase": "future", "arm": "s2029_plain", "queries_done": 22416, "all_queries": 34189}
+{"phase": "future", "arm": "s2029_plain", "queries_done": 23216, "all_queries": 34189}
+{"phase": "future", "arm": "s2029_plain", "queries_done": 24016, "all_queries": 34189}
+{"phase": "future", "arm": "s2029_plain", "queries_done": 24816, "all_queries": 34189}
+{"phase": "future", "arm": "s2029_plain", "queries_done": 25616, "all_queries": 34189}
