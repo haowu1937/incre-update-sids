@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "queued",
-  "pause_requested": false,
+  "mode": "needs_diagnosis",
+  "pause_requested": true,
   "active_job_id": "cf-letter-multiseed-001",
-  "lease": {
-    "token": "3ef44d9642c940f0bc33821f876271e6",
-    "owner": "versioned-task-observer",
-    "acquired_at": "2026-10-30T14:33:31.293998+00:00",
-    "expires_at_unix": 1793371711.2940228
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -166,6 +161,15 @@
         "artifacts/cf-letter-gpt-future-repair-001/outputs/cf-downstream/comparisons.json": "2a297ca21e0fd19adb5fac78b19795d0eb5ab00ad93ca9c8cceddfc1bdea42b0"
       },
       "processed_at": "2026-10-29T16:12:26.513012+00:00",
+      "next_job_id": null
+    },
+    "cf-letter-multiseed-001": {
+      "status": "needs_attention",
+      "job_id": "cf-letter-multiseed-001",
+      "request_sha256": "ae966dc7ecb629bba8528cb649db101d01c8d684899ec9570802b96f70f902d1",
+      "result_sha256": "7cf27480e3f50bb2d64d8b6fe61a0bcaea0e4ac808a968fac18684a6fdf3958b",
+      "reason": "ValueError('Task failed/interrupted; preserve evidence and diagnose before any new job')",
+      "processed_at": "2026-10-30T14:33:47.854204+00:00",
       "next_job_id": null
     }
   },

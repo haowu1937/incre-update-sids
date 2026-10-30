@@ -1,0 +1,9 @@
+{
+  "status": "needs_attention",
+  "job_id": "cf-letter-multiseed-001",
+  "request_sha256": "ae966dc7ecb629bba8528cb649db101d01c8d684899ec9570802b96f70f902d1",
+  "result_sha256": "7cf27480e3f50bb2d64d8b6fe61a0bcaea0e4ac808a968fac18684a6fdf3958b",
+  "reason": "ValueError('Task failed/interrupted; preserve evidence and diagnose before any new job')",
+  "processed_at": "2026-10-30T14:33:47.854204+00:00",
+  "next_job_id": null
+}
