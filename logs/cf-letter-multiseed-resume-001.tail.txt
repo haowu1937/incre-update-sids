@@ -1,5 +1,4 @@
-d": 2000, "s2030_ft_old": 2000, "s2031_historical": 1854, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
-{"active_pids": [3948344], "pending": [], "optimizer_steps": 29973, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 2000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_historical": 1973, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
+": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
 {"active_pids": [3948344], "pending": [], "optimizer_steps": 30000, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 2000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_historical": 2000, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
 Passing a tuple of `past_key_values` is deprecated and will be removed in Transformers v4.53.0. You should pass an instance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
 {"phase": "future", "arm": "s2027_ft_old", "queries_done": 16, "all_queries": 34189}
@@ -126,3 +125,9 @@ Passing a tuple of `past_key_values` is deprecated and will be removed in Transf
 {"phase": "future", "arm": "s2027_historical", "queries_done": 28016, "all_queries": 34189}
 {"phase": "future", "arm": "s2027_historical", "queries_done": 28816, "all_queries": 34189}
 {"phase": "future", "arm": "s2027_historical", "queries_done": 29616, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_historical", "queries_done": 30416, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_historical", "queries_done": 31216, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_historical", "queries_done": 32016, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_historical", "queries_done": 32816, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_historical", "queries_done": 33616, "all_queries": 34189}
+{"phase": "future", "arm": "s2028_ft_old", "queries_done": 16, "all_queries": 34189}
