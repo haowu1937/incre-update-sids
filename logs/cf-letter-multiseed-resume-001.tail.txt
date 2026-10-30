@@ -73,3 +73,4 @@ OK
 Ran 9 tests in 10.422s
 
 OK
+{"active_pids": [3893678, 3893679], "pending": ["s2031_historical"], "optimizer_steps": 24000, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
