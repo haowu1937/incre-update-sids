@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "status": "verified_and_analyzed",
+  "job_id": "cf-letter-multiseed-resume-001",
+  "scope_id": "cf-letter-multiseed-resume-v1",
+  "code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
+  "request_sha256": "0e5c994031e8390877e549c6681a3376e41342d5ce8248757137b055739b43b9",
+  "contract_sha256": "88724c922ed5c63c032d463e21265d657cb683d6a1a5d766b68032ce6e3a42c3",
+  "result_sha256": "f595f89c54cc1757369df5670e73005242d6c3f43ff0f12d78d0df4c215a8abd",
+  "artifacts_sha256": {
+    "artifacts/cf-letter-multiseed-resume-001/outputs/task-runtime.json": "377b746f2e633b4f95e2c00be23f174b7ba139904f7bb6310766e418cb321829",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/compact.json": "91f2a15c9df6df64fa85c865ba0c4c234f4321f19efa97353984b94fb5456513",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/data_audit.json": "88aa55ac1f9e997b60e30f1bdb1dfe482ec91a26676643a177bf64db7533d653",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/rq_results.json": "96a8fbf0ab169dabe42311fc5fefb0c6bb357da2d9ec8e89fe7b301b76e85bf7",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/runs.json": "81cc0b6bdad290b4ae7f6772f2f9b5fda3e39441e09db0c595d2a54dd21a35c6",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/selections.json": "0480d8c5e3c0d088dd4351e32570a6c12b94ef9b3253890e07df82f16c5373e6",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/future.json": "afa842653c75ecdd8c1b3d90743bfe84262ac5451be704ff74feb28f36d79c73",
+    "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/statistics.json": "bd964efaa86d0cb1a49491dbeba9ebbbb8f6617f6745331be9e351f72c17c5af"
+  },
+  "source_job_id": "cf-letter-multiseed-001",
+  "source_result_sha256": "7cf27480e3f50bb2d64d8b6fe61a0bcaea0e4ac808a968fac18684a6fdf3958b",
+  "actual_optimizer_steps": 6000,
+  "inherited_optimizer_steps": 34000,
+  "family_actual_optimizer_steps": 40000,
+  "real_future_passes": 15,
+  "server_report_commit_sha": "87cad5a532221c0ec026a90785dd89d14d0819e5",
+  "analysis_report_commit_sha": "867682bc0f51aabbcd48d11371a311a3cde733b8",
+  "report_marker": "<!-- cf-letter-multiseed-resume-analysis:91f2a15c9df6df64fa85c865ba0c4c234f4321f19efa97353984b94fb5456513 -->",
+  "checks": [
+    "raw_request_result_contract_scope_manifest_and_eight_artifact_hashes",
+    "original_failed_result_proof_and_receipt_preserved",
+    "twenty_five_counter_sums_and_new_only_six_thousand_accounting",
+    "fifteen_arm_matrix_and_ninety_probe_candidates_earliest_tie",
+    "model_mapping_global_selection_lock_links",
+    "full_served_denominator_arithmetic",
+    "seventy_two_group_paired_mean_sample_sd_student_t_summaries",
+    "server_task_sha_scientific_verifier_and_report_marker_review",
+    "report_readback_equal"
+  ],
+  "primary_paired_ndcg10": {
+    "n": 5,
+    "mean": -0.00014264646070364224,
+    "sd": 0.0015986014138715178,
+    "ci95": [
+      -0.002127572283785545,
+      0.0018422793623782605
+    ],
+    "seed_values": [
+      0.00004972617071619459,
+      0.000032785316127067685,
+      -0.0011062757010549488,
+      -0.0019717316299777857,
+      0.002282263540671261
+    ]
+  },
+  "secondary_paired_recall10": {
+    "n": 5,
+    "mean": -0.00046213694463131396,
+    "sd": 0.003009212647627348,
+    "ci95": [
+      -0.004198567952129629,
+      0.0032742940628670007
+    ],
+    "seed_values": [
+      -0.000029249173710842874,
+      0.00005849834742168575,
+      -0.002164438854602357,
+      -0.004124133493228816,
+      0.00394863845096376
+    ]
+  },
+  "evidence_boundary": "Cloud verified raw returned bytes and summary arithmetic. Production-CUDA RQ checkpoint/hard-code/suffix/H reloading, immutable server source/index/durable counters, complete GPT sampling/reset/lock chronology, saved Future query aggregation/bootstrap and independent CPU GPT NLL are reviewed task-SHA server-verifier evidence; cloud did not load Beauty checkpoints or raw query files or regenerate bootstrap.",
+  "outcome": "no_consistent_paired_historical_future_ranking_gain; no_joint_RQ_H_stability",
+  "processed_at": "2026-10-30T18:28:12+00:00",
+  "next_job_id": null
+}
