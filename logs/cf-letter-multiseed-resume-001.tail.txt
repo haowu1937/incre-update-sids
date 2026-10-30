@@ -1,8 +1,4 @@
- 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
-Passing a tuple of `past_key_values` is deprecated and will be removed in Transformers v4.53.0. You should pass an instance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
-{"phase": "future", "arm": "s2027_ft_old", "queries_done": 16, "all_queries": 34189}
-{"phase": "future", "arm": "s2027_ft_old", "queries_done": 816, "all_queries": 34189}
-{"phase": "future", "arm": "s2027_ft_old", "queries_done": 1616, "all_queries": 34189}
+re", "arm": "s2027_ft_old", "queries_done": 1616, "all_queries": 34189}
 {"phase": "future", "arm": "s2027_ft_old", "queries_done": 2416, "all_queries": 34189}
 {"phase": "future", "arm": "s2027_ft_old", "queries_done": 3216, "all_queries": 34189}
 {"phase": "future", "arm": "s2027_ft_old", "queries_done": 4016, "all_queries": 34189}
@@ -135,3 +131,9 @@ Passing a tuple of `past_key_values` is deprecated and will be removed in Transf
 {"phase": "future", "arm": "s2028_ft_old", "queries_done": 2416, "all_queries": 34189}
 {"phase": "future", "arm": "s2028_ft_old", "queries_done": 3216, "all_queries": 34189}
 {"phase": "future", "arm": "s2028_ft_old", "queries_done": 4016, "all_queries": 34189}
+{"phase": "future", "arm": "s2028_ft_old", "queries_done": 4816, "all_queries": 34189}
+{"phase": "future", "arm": "s2028_ft_old", "queries_done": 5616, "all_queries": 34189}
+{"phase": "future", "arm": "s2028_ft_old", "queries_done": 6416, "all_queries": 34189}
+{"phase": "future", "arm": "s2028_ft_old", "queries_done": 7216, "all_queries": 34189}
+{"phase": "future", "arm": "s2028_ft_old", "queries_done": 8016, "all_queries": 34189}
+{"phase": "future", "arm": "s2028_ft_old", "queries_done": 8816, "all_queries": 34189}
