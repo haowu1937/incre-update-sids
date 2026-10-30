@@ -2,11 +2,11 @@
   "worker_id": "server2",
   "mode": "plan_completed",
   "active_job_id": "cf-letter-multiseed-resume-001",
-  "runner_status": "completed",
+  "runner_status": "idle",
   "pause_requested": false,
   "extension": {
     "scope_id": "history-joint-convergence-v1",
     "status": "completed"
   },
-  "observed_at": "2026-10-30T18:09:40.707762+00:00"
+  "observed_at": "2026-10-30T18:10:19.608749+00:00"
 }
