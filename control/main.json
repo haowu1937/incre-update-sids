@@ -4,7 +4,12 @@
   "mode": "queued",
   "pause_requested": false,
   "active_job_id": "cf-letter-multiseed-resume-001",
-  "lease": null,
+  "lease": {
+    "token": "6b2d154e85474e7c9e11d7bb0f684c5f",
+    "owner": "versioned-task-observer",
+    "acquired_at": "2026-10-30T17:58:42.265046+00:00",
+    "expires_at_unix": 1793384022.2650745
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -261,7 +266,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -594,7 +599,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -1076,12 +1081,12 @@
         "pair_settings": [
           {
             "name": "lr1e5_b09",
-            "lr": 0.00001,
+            "lr": 1e-05,
             "beta1": 0.9
           },
           {
             "name": "lr1e5_b0",
-            "lr": 0.00001,
+            "lr": 1e-05,
             "beta1": 0
           }
         ],
