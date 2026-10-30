@@ -1,10 +1,4 @@
-ies_done": 16, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 816, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 1616, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 2416, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 3216, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 4016, "all_queries": 34189}
-{"phase": "future", "arm": "s2030_historical", "queries_done": 4816, "all_queries": 34189}
+ne": 4816, "all_queries": 34189}
 {"phase": "future", "arm": "s2030_historical", "queries_done": 5616, "all_queries": 34189}
 {"phase": "future", "arm": "s2030_historical", "queries_done": 6416, "all_queries": 34189}
 {"phase": "future", "arm": "s2030_historical", "queries_done": 7216, "all_queries": 34189}
@@ -137,3 +131,9 @@ ies_done": 16, "all_queries": 34189}
 {"phase": "future", "arm": "s2031_historical", "queries_done": 5616, "all_queries": 34189}
 {"phase": "future", "arm": "s2031_historical", "queries_done": 6416, "all_queries": 34189}
 {"phase": "future", "arm": "s2031_historical", "queries_done": 7216, "all_queries": 34189}
+{"phase": "future", "arm": "s2031_historical", "queries_done": 8016, "all_queries": 34189}
+{"phase": "future", "arm": "s2031_historical", "queries_done": 8816, "all_queries": 34189}
+{"phase": "future", "arm": "s2031_historical", "queries_done": 9616, "all_queries": 34189}
+{"phase": "future", "arm": "s2031_historical", "queries_done": 10416, "all_queries": 34189}
+{"phase": "future", "arm": "s2031_historical", "queries_done": 11216, "all_queries": 34189}
+{"phase": "future", "arm": "s2031_historical", "queries_done": 12016, "all_queries": 34189}
