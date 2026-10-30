@@ -1,6 +1,6 @@
 # History-aware SID Update Experiment Report
 
-Last updated: 2026-10-30. Existing Llama/TIGER Future results and the verified single-seed CF/GPT comparison are retained. The new five-seed study stopped after34000/40000 updates because a task-control Git fetch failed; no new Future scores or confidence intervals are available. Joint RQ/H stability remains unestablished.
+Last updated: 2026-10-30. Five fresh CF/GPT seeds are verified and analyzed:40000 family updates and15 complete Future passes. Historical-minus-Plain Future NDCG@10 has a five-seed interval spanning zero; consistent ranking gain and joint RQ/H stability remain unestablished. Pilot2026, older beta1=0 and Llama/TIGER results are retained.
 
 ## Primary downstream results
 
@@ -41,15 +41,25 @@ All arms actually trained 2000 steps; fixed512-query Update-validation NDCG@10 s
 
 <!-- cf-letter-multiseed-primary:v1 -->
 
-Five fresh seeds 2027-2031; codebook beta1=0.9; fixed accepted Base/E1. **Original attempt paused after a task-control Git fetch failure on 2026-10-30; a bounded continuation is prepared for dispatch.** Returned records report all 10 codebook arms complete (10000 steps) and 12/15 GPT arms complete (24000 steps). The three seed2031 GPT arms were not launched. No global selection lock or Future pass exists; the final scientific verifier did not run. See Section 6.37.
+Five fresh seeds2027-2031, codebook beta1=0.9; verified on2026-10-30 through `cf-letter-multiseed-resume-001`. Family actual steps=40000 (10000 codebook+30000 GPT), including34000 retained updates and6000 new GPT updates;15 complete Future passes. Each GPT fitted2000 updates. All15 selected models/maps/probes were locked before Future. Common I0=10924, full queries=34189, served=20281, coverage=59.320249%; outside-I0 targets count as misses.
 
-| Method | GPT arms completed | Future seeds evaluated | Future Recall@10 mean | Seed95%CI | Future NDCG@10 mean | Seed95%CI |
-| --- | ---: | ---: | ---: | --- | ---: | --- |
-| FT-old | 4/5 | 0/5 | — | — | — | — |
-| Plain | 4/5 | 0/5 | — | — | — | — |
-| Historical | 4/5 | 0/5 | — | — | — | — |
+| Method | Future Recall@10 mean | Sample SD (pp) | Seed95%CI | Future NDCG@10 mean | Sample SD | Seed95%CI |
+| --- | ---: | ---: | --- | ---: | ---: | --- |
+| FT-old | 0.922519% | 0.123343 | [0.769368%, 1.075670%] | 0.004413289 | 0.000751756 | [0.003479861, 0.005346718] |
+| Plain | 1.072275% | 0.254809 | [0.755888%, 1.388662%] | 0.005123426 | 0.001223473 | [0.003604284, 0.006642569] |
+| Historical | 1.026061% | 0.187473 | [0.793282%, 1.258840%] | 0.004980780 | 0.000993455 | [0.003747243, 0.006214317] |
 
-Pilot2026 and beta1=0 above remain historical and are excluded from the planned five-seed means. Each completed GPT arm fitted2000 updates; selected steps are recorded per seed. Future cells remain unreported. The planned Student-t95%CI requires all five seed scores; the primary contrast remains paired Historical-minus-Plain Future NDCG@10. Common34189 queries and10924-item I0 are unchanged. No seed selection or budget extension is dispatched. The explicitly approved continuation only recovers the three missing GPT arms; see Section 6.38.
+Equal seed weighting; sample SD and two-sided Student-t95%CI,df4. Primary paired Historical-minus-Plain NDCG@10=-0.000142646, CI[-0.002127572, 0.001842279]. The interval includes zero; no consistent Historical ranking gain is established. Per-seed user-cluster bootstrap500 intervals describe separate query uncertainty.
+
+| Seed | FT-old selected step | Plain selected step | Historical selected step |
+| --- | ---: | ---: | ---: |
+| 2027 | 0 | 500 | 500 |
+| 2028 | 500 | 250 | 250 |
+| 2029 | 250 | 100 | 250 |
+| 2030 | 0 | 100 | 500 |
+| 2031 | 250 | 500 | 250 |
+
+All selections use the same fixed512 Update-validation probe, full-denominator NDCG@10 and earliest ties; full3280 Update validation is reporting only. Selected0 for two FT-old seeds is valid and does not mean no training: both arms actually fitted2000 steps. Pilot2026 and beta1=0 stay historical and are excluded. Future was previously observed; this evaluates fixed-recipe repeatability conditional on one accepted Base/E1, not a fresh blind test or full-pipeline seed variance. Negative training-H/RQ stability findings and the older Llama/TIGER table with its different catalog/protocol remain unchanged. See Section6.39 for per-seed scores and evidence limits.
 
 <!-- /cf-letter-multiseed-primary:v1 -->
 
@@ -1627,3 +1637,38 @@ Student-t95%CI across five seeds (df4), sample SD, equal seed weighting; paired 
 Acceptance rechecked all per-update RQ hard SID/suffix evidence and monitoring checkpoints on the original production backend, frozen original targets and teacher likelihoods; all GPT reset/sampling/selection and Future raw queries/paired bootstrap/statistics were independently checked from saved artifacts. Inputs are unchanged. Actual2000 GPT steps and validation-selected steps remain separate. No H convergence claim, parameter selection on Future, additional seed or automatic next task.
 
 Continuation accounting: original failed job retained34000 updates; this job performed only6000 new GPT updates. Family actual total40000, no repeated codebook or earlier GPT training. All15 Future passes follow one new global lock. Original failure and records remain unchanged.
+
+
+<!-- cf-letter-multiseed-resume-analysis:91f2a15c9df6df64fa85c865ba0c4c234f4321f19efa97353984b94fb5456513 -->
+
+### 6.39 Five-seed result analysis and completed family accounting (2026-10-30)
+
+Completed the explicitly approved continuation: only seed2031 FT-old/Plain/Historical GPT arms trained,2000 new steps each. The original10000 RQ and24000 GPT updates were reused, giving40000 family updates without retraining prior arms. The new scope ledger charges6000; the original failed request/result and needs_attention receipt are retained. Server scientific acceptance was reported in commit `87cad5a532221c0ec026a90785dd89d14d0819e5` at18:09 UTC, after the wrapper completed at17:58 UTC. All15 Future passes are complete; no new study follows.
+
+**Fixed-recipe repeatability.** The primary paired NDCG@10 estimate is slightly negative,-0.000142646, with five-seed95%CI[-0.002127572, 0.001842279]. Three seed differences are positive and two negative; the larger opposite signs at2030/2031 dominate the small2027/2028 differences. This does not establish either an improvement or equivalence. Secondary Recall@10 is-0.046214 percentage points, CI[-0.419857%, 0.327429%] in percentage-point units. The primary and secondary intervals include zero. All six Historical-minus-Plain metric intervals include zero. Plain and Historical have higher mean NDCG@10 thanFT-old, but both paired intervals versusFT-old also include zero; those contrasts combine mapping changes with the fixed GPT adaptation recipe.
+
+| Seed | FT-old Recall@10 | Plain Recall@10 | Historical Recall@10 | FT-old NDCG@10 | Plain NDCG@10 | Historical NDCG@10 | Historical−Plain NDCG@10 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2027 | 0.874550% | 0.827752% | 0.824827% | 0.004128437 | 0.003964980 | 0.004014707 | 0.000049726 |
+| 2028 | 0.769253% | 1.213841% | 1.219691% | 0.003586034 | 0.005900212 | 0.005932997 | 0.000032785 |
+| 2029 | 1.017871% | 1.313288% | 1.096844% | 0.004643703 | 0.006259318 | 0.005153042 | -0.001106276 |
+| 2030 | 0.874550% | 1.240165% | 0.827752% | 0.004128437 | 0.005857047 | 0.003885316 | -0.001971732 |
+| 2031 | 1.076370% | 0.766328% | 1.161192% | 0.005579833 | 0.003635574 | 0.005917838 | 0.002282264 |
+
+The statistical unit is the seed: average five seed scores equally, use sample SD and Student-t df4, and compute each matched difference within seed before its interval. The500-draw user-cluster bootstrap is conditional query uncertainty within a seed and is not the cross-seed interval. Base/SASRec/E1 and cohort/probe seed2026 are fixed; the five seeds affect codebook/GPT training sampling and dropout. Future had already been examined, so these are fixed-configuration repeats rather than an independent blind evaluation. No seed was dropped. FT-old selectedstep0 for2027 and2030 produces the same frozen-Base score by design; the selected artifacts have their own serialization hashes, and those equal scores are not extra independent Base fits.
+
+**Training-side diagnostics remain negative.** Initial full anchor_train hardH=0.102947295. The last eight scheduled monitors remain steps780,810,840,870,900,930,960,990, excluding the partial-epoch1000 endpoint. Historical has lower tailH than matched Plain in all five seeds, but no arm passes joint RQ/H stability. These hardH values use fixed original E0 targets and are distinct from signed delta NLL, reconstruction MSE and Future ranking.
+
+| Seed | Plain final fullH | Historical final fullH | TailH reduction Historical vsPlain | Historical H trend | Plain tail nativeRQ | Historical tail nativeRQ | Plain tail hardMSE | Historical tail hardMSE |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 2027 | 0.139738543 | 0.136297506 | 2.372326% | 5.161285% | 0.011979977 | 0.011981493 | 0.002111375 | 0.002111675 |
+| 2028 | 0.140076078 | 0.135933177 | 2.754242% | 4.941405% | 0.011979731 | 0.011981211 | 0.002111283 | 0.002111604 |
+| 2029 | 0.139794499 | 0.136512513 | 2.451633% | 6.279039% | 0.011979435 | 0.011981114 | 0.002111190 | 0.002111560 |
+| 2030 | 0.139636095 | 0.137113644 | 2.187648% | 5.666552% | 0.011979820 | 0.011981084 | 0.002111355 | 0.002111575 |
+| 2031 | 0.140369191 | 0.135503447 | 3.024048% | 5.847443% | 0.011979860 | 0.011980756 | 0.002111327 | 0.002111410 |
+
+The Future means/seed intervals are in the top multi-seed block; all cutoff5/10/20 full and common-served summaries, paired intervals, per-seed coverage/NLL and user-cluster comparisons remain in the returned `future.json`/`statistics.json`. Coverage is59.320249% for every arm,13908 unavailable targets are misses, and3002 queries have no available history. Beam20/no seen filtering, raw20 truncation before availability masking, preserved interior positions, same-arm history/target maps, and four target digits withoutEOS remain fixed. Every GPT trained2000 steps, with selected steps0/100/250/500 listed separately above; full3280 validation was not used to select. No holdout, Base/SASRec fitting, lambda/STE change, extra seed or budget extension was performed.
+
+**Evidence and limits.** Cloud matched raw request/result/contract/scope/manifest hashes and all eight returned artifact hashes; checked25 step counters totaling40000, exactly6000 new updates, the15-arm matrix,90 probe candidates/earliest selections, model/map/lock hash links, full-versus-served denominator arithmetic, and all72 group/paired mean/sampleSD/Student-t summaries. The new runtime records five completed real CPU preflight suites. The original failure receipt remains needs_attention; the whole family is accepted through the new task, not by relabeling that failure. The code-bound server verifier rechecked the immutable original source/index/durable34000 records, private reused copies and code identities; strict production-CUDA RQ monitor/final hard assignments and suffix/H; all GPT sampling/reset/selection; all15 locks beforeFuture; complete saved Future query aggregation and paired bootstrap; and independent CPU selected-GPT NLL samples. Cloud reviewed that verifier and its successful scientific receipt/report marker, but did not reload Beauty weights, access server raw traces/query files, or regenerate bootstrap samples. The large evidence remains on the server under local indexSHA256=`fa684d5c6fcd60cc479fe702eefcc8bce26ebd4e04dde20b45eec28e6c645ba3`.
+
+CompactSHA256=`91f2a15c9df6df64fa85c865ba0c4c234f4321f19efa97353984b94fb5456513`; statisticsSHA256=`bd964efaa86d0cb1a49491dbeba9ebbbb8f6617f6745331be9e351f72c17c5af`; selection lockSHA256=`cb6f4948222d42cbf34cd6c877251970ffaff6ea90d5ec98bb860d6d2dc597df`. The family is verified and analyzed; next_job_id=null. Stop this plan and the existing monitor pending new explicit authorization.
