@@ -1607,3 +1607,23 @@ Task-control Git errors now retain pending arms and enter waiting_for_git with60
 Local protocol/regression checks pass, including private copying, exact remaining-budget contract, pending-arm retention across fetch failure/recovery, unchanged-scope checks and precise local pause archival. This environment has no Torch/Transformers; actual-model tests are skipped locally, not claimed passed. The server must pass five mandatory real CPU suites, including an actual mixed-code private-copy/two-seed RQ-to-GPT/lock/Future/full-verifier check, before Beauty training. A preflight failure preserves evidence and stops this continuation.
 
 The one-time server command runs the pinned pause-reconciliation script, validates the original terminal evidence and exact queued6000-step contract, checks noninteractive fetch/write authentication, and archives only this matching local pause. It changes no installed code or cron and starts no process; the existing cron claims the task. As of this code/report delivery, no additional production update or Future pass is observed. The current34,000-step progress and empty Future/CI cells remain in the primary table until verified new results arrive.
+
+<!-- lab-task:cf-letter-multiseed-resume-001:88724c922ed5c63c032d463e21265d657cb683d6a1a5d766b68032ce6e3a42c3 -->
+
+### Five-seed CF/LETTER Update and Future comparison
+
+Job `cf-letter-multiseed-resume-001`; code `34f1fecb8c62a3481e553ddede22f7686a084843`. Seeds [2027, 2028, 2029, 2030, 2031]; family steps=40000, full Future passes=15. Codebook beta1=0.9; fixed accepted C0/E1/Base GPT. Pilot2026 and beta1=0 remain historical, excluded from this mean.
+
+| Method | Future Recall@10 mean | Seed95%CI | Future NDCG@10 mean | Seed95%CI |
+| --- | ---: | --- | ---: | --- |
+| ft_old | 0.922519% | [0.769368%, 1.075670%] | 0.004413289 | [0.003479861, 0.005346718] |
+| plain | 1.072275% | [0.755888%, 1.388662%] | 0.005123426 | [0.003604284, 0.006642569] |
+| historical | 1.026061% | [0.793282%, 1.258840%] | 0.004980780 | [0.003747243, 0.006214317] |
+
+Primary paired Historical-minus-Plain Future NDCG@10: `{"n": 5, "mean": -0.00014264646070364224, "sd": 0.0015986014138715178, "ci95": [-0.002127572283785545, 0.0018422793623782605], "seed_values": [4.972617071619459e-05, 3.2785316127067685e-05, -0.0011062757010549488, -0.0019717316299777857, 0.002282263540671261]}`.
+
+Student-t95%CI across five seeds (df4), sample SD, equal seed weighting; paired differences are computed within each seed first. Per-seed user-cluster bootstrap intervals are separate evidence. Future has already been observed; this is fixed-recipe repeatability, conditional on one fixed Base/E1, not a fresh blind test or full-pipeline seed study.
+
+Acceptance rechecked all per-update RQ hard SID/suffix evidence and monitoring checkpoints on the original production backend, frozen original targets and teacher likelihoods; all GPT reset/sampling/selection and Future raw queries/paired bootstrap/statistics were independently checked from saved artifacts. Inputs are unchanged. Actual2000 GPT steps and validation-selected steps remain separate. No H convergence claim, parameter selection on Future, additional seed or automatic next task.
+
+Continuation accounting: original failed job retained34000 updates; this job performed only6000 new GPT updates. Family actual total40000, no repeated codebook or earlier GPT training. All15 Future passes follow one new global lock. Original failure and records remain unchanged.
