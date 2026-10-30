@@ -70,7 +70,7 @@ class Scheduler:
             try:
                 observed,memory=gpu();self.report['max_gpu_memory_mib']=max(self.report['max_gpu_memory_mib'],memory)
                 if active and observed-set(active):self.stop=self.stop or 'External GPU process appeared; active arms finish'
-                if memory>self.p['gpu_memory_limit_mib']:self.stop=self.stop or 'GPU memory guard; active arms finish'
+                if active and memory>self.p['gpu_memory_limit_mib']:self.stop=self.stop or 'GPU memory guard; active arms finish'
             except Exception as error:
                 observed=set();memory=0;self.stop=self.stop or repr(error)
             if time.monotonic()-self.began>self.p['wall_seconds']:self.stop=self.stop or 'Task wall guard; active arms finish'

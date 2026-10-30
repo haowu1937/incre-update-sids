@@ -11,13 +11,14 @@
   "project": "/home/hao/frec/graph-informed-sids-web",
   "python": "/home/hao/miniconda3/envs/frec-gpu/bin/python",
   "plan": [
-    "five_GPT_Update_adaptations",
-    "lock_all_selections",
-    "five_Future_evaluations",
-    "verify_report_and_stop"
+    "ten_codebook_updates",
+    "fifteen_GPT_Update_adaptations",
+    "lock_all_fifteen_selections",
+    "fifteen_Future_evaluations",
+    "seed_CI_analysis_report_and_stop"
   ],
-  "new_training_steps_authorized": 10000,
-  "new_future_prediction_passes_authorized": 5,
+  "new_training_steps_authorized": 40000,
+  "new_future_prediction_passes_authorized": 15,
   "acceptance_timeout_seconds": 86400,
   "max_diagnosed_repair_jobs": 0,
   "same_fault_automatic_retry": false,
@@ -33,11 +34,11 @@
   "web_controller": "docs/lab_buffer/CONTROLLER.md",
   "persistent_state": "lab-requests:control/main.json",
   "stop_after_plan": true,
-  "revision": 12,
-  "active_scope": "cf-letter-gpt-future-repair-v1",
-  "scope_manifest": "docs/experiments/cf_letter_downstream_repair.json",
-  "scope_authorized_at": "2026-10-29",
-  "optimizer_steps_scope": "Five independently warm-started GPT Update arms,2000 each; no codebook or CF updates",
+  "revision": 13,
+  "active_scope": "cf-letter-multiseed-v1",
+  "scope_manifest": "docs/experiments/cf_letter_multiseed.json",
+  "scope_authorized_at": "2026-10-30",
+  "optimizer_steps_scope": "10000 codebook +30000 GPT; five fixed paired new seeds",
   "max_parallel": 2,
   "task_runtime": {
     "protocol_version": 1,
@@ -49,6 +50,7 @@
     "core_migration": "installed fe790d49ce65db558433bba7d6c4e759279fa2aa; no per-task upgrade"
   },
   "allowed_splits": [
+    "base_train",
     "update_train",
     "update_val",
     "future_test"
@@ -57,15 +59,23 @@
   "suffix_capacity": 512,
   "wall_seconds": 72000,
   "update_training_authorized": true,
-  "historical_training_authorized": false,
+  "historical_training_authorized": true,
   "holdout_evaluation_authorized": false,
   "future_evaluation_authorized": true,
   "update_training_components": [
+    "three_codebooks",
     "GPT_all_parameters"
   ],
-  "quantizer_training_authorized": false,
+  "quantizer_training_authorized": true,
   "gpt_training_authorized": true,
-  "gpu_scientific_reload_authorized": false,
-  "zero_step_repair_of": "cf-letter-gpt-future-001",
-  "family_actual_step_cap": 10000
+  "gpu_scientific_reload_authorized": true,
+  "family_actual_step_cap": 40000,
+  "seeds": [
+    2027,
+    2028,
+    2029,
+    2030,
+    2031
+  ],
+  "cohort_seed": 2026
 }

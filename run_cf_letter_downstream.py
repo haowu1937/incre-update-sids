@@ -36,7 +36,7 @@ def prepared(output):
 
 
 class Control:
-    def __init__(self,root,p,began):self.root=root;self.p=p;self.began=began;self.reason=None;self.last=0.
+    def __init__(self,root,p,began,*,job_id=JOB):self.root=root;self.p=p;self.began=began;self.reason=None;self.last=0.;self.job_id=job_id
     def observe(self):
         try:
             live,memory=gpu()
@@ -44,7 +44,7 @@ class Control:
             if memory>self.p['gpu_memory_limit_mib']:self.reason=self.reason or 'GPU memory guard; finish active stage only'
             if time.monotonic()-self.began>self.p['wall_seconds']:self.reason=self.reason or 'Wall guard; finish active stage only'
             if time.monotonic()-self.last>30:
-                if paused(self.root,JOB):self.reason=self.reason or 'Manual pause; finish active stage only'
+                if paused(self.root,self.job_id):self.reason=self.reason or 'Manual pause; finish active stage only'
                 self.last=time.monotonic()
         except Exception as error:self.reason=self.reason or repr(error)
     def admit(self):
@@ -52,7 +52,7 @@ class Control:
             live,memory=gpu()
             # Busy before this stage: wait, preserving external work.
             if time.monotonic()-self.began>self.p['wall_seconds']:self.reason='Wall guard before next stage'
-            if paused(self.root,JOB):self.reason='Manual pause before next stage'
+            if paused(self.root,self.job_id):self.reason='Manual pause before next stage'
             if self.reason:raise RuntimeError(self.reason)
             if not (live-{os.getpid()}) and memory<=self.p['gpu_memory_limit_mib']:return
             time.sleep(5)

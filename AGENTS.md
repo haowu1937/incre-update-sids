@@ -1,5 +1,14 @@
 # 项目协作规则
 
+## Five-new-seed主实验（2026-10-30 最新明确下发）
+
+Hao审阅方案后明确“下发任务”。只授权job `cf-letter-multiseed-001` / scope `cf-letter-multiseed-v1`，manifest/docs为 `docs/experiments/cf_letter_multiseed.json` 及同名.md。seeds2027-2031固定，β1=.9；FT-old/Plain/Historical三组。每seed两组码本各1000、三组GPT各2000；新增总cap40000=10000RQ+30000GPT，15次Future。固定已验收C0/E1/Base GPT，cohort/probe seed2026保持同一4096 anchor_train与512 Update-val；训练seed控制采样/dropout，不重训Base/SASRec。λ0.0006386606341359484，RQ lr1e-5/clip.1/T.5，其他配对及GPT配置沿用已验收版。无λ/STE扫描、seed替换/选择、H-only或holdout。保留pilot2026、旧β1=0与负RQ/H结果；2026不进新五seed均值。
+
+实际每GPT2000，固定0/100/250/500/1000/2000按同一512 Update-val full-denominator NDCG@10选模、最早平局；十五组选定模型/映射锁定后才能打开Future。I0=10924、34189原始Future queries、beam20、raw20历史/同arm当前history和target/不可用位置保持；输出完整和served指标。每seed先算分数，等权5seed均值/样本SD/df4 t95%CI；主ΔNDCG@10先seed内Historical−Plain再跨seed区间，附FT-old对比和每seed用户聚类500次bootstrap。已查看Future，本轮称固定配置重复性评估，不能称新盲测。
+
+沿用generic v1，无Runner/helper/cron升级、不动主工作区/输入/旧结果、不终止进程。独立输出、prospective phase/arm reservation与intent/completed总计数，最多2并行、24576MiB，外部GPU等待，20h/pause/未知/容量失败后停止新阶段、活跃工作完成；24h不kill。40GiB私有磁盘；8 bounded产物。实际模型CPU预检必须通过才启动Beauty，云端skip不算pass。新科学verifier在原生产CUDA严格重载所有RQ monitor及最终索引；每步H/容量、GPT采样/重置/选模/原始Future/paired bootstrap/跨seed统计与独立CPU NLL验收均保持。英文报告顶部维护单独multi-seed表；CAS lease/receipt去重。完成报告后停止，不自动修复/扩budget/追加seed。下面旧scope为历史。
+
+
 
 ## 本次下游零实训步软件修复（2026-10-29）
 

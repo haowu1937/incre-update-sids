@@ -1,5 +1,16 @@
 # Main SID experiment controller, protocol sid-main-v1
 
+## Latest explicit scope,2026-10-30: five fresh paired seeds
+
+Hao approved dispatch of `cf-letter-multiseed-001` / `cf-letter-multiseed-v1`. Read `docs/experiments/cf_letter_multiseed.json` and same-name.md. Five fresh seeds2027-2031,codebook beta1=.9,FT-old/Plain/Historical. Fixed accepted C0/E1/Base GPT; fixed cohort/probe seed2026. New cap40000=10000 codebook+30000 GPT steps;15 full Future passes,2 owned children maximum,24GiB,20h driver/24h task,foreign GPU waits,no process kill. Old Base/pilot2026/beta1=0 and all failure/negative records are retained. No H-only,lambda/STE change,Base/SASRec fitting,holdout,seed selection/replacement or automatic retry.
+
+Every GPT actually fits2000 and selects0/100/250/500/1000/2000 on the same512 Update-val full-denominator NDCG@10,earliest tie. All15 model/map/probe hashes must lock before Future. Shared I0=10924; all34189 prequential queries;beam20;current same-arm history+target mapping;20 raw events before availability mask with interior positions. Mean/sample SD/95%Student-t df4 across the five seed scores; paired Historical-minus-Plain differences within seed first. Main Future NDCG@10,secondary Recall@10;other cutoffs and FT-old contrasts retained. Per-seed500-draw user-cluster intervals are separate. Previously observed Future means fixed-recipe repeatability,not a fresh blind test or full-pipeline Base seed study.
+
+Use unchanged installed generic1 and eight bounded artifacts(runtime,compact,data_audit,rq_results,runs,selections,future,statistics),SHA-bound accepted Base/refresh/audit and independent outputs. Prospective phase/arm claims and optimizer intents enforce40000. Server Base+pair+downstream+new real two-seed CPU end-to-end acceptance suites must pass before Beauty; cloud skips are not passes. Scientific verifier strictly reloads all RQ monitors/codes on original CUDA and reaggregates hard-H/suffix and GPT/Future/paired/bootstrap/seed statistics; independent CPU GPT NLL samples remain required. Original inputs/checkpoints unchanged.
+
+Manual/hourly rounds use the existing shared CAS lease,immutable contracts/ledger,server receipt and report marker; no duplicate task or continuous polling. Queued/running/no new result ends the round. New accepted result: verify all8 raw hashes,actual40000 and15 passes,full five-seed matrix/selection/source bindings,then under lease maintain an English top multi-seed table and add bounded interpretation with evidence limits. Preserve pilot and older Llama/TIGER tables and negative H conclusions. Mark completed_and_analyzed,next_job_id=null,and stop the existing monitor until new explicit authorization. Failed/unknown outcomes preserve evidence and pause dispatch; do not retry or clear unrelated pauses.
+
+
 
 ## Zero-real-step report-formatting repair,2026-10-29
 

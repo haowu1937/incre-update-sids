@@ -10,9 +10,9 @@ from run_cf_letter_downstream import counters
 ROOT=Path(__file__).resolve().parent
 
 
-def verify(context):
-    c=read(context);output=Path(c['workspace'])/'outputs/cf-downstream';p=plan(ROOT);r=read(output/'compact.json')
-    if (r['stage']!=SCOPE or r['job_id']!=JOB or r['code_sha']!=c['request']['code_sha'] or r['execution_status']!='completed'
+def verify(context,*,settings=None,directory=None,job_id=JOB,scope_id=SCOPE,dependency_check=None,comparison_pairs=None):
+    c=read(context);output=Path(directory) if directory is not None else Path(c['workspace'])/'outputs/cf-downstream';p=settings if settings is not None else plan(ROOT);r=read(output/'compact.json')
+    if (r['stage']!=scope_id or r['job_id']!=job_id or r['code_sha']!=c['request']['code_sha'] or r['execution_status']!='completed'
         or not r['original_inputs_unchanged'] or not r['selection_locked_before_future'] or r['future_used_for_selection'] is not False
         or any(r[k] is not False for k in ('quantizer_training_performed','sasrec_training_performed','holdout_evaluated'))):raise ValueError('Downstream identity/scope differs')
     for name,value in r['returned_artifact_sha256'].items():
@@ -29,22 +29,24 @@ def verify(context):
     if 'zero_step_repair_of' in p:
         root=Path(c['workspace']).parent.parent
         verify_zero_step_failure(root,p)
-    for name in ('gpt/selected.pth','item_sids.npy'):
-        if sha(output/'inputs/base'/name)!=p['predecessor']['files_sha256'][name]:raise ValueError('Copied Base changed')
-    pairdir=output/'inputs/pair'
-    if sha(pairdir/'compact.json')!=p['pair_predecessor']['compact_sha256'] or sha(pairdir/'local_artifact_index.json')!=p['pair_predecessor']['index_sha256']:raise ValueError('Paired source identity changed')
-    source_index=read(pairdir/'local_artifact_index.json');old_map=np.load(output/'inputs/base/item_sids.npy',allow_pickle=False)
-    from genrec.cf_letter_refresh_protocol import versioned_mapping
-    for case in cases(p):
-        m=np.load(output/'mappings'/(case['name']+'.npy'),allow_pickle=False);check_mapping(m,p)
-        if case['source'] is None:
-            if not np.array_equal(m,old_map):raise ValueError('FT-old remapped old SIDs')
-        else:
-            prefix='arms/'+case['source']+'/'+case['source']+'/'
-            for name in ('item_sids_1000.npy','semantic_codes_1000.npy','last.pth'):
-                if sha(pairdir/case['source']/name)!=source_index[prefix+name]:raise ValueError('Copied1000-step source changed')
-            expected,capacity=versioned_mapping(old_map,np.load(pairdir/case['source']/'semantic_codes_1000.npy',allow_pickle=False),p['quantizer']['capacity'])
-            if not capacity['full_sid_allocation_feasible'] or not np.array_equal(m,expected):raise ValueError('Current hard SID differs')
+    if dependency_check is not None:dependency_check(output,p)
+    else:
+        for name in ('gpt/selected.pth','item_sids.npy'):
+            if sha(output/'inputs/base'/name)!=p['predecessor']['files_sha256'][name]:raise ValueError('Copied Base changed')
+        pairdir=output/'inputs/pair'
+        if sha(pairdir/'compact.json')!=p['pair_predecessor']['compact_sha256'] or sha(pairdir/'local_artifact_index.json')!=p['pair_predecessor']['index_sha256']:raise ValueError('Paired source identity changed')
+        source_index=read(pairdir/'local_artifact_index.json');old_map=np.load(output/'inputs/base/item_sids.npy',allow_pickle=False)
+        from genrec.cf_letter_refresh_protocol import versioned_mapping
+        for case in cases(p):
+            m=np.load(output/'mappings'/(case['name']+'.npy'),allow_pickle=False);check_mapping(m,p)
+            if case['source'] is None:
+                if not np.array_equal(m,old_map):raise ValueError('FT-old remapped old SIDs')
+            else:
+                prefix='arms/'+case['source']+'/'+case['source']+'/'
+                for name in ('item_sids_1000.npy','semantic_codes_1000.npy','last.pth'):
+                    if sha(pairdir/case['source']/name)!=source_index[prefix+name]:raise ValueError('Copied1000-step source changed')
+                expected,capacity=versioned_mapping(old_map,np.load(pairdir/case['source']/'semantic_codes_1000.npy',allow_pickle=False),p['quantizer']['capacity'])
+                if not capacity['full_sid_allocation_feasible'] or not np.array_equal(m,expected):raise ValueError('Current hard SID differs')
     deployment=next(v for v in c['contract']['input_sha256'] if v.endswith('/main-deployment.json'))
     train,val,probe,binding=load_training(deployment,p)
     if any(audit[k]!=binding[k] for k in ('all_update_train_queries','eligible_update_train_queries','excluded_update_train_queries','probe_sample_ids','catalog_items','training_sample_ids_sha256')):raise ValueError('Common fitting/probe cohort changed')
@@ -81,7 +83,7 @@ def verify(context):
         if initial['step']!=0 or initial['optimizer']['state'] or any(not torch.equal(initial['model'][k],v) for k,v in base['model'].items()):raise ValueError('Warm start/reset differs')
         group=initial['optimizer']['param_groups'][0]
         if group['lr']!=p['lr'] or group['weight_decay']!=p['weight_decay'] or list(group['betas'])!=p['betas'] or group['eps']!=p['eps']:raise ValueError('GPT optimizer differs')
-        sampler=Sampler(len(train['targets']),p['batch_size'],p['seed']);trace=[json.loads(v) for v in (directory/'metrics.jsonl').read_text().splitlines()]
+        sampler=Sampler(len(train['targets']),p['batch_size'],case.get('seed',p['seed']));trace=[json.loads(v) for v in (directory/'metrics.jsonl').read_text().splitlines()]
         if len(trace)!=p['steps_per_arm']:raise ValueError('Training trace incomplete')
         for step,row in enumerate(trace,1):
             ids,_=sampler.take()
@@ -118,16 +120,17 @@ def verify(context):
     total,steps,intents=counters(output)
     if intents or total!=p['optimizer_step_cap'] or total!=r['optimizer_steps_spent'] or steps!=r['stage_step_counts'] or any(v!=p['steps_per_arm'] for v in steps.values()):raise ValueError('Actual GPT budget differs')
     pairs={}
-    for before,after in [('plain_b09','historical_b09'),('plain_b0','historical_b0'),*[('ft_old',name) for name in names if name!='ft_old']]:pairs[after+'_minus_'+before]=paired(future_rows[before],future_rows[after],p)
+    comparisons=comparison_pairs if comparison_pairs is not None else [('plain_b09','historical_b09'),('plain_b0','historical_b0'),*[('ft_old',name) for name in names if name!='ft_old']]
+    for before,after in comparisons:pairs[after+'_minus_'+before]=paired(future_rows[before],future_rows[after],p)
     if pairs!=read(output/'comparisons.json'):raise ValueError('Paired user bootstrap differs')
     lines=['### CF/GPT Update adaptation and locked Future evaluation','',f'Job `{JOB}`; code `{r["code_sha"]}`. Actual new GPT updates={total}; five independent arms, common I0={p["old_catalog_items"]} items, four current SID digits,20 raw history events. No RQ/SASRec fitting. All selections locked before Future.',
         '',*future_table(training,fut,p)]
     lines+=['','Recall values in this appended table are fractions. The controller maintains the separate CF/GPT block in the primary table with Recall percentages. These results are not directly interchangeable with the old Llama/TIGER extended-catalog protocol.',
         '', 'Each GPT restores the exact Base weights with reset AdamW, lr1e-4,wd0.01,beta=(0.9,0.999),batch256,clip1,seed2026. Full fixed512-query Update-validation NDCG@10 selects0/100/250/500/1000/2000, earliest tie; actual fitting always completes2000. Current-arm history and target use the same frozen full-SID mapping. All original Future queries remain in the full denominator; outside-I0 targets are misses, with common served metrics also saved. No seen-item filtering or Future tuning.',
         '', 'Primary paired Future comparisons (Historical minus matched Plain), user-cluster bootstrap95% intervals:',
-        *['`'+key+'`: `'+json.dumps(pairs[key],sort_keys=True)+'`.' for key in ('historical_b09_minus_plain_b09','historical_b0_minus_plain_b0')],
+        *['`'+key+'`: `'+json.dumps(pairs[key],sort_keys=True)+'`.' for key in (pairs if comparison_pairs is not None else ('historical_b09_minus_plain_b09','historical_b0_minus_plain_b0'))],
         '', 'Acceptance checked raw metrics/query identities, map and source hashes, full fitting order and counters, global selection lock, earliest-tie selection and independent CPU selected-model likelihood samples. Single engineering seed; no convergence claim or cross-seed confirmation. Earlier negative RQ/H results and the old blocked screening receipt remain unchanged. Report and stop; no automatic next experiment.']
-    return dict(status='verified',job_id=JOB,contract_sha256=c['contract_sha256'],actual_optimizer_steps=total,report_markdown='\n'.join(lines))
+    return dict(status='verified',job_id=job_id,contract_sha256=c['contract_sha256'],actual_optimizer_steps=total,report_markdown='\n'.join(lines))
 
 
 if __name__=='__main__':

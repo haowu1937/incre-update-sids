@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "job_id": "cf-letter-multiseed-001",
+  "scope_id": "cf-letter-multiseed-v1",
+  "execution_authorized": true,
+  "authorization": "Hao explicitly said 下发任务 on2026-10-30 after reviewing five fresh seeds2027-2031, three paired FT-old/Plain/Historical conditions at codebook beta1=.9,10000 codebook plus30000 GPT steps and15 locked Future passes. Conditional on fixed accepted Base/E1; no seed selection, parameter tuning or retry.",
+  "seeds": [
+    2027,
+    2028,
+    2029,
+    2030,
+    2031
+  ],
+  "cohort_seed": 2026,
+  "methods": [
+    "ft_old",
+    "plain",
+    "historical"
+  ],
+  "optimizer_step_cap": 40000,
+  "rq_steps": 1000,
+  "gpt_steps": 2000,
+  "future_passes": 15,
+  "primary_metric": "ndcg@10",
+  "parallel": 2,
+  "wall_seconds": 72000,
+  "gpu_memory_limit_mib": 24576,
+  "retry": false,
+  "holdout_evaluation": false,
+  "full_pipeline_retraining": false,
+  "seed_selection": false,
+  "rq_template": {
+    "path": "docs/experiments/cf_letter_optimizer_pair.json",
+    "sha256": "c54150e14303c4ef5d97d3e14be790683fcc96068d674022db3079a59039e99e"
+  },
+  "gpt_template": {
+    "path": "docs/experiments/cf_letter_downstream_repair.json",
+    "sha256": "da356ac31dccf77b0abd6490e814cac933f6b5622641e9b4839d4588f42d60bf"
+  }
+}

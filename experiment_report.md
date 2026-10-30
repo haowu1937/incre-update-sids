@@ -39,6 +39,20 @@ All arms actually trained 2000 steps; fixed512-query Update-validation NDCG@10 s
 
 <!-- /cf-letter-downstream-primary:v1 -->
 
+<!-- cf-letter-multiseed-primary:v1 -->
+
+Five fresh seeds2027-2031; codebook beta1=0.9; fixed accepted Base/E1. Authorized for dispatch,results pending. Pilot2026 and beta1=0 above remain historical and are excluded from the new means. Each GPT fits2000 updates; selected steps are reported per seed.
+
+| Method | Seeds completed | Future Recall@10 mean | Seed95%CI | Future NDCG@10 mean | Seed95%CI |
+| --- | ---: | ---: | --- | ---: | --- |
+| FT-old | 0/5 | — | — | — | — |
+| Plain | 0/5 | — | — | — | — |
+| Historical | 0/5 | — | — | — | — |
+
+Student-t95%CI across five seed scores; primary paired contrast is Historical-minus-Plain Future NDCG@10. All methods use the same34189 queries and10924-item I0. No Future-driven model or seed selection.
+
+<!-- /cf-letter-multiseed-primary:v1 -->
+
 ### Latest CF-LETTER-adapted Base validation
 
 Job `cf-letter-base-001` passed the server scientific verifier. Full denominator: **9,192 Base validation queries**, including 503 unavailable targets as misses; 8,689 targets are servable (94.527850%). These are new Base recommendation results, not Future or frozen-teacher compatibility scores. Both models use the same Base catalog and raw 20-event histories.
@@ -1532,3 +1546,16 @@ Relative to FT-old, Historical beta1=0.9 has NDCG@10+0.000446717 (relative+7.680
 Raw per-query aggregation, paired bootstrap resampling, every-step sampling/reset/counter checks, all-five lock-before-Future chronology, source/checkpoint immutability and independent selected-GPT CPU NLL samples are task-SHA server-verifier evidence. Cloud did not reload Beauty checkpoints, rescore raw predictions or independently regenerate bootstrap draws. The artifact index and source hashes identify local evidence retained on the server. The top CF/GPT table now reports actual versus selected steps, measured coverage, Recall percentages and raw NDCG; previous Base and Llama/TIGER results are preserved.
 
 The authorized plan is complete. next_job_id=null; no additional training, Future pass, seed, tuning, retry or budget extension is dispatched.
+
+
+<!-- cf-letter-multiseed-plan:v1 -->
+
+### 6.36 Authorized five-new-seed CF/LETTER comparison (2026-10-30)
+
+Hao approved dispatch after reviewing the fixed multi-seed plan. Job `cf-letter-multiseed-001`; manifest `docs/experiments/cf_letter_multiseed.json` and same-name Markdown. Seeds2027-2031,codebook beta1=0.9; FT-old,Plain and Historical per seed. New budget40000 updates: two1000-step codebook updates plus three2000-step GPT adaptations per seed, followed by fifteen full Future passes. Pilot2026 is exploratory and excluded from these five-seed means; beta1=0 remains in the historical record and is excluded from the new primary comparison. No new real-data steps have yet been observed.
+
+Keep the accepted Base codebook/GPT and refreshed E1 fixed. RQ lr1e-5,beta(.9,.999),wd0,clip.1,T.5,content4096/anchor128; Mixed lambda0.0006386606341359484. Fixed4096 training-anchor identities and fixed512 Update-validation probe use cohort seed2026; training seeds control paired sampling and GPT dropout. Only final1000-step maps enter downstream. GPT uses the accepted reset recipe,actually2000 steps and fixed0/100/250/500/1000/2000 probe selection,earliest tie. All fifteen selected-model/map identities lock before Future; common I0=10924,all34189 original queries,beam20 and unchanged causal history/mask/target protocol.
+
+Report each seed and method,then equally weighted means,sample SD and two-sided95%Student-t intervals(df4). Primary endpoint is paired Historical-minus-Plain Future NDCG@10,computed within each seed before the across-seed interval; Recall@10 is secondary. Other cutoffs,FT-old contrasts and per-seed user-cluster bootstrap intervals remain visible. These quantify fixed-Base/E1 incremental-training variability on a previously viewed Future set,not a fresh blind test or full-pipeline seed uncertainty. No Future-driven tuning,seed selection/replacement or extra budget.
+
+Reuse the installed generic Runner without infrastructure or cron changes. Required real-model CPU preflight includes two-seed RQ-to-GPT handoff,global selection lock,Future and complete scientific acceptance. Production RQ checkpoint indices must reproduce exactly on original CUDA; raw H/suffix,all GPT sampling/reset/selection,raw Future aggregation,paired bootstrap and seed statistics are rechecked. Cloud protocol checks with Torch unavailable are not real-model passes. Preserve all failures and local raw evidence. After acceptance,fill the separate top multi-seed table,report and stop.
