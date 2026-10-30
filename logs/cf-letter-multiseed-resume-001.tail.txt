@@ -1,18 +1,4 @@
-ries_done": 4, "all_queries": 24}
-{"phase": "future", "arm": "s2027_historical", "queries_done": 4, "all_queries": 24}
-{"phase": "future", "arm": "s2028_ft_old", "queries_done": 4, "all_queries": 24}
-{"phase": "future", "arm": "s2028_plain", "queries_done": 4, "all_queries": 24}
-{"phase": "future", "arm": "s2028_historical", "queries_done": 4, "all_queries": 24}
-{"verification": "rq_complete", "seed": 2027, "arm": "s2027_plain"}
-{"verification": "rq_complete", "seed": 2027, "arm": "s2027_historical"}
-{"verification": "rq_complete", "seed": 2028, "arm": "s2028_plain"}
-{"verification": "rq_complete", "seed": 2028, "arm": "s2028_historical"}
-.
-----------------------------------------------------------------------
-Ran 6 tests in 10.694s
-
-OK
-.{"status": "waiting_for_git", "stage": "fetch", "failures": 1, "retry_after_seconds": 60, "returncode": 128, "stderr": "fatal https://[redacted]@github.com/repo [redacted] Authorization: [redacted]", "time": 1793373599.8241334, "last_success": null}
+o [redacted] Authorization: [redacted]", "time": 1793373599.8241334, "last_success": null}
 ....{"active_pids": [], "pending": ["s2031_ft_old", "s2031_plain", "s2031_historical"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
 {"status": "waiting_for_git", "pending": ["s2031_ft_old", "s2031_plain", "s2031_historical"]}
 {"active_pids": [1, 2], "pending": ["s2031_historical"], "optimizer_steps": 4000, "stage_steps": {"s2031_plain": 2000, "s2031_ft_old": 2000}, "stop_new_arms": null}
@@ -55,3 +41,5 @@ OK
 {"active_pids": [3893678, 3893679], "pending": ["s2031_historical"], "optimizer_steps": 25687, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 817, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_ft_old": 870, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
 {"active_pids": [3893678, 3893679], "pending": ["s2031_historical"], "optimizer_steps": 25790, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 870, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_ft_old": 920, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
 {"active_pids": [3893678, 3893679], "pending": ["s2031_historical"], "optimizer_steps": 25893, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 920, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_ft_old": 973, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
+{"active_pids": [3893678, 3893679], "pending": ["s2031_historical"], "optimizer_steps": 25994, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 994, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_ft_old": 1000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
+{"active_pids": [3893678, 3893679], "pending": ["s2031_historical"], "optimizer_steps": 26070, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 1000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_ft_old": 1070, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
