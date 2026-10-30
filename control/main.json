@@ -4,7 +4,13 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "cf-letter-gpt-future-repair-001",
-  "lease": null,
+  "lease": {
+    "token": "cf-multiseed-dispatch-1793355439638-rr368o0",
+    "owner": "web-manual",
+    "acquired_at": "2026-10-30T10:17:19.638Z",
+    "expires_at": "2026-10-30T10:32:19.638Z",
+    "purpose": "publish_authorized_five_seed_task"
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
