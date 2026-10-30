@@ -1,7 +1,4 @@
-655}, "mean_sequence_nll_servable": 19.91360010419573, "invalid_predictions": 0, "ranking_catalog": "base_train", "seen_item_filter": false, "nll_target_tokens": 4, "examples_with_all_history_unavailable": 0, "num_beams": 20}}
-.
-----------------------------------------------------------------------
-Ran 12 tests in 6.357s
+s in 6.357s
 
 OK
 ..{"active_pids": [200, 201], "pending": ["lr1e5_b0_rq_only", "lr1e5_b0_mixed"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
@@ -76,3 +73,4 @@ OK
 {"active_pids": [3378261, 3378262], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 2801, "stage_steps": {"s2028_historical": 411, "s2028_plain": 390, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
 {"active_pids": [3378261, 3378262], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 2926, "stage_steps": {"s2028_historical": 476, "s2028_plain": 450, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
 {"active_pids": [3378261, 3378262], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3054, "stage_steps": {"s2028_historical": 540, "s2028_plain": 514, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
+{"active_pids": [3378261, 3378262], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3176, "stage_steps": {"s2028_historical": 600, "s2028_plain": 576, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
