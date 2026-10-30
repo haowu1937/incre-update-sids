@@ -1,0 +1,40 @@
+{
+  "status": "failure_diagnosed_and_reported",
+  "job_id": "cf-letter-multiseed-001",
+  "code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
+  "request_sha256": "ae966dc7ecb629bba8528cb649db101d01c8d684899ec9570802b96f70f902d1",
+  "result_sha256": "7cf27480e3f50bb2d64d8b6fe61a0bcaea0e4ac808a968fac18684a6fdf3958b",
+  "contract_sha256": "60174bce637c88e066f0778ff2e5977af18e1c3c6de2c9130d774e9d7d3090cf",
+  "artifacts_sha256": {
+    "artifacts/cf-letter-multiseed-001/outputs/task-runtime.json": "1e0092a888a84d9b37a85c89e965e5f8d4baafcc5703b3e371865e0ba20268ef",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/compact.json": "4dac80ba8f86723c910cfe1f235453d03c1632c6e69a8202e0dbe0d3648e62ec",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/data_audit.json": "4ab71df3dba8e21f8269c50ac84b0ac6e757a48450527f530e2b0dfaba63f20c",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/rq_results.json": "96a8fbf0ab169dabe42311fc5fefb0c6bb357da2d9ec8e89fe7b301b76e85bf7",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/runs.json": "a9c58650ec3ba5ef18bed7520f6cc128b690a6a3e485780440de17f20b031036",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/selections.json": "b58e3169d0f4301092075f58c4dfdf16194f0a1f5b27939845a8e5ce81d67b12",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/future.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/statistics.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+  },
+  "results_head": "e8ee311ef096c2629d8bef346252b5ae81b7790e",
+  "report_commit_sha": "180a4911b574cd2486d977fb20f848701465849c",
+  "report_marker": "<!-- cf-letter-multiseed-failure:4dac80ba8f86723c910cfe1f235453d03c1632c6e69a8202e0dbe0d3648e62ec -->",
+  "diagnosis_path": "docs/experiments/cf_letter_multiseed_failure.json",
+  "processed_at": "2026-10-30T14:49:14.205Z",
+  "reported_optimizer_steps": 34000,
+  "reported_rq_steps": 10000,
+  "reported_gpt_steps": 24000,
+  "missing_gpt_arms": [
+    "s2031_ft_old",
+    "s2031_plain",
+    "s2031_historical"
+  ],
+  "reported_future_passes": 0,
+  "scientific_acceptance": "not_run",
+  "remaining_step_budget": 6000,
+  "remaining_budget_status": "blocked_not_reallocated",
+  "diagnosis": "Requests-branch control fetch exit128 latched task Scheduler.stop and cancelled pending arm launches. Active children completed. Original Git stderr unavailable; credential/network/ref-lock trigger unconfirmed.",
+  "validation_limits": "Returned raw JSON hashes, counters and selection arithmetic checked. No server checkpoint, raw training traces, source files or GPU assignments independently reloaded.",
+  "new_task_dispatched": false,
+  "server_upgrade_performed": false,
+  "next_job_id": null
+}
