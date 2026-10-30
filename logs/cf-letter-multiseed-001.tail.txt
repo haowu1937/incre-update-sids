@@ -53,3 +53,5 @@ Ran 6 tests in 9.992s
 OK
 {"active_pids": [3368759, 3368760], "pending": ["s2028_plain", "s2028_historical", "s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
 {"active_pids": [3368759, 3368760], "pending": ["s2028_plain", "s2028_historical", "s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 60, "stage_steps": {"s2027_historical": 30, "s2027_plain": 30}, "stop_new_arms": null}
+{"active_pids": [3368759, 3368760], "pending": ["s2028_plain", "s2028_historical", "s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 180, "stage_steps": {"s2027_historical": 90, "s2027_plain": 90}, "stop_new_arms": null}
+{"active_pids": [3368759, 3368760], "pending": ["s2028_plain", "s2028_historical", "s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 296, "stage_steps": {"s2027_historical": 148, "s2027_plain": 148}, "stop_new_arms": null}
