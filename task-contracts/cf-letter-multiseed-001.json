@@ -1,0 +1,48 @@
+{
+  "protocol_version": 1,
+  "scope_id": "cf-letter-multiseed-v1",
+  "job_id": "cf-letter-multiseed-001",
+  "code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
+  "request_sha256": "ae966dc7ecb629bba8528cb649db101d01c8d684899ec9570802b96f70f902d1",
+  "scope_path": "task-scopes/cf-letter-multiseed-v1.json",
+  "scope_sha256": "df287d9edefc7bbde70c7d8cc77e040d6db0a9df9aa775be98f807dfe934242b",
+  "manifest": {
+    "path": "docs/experiments/cf_letter_multiseed.json",
+    "sha256": "13c1e2244c27806020955f82bbd9e50aaa2cc443c3745760a1d06dc3019a17d1"
+  },
+  "preflight": [
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_base.py",
+      "--require-torch"
+    ],
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_optimizer_pair.py",
+      "--require-torch"
+    ],
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_downstream.py",
+      "--require-torch"
+    ],
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_multiseed.py",
+      "--require-torch"
+    ]
+  ],
+  "verifier": "verify_cf_letter_multiseed.py",
+  "optimizer_step_reservation": 40000,
+  "input_sha256": {
+    "/home/hao/frec/git-lab-buffer/main-deployment.json": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694"
+  }
+}

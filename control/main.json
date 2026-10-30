@@ -1,16 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "plan_completed",
+  "mode": "queued",
   "pause_requested": false,
-  "active_job_id": "cf-letter-gpt-future-repair-001",
-  "lease": {
-    "token": "cf-multiseed-dispatch-1793355439638-rr368o0",
-    "owner": "web-manual",
-    "acquired_at": "2026-10-30T10:17:19.638Z",
-    "expires_at": "2026-10-30T10:32:19.638Z",
-    "purpose": "publish_authorized_five_seed_task"
-  },
+  "active_job_id": "cf-letter-multiseed-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -179,8 +173,8 @@
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "26295b4626a71fd596bc30dbf72233315645631a",
-  "request_sha256": "e2472fb4d9ec645879f02ee71bfcdd2e11f577beda62f7206f1da2c98254fe4c",
+  "code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
+  "request_sha256": "ae966dc7ecb629bba8528cb649db101d01c8d684899ec9570802b96f70f902d1",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -1113,6 +1107,34 @@
       },
       "status": "verified_and_analyzed",
       "actual_optimizer_steps": 4000
+    },
+    {
+      "scope_id": "cf-letter-gpt-future-repair-v1",
+      "status": "completed_and_analyzed",
+      "authorization": "Hao explicitly said 下发这个任务 after reviewing five independent GPT Update fine-tuning arms (2000 steps each) and five selected-checkpoint Future evaluations with common I0 catalog on 2026-10-29. One diagnosed report-formatting repair under the standing in-scope software-repair authorization; original task failed preflight with zero Beauty steps, same remaining10000-step family budget and identical experiment recipe.",
+      "manifest": "docs/experiments/cf_letter_downstream_repair.json",
+      "max_optimizer_steps": 10000,
+      "max_parallel": 2,
+      "family_actual_step_cap": 10000,
+      "original_actual_steps": 0,
+      "zero_step_repair_of": {
+        "job_id": "cf-letter-gpt-future-001",
+        "code_sha": "e4e5476d3581eb28e3c0e5ef2d852d04f2f3c2ae",
+        "runtime_sha256": "efa3b7e5930de728fd2d6e3f1240e74b6e210e4850c8003a061dc6eaadad0591",
+        "result_sha256": "14d5592103e401699dd58bd554c74c2d6d22b6c083b5da80aa6a864733066566",
+        "actual_optimizer_steps": 0
+      },
+      "components_trained": [
+        "GPT_all_parameters"
+      ],
+      "full_future_passes": 5,
+      "steps_per_arm": 2000,
+      "catalog_items": 10924,
+      "stop_after_study": true,
+      "automatic_retry": false,
+      "actual_optimizer_steps": 10000,
+      "analysis_report_commit_sha": "7a5569d94f5064652fb779d2bbb9dd00710f58fc",
+      "next_job_id": null
     }
   ],
   "core_runtime_upgrade": {
@@ -1160,11 +1182,11 @@
       }
     }
   },
-  "active_scope": "cf-letter-refresh-diag-v1",
+  "active_scope": "cf-letter-multiseed-v1",
   "task_dispatch": {
     "protocol_version": 1,
-    "contract_path": "task-contracts/cf-letter-gpt-future-repair-001.json",
-    "contract_sha256": "43229d9a847c55171f07bea93f55598a7793fe405d42aea1f77e59f907155585"
+    "contract_path": "task-contracts/cf-letter-multiseed-001.json",
+    "contract_sha256": "60174bce637c88e066f0778ff2e5977af18e1c3c6de2c9130d774e9d7d3090cf"
   },
   "task_scope_ledger": {
     "cf-letter-base-v1": {
@@ -1251,42 +1273,66 @@
       "family": "cf-letter-gpt-future",
       "family_actual_cap": 10000,
       "original_job_actual_steps": 0
+    },
+    "cf-letter-multiseed-v1": {
+      "scope_sha256": "df287d9edefc7bbde70c7d8cc77e040d6db0a9df9aa775be98f807dfe934242b",
+      "reservations": {
+        "cf-letter-multiseed-001": 40000
+      },
+      "actual_steps": {}
     }
   },
   "current_scope": {
-    "scope_id": "cf-letter-gpt-future-repair-v1",
-    "status": "completed_and_analyzed",
-    "authorization": "Hao explicitly said 下发这个任务 after reviewing five independent GPT Update fine-tuning arms (2000 steps each) and five selected-checkpoint Future evaluations with common I0 catalog on 2026-10-29. One diagnosed report-formatting repair under the standing in-scope software-repair authorization; original task failed preflight with zero Beauty steps, same remaining10000-step family budget and identical experiment recipe.",
-    "manifest": "docs/experiments/cf_letter_downstream_repair.json",
-    "max_optimizer_steps": 10000,
+    "scope_id": "cf-letter-multiseed-v1",
+    "status": "queued",
+    "authorization": "Hao explicitly said 下发任务 on2026-10-30 after reviewing five fresh seeds2027-2031, three paired FT-old/Plain/Historical conditions at codebook beta1=.9,10000 codebook plus30000 GPT steps and15 locked Future passes. Conditional on fixed accepted Base/E1; no seed selection, parameter tuning or retry.",
+    "manifest": "docs/experiments/cf_letter_multiseed.json",
+    "max_optimizer_steps": 40000,
     "max_parallel": 2,
-    "family_actual_step_cap": 10000,
-    "original_actual_steps": 0,
-    "zero_step_repair_of": {
-      "job_id": "cf-letter-gpt-future-001",
-      "code_sha": "e4e5476d3581eb28e3c0e5ef2d852d04f2f3c2ae",
-      "runtime_sha256": "efa3b7e5930de728fd2d6e3f1240e74b6e210e4850c8003a061dc6eaadad0591",
-      "result_sha256": "14d5592103e401699dd58bd554c74c2d6d22b6c083b5da80aa6a864733066566",
-      "actual_optimizer_steps": 0
-    },
+    "seeds": [
+      2027,
+      2028,
+      2029,
+      2030,
+      2031
+    ],
+    "cohort_seed": 2026,
+    "methods": [
+      "ft_old",
+      "plain",
+      "historical"
+    ],
     "components_trained": [
+      "three_codebooks",
       "GPT_all_parameters"
     ],
-    "full_future_passes": 5,
-    "steps_per_arm": 2000,
-    "catalog_items": 10924,
+    "rq_steps": 10000,
+    "gpt_steps": 30000,
+    "full_future_passes": 15,
     "stop_after_study": true,
     "automatic_retry": false,
-    "actual_optimizer_steps": 10000,
-    "analysis_report_commit_sha": "7a5569d94f5064652fb779d2bbb9dd00710f58fc",
     "next_job_id": null
   },
   "latest_task_delivery": {
-    "job_id": "cf-letter-refresh-diag-001",
-    "code_sha": "18cb948e503609ddfb8228b6a7425b52302acfa3",
-    "local_protocol_contract_checks_passed": 14,
-    "real_model_preflight": "seven mandatory actual-model tests across two suites; pending on server",
-    "installed_runner_changes": false
+    "job_id": "cf-letter-multiseed-001",
+    "scope_id": "cf-letter-multiseed-v1",
+    "code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
+    "contract_sha256": "60174bce637c88e066f0778ff2e5977af18e1c3c6de2c9130d774e9d7d3090cf",
+    "created_at": "2026-10-30T10:19:04.458136+00:00",
+    "max_optimizer_steps": 40000,
+    "seeds": [
+      2027,
+      2028,
+      2029,
+      2030,
+      2031
+    ],
+    "manifest": {
+      "path": "docs/experiments/cf_letter_multiseed.json",
+      "sha256": "13c1e2244c27806020955f82bbd9e50aaa2cc443c3745760a1d06dc3019a17d1"
+    },
+    "request_sha256": "ae966dc7ecb629bba8528cb649db101d01c8d684899ec9570802b96f70f902d1",
+    "status": "queued"
   },
   "cloud_analysis_receipts": {
     "cf-letter-base-001": {
@@ -1455,14 +1501,19 @@
     }
   },
   "latest_authorized_dispatch": {
-    "job_id": "cf-letter-optimizer-audit-001",
-    "scope_id": "cf-letter-optimizer-audit-v1",
-    "code_sha": "e648205d62554a2944cdfb1336c7e981b684ea44",
-    "necessary_read_only_failure_diagnosis": true,
-    "new_optimizer_steps": 0,
-    "source_original_acceptance": "blocked",
-    "local_pause_reconciliation_required": true,
-    "per_experiment_runner_upgrade": false
+    "job_id": "cf-letter-multiseed-001",
+    "scope_id": "cf-letter-multiseed-v1",
+    "code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
+    "contract_sha256": "60174bce637c88e066f0778ff2e5977af18e1c3c6de2c9130d774e9d7d3090cf",
+    "created_at": "2026-10-30T10:19:04.458136+00:00",
+    "max_optimizer_steps": 40000,
+    "seeds": [
+      2027,
+      2028,
+      2029,
+      2030,
+      2031
+    ]
   },
   "diagnosed_repairs": [
     {
@@ -1603,11 +1654,9 @@
     }
   ],
   "explicit_scope_authorization": {
-    "date": "2026-10-29",
-    "request": "Dispatch the reviewed five-arm GPT Update fine-tuning and Future evaluation plan",
-    "new_optimizer_step_cap": 10000,
-    "new_full_Future_passes": 5,
-    "old_budgets_reused": false
+    "scope_id": "cf-letter-multiseed-v1",
+    "authorization": "Hao explicitly said 下发任务 on2026-10-30 after reviewing five fresh seeds2027-2031, three paired FT-old/Plain/Historical conditions at codebook beta1=.9,10000 codebook plus30000 GPT steps and15 locked Future passes. Conditional on fixed accepted Base/E1; no seed selection, parameter tuning or retry.",
+    "authorized_at": "2026-10-30"
   },
   "web_analysis_receipts": {
     "cf-letter-optimizer-pair-001": {
