@@ -1,0 +1,12 @@
+{
+  "protocol_version": 1,
+  "job_id": "cf-letter-multiseed-001",
+  "code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
+  "contract_sha256": "60174bce637c88e066f0778ff2e5977af18e1c3c6de2c9130d774e9d7d3090cf",
+  "status": "failed",
+  "checks_completed": 4,
+  "command_started": true,
+  "started_at": "2026-10-30T11:02:20.458487+00:00",
+  "error": "CalledProcessError: Command '['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-u', '-B', 'run_cf_letter_multiseed.py', '--deployment', '/home/hao/frec/git-lab-buffer/main-deployment.json', '--output', 'outputs/cf-multiseed']' returned non-zero exit status 1.",
+  "finished_at": "2026-10-30T14:33:08.967177+00:00"
+}

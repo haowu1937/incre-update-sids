@@ -6,15 +6,24 @@
   "request_sha256": "ae966dc7ecb629bba8528cb649db101d01c8d684899ec9570802b96f70f902d1",
   "code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
   "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
-  "status": "running",
+  "status": "failed",
   "started_at": "2026-10-30T11:02:09.038370+00:00",
-  "updated_at": "2026-10-30T14:32:30.206409+00:00",
-  "exit_code": null,
+  "updated_at": "2026-10-30T14:33:09.032777+00:00",
+  "exit_code": 1,
   "pid": 3368354,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-multiseed-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-multiseed-001.log",
   "log_tail": "logs/cf-letter-multiseed-001.tail.txt",
-  "artifacts": [],
+  "artifacts": [
+    "artifacts/cf-letter-multiseed-001/outputs/task-runtime.json",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/compact.json",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/data_audit.json",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/rq_results.json",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/runs.json",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/selections.json",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/future.json",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/statistics.json"
+  ],
   "training_started": true,
   "actual_code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
   "argv": [
@@ -31,5 +40,16 @@
     "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-multiseed-001"
   ],
   "process_started": true,
-  "elapsed_seconds": 12609.845
+  "elapsed_seconds": 12648.672,
+  "artifacts_sha256": {
+    "artifacts/cf-letter-multiseed-001/outputs/task-runtime.json": "1e0092a888a84d9b37a85c89e965e5f8d4baafcc5703b3e371865e0ba20268ef",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/compact.json": "4dac80ba8f86723c910cfe1f235453d03c1632c6e69a8202e0dbe0d3648e62ec",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/data_audit.json": "4ab71df3dba8e21f8269c50ac84b0ac6e757a48450527f530e2b0dfaba63f20c",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/rq_results.json": "96a8fbf0ab169dabe42311fc5fefb0c6bb357da2d9ec8e89fe7b301b76e85bf7",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/runs.json": "a9c58650ec3ba5ef18bed7520f6cc128b690a6a3e485780440de17f20b031036",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/selections.json": "b58e3169d0f4301092075f58c4dfdf16194f0a1f5b27939845a8e5ce81d67b12",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/future.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/statistics.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+  },
+  "finished_at": "2026-10-30T14:33:09.032752+00:00"
 }
