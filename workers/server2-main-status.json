@@ -1,12 +1,12 @@
 {
   "worker_id": "server2",
-  "mode": "plan_completed",
-  "active_job_id": "cf-letter-gpt-future-repair-001",
+  "mode": "queued",
+  "active_job_id": "cf-letter-multiseed-resume-001",
   "runner_status": "idle",
   "pause_requested": false,
   "extension": {
     "scope_id": "history-joint-convergence-v1",
     "status": "completed"
   },
-  "observed_at": "2026-10-29T16:13:18.340709+00:00"
+  "observed_at": "2026-10-30T17:59:23.131089+00:00"
 }
