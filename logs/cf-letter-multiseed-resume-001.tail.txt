@@ -1,5 +1,4 @@
-_historical": 2000, "s2031_plain": 2000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_historical": 808, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
-{"active_pids": [3948344], "pending": [], "optimizer_steps": 28927, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 2000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_historical": 927, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
+027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_historical": 927, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
 {"active_pids": [3948344], "pending": [], "optimizer_steps": 29023, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 2000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_historical": 1023, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
 {"active_pids": [3948344], "pending": [], "optimizer_steps": 29142, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 2000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_historical": 1142, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
 {"active_pids": [3948344], "pending": [], "optimizer_steps": 29262, "stage_steps": {"s2028_historical": 2000, "s2028_plain": 2000, "s2029_ft_old": 2000, "s2027_historical": 2000, "s2031_plain": 2000, "s2030_historical": 2000, "s2027_ft_old": 2000, "s2028_ft_old": 2000, "s2030_ft_old": 2000, "s2031_historical": 1262, "s2031_ft_old": 2000, "s2027_plain": 2000, "s2030_plain": 2000, "s2029_historical": 2000, "s2029_plain": 2000}, "stop_new_arms": null}
@@ -89,3 +88,9 @@ Passing a tuple of `past_key_values` is deprecated and will be removed in Transf
 {"phase": "future", "arm": "s2027_plain", "queries_done": 25616, "all_queries": 34189}
 {"phase": "future", "arm": "s2027_plain", "queries_done": 26416, "all_queries": 34189}
 {"phase": "future", "arm": "s2027_plain", "queries_done": 27216, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_plain", "queries_done": 28016, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_plain", "queries_done": 28816, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_plain", "queries_done": 29616, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_plain", "queries_done": 30416, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_plain", "queries_done": 31216, "all_queries": 34189}
+{"phase": "future", "arm": "s2027_plain", "queries_done": 32016, "all_queries": 34189}
