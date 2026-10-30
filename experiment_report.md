@@ -1,6 +1,6 @@
 # History-aware SID Update Experiment Report
 
-Last updated: 2026-10-29. Existing Llama/TIGER Future results are retained. The CF/GPT line completed its four-arm paired codebook study without joint RQ/H stability. The five fixed-budget GPT Update / Future comparisons are now verified and reported; matched historical-penalty NDCG@10 gains are not established.
+Last updated: 2026-10-30. Existing Llama/TIGER Future results and the verified single-seed CF/GPT comparison are retained. The new five-seed study stopped after34000/40000 updates because a task-control Git fetch failed; no new Future scores or confidence intervals are available. Joint RQ/H stability remains unestablished.
 
 ## Primary downstream results
 
@@ -41,15 +41,15 @@ All arms actually trained 2000 steps; fixed512-query Update-validation NDCG@10 s
 
 <!-- cf-letter-multiseed-primary:v1 -->
 
-Five fresh seeds2027-2031; codebook beta1=0.9; fixed accepted Base/E1. Authorized for dispatch,results pending. Pilot2026 and beta1=0 above remain historical and are excluded from the new means. Each GPT fits2000 updates; selected steps are reported per seed.
+Five fresh seeds 2027-2031; codebook beta1=0.9; fixed accepted Base/E1. **Paused after a task-control Git fetch failure on 2026-10-30.** Returned records report all 10 codebook arms complete (10000 steps) and 12/15 GPT arms complete (24000 steps). The three seed2031 GPT arms were not launched. No global selection lock or Future pass exists; the final scientific verifier did not run. See Section 6.37.
 
-| Method | Seeds completed | Future Recall@10 mean | Seed95%CI | Future NDCG@10 mean | Seed95%CI |
-| --- | ---: | ---: | --- | ---: | --- |
-| FT-old | 0/5 | — | — | — | — |
-| Plain | 0/5 | — | — | — | — |
-| Historical | 0/5 | — | — | — | — |
+| Method | GPT arms completed | Future seeds evaluated | Future Recall@10 mean | Seed95%CI | Future NDCG@10 mean | Seed95%CI |
+| --- | ---: | ---: | ---: | --- | ---: | --- |
+| FT-old | 4/5 | 0/5 | — | — | — | — |
+| Plain | 4/5 | 0/5 | — | — | — | — |
+| Historical | 4/5 | 0/5 | — | — | — | — |
 
-Student-t95%CI across five seed scores; primary paired contrast is Historical-minus-Plain Future NDCG@10. All methods use the same34189 queries and10924-item I0. No Future-driven model or seed selection.
+Pilot2026 and beta1=0 above remain historical and are excluded from the planned five-seed means. Each completed GPT arm fitted2000 updates; selected steps are recorded per seed. Future cells remain unreported. The planned Student-t95%CI requires all five seed scores; the primary contrast remains paired Historical-minus-Plain Future NDCG@10. Common34189 queries and10924-item I0 are unchanged. No seed selection, retry or budget extension is dispatched.
 
 <!-- /cf-letter-multiseed-primary:v1 -->
 
@@ -1552,10 +1552,44 @@ The authorized plan is complete. next_job_id=null; no additional training, Futur
 
 ### 6.36 Authorized five-new-seed CF/LETTER comparison (2026-10-30)
 
-Hao approved dispatch after reviewing the fixed multi-seed plan. Job `cf-letter-multiseed-001`; manifest `docs/experiments/cf_letter_multiseed.json` and same-name Markdown. Seeds2027-2031,codebook beta1=0.9; FT-old,Plain and Historical per seed. New budget40000 updates: two1000-step codebook updates plus three2000-step GPT adaptations per seed, followed by fifteen full Future passes. Pilot2026 is exploratory and excluded from these five-seed means; beta1=0 remains in the historical record and is excluded from the new primary comparison. No new real-data steps have yet been observed.
+Hao approved dispatch after reviewing the fixed multi-seed plan. Job `cf-letter-multiseed-001`; manifest `docs/experiments/cf_letter_multiseed.json` and same-name Markdown. Seeds2027-2031,codebook beta1=0.9; FT-old,Plain and Historical per seed. New budget40000 updates: two1000-step codebook updates plus three2000-step GPT adaptations per seed, followed by fifteen full Future passes. Pilot2026 is exploratory and excluded from these five-seed means; beta1=0 remains in the historical record and is excluded from the new primary comparison. At dispatch, no new real-data steps had yet been observed; the partial execution and failure are recorded in Section 6.37.
 
 Keep the accepted Base codebook/GPT and refreshed E1 fixed. RQ lr1e-5,beta(.9,.999),wd0,clip.1,T.5,content4096/anchor128; Mixed lambda0.0006386606341359484. Fixed4096 training-anchor identities and fixed512 Update-validation probe use cohort seed2026; training seeds control paired sampling and GPT dropout. Only final1000-step maps enter downstream. GPT uses the accepted reset recipe,actually2000 steps and fixed0/100/250/500/1000/2000 probe selection,earliest tie. All fifteen selected-model/map identities lock before Future; common I0=10924,all34189 original queries,beam20 and unchanged causal history/mask/target protocol.
 
 Report each seed and method,then equally weighted means,sample SD and two-sided95%Student-t intervals(df4). Primary endpoint is paired Historical-minus-Plain Future NDCG@10,computed within each seed before the across-seed interval; Recall@10 is secondary. Other cutoffs,FT-old contrasts and per-seed user-cluster bootstrap intervals remain visible. These quantify fixed-Base/E1 incremental-training variability on a previously viewed Future set,not a fresh blind test or full-pipeline seed uncertainty. No Future-driven tuning,seed selection/replacement or extra budget.
 
 Reuse the installed generic Runner without infrastructure or cron changes. Required real-model CPU preflight includes two-seed RQ-to-GPT handoff,global selection lock,Future and complete scientific acceptance. Production RQ checkpoint indices must reproduce exactly on original CUDA; raw H/suffix,all GPT sampling/reset/selection,raw Future aggregation,paired bootstrap and seed statistics are rechecked. Cloud protocol checks with Torch unavailable are not real-model passes. Preserve all failures and local raw evidence. After acceptance,fill the separate top multi-seed table,report and stop.
+
+
+<!-- cf-letter-multiseed-failure:4dac80ba8f86723c910cfe1f235453d03c1632c6e69a8202e0dbe0d3648e62ec -->
+
+### 6.37 Five-seed execution stopped by Git control polling (2026-10-30)
+
+Job `cf-letter-multiseed-001`, code `9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451`, started at11:02:09 UTC and returned exit1 at14:33:09. The runtime records all four mandatory CPU preflight suites completed before the production command. This failure occurred during production orchestration, not those checks. The original request, reservation, worktree, logs, checkpoints and needs_attention receipt are preserved.
+
+| Stage | Returned completed arms | Reported optimizer steps | Status |
+| --- | ---: | ---: | --- |
+| Plain/Historical codebooks, seeds2027-2031 | 10/10 | 10000 | All endpoints report feasible suffix capacity; final scientific acceptance pending |
+| GPT Update, seeds2027-2030 | 12/12 | 24000 | All fitted2000; selection arithmetic checked from returned six-candidate curves |
+| GPT Update, seed2031 | 0/3 | 0 | FT-old/Plain/Historical not launched |
+| Global selection lock / Future | 0 locks / 0 passes | 0 | No Future scores, bootstrap intervals or seed statistics |
+
+The compact reports34000 updates in total and no uncertain optimizer intent. The unused6000 steps remain blocked within the original40000 cap, not a new budget. It reports unchanged inputs and a peak18388MiB under the24576MiB guard. These are checked returned records, not completed scientific acceptance. The four completed seeds selected the following Update checkpoints; actual fitting is2000 for every completed arm.
+
+| Seed | FT-old selected | Plain selected | Historical selected |
+| --- | ---: | ---: | ---: |
+| 2027 | 0 | 500 | 500 |
+| 2028 | 500 | 250 | 250 |
+| 2029 | 250 | 100 | 250 |
+| 2030 | 0 | 100 | 500 |
+| 2031 | — | — | — |
+
+The immediate trigger is a `git fetch` exit128 in the task's requests-branch polling path. In the pinned source, `run_cf_letter_base.paused()` captures Git output with `check=True`; the caller in `run_cf_letter_optimizer.Scheduler.run()` catches the exception, permanently sets `self.stop`, and clears pending arms. There is no communication retry or recovery state. Already active seed2030 children finished normally before the parent raised `RuntimeError(schedule.stop)`. The returned log and final counts agree with that sequence. The final observer then recorded needs_attention and the installed main service paused new work.
+
+The captured Git stderr was not retained in the returned exception or log tail. Credentials, TLS/network failure and a Git reference-lock conflict remain possible triggers; none is established. The earlier05:08 fetch pause had been archived at11:01 and the task then ran, so this is a later control-poll failure, not evidence that the earlier recovery command failed. A communication error becoming an irreversible experiment stop is confirmed from source and trace. No model-capacity failure or child-training exception is reported as the stop reason.
+
+Cloud review checked exact request/result/contract/scope byte hashes and all eight artifact hashes, reported step sums, completed-arm identities, endpoint capacity flags and all12 earliest-tie selections from their six returned probe values. `selections.lock_sha256=null`, empty Future/statistics objects and `future_names=[]` agree that the planned fifteen-arm lock and Future phase were never reached. The final scientific verifier was not invoked because the wrapper failed. Cloud did not reload server checkpoints, recompute raw H/assignments, inspect all local optimizer records or independently check every input file. No multi-seed scientific conclusion is drawn.
+
+Failure evidence: [job result](https://github.com/haowu1937/incre-update-sids/blob/e8ee311ef096c2629d8bef346252b5ae81b7790e/jobs/cf-letter-multiseed-001.json), [compact](https://github.com/haowu1937/incre-update-sids/blob/e8ee311ef096c2629d8bef346252b5ae81b7790e/artifacts/cf-letter-multiseed-001/outputs/cf-multiseed/compact.json), [returned log tail](https://github.com/haowu1937/incre-update-sids/blob/e8ee311ef096c2629d8bef346252b5ae81b7790e/logs/cf-letter-multiseed-001.tail.txt). Machine-readable diagnosis and hashes are in `docs/experiments/cf_letter_multiseed_failure.json`. Compact SHA256=`4dac80ba8f86723c910cfe1f235453d03c1632c6e69a8202e0dbe0d3648e62ec`; local artifact-index SHA256=`c3b3bd777e5357d67b30861a4d82a98dc05b8a7d2e2e6eeae3dd6fd5296aac6c`.
+
+Keep dispatch paused and next_job_id=null under the current no-automatic-retry plan. A later reviewed recovery must retain and validate the existing34000 updates, train only the three missing seed2031 GPT arms within the6000 remaining steps, then establish all fifteen selection locks before the already planned Future passes and complete scientific verification. Do not restart all five seeds, change parameters, infer missing Future results or overwrite the original failure. This round changes reporting and diagnosis state only; no Runner upgrade, server command, training, Future pass or replacement task is issued.
