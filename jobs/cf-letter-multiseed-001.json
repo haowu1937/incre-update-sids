@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "job_id": "cf-letter-multiseed-001",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "request_sha256": "ae966dc7ecb629bba8528cb649db101d01c8d684899ec9570802b96f70f902d1",
+  "code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
+  "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
+  "status": "starting",
+  "started_at": "2026-10-30T11:02:09.038370+00:00",
+  "updated_at": "2026-10-30T11:02:09.042176+00:00",
+  "exit_code": null,
+  "pid": null,
+  "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-multiseed-001",
+  "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-multiseed-001.log",
+  "log_tail": "logs/cf-letter-multiseed-001.tail.txt",
+  "artifacts": [],
+  "training_started": false
+}
