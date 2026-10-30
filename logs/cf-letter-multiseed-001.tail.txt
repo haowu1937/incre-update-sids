@@ -1,13 +1,4 @@
-eries_done": 102, "all_queries": 200}
-{"phase": "future", "arm": "historical_b09", "queries_done": 2, "all_queries": 200}
-{"phase": "future", "arm": "historical_b09", "queries_done": 102, "all_queries": 200}
-{"phase": "future", "arm": "plain_b0", "queries_done": 2, "all_queries": 200}
-{"phase": "future", "arm": "plain_b0", "queries_done": 102, "all_queries": 200}
-{"phase": "future", "arm": "historical_b0", "queries_done": 2, "all_queries": 200}
-{"phase": "future", "arm": "historical_b0", "queries_done": 102, "all_queries": 200}
-.
-----------------------------------------------------------------------
-Ran 8 tests in 12.370s
+2.370s
 
 OK
 .....Passing a tuple of `past_key_values` is deprecated and will be removed in Transformers v4.53.0. You should pass an instance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
@@ -61,3 +52,5 @@ OK
 {"active_pids": [3378261, 3378262], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3495, "stage_steps": {"s2028_historical": 753, "s2028_plain": 742, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
 {"active_pids": [3378261, 3378262], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3619, "stage_steps": {"s2028_historical": 815, "s2028_plain": 804, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
 {"active_pids": [3378261, 3378262], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3744, "stage_steps": {"s2028_historical": 875, "s2028_plain": 869, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
+{"active_pids": [3378261, 3378262], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3866, "stage_steps": {"s2028_historical": 936, "s2028_plain": 930, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
+{"active_pids": [3378261, 3378262], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3990, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 990, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
