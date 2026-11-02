@@ -1,5 +1,9 @@
 # 项目协作规则
 
+## Experiment report format (latest user instruction, 2026-11-02)
+
+Keep `experiment_report.md` in English and limited to experimental settings and results, with downstream metric tables first. Preserve model/variant names, catalogs/denominators, actual versus selected budgets, seeds, uncertainty and accepted/provisional/no-result status. Do not append motivation, development chronology, launch procedures, troubleshooting/Runner narratives or next-action history. Update the relevant table/settings instead of duplicating older sections. Keep detailed operational evidence in the existing result/receipt files; preserve invisible synchronization markers for deduplication. This reporting-format instruction supersedes earlier requests to append narrative report sections.
+
 ## TIGER post-codebook Hungarian experiment (2026-11-02 latest explicit authorization)
 
 Hao explicitly requested post-codebook Hungarian mapping, downstream fine-tuning and Future evaluation, starting with TIGER. Authorize only `tiger-hungarian-001` / `tiger-hungarian-v1`, manifest `docs/experiments/tiger_hungarian.json`. This supersedes the prior LR scope's restriction on new studies for this explicit task only. Preserve that failed LR job, all10000 trained updates and its needs_attention receipt; no LR repair, LETTER experiment or parameter search follows from this request.
