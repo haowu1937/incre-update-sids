@@ -4,7 +4,12 @@
   "mode": "needs_diagnosis",
   "pause_requested": true,
   "active_job_id": "cf-letter-gpt-lr-001",
-  "lease": null,
+  "lease": {
+    "token": "lr-delivery-diagnosis-mvz6qj7z",
+    "owner": "web-lr-delivery-diagnosis",
+    "acquired_at": "2026-11-02T11:38:14.351Z",
+    "expires_at_unix": 1793620394.351
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -292,7 +297,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -381,8 +386,8 @@
             0.0018422793623782605
           ],
           "seed_values": [
-            4.972617071619459e-05,
-            3.2785316127067685e-05,
+            0.00004972617071619459,
+            0.000032785316127067685,
             -0.0011062757010549488,
             -0.0019717316299777857,
             0.002282263540671261
@@ -397,8 +402,8 @@
             0.0032742940628670007
           ],
           "seed_values": [
-            -2.9249173710842874e-05,
-            5.849834742168575e-05,
+            -0.000029249173710842874,
+            0.00005849834742168575,
             -0.002164438854602357,
             -0.004124133493228816,
             0.00394863845096376
@@ -733,7 +738,7 @@
           "declared_plan_and_step_accounting": true,
           "finite_metrics_and_consistent_checkpoint_arithmetic": true,
           "capacity_feasible_steps": 60,
-          "baseline_H_reproduced_abs_error": 2.450542524456978e-08,
+          "baseline_H_reproduced_abs_error": 2.450542524456978e-8,
           "reported_same_start_sampling_teacher_and_inputs": true,
           "no_holdout_base_validation_future_scoring": true,
           "real_model_preflight_passed": true
@@ -1215,12 +1220,12 @@
         "pair_settings": [
           {
             "name": "lr1e5_b09",
-            "lr": 1e-05,
+            "lr": 0.00001,
             "beta1": 0.9
           },
           {
             "name": "lr1e5_b0",
-            "lr": 1e-05,
+            "lr": 0.00001,
             "beta1": 0
           }
         ],
@@ -1492,7 +1497,7 @@
       "historical"
     ],
     "steps_per_arm": 1000,
-    "new_lr": 3e-05,
+    "new_lr": 0.00003,
     "reused_lr": 0.0001,
     "reused_baseline_prefix_steps": 1000,
     "full_future_passes": 0,
@@ -2021,8 +2026,8 @@
           0.0018422793623782605
         ],
         "seed_values": [
-          4.972617071619459e-05,
-          3.2785316127067685e-05,
+          0.00004972617071619459,
+          0.000032785316127067685,
           -0.0011062757010549488,
           -0.0019717316299777857,
           0.002282263540671261
@@ -2037,8 +2042,8 @@
           0.0032742940628670007
         ],
         "seed_values": [
-          -2.9249173710842874e-05,
-          5.849834742168575e-05,
+          -0.000029249173710842874,
+          0.00005849834742168575,
           -0.002164438854602357,
           -0.004124133493228816,
           0.00394863845096376
