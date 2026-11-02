@@ -4,12 +4,7 @@
   "mode": "needs_diagnosis",
   "pause_requested": true,
   "active_job_id": "tiger-hungarian-001",
-  "lease": {
-    "token": "report-settings-results-mvzhz5k7",
-    "owner": "web-report-rewrite",
-    "acquired_at": "2026-11-02T16:52:52.327Z",
-    "expires_at_unix": 1793639272.327
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -2422,5 +2417,40 @@
     "exact_local_reconciliation_required": true,
     "archive_only_matching_LR_export_failure": true
   },
-  "pause_reason": "TIGER Hungarian production prepare failed before reported Beauty training; local prepare.log required for root cause. No automatic retry."
+  "pause_reason": "TIGER Hungarian production prepare failed before reported Beauty training; local prepare.log required for root cause. No automatic retry.",
+  "report_format": {
+    "language": "English",
+    "content": "experimental_settings_and_results_only",
+    "downstream_tables_first": true,
+    "retain_scientific_status_and_uncertainty": true,
+    "exclude": [
+      "motivation",
+      "development_chronology",
+      "launch_procedures",
+      "troubleshooting_narratives",
+      "next_action_history"
+    ],
+    "requested_at": "2026-11-02",
+    "commit_sha": "de73f6759e949bb6f951d846eeae9bf96a8139eb"
+  },
+  "report_editorial_updates": [
+    {
+      "type": "settings_results_only_rewrite",
+      "commit_sha": "de73f6759e949bb6f951d846eeae9bf96a8139eb",
+      "updated_at": "2026-11-02T16:54:27.483Z",
+      "markers": 45,
+      "tables": 25,
+      "tableLines": 171,
+      "chars": 26405,
+      "sourceChars": 233387,
+      "reduction_percent": 88.68617360864144,
+      "checks": [
+        "all45_original_sync_markers_preserved_once",
+        "table_column_counts",
+        "no_operational_narrative",
+        "Future_vs_validation_labels_and_provisional_status_preserved"
+      ],
+      "scientific_state_changed": false
+    }
+  ]
 }
