@@ -4,7 +4,12 @@
   "mode": "plan_completed",
   "pause_requested": false,
   "active_job_id": "cf-letter-multiseed-resume-001",
-  "lease": null,
+  "lease": {
+    "token": "cf-gpt-lr-dispatch-mvz3sc1r",
+    "owner": "web-cf-gpt-lr-dispatch",
+    "acquired_at": "2026-11-02T10:15:39.519Z",
+    "expires_at_unix": 1793615439.52
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
