@@ -1,0 +1,9 @@
+{
+  "status": "needs_attention",
+  "job_id": "tiger-hungarian-001",
+  "request_sha256": "7b36cb1f7f812ada24ea0bd0ddf624d8a5896ef13a41588fff399dcf04221b15",
+  "result_sha256": "86e8cc7ed467ac0892b2488794217767b304fde1e9a1f4845922566d2b26b1c8",
+  "reason": "ValueError('Task failed/interrupted; preserve evidence and diagnose before any new job')",
+  "processed_at": "2026-11-02T15:51:34.918635+00:00",
+  "next_job_id": null
+}

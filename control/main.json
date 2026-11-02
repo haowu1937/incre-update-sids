@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "queued",
-  "pause_requested": false,
+  "mode": "needs_diagnosis",
+  "pause_requested": true,
   "active_job_id": "tiger-hungarian-001",
-  "lease": {
-    "token": "5b936b0ef5eb4538b1743594fcfa3477",
-    "owner": "versioned-task-observer",
-    "acquired_at": "2026-11-02T15:51:17.859403+00:00",
-    "expires_at_unix": 1793635577.85942
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -206,6 +201,15 @@
       "result_sha256": "db67d4e83575da9a6d73069df23cd4db4d0d8cf03c7b977570b8218ecb3736e8",
       "reason": "ValueError('Task failed/interrupted; preserve evidence and diagnose before any new job')",
       "processed_at": "2026-11-02T11:31:37.637887+00:00",
+      "next_job_id": null
+    },
+    "tiger-hungarian-001": {
+      "status": "needs_attention",
+      "job_id": "tiger-hungarian-001",
+      "request_sha256": "7b36cb1f7f812ada24ea0bd0ddf624d8a5896ef13a41588fff399dcf04221b15",
+      "result_sha256": "86e8cc7ed467ac0892b2488794217767b304fde1e9a1f4845922566d2b26b1c8",
+      "reason": "ValueError('Task failed/interrupted; preserve evidence and diagnose before any new job')",
+      "processed_at": "2026-11-02T15:51:34.918635+00:00",
       "next_job_id": null
     }
   },
