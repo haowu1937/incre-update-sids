@@ -1,17 +1,4 @@
-0}
-{"phase": "future", "arm": "historical_b0", "queries_done": 102, "all_queries": 200}
-.
-----------------------------------------------------------------------
-Ran 8 tests in 12.534s
-
-OK
-....Passing a tuple of `past_key_values` is deprecated and will be removed in Transformers v4.53.0. You should pass an instance of `Cache` instead, e.g. `past_key_values=DynamicCache.from_legacy_cache(past_key_values)`.
-.
-----------------------------------------------------------------------
-Ran 5 tests in 8.954s
-
-OK
-{"active_pids": [2349601, 2349602], "pending": ["s2028_plain", "s2028_historical", "s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
+", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 0, "stage_steps": {}, "stop_new_arms": null}
 {"active_pids": [2349601, 2349602], "pending": ["s2028_plain", "s2028_historical", "s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 48, "stage_steps": {"s2027_historical": 24, "s2027_plain": 24}, "stop_new_arms": null}
 {"active_pids": [2349601, 2349602], "pending": ["s2028_plain", "s2028_historical", "s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 154, "stage_steps": {"s2027_historical": 77, "s2027_plain": 77}, "stop_new_arms": null}
 {"active_pids": [2349601, 2349602], "pending": ["s2028_plain", "s2028_historical", "s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 220, "stage_steps": {"s2027_historical": 110, "s2027_plain": 110}, "stop_new_arms": null}
@@ -50,3 +37,5 @@ OK
 {"active_pids": [2371937, 2371986], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3191, "stage_steps": {"s2028_historical": 550, "s2028_plain": 641, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
 {"active_pids": [2371937, 2371986], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3298, "stage_steps": {"s2028_historical": 602, "s2028_plain": 696, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
 {"active_pids": [2371937, 2371986], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3406, "stage_steps": {"s2028_historical": 658, "s2028_plain": 748, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
+{"active_pids": [2371937, 2371986], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3515, "stage_steps": {"s2028_historical": 712, "s2028_plain": 803, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
+{"active_pids": [2371937, 2371986], "pending": ["s2029_plain", "s2029_historical", "s2030_plain", "s2030_historical", "s2031_plain", "s2031_historical"], "optimizer_steps": 3623, "stage_steps": {"s2028_historical": 766, "s2028_plain": 857, "s2027_historical": 1000, "s2027_plain": 1000}, "stop_new_arms": null}
