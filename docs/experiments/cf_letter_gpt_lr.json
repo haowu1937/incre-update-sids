@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "job_id": "cf-letter-gpt-lr-001",
+  "scope_id": "cf-letter-gpt-lr-v1",
+  "execution_authorized": true,
+  "authorization": "Hao explicitly said 下发这个任务 on2026-11-02 after reviewing a one-factor GPT LR ablation: freeze accepted Plain/Historical maps, five paired seeds2027-2031, lr3e-5,1000 updates each, total10000 new GPT steps; reuse lr1e-4 first1000-step trajectories. Update validation only; no additional Future evaluation, codebook changes or automatic next experiment.",
+  "seeds": [
+    2027,
+    2028,
+    2029,
+    2030,
+    2031
+  ],
+  "methods": [
+    "plain",
+    "historical"
+  ],
+  "new_lr": 3e-05,
+  "baseline_lr": 0.0001,
+  "steps_per_arm": 1000,
+  "optimizer_step_cap": 10000,
+  "selection_steps": [
+    0,
+    100,
+    250,
+    500,
+    1000
+  ],
+  "cohort_seed": 2026,
+  "parallel": 2,
+  "wall_seconds": 72000,
+  "gpu_memory_limit_mib": 24576,
+  "future_passes": 0,
+  "retry": false,
+  "quantizer_training": false,
+  "automatic_lr_selection": false,
+  "source_job_id": "cf-letter-multiseed-resume-001",
+  "source_code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
+  "source_result_sha256": "f595f89c54cc1757369df5670e73005242d6c3f43ff0f12d78d0df4c215a8abd",
+  "source_compact_sha256": "91f2a15c9df6df64fa85c865ba0c4c234f4321f19efa97353984b94fb5456513",
+  "source_index_sha256": "fa684d5c6fcd60cc479fe702eefcc8bce26ebd4e04dde20b45eec28e6c645ba3",
+  "source_runtime_sha256": "377b746f2e633b4f95e2c00be23f174b7ba139904f7bb6310766e418cb321829",
+  "template": {
+    "path": "docs/experiments/cf_letter_downstream_repair.json",
+    "sha256": "da356ac31dccf77b0abd6490e814cac933f6b5622641e9b4839d4588f42d60bf"
+  },
+  "baseline_original_steps": 2000,
+  "source_receipt_sha256": "c6eb1b1160e4e4c52b0b556acd9e2e44482b11d5ad2089c9e6f745597c8e77a0",
+  "topk": [
+    5,
+    10,
+    20
+  ]
+}
