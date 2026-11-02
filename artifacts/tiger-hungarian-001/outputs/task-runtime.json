@@ -1,0 +1,12 @@
+{
+  "protocol_version": 1,
+  "job_id": "tiger-hungarian-001",
+  "code_sha": "1f8b7eeae1064339083284e906a13b0a4bcdb76b",
+  "contract_sha256": "9e952d7054e7ac67d530dcbb28f823cb2654a0c1076fe33d4019ef2815007422",
+  "status": "failed",
+  "checks_completed": 1,
+  "command_started": true,
+  "started_at": "2026-11-02T15:50:20.951965+00:00",
+  "error": "CalledProcessError: Command '['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-u', '-B', 'run_tiger_hungarian.py', '--deployment', '/home/hao/frec/git-lab-buffer/main-deployment.json', '--output', 'outputs/tiger-hungarian']' returned non-zero exit status 1.",
+  "finished_at": "2026-11-02T15:50:55.340759+00:00"
+}
