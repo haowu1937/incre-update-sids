@@ -1,0 +1,270 @@
+{
+  "schema_version": 1,
+  "status": "diagnosed_export_failure_scientific_acceptance_blocked",
+  "job_id": "cf-letter-gpt-lr-001",
+  "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+  "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
+  "result_sha256": "db67d4e83575da9a6d73069df23cd4db4d0d8cf03c7b977570b8218ecb3736e8",
+  "results_head": "41ccab75bd7e5ba6cb9b358ac09068e91b4d6d8f",
+  "compact_sha256": "542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a",
+  "contract_sha256": "04e5d9e2f2f856f0ccd455b0c949100be81bd8144209610466584fd4bf34349e",
+  "reported_new_optimizer_steps": 10000,
+  "scientific_acceptance": "not_run",
+  "runtime_checks_completed": 3,
+  "checks": {
+    "status": "provisional_cloud_summary_checks_passed_scientific_acceptance_blocked",
+    "new_steps_reported": 10000,
+    "reported_steps_per_arm": 1000,
+    "returned_hashes_verified": 6,
+    "statistical_summaries_recomputed": 96,
+    "selected_steps": [
+      {
+        "name": "s2027_plain",
+        "old": 500,
+        "new": 500
+      },
+      {
+        "name": "s2027_historical",
+        "old": 500,
+        "new": 500
+      },
+      {
+        "name": "s2028_plain",
+        "old": 250,
+        "new": 1000
+      },
+      {
+        "name": "s2028_historical",
+        "old": 250,
+        "new": 1000
+      },
+      {
+        "name": "s2029_plain",
+        "old": 100,
+        "new": 500
+      },
+      {
+        "name": "s2029_historical",
+        "old": 250,
+        "new": 1000
+      },
+      {
+        "name": "s2030_plain",
+        "old": 100,
+        "new": 1000
+      },
+      {
+        "name": "s2030_historical",
+        "old": 500,
+        "new": 500
+      },
+      {
+        "name": "s2031_plain",
+        "old": 500,
+        "new": 500
+      },
+      {
+        "name": "s2031_historical",
+        "old": 250,
+        "new": 500
+      }
+    ],
+    "loss_summary": [
+      {
+        "label": "lr1e4",
+        "case": "s2027_plain",
+        "first100": 3.0931330156326293,
+        "last100": 1.2111808383464813,
+        "step500_probe": 0.009180736342223331,
+        "step1000_probe": 0.0020392382617315332
+      },
+      {
+        "label": "lr3e5",
+        "case": "s2027_plain",
+        "first100": 3.235886051654816,
+        "last100": 2.1193819975852968,
+        "step500_probe": 0.011718582234879678,
+        "step1000_probe": 0.006745215648140785
+      },
+      {
+        "label": "lr1e4",
+        "case": "s2027_historical",
+        "first100": 3.093210372924805,
+        "last100": 1.2128292167186736,
+        "step500_probe": 0.009222465905199071,
+        "step1000_probe": 0.001283666372601569
+      },
+      {
+        "label": "lr3e5",
+        "case": "s2027_historical",
+        "first100": 3.236178169250488,
+        "last100": 2.120151584148407,
+        "step500_probe": 0.012211777389156742,
+        "step1000_probe": 0.0067452156481407856
+      },
+      {
+        "label": "lr1e4",
+        "case": "s2028_plain",
+        "first100": 3.102111852169037,
+        "last100": 1.2173851501941682,
+        "step500_probe": 0.006353928360563306,
+        "step1000_probe": 0.003034217722463297
+      },
+      {
+        "label": "lr3e5",
+        "case": "s2028_plain",
+        "first100": 3.244993736743927,
+        "last100": 2.1223400127887726,
+        "step500_probe": 0.005610023496818727,
+        "step1000_probe": 0.008323944349888507
+      },
+      {
+        "label": "lr1e4",
+        "case": "s2028_historical",
+        "first100": 3.099600467681885,
+        "last100": 1.2171119689941405,
+        "step500_probe": 0.006520987307694904,
+        "step1000_probe": 0.0034758502781703604
+      },
+      {
+        "label": "lr3e5",
+        "case": "s2028_historical",
+        "first100": 3.2419933700561523,
+        "last100": 2.1223648345470427,
+        "step500_probe": 0.006620448896485534,
+        "step1000_probe": 0.008270628059962202
+      },
+      {
+        "label": "lr1e4",
+        "case": "s2029_plain",
+        "first100": 3.0963127970695496,
+        "last100": 1.2120250833034516,
+        "step500_probe": 0.0038196203071151347,
+        "step1000_probe": 0.0019081008383133023
+      },
+      {
+        "label": "lr3e5",
+        "case": "s2029_plain",
+        "first100": 3.240027086734772,
+        "last100": 2.1209199404716492,
+        "step500_probe": 0.008474968537249139,
+        "step1000_probe": 0.007673748799885909
+      },
+      {
+        "label": "lr1e4",
+        "case": "s2029_historical",
+        "first100": 3.095415196418762,
+        "last100": 1.2124996840953828,
+        "step500_probe": 0.004391027194104156,
+        "step1000_probe": 0.0018202338852254664
+      },
+      {
+        "label": "lr3e5",
+        "case": "s2029_historical",
+        "first100": 3.2394637441635132,
+        "last100": 2.1217004680633544,
+        "step500_probe": 0.007725935085002479,
+        "step1000_probe": 0.008535893858357938
+      },
+      {
+        "label": "lr1e4",
+        "case": "s2030_plain",
+        "first100": 3.095112497806549,
+        "last100": 1.2104375731945038,
+        "step500_probe": 0.0075314868972000334,
+        "step1000_probe": 0.002964419064074217
+      },
+      {
+        "label": "lr3e5",
+        "case": "s2030_plain",
+        "first100": 3.237247519493103,
+        "last100": 2.1206540393829347,
+        "step500_probe": 0.007751441078542337,
+        "step1000_probe": 0.00870651665335505
+      },
+      {
+        "label": "lr1e4",
+        "case": "s2030_historical",
+        "first100": 3.0953557109832763,
+        "last100": 1.210234410762787,
+        "step500_probe": 0.007919919286006135,
+        "step1000_probe": 0.0025692673374721267
+      },
+      {
+        "label": "lr3e5",
+        "case": "s2030_historical",
+        "first100": 3.2382324385643004,
+        "last100": 2.1209833431243896,
+        "step500_probe": 0.0070190061177837935,
+        "step1000_probe": 0.00680227543100843
+      },
+      {
+        "label": "lr1e4",
+        "case": "s2031_plain",
+        "first100": 3.0955244278907776,
+        "last100": 1.21379288315773,
+        "step500_probe": 0.0062742468246407114,
+        "step1000_probe": 0.0041218488818098985
+      },
+      {
+        "label": "lr3e5",
+        "case": "s2031_plain",
+        "first100": 3.240392668247223,
+        "last100": 2.122570481300354,
+        "step500_probe": 0.00923324804469038,
+        "step1000_probe": 0.008278920188201809
+      },
+      {
+        "label": "lr1e4",
+        "case": "s2031_historical",
+        "first100": 3.0973099279403686,
+        "last100": 1.213363974094391,
+        "step500_probe": 0.005896995627617054,
+        "step1000_probe": 0.0021846862518982734
+      },
+      {
+        "label": "lr3e5",
+        "case": "s2031_historical",
+        "first100": 3.242947793006897,
+        "last100": 2.12324422121048,
+        "step500_probe": 0.010133305684297673,
+        "step1000_probe": 0.008250727061010895
+      }
+    ],
+    "returned_artifact_bytes": {
+      "task-runtime": 659,
+      "compact": 1527,
+      "baseline": 19596,
+      "runs": 21382,
+      "curves": 38944,
+      "comparisons": 24311
+    },
+    "missing_artifact": "outputs/cf-gpt-lr/data_audit.json",
+    "source_local_index_sha256": "2d7c5daaabcedaef328d913386b3f95af1e61e8d438e9bf0bc1230bfdf171605",
+    "scientific_verifier_run": false
+  },
+  "root_cause": "Task publishes full Beauty audit as one mailbox JSON and checks64KiB only after training; the sole omitted data_audit is the identified overflow. Exact local byte count not returned.",
+  "source_full_audit_sha256": "857fdb616f33ac8f58c9c0947b25aa8365c0498b80b92c8b6ea0cec91a85c23b",
+  "provisional_paired_ndcg10": {
+    "n": 5,
+    "mean": 7.400842797867859e-05,
+    "sd": 0.0015316531695652666,
+    "ci95": [
+      -0.0018277901704052018,
+      0.001975807026362559
+    ],
+    "seed_values": [
+      7.409376386640493e-06,
+      0.00021914949028613902,
+      -0.0020575984594004906,
+      0.0022639536798679622,
+      -6.287194724685814e-05
+    ]
+  },
+  "repair_job_dispatched": false,
+  "recovery_required": {
+    "optimizer_steps": 0,
+    "operation": "Validate old audit/index/checkpoints unchanged, export bounded metadata, run read-only scientific verifier; no training rerun or Runner upgrade"
+  },
+  "report_marker": "<!-- cf-letter-gpt-lr-delivery-failure:542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a -->"
+}

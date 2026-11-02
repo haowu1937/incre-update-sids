@@ -1,6 +1,37 @@
 # History-aware SID Update Experiment Report
 
-Last updated: 2026-11-02. The five-seed CF/GPT Future study is verified and analyzed, with no consistent Historical-minus-Plain ranking gain. A separate GPT learning-rate ablation is authorized for Update validation only; no new results are claimed. Prior Future tables and negative RQ/H stability findings are retained.
+Last updated: 2026-11-02. The five-seed CF/GPT Future study remains verified and analyzed, with no consistent Historical-minus-Plain gain. The separate GPT learning-rate ablation reported all10000 updates complete, but result export failed before scientific acceptance. Its Update-validation summaries below are provisional; prior Future results are unchanged.
+
+### GPT learning-rate ablation: provisional Update-validation results
+
+<!-- cf-letter-gpt-lr-primary:v1 -->
+
+**Training reported complete; scientific acceptance blocked by result export.** Ten new3e-5 GPT arms reached1000 updates each(10000 total), with all three actual CPU preflight suites completed. The wrapper failed at the64KiB publication check; `data_audit.json` was not returned, and the read-only scientific verifier has not run. The following saved summaries passed cloud byte/arithmetic checks only. They are Update-validation results, not Future results.
+
+| GPT lr | Frozen mapping | Selected-checkpoint Recall@10 mean | NDCG@10 mean | NDCG seed95%CI |
+| --- | --- | ---: | ---: | --- |
+| 1e-4, reused prefix | Plain | 1.579268% | 0.007753045 | [0.005348849, 0.010157242] |
+| 1e-4, reused prefix | Historical | 1.518293% | 0.007545810 | [0.005745780, 0.009345840] |
+| 3e-5, new training | Plain | 1.591463% | 0.008403694 | [0.007103197, 0.009704192] |
+| 3e-5, new training | Historical | 1.646341% | 0.008477703 | [0.007148398, 0.009807008] |
+
+At3e-5, paired Historical-minus-Plain NDCG@10=+0.000074008,95%CI[-0.001827790,0.001975807]; the mean advantage is0.88%, with3/5 positive seed differences. This does not establish a consistent Historical gain. At1e-4 the matched difference is-0.000207235,CI[-0.003461302,0.003046831]. New-minus-oldlr NDCG@10 is+0.000650649 forPlain and+0.000931893 forHistorical; both intervals include zero. No learning rate is automatically selected.
+
+Five seeds2027-2031, frozen accepted maps/Base GPT, full3280 Update-val queries(served2234;1046 misses;coverage68.109756%). Checkpoints use the same512-query probe full-denominator NDCG@10 at0/100/250/500/1000, earliest tie. Full validation includes the probe and is not an independent test. Old1e-4 checkpoints were trained2000 steps previously; only their first1000-step trajectories are compared here, and their bounded-budget selected checkpoints coincide with the accepted originals. No new Future or holdout inference was performed.
+
+| Seed | Plain selected step,1e-4 | Historical selected step,1e-4 | Plain selected step,3e-5 | Historical selected step,3e-5 |
+| --- | ---: | ---: | ---: | ---: |
+| 2027 | 500 | 500 | 500 | 500 |
+| 2028 | 250 | 250 | 1000 | 1000 |
+| 2029 | 100 | 250 | 500 | 1000 |
+| 2030 | 100 | 500 | 1000 | 500 |
+| 2031 | 500 | 250 | 500 | 500 |
+
+Six new arms select500 and four select1000; old arms select100/250/500. Training CE still decreases: newlr mean first100→last100 CE is3.239709→2.121173 forPlain and3.239763→2.121689 forHistorical; oldlr prefixes are3.096439→1.212964 and3.096178→1.213208. The smallerlr delays the best observed probe checkpoint for several seeds; this does not prove loss convergence. Mean probe NDCG@10 at500→1000 is0.008557653→0.007945669 fornewPlain and0.008742095→0.007720948 fornewHistorical, so later training is not uniformly better.
+
+The original failed task/needs_attention receipt, immutable request and10000 reservation remain. No training rerun, automatic repair or new task was dispatched. See Section6.41 for failure evidence and the zero-training-step recovery requirement.
+
+<!-- /cf-letter-gpt-lr-primary:v1 -->
 
 ## Primary downstream results
 
@@ -1684,3 +1715,17 @@ The earlier best checkpoint appearing by500 steps is a validation observation, n
 Source approval binds the accepted continuation result/receipt/runtime/compact/index. Whitelisted private copies contain only Base/current maps and baseline training/Update-validation evidence, preserving original checkpoints and code identities. The task does not read saved Future query predictions or raw Future/holdout data. Final acceptance checks all new10000 counters, paired prefix sampling/reset/selection/raw Update records, source/copy immutability and independent CPU old/new selected-GPT likelihoods. Three mandatory real CPU preflight suites precede Beauty. Local Torch skips are not passes.
 
 Reuse installed generic v1 and existing cron without upgrade. Independent output,<=2 owned GPU children,24576MiB and20h stop-new-work/24h no-kill bounds remain. Git admission failures wait with backoff and preserve pending work; unknown/manual pause/child failure stops new launches while active work finishes. Preserve all evidence on failure, with no automatic retry. After Update-validation analysis and English reporting, stop; no automaticlr choice or new Future evaluation. At dispatch, no new production steps or outcomes have been observed.
+
+<!-- cf-letter-gpt-lr-delivery-failure:542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a -->
+
+### 6.41 GPT LR study: training complete, export failed; acceptance pending (2026-11-02)
+
+Job`cf-letter-gpt-lr-001`, code`f575295390cbf75502093f9b2878586e28be7963`, started10:18:08 UTC and wrapper failed11:30:54 UTC(exit1). Three mandatory actual CPU preflights completed. Compact records all ten1000-step arms,10000 total, no uncertain intents, no stop-new-stage reason and unchanged inputs. Peak observed GPU memory18388MiB; experiment runtime4265.38s. These are reported training facts, not scientific acceptance: the wrapper status is failed even though compact execution_status says completed.
+
+**Failure diagnosis.** The final task publication guard raised`ValueError: LR result exceeds bounded mailbox`. The only missing requested artifact is`data_audit.json`; the other six files are below65536 bytes and match their terminal-result SHA256. The runner rejects oversized files, returns other completed evidence on failure, and the observer correctly preserves a needs_attention receipt instead of running scientific verification. The task wrote the full source/input hash dictionary and probe IDs directly into data_audit, unlike a bounded digest summary; it checked the limit only after training. The actual Beauty-sized data_audit byte count has not been returned, so the oversized-file identification follows the exact guard, the unique omitted file and verified sizes of every other requested file. The task-local export design is the blocker; there is no evidence of a training, GPU-memory or Git-fetch failure in this run. The actual tiny-model preflight passed but did not test the full Beauty audit payload size.
+
+**Cloud checks and provisional findings.** Verified raw request/result/contract/scope/manifest identities, six returned artifact hashes, ten counters summing10000 and no reported uncertain intents, twenty arm/map/selection summaries, all100 five-point probe records and200 training-loss bins, full/served denominator scaling, and all96 mean/sampleSD/Student-t95%CI summaries. New selected checkpoints are500 for six arms and1000 for four. The top Update-validation block records all per-seed steps and means/intervals. Small positive mean Historical-minus-Plain NDCG@10 at3e-5(+0.000074008;CI includes0) does not establish benefit. Both new-minus-oldlr NDCG intervals include0; no automaticlr choice follows. Loss continues decreasing while probe ranking can decline. No Future evaluation or parameter selection based on Future occurred.
+
+**Acceptance boundary and recovery.** Missing data_audit is SHA-bound locally as`857fdb616f33ac8f58c9c0947b25aa8365c0498b80b92c8b6ea0cec91a85c23b`; full local indexSHA256=`2d7c5daaabcedaef328d913386b3f95af1e61e8d438e9bf0bc1230bfdf171605`. No server scientific verifier ran: local full audit, raw sampling/query files, source/copy immutability and independent GPT likelihoods have not been rechecked after the failed wrapper. Do not promote these results to verified, overwrite the old failure or retrain any arm. The suitable recovery is a separately bound zero-optimizer-step evidence export and read-only acceptance of existing checkpoints/raw records, using a bounded audit digest while retaining and validating the original full audit/index. It requires no new GPT training or Runner upgrade. It was not dispatched in this round: current protocol explicitly disables automatic repair, and remote state is needs_diagnosis/pause_requested=true. Preserve all original budgets/artifacts and stop monitoring on this diagnosed blocker pending an explicit recovery action.
+
+CompactSHA256=`542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a`; resultSHA256=`db67d4e83575da9a6d73069df23cd4db4d0d8cf03c7b977570b8218ecb3736e8`. Machine-readable diagnosis:`docs/experiments/cf_letter_gpt_lr_delivery_failure.json`.
