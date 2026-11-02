@@ -1,0 +1,114 @@
+{
+  "schema_version": 1,
+  "job_id": "tiger-hungarian-001",
+  "scope_id": "tiger-hungarian-v1",
+  "authorization": "Hao explicitly requested post-codebook Hungarian mapping, downstream fine-tuning and Future evaluation for TIGER first on2026-11-02. Four matched retuned Plain/Historical x unmapped/Hungarian conditions; reuse accepted historical-unmapped, fit other3 arms2000 each (new6000). No RQ/Base fitting, LETTER work or new parameter/seed search.",
+  "seed": 2026,
+  "codebook_steps": 1000,
+  "steps_per_arm": 2000,
+  "optimizer_step_cap": 6000,
+  "parallel": 2,
+  "wall_seconds": 72000,
+  "gpu_memory_limit_mib": 24576,
+  "selection_steps": [
+    0,
+    100,
+    250,
+    500,
+    1000,
+    2000
+  ],
+  "lr": 0.003,
+  "warmup_steps": 200,
+  "probe_size": 512,
+  "eval_batch_size": 16,
+  "topk": [
+    5,
+    10,
+    20
+  ],
+  "num_beams": 20,
+  "bootstrap_replicates": 500,
+  "translation_positions": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "mapping_fit_catalog": "old Base train only",
+  "arms": [
+    "plain_unmapped",
+    "plain_hungarian",
+    "historical_unmapped",
+    "historical_hungarian"
+  ],
+  "new_training_arms": [
+    "plain_unmapped",
+    "plain_hungarian",
+    "historical_hungarian"
+  ],
+  "future_passes_new": 3,
+  "automatic_retry": false,
+  "source_acceptance": {
+    "job_id": "history-future-accept-001",
+    "code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
+    "artifact_sha256": "966416120907d6c205b188b08b36bafe511efe8783c1291109e4a0832f0e056a",
+    "summary_sha256": "32735aa0b6cecd7ea62287136c5844dbfe4bab5e7a29b6af4791e706d42b8a7a"
+  },
+  "e1_dir": "/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_plain_history_damage_ranking_20261019T111607Z_zCkKTi/evaluation",
+  "retuned_dir": "/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_history_retuned_20261020T123132Z_Edpqdn/experiment",
+  "previous_future_dir": "/home/hao/frec/graph-informed-sids-web/results/incremental/Beauty/llama_historical_future_20261020T154736Z_Gdh50N/evaluation",
+  "previous_future_config": {
+    "num_layers": 4,
+    "num_decoder_layers": 4,
+    "d_model": 128,
+    "d_ff": 1024,
+    "num_heads": 6,
+    "d_kv": 64,
+    "dropout_rate": 0.1,
+    "activation_function": "relu",
+    "feed_forward_proj": "relu",
+    "lr": 0.003,
+    "weight_decay": 0.05,
+    "batch_size": 128,
+    "warmup_steps": 200,
+    "scheduler": "constant_with_warmup",
+    "max_grad_norm": 1,
+    "seed": 2026,
+    "device": "cuda:0",
+    "precision": "float32",
+    "num_beams": 20,
+    "topk": [
+      5,
+      10,
+      20
+    ],
+    "metrics": [
+      "recall",
+      "ndcg"
+    ],
+    "probe_size": 512,
+    "eval_batch_size": 16,
+    "eval_every": 500,
+    "checkpoint_selection": "best_fixed_Update_validation_probe_full_denominator_NDCG; earliest tie",
+    "trailing_padding": "trim_only_after_last_active_position",
+    "selection_metric": "ndcg@10",
+    "selection_steps": [
+      0,
+      100,
+      250,
+      500,
+      1000,
+      2000
+    ],
+    "update_max_steps": 2000,
+    "selection_probe_size": 512
+  },
+  "previous_failure": {
+    "job_id": "cf-letter-gpt-lr-001",
+    "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+    "result_sha256": "db67d4e83575da9a6d73069df23cd4db4d0d8cf03c7b977570b8218ecb3736e8",
+    "compact_sha256": "542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a"
+  },
+  "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694"
+}

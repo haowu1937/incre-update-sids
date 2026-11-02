@@ -1,6 +1,23 @@
 # History-aware SID Update Experiment Report
 
-Last updated: 2026-11-02. The five-seed CF/GPT Future study remains verified and analyzed, with no consistent Historical-minus-Plain gain. The separate GPT learning-rate ablation reported all10000 updates complete, but result export failed before scientific acceptance. Its Update-validation summaries below are provisional; prior Future results are unchanged.
+Last updated: 2026-11-02. The five-seed CF/GPT Future study remains verified and analyzed, with no consistent Historical-minus-Plain gain. The separate GPT learning-rate ablation reported all10000 updates complete, but result export failed before scientific acceptance. Its Update-validation summaries below are provisional; prior Future results are unchanged. A new TIGER-only post-codebook Hungarian experiment is explicitly authorized; its original Historical control is reused and new results are pending.
+
+### TIGER Hungarian mapping: authorized, awaiting execution
+
+<!-- tiger-hungarian-primary:v1 -->
+
+Content Llama4096 RQ + TIGER, matched retuned Plain/Historical codebooks; seed2026. New cap6000 TIGER updates, three new Future passes. All four conditions use11775 Update candidates and34189 Future queries; source Historical-unmapped control is already accepted. This is separate from CF/GPT and from the older unmatched Plainlr1e-3 TIGER row.
+
+| Matched retuned mapping | New TIGER steps planned | Existing TIGER steps reused | Selected step | Future Recall@10 | Future NDCG@10 | Status |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| Plain, unmapped | 2000 | 0 | — | — | — | Pending |
+| Plain + Hungarian | 2000 | 0 | — | — | — | Pending |
+| Historical, unmapped | 0 | 2000 | 2000 | 1.389336% | 0.006579084913 | Accepted reused control |
+| Historical + Hungarian | 2000 | 0 | — | — | — | Pending |
+
+Same fixed512 Update-validation probe selects among0/100/250/500/1000/2000; earliest maximum NDCG@10. Future is not used to fit Hungarian or select a model. Four per-position bijections include collision suffix; no suffix reallocation. Full old-target anchor_train H is a separate diagnostic. New results remain pending the exact old LR-failure pause reconciliation and mandatory actual-model preflight. No new fitting result is claimed. Details: Section6.42 and`docs/experiments/tiger_hungarian.md`.
+
+<!-- /tiger-hungarian-primary:v1 -->
 
 ### GPT learning-rate ablation: provisional Update-validation results
 
@@ -1729,3 +1746,13 @@ Job`cf-letter-gpt-lr-001`, code`f575295390cbf75502093f9b2878586e28be7963`, start
 **Acceptance boundary and recovery.** Missing data_audit is SHA-bound locally as`857fdb616f33ac8f58c9c0947b25aa8365c0498b80b92c8b6ea0cec91a85c23b`; full local indexSHA256=`2d7c5daaabcedaef328d913386b3f95af1e61e8d438e9bf0bc1230bfdf171605`. No server scientific verifier ran: local full audit, raw sampling/query files, source/copy immutability and independent GPT likelihoods have not been rechecked after the failed wrapper. Do not promote these results to verified, overwrite the old failure or retrain any arm. The suitable recovery is a separately bound zero-optimizer-step evidence export and read-only acceptance of existing checkpoints/raw records, using a bounded audit digest while retaining and validating the original full audit/index. It requires no new GPT training or Runner upgrade. It was not dispatched in this round: current protocol explicitly disables automatic repair, and remote state is needs_diagnosis/pause_requested=true. Preserve all original budgets/artifacts and stop monitoring on this diagnosed blocker pending an explicit recovery action.
 
 CompactSHA256=`542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a`; resultSHA256=`db67d4e83575da9a6d73069df23cd4db4d0d8cf03c7b977570b8218ecb3736e8`. Machine-readable diagnosis:`docs/experiments/cf_letter_gpt_lr_delivery_failure.json`.
+
+<!-- tiger-hungarian-plan:v1 -->
+
+### 6.42 Authorized TIGER post-codebook Hungarian experiment (2026-11-02)
+
+Prepared the explicit TIGER-first mapping experiment. Freeze the matched retuned Plain/Historical content RQ models; fit per-position Hungarian maps on shared old Base-train item identities. Four conditions compare each tokenizer before/after mapping, including a bijective fourth-token suffix rename without reallocating suffixes. Recompute fixed-original-target anchor_train H as diagnostics. Do not use Future/holdout/model quality to fit translations.
+
+Reuse the accepted Historical-unmapped TIGER2000-step/Future control. New Plain-unmapped, Plain-Hungarian and Historical-Hungarian each fit2000 TIGER steps: new cap6000 and three Future passes. Keep exact Base warm start/reset optimizer,seed2026,lr.003 and fixed512 Update-validation NDCG@10 selection at0/100/250/500/1000/2000, earliest tie. All models/maps lock before new Future inference; current history/target maps agree. Preserve the11775-candidate,34189-query extended-catalog TIGER protocol, distinct from CF/GPT I0 results. Primary contrast is Historical-Hungarian minus Plain-Hungarian NDCG@10, with500 user-cluster bootstrap intervals; one seed and previously observed Future. No positive-result gate or automatic next experiment.
+
+Implementation and protocol are in`docs/experiments/tiger_hungarian.md` and JSON. New task uses generic v1 without Runner changes. Full audit stays local; bounded publication and Beauty-size tests address the prior export pattern. Required actual tiny RQ/TIGER/full-verifier preflight runs on server; cloud Torch skips are not passes. The preceding LR failure remains needs_attention with10000 preserved updates and no scientific acceptance; this explicit new TIGER scope does not rerun or repair it. Exact local pause reconciliation may be required before existing cron can claim the new task; it installs nothing and launches/kills no process. No new TIGER/Hungarian results are claimed at preparation.
