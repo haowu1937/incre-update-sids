@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "job_id": "tiger-hungarian-001",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "request_sha256": "7b36cb1f7f812ada24ea0bd0ddf624d8a5896ef13a41588fff399dcf04221b15",
+  "code_sha": "1f8b7eeae1064339083284e906a13b0a4bcdb76b",
+  "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
+  "status": "starting",
+  "started_at": "2026-11-02T15:50:08.823306+00:00",
+  "updated_at": "2026-11-02T15:50:08.827488+00:00",
+  "exit_code": null,
+  "pid": null,
+  "workspace": "/home/hao/frec/git-lab-buffer/workspaces/tiger-hungarian-001",
+  "log_path": "/home/hao/frec/git-lab-buffer/logs/tiger-hungarian-001.log",
+  "log_tail": "logs/tiger-hungarian-001.tail.txt",
+  "artifacts": [],
+  "training_started": false
+}
