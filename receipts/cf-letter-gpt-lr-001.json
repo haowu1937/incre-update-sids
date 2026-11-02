@@ -1,0 +1,9 @@
+{
+  "status": "needs_attention",
+  "job_id": "cf-letter-gpt-lr-001",
+  "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
+  "result_sha256": "db67d4e83575da9a6d73069df23cd4db4d0d8cf03c7b977570b8218ecb3736e8",
+  "reason": "ValueError('Task failed/interrupted; preserve evidence and diagnose before any new job')",
+  "processed_at": "2026-11-02T11:31:37.637887+00:00",
+  "next_job_id": null
+}
