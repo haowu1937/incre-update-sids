@@ -1,21 +1,21 @@
 # History-aware SID Update Experiment Report
 
-Last updated: 2026-11-02. The five-seed CF/GPT Future study remains verified and analyzed, with no consistent Historical-minus-Plain gain. The separate GPT learning-rate ablation reported all10000 updates complete, but result export failed before scientific acceptance. Its Update-validation summaries below are provisional; prior Future results are unchanged. A new TIGER-only post-codebook Hungarian experiment is explicitly authorized; its original Historical control is reused and new results are pending.
+Last updated: 2026-11-02. The five-seed CF/GPT Future study remains verified and analyzed, with no consistent Historical-minus-Plain gain. The GPT learning-rate ablation's 10000 updates and provisional summaries remain scientifically unaccepted after its export failure. The new TIGER Hungarian job passed its actual-model CPU preflight, then failed in production prepare before any reported new Beauty optimizer steps or Future passes. No new matched TIGER comparison is available.
 
-### TIGER Hungarian mapping: authorized, awaiting execution
+### TIGER Hungarian mapping: prepare failed before production fitting
 
 <!-- tiger-hungarian-primary:v1 -->
 
-Content Llama4096 RQ + TIGER, matched retuned Plain/Historical codebooks; seed2026. New cap6000 TIGER updates, three new Future passes. All four conditions use11775 Update candidates and34189 Future queries; source Historical-unmapped control is already accepted. This is separate from CF/GPT and from the older unmatched Plainlr1e-3 TIGER row.
+Content Llama4096 RQ + TIGER, matched retuned Plain/Historical codebooks; seed2026. New cap6000 TIGER updates, three new Future passes. Planned protocol:11775 Update candidates and34189 Future queries. The accepted Historical-unmapped source control remains unchanged; this failed task did not revalidate or replace it. This experiment is separate from CF/GPT and the older unmatched Plainlr1e-3 TIGER rows.
 
-| Matched retuned mapping | New TIGER steps planned | Existing TIGER steps reused | Selected step | Future Recall@10 | Future NDCG@10 | Status |
-| --- | ---: | ---: | ---: | ---: | ---: | --- |
-| Plain, unmapped | 2000 | 0 | — | — | — | Pending |
-| Plain + Hungarian | 2000 | 0 | — | — | — | Pending |
-| Historical, unmapped | 0 | 2000 | 2000 | 1.389336% | 0.006579084913 | Accepted reused control |
-| Historical + Hungarian | 2000 | 0 | — | — | — | Pending |
+| Matched retuned mapping | Planned new TIGER steps | Reported new steps | Existing TIGER steps | Selected step | Future Recall@10 | Future NDCG@10 | Status |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| Plain, unmapped | 2000 | 0 | 0 | — | — | — | Blocked by prepare failure |
+| Plain + Hungarian | 2000 | 0 | 0 | — | — | — | Blocked by prepare failure |
+| Historical, unmapped | 0 | 0 | 2000 | 2000 | 1.389336% | 0.006579084913 | Original accepted control |
+| Historical + Hungarian | 2000 | 0 | 0 | — | — | — | Blocked by prepare failure |
 
-Same fixed512 Update-validation probe selects among0/100/250/500/1000/2000; earliest maximum NDCG@10. Future is not used to fit Hungarian or select a model. Four per-position bijections include collision suffix; no suffix reallocation. Full old-target anchor_train H is a separate diagnostic. New results remain pending the exact old LR-failure pause reconciliation and mandatory actual-model preflight. No new fitting result is claimed. Details: Section6.42 and`docs/experiments/tiger_hungarian.md`.
+The mandatory server CPU suite ran all7 tests successfully, including the actual tiny RQ/TIGER/four-map/three-fit/three-Future/complete-verifier fixture. Production prepare then failed at15:50:55 UTC on2026-11-02. Compact reports0 new optimizer steps and0 new Future passes; all six mapping/audit/training/anchor/Future/comparison projections are empty. The real preparation traceback is retained only in the server-local `prepare.log`, so the root cause is not yet known. No production scientific acceptance or new H/metric/paired-CI result is claimed. Preserve the failed task and needs_attention receipt, the6000 reservation and all prior results; no automatic repair, retry, budget reuse or LETTER work. Details: Sections6.42–6.43 and `docs/experiments/tiger_hungarian_failure.json`.
 
 <!-- /tiger-hungarian-primary:v1 -->
 
@@ -1756,3 +1756,22 @@ Prepared the explicit TIGER-first mapping experiment. Freeze the matched retuned
 Reuse the accepted Historical-unmapped TIGER2000-step/Future control. New Plain-unmapped, Plain-Hungarian and Historical-Hungarian each fit2000 TIGER steps: new cap6000 and three Future passes. Keep exact Base warm start/reset optimizer,seed2026,lr.003 and fixed512 Update-validation NDCG@10 selection at0/100/250/500/1000/2000, earliest tie. All models/maps lock before new Future inference; current history/target maps agree. Preserve the11775-candidate,34189-query extended-catalog TIGER protocol, distinct from CF/GPT I0 results. Primary contrast is Historical-Hungarian minus Plain-Hungarian NDCG@10, with500 user-cluster bootstrap intervals; one seed and previously observed Future. No positive-result gate or automatic next experiment.
 
 Implementation and protocol are in`docs/experiments/tiger_hungarian.md` and JSON. New task uses generic v1 without Runner changes. Full audit stays local; bounded publication and Beauty-size tests address the prior export pattern. Required actual tiny RQ/TIGER/full-verifier preflight runs on server; cloud Torch skips are not passes. The preceding LR failure remains needs_attention with10000 preserved updates and no scientific acceptance; this explicit new TIGER scope does not rerun or repair it. Exact local pause reconciliation may be required before existing cron can claim the new task; it installs nothing and launches/kills no process. No new TIGER/Hungarian results are claimed at preparation.
+
+
+<!-- tiger-hungarian-analysis:1d2faf2545fe346c0aa90b1ecaf2c2e991bc202f51df31be62cd5ef62bfa098f -->
+
+### 6.43 TIGER Hungarian: actual CPU preflight passed, production prepare failed (2026-11-02)
+
+Job `tiger-hungarian-001`, scope `tiger-hungarian-v1`, code `1f8b7eeae1064339083284e906a13b0a4bcdb76b` was actually claimed at15:50:08 UTC and terminated failed(exit1) at15:50:55 UTC. The queued-state reconciliation is no longer the immediate blocker: execution reached the task command. The runtime records one completed mandatory preflight and command_started=true; the server log records all7 tests OK, including the actual complete tiny model/verifier fixture. These synthetic fits/predictions are not Beauty training or real Future results.
+
+**Observed failure and accounting.** The parent launched production `prepare`, whose subprocess returned nonzero. Its stdout/stderr were redirected to `/home/hao/frec/git-lab-buffer/workspaces/tiger-hungarian-001/outputs/tiger-hungarian/prepare.log`. That file is not among the eight declared returned artifacts; the mailbox tail contains only the outer “Stage failed” exception. Therefore the concrete preparation root cause remains unknown. Do not infer a data/checkpoint mismatch, CUDA failure or Git failure without that log. Pinned `execute()` runs prepare before constructing the training scheduler. Compact reports0 optimizer steps,0 new Future passes, no completed cases and no uncertain intents. Six projections are empty JSON objects. The broad Runner training_started/process_started flags describe process entry, not optimizer execution. The reported max_gpu_memory_mib=0 is not a verified production GPU-memory measurement.
+
+**Verification boundary.** Cloud checked the exact request/result/code/contract/scope/manifest identities, all eight raw artifact SHA256 values, the existing needs_attention receipt's result link, the runtime/preflight evidence and pinned prepare-before-training control flow. Production scientific verification did not run; no CUDA canonical-RQ/map/H reload, source immutability, selected-model/sampling/query/metric or CPU likelihood acceptance was completed for this task. Compact original_inputs_unchanged=null remains unknown. The original accepted Historical-unmapped2000-step control and its Future metrics retain their original acceptance; the failed task supplies no new paired comparison or control revalidation.
+
+**Stop and missing evidence.** Preserve the immutable failed result/receipt and the6000 reservation; unspent steps are blocked, not reallocated. Preserve the prior failed LR task, its10000 updates and needs_attention receipt. No repair, rerun, new job, Runner change, budget extension or LETTER task was dispatched. State remains needs_diagnosis/pause_requested=true and next_job_id=null. Stop the existing monitor on this blocker. The next diagnostic evidence is the local prepare traceback, obtainable without changing an experiment:
+
+```bash
+tail -n 120 -- /home/hao/frec/git-lab-buffer/workspaces/tiger-hungarian-001/outputs/tiger-hungarian/prepare.log
+```
+
+ResultSHA256=`86e8cc7ed467ac0892b2488794217767b304fde1e9a1f4845922566d2b26b1c8`; compactSHA256=`1d2faf2545fe346c0aa90b1ecaf2c2e991bc202f51df31be62cd5ef62bfa098f`; runtimeSHA256=`9cf94b5d1d17f615690e9e857384b0081bcb82232af222be82db74073e88420a`. Full failed-task local indexSHA256=`019603e2cd4af2559d4f450ecdbfe5a429b806b33733a2f368d0d507a4546971`. Machine-readable evidence and remaining uncertainty: `docs/experiments/tiger_hungarian_failure.json`.

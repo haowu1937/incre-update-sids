@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "status": "failure_reported_root_cause_pending",
+  "job_id": "tiger-hungarian-001",
+  "scope_id": "tiger-hungarian-v1",
+  "code_sha": "1f8b7eeae1064339083284e906a13b0a4bcdb76b",
+  "request_sha256": "7b36cb1f7f812ada24ea0bd0ddf624d8a5896ef13a41588fff399dcf04221b15",
+  "contract_sha256": "9e952d7054e7ac67d530dcbb28f823cb2654a0c1076fe33d4019ef2815007422",
+  "scope_sha256": "08e933e4470882fe7ec0d9bf8330aac4947d109dfdc7f6281582ae204b1be57e",
+  "manifest_sha256": "a60ed1fce7b1e328ad61331d6c9cc70c13590e757d64d625d102fcb87537d64c",
+  "result_sha256": "86e8cc7ed467ac0892b2488794217767b304fde1e9a1f4845922566d2b26b1c8",
+  "artifacts_sha256": {
+    "artifacts/tiger-hungarian-001/outputs/task-runtime.json": "9cf94b5d1d17f615690e9e857384b0081bcb82232af222be82db74073e88420a",
+    "artifacts/tiger-hungarian-001/outputs/tiger-hungarian/compact.json": "1d2faf2545fe346c0aa90b1ecaf2c2e991bc202f51df31be62cd5ef62bfa098f",
+    "artifacts/tiger-hungarian-001/outputs/tiger-hungarian/audit.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "artifacts/tiger-hungarian-001/outputs/tiger-hungarian/mapping.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "artifacts/tiger-hungarian-001/outputs/tiger-hungarian/training.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "artifacts/tiger-hungarian-001/outputs/tiger-hungarian/anchors.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "artifacts/tiger-hungarian-001/outputs/tiger-hungarian/future.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356",
+    "artifacts/tiger-hungarian-001/outputs/tiger-hungarian/comparisons.json": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+  },
+  "started_at": "2026-11-02T15:50:08.823306+00:00",
+  "finished_at": "2026-11-02T15:50:55.451470+00:00",
+  "exit_code": 1,
+  "runtime": {
+    "checks_completed": 1,
+    "command_started": true,
+    "status": "failed"
+  },
+  "preflight": {
+    "suite": "tests/incremental/test_tiger_hungarian.py --require-torch",
+    "server_log_result": "Ran 7 tests; OK",
+    "includes": "Actual tiny RQ/TIGER, four maps, three fits, three synthetic Future passes and complete fixture scientific verifier",
+    "production_acceptance": "not_run"
+  },
+  "failure": {
+    "stage": "prepare",
+    "outer_error": "RuntimeError: Stage failed; preserve prepare.log",
+    "root_cause": "unknown: prepare subprocess stderr/traceback was redirected to a local file not included in the declared eight returned artifacts",
+    "missing_evidence": "/home/hao/frec/git-lab-buffer/workspaces/tiger-hungarian-001/outputs/tiger-hungarian/prepare.log",
+    "read_only_evidence_command": "tail -n 120 -- /home/hao/frec/git-lab-buffer/workspaces/tiger-hungarian-001/outputs/tiger-hungarian/prepare.log"
+  },
+  "reported_optimizer_steps": 0,
+  "reported_new_future_passes": 0,
+  "reported_completed_case_names": [],
+  "reported_uncertain_step_records": [],
+  "actual_step_evidence": "Compact counters are zero and pinned execute() fails in prepare before scheduler creation; no full production scientific verification ran.",
+  "original_inputs_unchanged": null,
+  "scientific_acceptance": "not_run",
+  "mapping_and_comparison_outputs": "All six returned projections are empty JSON objects.",
+  "budget": {
+    "reservation": 6000,
+    "retain_original_reservation": true,
+    "unspent_budget_status": "blocked_not_reallocated",
+    "reused_control_steps": 2000,
+    "reused_control_source": "history-future-accept-001",
+    "reused_control_newly_revalidated": false,
+    "old_lr_10000_steps_and_needs_attention": "preserved"
+  },
+  "checks": [
+    "request_result_contract_scope_manifest_exact_code_identity",
+    "eight_raw_artifact_sha256",
+    "existing_needs_attention_receipt_result_hash",
+    "server_runtime_and_actual_preflight_log",
+    "pinned_prepare_before_training_control_flow"
+  ],
+  "evidence_boundary": "Cloud checked returned bytes, identities, reported counters and pinned source control flow. No cloud Beauty checkpoint/CUDA/raw-query/source-file verification. Original input immutability and prepare root cause remain unverified.",
+  "new_task_dispatched": false,
+  "automatic_retry": false,
+  "runner_upgrade_performed": false,
+  "next_job_id": null,
+  "processed_at": "2026-11-02T16:13:57.000Z",
+  "report_marker": "<!-- tiger-hungarian-analysis:1d2faf2545fe346c0aa90b1ecaf2c2e991bc202f51df31be62cd5ef62bfa098f -->"
+}
