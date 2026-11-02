@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "job_id": "cf-letter-gpt-lr-001",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
+  "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+  "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
+  "status": "starting",
+  "started_at": "2026-11-02T10:18:08.373169+00:00",
+  "updated_at": "2026-11-02T10:18:08.375613+00:00",
+  "exit_code": null,
+  "pid": null,
+  "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-gpt-lr-001",
+  "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-gpt-lr-001.log",
+  "log_tail": "logs/cf-letter-gpt-lr-001.tail.txt",
+  "artifacts": [],
+  "training_started": false
+}
