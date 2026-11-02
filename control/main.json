@@ -4,7 +4,12 @@
   "mode": "needs_diagnosis",
   "pause_requested": true,
   "active_job_id": "tiger-hungarian-001",
-  "lease": null,
+  "lease": {
+    "token": "report-settings-results-mvzhz5k7",
+    "owner": "web-report-rewrite",
+    "acquired_at": "2026-11-02T16:52:52.327Z",
+    "expires_at_unix": 1793639272.327
+  },
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
