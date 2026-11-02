@@ -1,7 +1,4 @@
- 6952, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 1000, "s2027_historical": 1000, "s2030_historical": 452, "s2027_plain": 1000, "s2030_plain": 500, "s2029_historical": 1000, "s2029_plain": 1000}, "stop_new_arms": null}
-{"active_pids": [2417183, 2417376], "pending": ["s2031_plain", "s2031_historical"], "optimizer_steps": 7051, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 1000, "s2027_historical": 1000, "s2030_historical": 500, "s2027_plain": 1000, "s2030_plain": 551, "s2029_historical": 1000, "s2029_plain": 1000}, "stop_new_arms": null}
-{"active_pids": [2417183, 2417376], "pending": ["s2031_plain", "s2031_historical"], "optimizer_steps": 7148, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 1000, "s2027_historical": 1000, "s2030_historical": 500, "s2027_plain": 1000, "s2030_plain": 648, "s2029_historical": 1000, "s2029_plain": 1000}, "stop_new_arms": null}
-{"active_pids": [2417183, 2417376], "pending": ["s2031_plain", "s2031_historical"], "optimizer_steps": 7248, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 1000, "s2027_historical": 1000, "s2030_historical": 524, "s2027_plain": 1000, "s2030_plain": 724, "s2029_historical": 1000, "s2029_plain": 1000}, "stop_new_arms": null}
+ull}
 {"active_pids": [2417183, 2417376], "pending": ["s2031_plain", "s2031_historical"], "optimizer_steps": 7355, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 1000, "s2027_historical": 1000, "s2030_historical": 578, "s2027_plain": 1000, "s2030_plain": 777, "s2029_historical": 1000, "s2029_plain": 1000}, "stop_new_arms": null}
 {"active_pids": [2417183, 2417376], "pending": ["s2031_plain", "s2031_historical"], "optimizer_steps": 7459, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 1000, "s2027_historical": 1000, "s2030_historical": 629, "s2027_plain": 1000, "s2030_plain": 830, "s2029_historical": 1000, "s2029_plain": 1000}, "stop_new_arms": null}
 {"active_pids": [2417183, 2417376], "pending": ["s2031_plain", "s2031_historical"], "optimizer_steps": 7565, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 1000, "s2027_historical": 1000, "s2030_historical": 682, "s2027_plain": 1000, "s2030_plain": 883, "s2029_historical": 1000, "s2029_plain": 1000}, "stop_new_arms": null}
@@ -34,3 +31,17 @@
 {"active_pids": [2438391, 2438536], "pending": [], "optimizer_steps": 9987, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 1000, "s2027_historical": 1000, "s2031_plain": 1000, "s2030_historical": 1000, "s2031_historical": 987, "s2027_plain": 1000, "s2030_plain": 1000, "s2029_historical": 1000, "s2029_plain": 1000}, "stop_new_arms": null}
 {"active_pids": [2438391, 2438536], "pending": [], "optimizer_steps": 10000, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 1000, "s2027_historical": 1000, "s2031_plain": 1000, "s2030_historical": 1000, "s2031_historical": 1000, "s2027_plain": 1000, "s2030_plain": 1000, "s2029_historical": 1000, "s2029_plain": 1000}, "stop_new_arms": null}
 {"active_pids": [2438391, 2438536], "pending": [], "optimizer_steps": 10000, "stage_steps": {"s2028_historical": 1000, "s2028_plain": 1000, "s2027_historical": 1000, "s2031_plain": 1000, "s2030_historical": 1000, "s2031_historical": 1000, "s2027_plain": 1000, "s2030_plain": 1000, "s2029_historical": 1000, "s2029_plain": 1000}, "stop_new_arms": null}
+Traceback (most recent call last):
+  File "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-gpt-lr-001/run_cf_letter_gpt_lr.py", line 65, in <module>
+    else:run(Path(a.deployment),Path(a.output),p)
+  File "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-gpt-lr-001/run_cf_letter_gpt_lr.py", line 57, in run
+    if any((output/(n+'.json')).stat().st_size>65536 for n in ARTIFACTS):raise ValueError('LR result exceeds bounded mailbox')
+ValueError: LR result exceeds bounded mailbox
+Traceback (most recent call last):
+  File "/home/hao/frec/git-lab-buffer/bin/task_runtime.py", line 352, in <module>
+    sys.exit(run(a.root, a.job_id, a.workspace))
+  File "/home/hao/frec/git-lab-buffer/bin/task_runtime.py", line 225, in run
+    subprocess.run([r.config['python'], *argv[1:]], cwd=workspace, env=child_env, check=True)
+  File "/home/hao/miniconda3/envs/frec-gpu/lib/python3.10/subprocess.py", line 526, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-u', '-B', 'run_cf_letter_gpt_lr.py', '--deployment', '/home/hao/frec/git-lab-buffer/main-deployment.json', '--output', 'outputs/cf-gpt-lr']' returned non-zero exit status 1.

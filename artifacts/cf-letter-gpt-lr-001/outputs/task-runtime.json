@@ -1,0 +1,12 @@
+{
+  "protocol_version": 1,
+  "job_id": "cf-letter-gpt-lr-001",
+  "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+  "contract_sha256": "04e5d9e2f2f856f0ccd455b0c949100be81bd8144209610466584fd4bf34349e",
+  "status": "failed",
+  "checks_completed": 3,
+  "command_started": true,
+  "started_at": "2026-11-02T10:18:19.610760+00:00",
+  "error": "CalledProcessError: Command '['/home/hao/miniconda3/envs/frec-gpu/bin/python', '-u', '-B', 'run_cf_letter_gpt_lr.py', '--deployment', '/home/hao/frec/git-lab-buffer/main-deployment.json', '--output', 'outputs/cf-gpt-lr']' returned non-zero exit status 1.",
+  "finished_at": "2026-11-02T11:30:54.878886+00:00"
+}

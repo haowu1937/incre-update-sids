@@ -6,15 +6,22 @@
   "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
   "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
   "runner_code_sha": "fe790d49ce65db558433bba7d6c4e759279fa2aa",
-  "status": "running",
+  "status": "failed",
   "started_at": "2026-11-02T10:18:08.373169+00:00",
-  "updated_at": "2026-11-02T11:30:22.867737+00:00",
-  "exit_code": null,
+  "updated_at": "2026-11-02T11:30:54.939345+00:00",
+  "exit_code": 1,
   "pid": 2347194,
   "workspace": "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-gpt-lr-001",
   "log_path": "/home/hao/frec/git-lab-buffer/logs/cf-letter-gpt-lr-001.log",
   "log_tail": "logs/cf-letter-gpt-lr-001.tail.txt",
-  "artifacts": [],
+  "artifacts": [
+    "artifacts/cf-letter-gpt-lr-001/outputs/task-runtime.json",
+    "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/compact.json",
+    "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/baseline.json",
+    "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/runs.json",
+    "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/curves.json",
+    "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/comparisons.json"
+  ],
   "training_started": true,
   "actual_code_sha": "f575295390cbf75502093f9b2878586e28be7963",
   "argv": [
@@ -31,5 +38,14 @@
     "/home/hao/frec/git-lab-buffer/workspaces/cf-letter-gpt-lr-001"
   ],
   "process_started": true,
-  "elapsed_seconds": 4323.353
+  "elapsed_seconds": 4355.425,
+  "artifacts_sha256": {
+    "artifacts/cf-letter-gpt-lr-001/outputs/task-runtime.json": "3db7b8ba87ab37d564c7aef7cf8059a35436a321108007aa493c62c5f0456203",
+    "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/compact.json": "542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a",
+    "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/baseline.json": "255b11d8a04c3b98b6ab7eb6ce46e63aa4f72df890ecd3d9d59787a36caad336",
+    "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/runs.json": "8e5ba6acd76baa38fc624d01c4725eced3579d1c6b4aa86cac912694282abda8",
+    "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/curves.json": "24865afbe13452cae9b3d0a400f8508926b3bc3d3dbaad92a01a84b044c53125",
+    "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/comparisons.json": "4f719996528b0a8bb20bc1947f9b5f6f271cb8a54641a1d5e10ecd099c799713"
+  },
+  "finished_at": "2026-11-02T11:30:54.939320+00:00"
 }
