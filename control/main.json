@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "needs_diagnosis",
-  "pause_requested": true,
-  "active_job_id": "cf-letter-gpt-lr-001",
-  "lease": {
-    "token": "tiger-hungarian-dispatch-mvze71nk",
-    "owner": "web-tiger-hungarian-dispatch",
-    "acquired_at": "2026-11-02T15:07:02.048Z",
-    "expires_at_unix": 1793632922.049
-  },
+  "mode": "queued",
+  "pause_requested": false,
+  "active_job_id": "tiger-hungarian-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -210,16 +205,17 @@
     }
   },
   "plan": [
-    "validate_and_copy_accepted_maps_and_baselines",
-    "ten_GPT_lr3e5_1000_step_arms",
-    "Update_validation_comparison",
-    "report_and_stop"
+    "validate_retuned_sources_and_fit_Hungarian",
+    "three_TIGER_2000_step_fits",
+    "lock_four_conditions",
+    "three_new_Future_passes",
+    "verify_report_and_stop"
   ],
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
-  "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
+  "code_sha": "1f8b7eeae1064339083284e906a13b0a4bcdb76b",
+  "request_sha256": "7b36cb1f7f812ada24ea0bd0ddf624d8a5896ef13a41588fff399dcf04221b15",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -1358,11 +1354,11 @@
       }
     }
   },
-  "active_scope": "cf-letter-gpt-lr-v1",
+  "active_scope": "tiger-hungarian-v1",
   "task_dispatch": {
     "protocol_version": 1,
-    "contract_path": "task-contracts/cf-letter-gpt-lr-001.json",
-    "contract_sha256": "04e5d9e2f2f856f0ccd455b0c949100be81bd8144209610466584fd4bf34349e"
+    "contract_path": "task-contracts/tiger-hungarian-001.json",
+    "contract_sha256": "9e952d7054e7ac67d530dcbb28f823cb2654a0c1076fe33d4019ef2815007422"
   },
   "task_scope_ledger": {
     "cf-letter-base-v1": {
@@ -1475,74 +1471,64 @@
       "reported_steps": {
         "cf-letter-gpt-lr-001": 10000
       }
+    },
+    "tiger-hungarian-v1": {
+      "scope_sha256": "08e933e4470882fe7ec0d9bf8330aac4947d109dfdc7f6281582ae204b1be57e",
+      "reservations": {
+        "tiger-hungarian-001": 6000
+      },
+      "actual_steps": {}
     }
   },
   "current_scope": {
-    "scope_id": "cf-letter-gpt-lr-v1",
-    "status": "training_complete_export_failed_scientific_acceptance_blocked",
-    "authorization": "Hao explicitly said 下发这个任务 on2026-11-02 after reviewing a one-factor GPT LR ablation: freeze accepted Plain/Historical maps, five paired seeds2027-2031, lr3e-5,1000 updates each, total10000 new GPT steps; reuse lr1e-4 first1000-step trajectories. Update validation only; no additional Future evaluation, codebook changes or automatic next experiment.",
+    "scope_id": "tiger-hungarian-v1",
+    "status": "queued_awaiting_exact_local_pause_reconciliation",
+    "manifest": "docs/experiments/tiger_hungarian.json",
+    "authorization": "Hao explicitly requested post-codebook Hungarian mapping, downstream fine-tuning and Future evaluation for TIGER first on2026-11-02. Four matched retuned Plain/Historical x unmapped/Hungarian conditions; reuse accepted historical-unmapped, fit other3 arms2000 each (new6000). No RQ/Base fitting, LETTER work or new parameter/seed search.",
     "authorized_at": "2026-11-02",
-    "manifest": "docs/experiments/cf_letter_gpt_lr.json",
-    "max_optimizer_steps": 10000,
+    "max_optimizer_steps": 6000,
     "max_parallel": 2,
-    "components_trained": [
-      "GPT_all_parameters"
+    "steps_per_arm": 2000,
+    "new_training_arms": [
+      "plain_unmapped",
+      "plain_hungarian",
+      "historical_hungarian"
     ],
-    "seeds": [
-      2027,
-      2028,
-      2029,
-      2030,
-      2031
+    "arms": [
+      "plain_unmapped",
+      "plain_hungarian",
+      "historical_unmapped",
+      "historical_hungarian"
     ],
-    "methods": [
-      "plain",
-      "historical"
-    ],
-    "steps_per_arm": 1000,
-    "new_lr": 0.00003,
-    "reused_lr": 0.0001,
-    "reused_baseline_prefix_steps": 1000,
-    "full_future_passes": 0,
-    "quantizer_training": false,
-    "selection_steps": [
-      0,
-      100,
-      250,
-      500,
-      1000
-    ],
-    "validation_only": true,
-    "automatic_lr_selection": false,
+    "reused_control": "historical_unmapped",
+    "future_passes_new": 3,
+    "seed": 2026,
+    "codebook_training": false,
+    "source_acceptance": {
+      "job_id": "history-future-accept-001",
+      "code_sha": "02eca7996ccddc2b0e35c47cf4cd00aafe200291",
+      "artifact_sha256": "966416120907d6c205b188b08b36bafe511efe8783c1291109e4a0832f0e056a",
+      "summary_sha256": "32735aa0b6cecd7ea62287136c5844dbfe4bab5e7a29b6af4791e706d42b8a7a"
+    },
+    "server_reconciliation_required": true,
+    "runner_upgrade_required": false,
     "stop_after_study": true,
     "automatic_retry": false,
-    "server_start_condition": "Existing generic v1 cron; no Runner upgrade or reconciliation requested",
-    "next_job_id": null,
-    "reported_optimizer_steps": 10000,
-    "scientific_acceptance": "not_run",
-    "diagnosis_path": "docs/experiments/cf_letter_gpt_lr_delivery_failure.json",
-    "report_commit_sha": "d7fa88251b300d2ce4f4fb97bd05605c108081cc"
+    "next_job_id": null
   },
   "latest_task_delivery": {
-    "job_id": "cf-letter-gpt-lr-001",
-    "scope_id": "cf-letter-gpt-lr-v1",
-    "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
-    "contract_sha256": "04e5d9e2f2f856f0ccd455b0c949100be81bd8144209610466584fd4bf34349e",
-    "created_at": "2026-11-02T10:16:49.579918+00:00",
-    "max_optimizer_steps": 10000,
-    "seeds": [
-      2027,
-      2028,
-      2029,
-      2030,
-      2031
-    ],
+    "job_id": "tiger-hungarian-001",
+    "scope_id": "tiger-hungarian-v1",
+    "code_sha": "1f8b7eeae1064339083284e906a13b0a4bcdb76b",
+    "contract_sha256": "9e952d7054e7ac67d530dcbb28f823cb2654a0c1076fe33d4019ef2815007422",
+    "request_sha256": "7b36cb1f7f812ada24ea0bd0ddf624d8a5896ef13a41588fff399dcf04221b15",
     "manifest": {
-      "path": "docs/experiments/cf_letter_gpt_lr.json",
-      "sha256": "9a48442ee94244a459e8a1ffe5c0a416e32d3789a20bb2f18cd45e98a038b4bb"
+      "path": "docs/experiments/tiger_hungarian.json",
+      "sha256": "a60ed1fce7b1e328ad61331d6c9cc70c13590e757d64d625d102fcb87537d64c"
     },
-    "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
-    "status": "queued"
+    "created_at": "2026-11-02T15:07:58.775552+00:00",
+    "max_optimizer_steps": 6000,
+    "status": "queued_awaiting_exact_local_pause_reconciliation"
   },
   "cloud_analysis_receipts": {
     "cf-letter-base-001": {
@@ -1711,12 +1697,13 @@
     }
   },
   "latest_authorized_dispatch": {
-    "job_id": "cf-letter-gpt-lr-001",
-    "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
-    "contract_sha256": "04e5d9e2f2f856f0ccd455b0c949100be81bd8144209610466584fd4bf34349e",
-    "queued_at": "2026-11-02T10:17:25.268Z",
-    "authorization": "Hao explicitly said 下发这个任务 on2026-11-02 after reviewing a one-factor GPT LR ablation: freeze accepted Plain/Historical maps, five paired seeds2027-2031, lr3e-5,1000 updates each, total10000 new GPT steps; reuse lr1e-4 first1000-step trajectories. Update validation only; no additional Future evaluation, codebook changes or automatic next experiment.",
-    "server_claim_observed": false
+    "job_id": "tiger-hungarian-001",
+    "code_sha": "1f8b7eeae1064339083284e906a13b0a4bcdb76b",
+    "contract_sha256": "9e952d7054e7ac67d530dcbb28f823cb2654a0c1076fe33d4019ef2815007422",
+    "queued_at": "2026-11-02T15:08:41.424Z",
+    "authorization": "Hao explicitly requested post-codebook Hungarian mapping, downstream fine-tuning and Future evaluation for TIGER first on2026-11-02. Four matched retuned Plain/Historical x unmapped/Hungarian conditions; reuse accepted historical-unmapped, fit other3 arms2000 each (new6000). No RQ/Base fitting, LETTER work or new parameter/seed search.",
+    "server_claim_observed": false,
+    "server_reconciliation_required": true
   },
   "diagnosed_repairs": [
     {
@@ -1877,11 +1864,127 @@
       },
       "status": "preflight_failed_zero_real_steps",
       "actual_optimizer_steps": 0
+    },
+    {
+      "scope": {
+        "scope_id": "cf-letter-gpt-lr-v1",
+        "status": "training_complete_export_failed_scientific_acceptance_blocked",
+        "authorization": "Hao explicitly said 下发这个任务 on2026-11-02 after reviewing a one-factor GPT LR ablation: freeze accepted Plain/Historical maps, five paired seeds2027-2031, lr3e-5,1000 updates each, total10000 new GPT steps; reuse lr1e-4 first1000-step trajectories. Update validation only; no additional Future evaluation, codebook changes or automatic next experiment.",
+        "authorized_at": "2026-11-02",
+        "manifest": "docs/experiments/cf_letter_gpt_lr.json",
+        "max_optimizer_steps": 10000,
+        "max_parallel": 2,
+        "components_trained": [
+          "GPT_all_parameters"
+        ],
+        "seeds": [
+          2027,
+          2028,
+          2029,
+          2030,
+          2031
+        ],
+        "methods": [
+          "plain",
+          "historical"
+        ],
+        "steps_per_arm": 1000,
+        "new_lr": 0.00003,
+        "reused_lr": 0.0001,
+        "reused_baseline_prefix_steps": 1000,
+        "full_future_passes": 0,
+        "quantizer_training": false,
+        "selection_steps": [
+          0,
+          100,
+          250,
+          500,
+          1000
+        ],
+        "validation_only": true,
+        "automatic_lr_selection": false,
+        "stop_after_study": true,
+        "automatic_retry": false,
+        "server_start_condition": "Existing generic v1 cron; no Runner upgrade or reconciliation requested",
+        "next_job_id": null,
+        "reported_optimizer_steps": 10000,
+        "scientific_acceptance": "not_run",
+        "diagnosis_path": "docs/experiments/cf_letter_gpt_lr_delivery_failure.json",
+        "report_commit_sha": "d7fa88251b300d2ce4f4fb97bd05605c108081cc"
+      },
+      "status": "preserved_scientific_acceptance_blocked",
+      "receipt": {
+        "status": "needs_attention",
+        "job_id": "cf-letter-gpt-lr-001",
+        "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
+        "result_sha256": "db67d4e83575da9a6d73069df23cd4db4d0d8cf03c7b977570b8218ecb3736e8",
+        "reason": "ValueError('Task failed/interrupted; preserve evidence and diagnose before any new job')",
+        "processed_at": "2026-11-02T11:31:37.637887+00:00",
+        "next_job_id": null
+      },
+      "analysis": {
+        "status": "failure_diagnosed_and_reported",
+        "job_id": "cf-letter-gpt-lr-001",
+        "scope_id": "cf-letter-gpt-lr-v1",
+        "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+        "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
+        "contract_sha256": "04e5d9e2f2f856f0ccd455b0c949100be81bd8144209610466584fd4bf34349e",
+        "result_sha256": "db67d4e83575da9a6d73069df23cd4db4d0d8cf03c7b977570b8218ecb3736e8",
+        "compact_sha256": "542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a",
+        "artifacts_sha256": {
+          "artifacts/cf-letter-gpt-lr-001/outputs/task-runtime.json": "3db7b8ba87ab37d564c7aef7cf8059a35436a321108007aa493c62c5f0456203",
+          "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/compact.json": "542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a",
+          "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/baseline.json": "255b11d8a04c3b98b6ab7eb6ce46e63aa4f72df890ecd3d9d59787a36caad336",
+          "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/runs.json": "8e5ba6acd76baa38fc624d01c4725eced3579d1c6b4aa86cac912694282abda8",
+          "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/curves.json": "24865afbe13452cae9b3d0a400f8508926b3bc3d3dbaad92a01a84b044c53125",
+          "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/comparisons.json": "4f719996528b0a8bb20bc1947f9b5f6f271cb8a54641a1d5e10ecd099c799713"
+        },
+        "results_head": "41ccab75bd7e5ba6cb9b358ac09068e91b4d6d8f",
+        "report_commit_sha": "d7fa88251b300d2ce4f4fb97bd05605c108081cc",
+        "report_marker": "<!-- cf-letter-gpt-lr-delivery-failure:542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a -->",
+        "diagnosis_path": "docs/experiments/cf_letter_gpt_lr_delivery_failure.json",
+        "reported_optimizer_steps": 10000,
+        "reported_completed_arms": 10,
+        "checks": [
+          "six_returned_raw_artifact_hashes",
+          "request_result_contract_scope_manifest_code_identities",
+          "ten_reported_1000_step_counters_and_no_uncertain_intents",
+          "twenty_arm_mapping_and_selected_probe_summaries",
+          "one_hundred_probe_points_and_two_hundred_loss_bins",
+          "full_servable_denominator_scaling",
+          "ninety_six_recomputed_seed_mean_sd_student_t_summaries",
+          "report_prior_body_preserved_and_readback_equal"
+        ],
+        "scientific_acceptance": "not_run",
+        "provisional_paired_ndcg10": {
+          "n": 5,
+          "mean": 0.00007400842797867859,
+          "sd": 0.0015316531695652666,
+          "ci95": [
+            -0.0018277901704052018,
+            0.001975807026362559
+          ],
+          "seed_values": [
+            0.000007409376386640493,
+            0.00021914949028613902,
+            -0.0020575984594004906,
+            0.0022639536798679622,
+            -0.00006287194724685814
+          ]
+        },
+        "evidence_boundary": "Only returned bytes and summary arithmetic checked in cloud. Missing full data_audit and server raw sampling/query/checkpoint/source/CPU-likelihood checks leave scientific acceptance blocked.",
+        "recovery_optimizer_steps_required": 0,
+        "new_task_dispatched": false,
+        "processed_at": "2026-11-02T11:42:08.919Z",
+        "next_job_id": null
+      },
+      "superseded_as_active_by": "tiger-hungarian-v1",
+      "note": "Hao explicitly requested a new TIGER experiment. Old10000 LR updates and failure remain; no repair/retraining or budget recycling."
     }
   ],
   "explicit_scope_authorization": {
-    "scope_id": "cf-letter-gpt-lr-v1",
-    "authorization": "Hao explicitly said 下发这个任务 on2026-11-02 after reviewing a one-factor GPT LR ablation: freeze accepted Plain/Historical maps, five paired seeds2027-2031, lr3e-5,1000 updates each, total10000 new GPT steps; reuse lr1e-4 first1000-step trajectories. Update validation only; no additional Future evaluation, codebook changes or automatic next experiment.",
+    "scope_id": "tiger-hungarian-v1",
+    "authorization": "Hao explicitly requested post-codebook Hungarian mapping, downstream fine-tuning and Future evaluation for TIGER first on2026-11-02. Four matched retuned Plain/Historical x unmapped/Hungarian conditions; reuse accepted historical-unmapped, fit other3 arms2000 each (new6000). No RQ/Base fitting, LETTER work or new parameter/seed search.",
     "authorized_at": "2026-11-02"
   },
   "web_analysis_receipts": {
@@ -2132,6 +2235,11 @@
       "scope_id": "cf-letter-multiseed-v1",
       "authorization": "Hao explicitly said 下发任务 on2026-10-30 after reviewing five fresh seeds2027-2031, three paired FT-old/Plain/Historical conditions at codebook beta1=.9,10000 codebook plus30000 GPT steps and15 locked Future passes. Conditional on fixed accepted Base/E1; no seed selection, parameter tuning or retry.",
       "authorized_at": "2026-10-30"
+    },
+    {
+      "scope_id": "cf-letter-gpt-lr-v1",
+      "authorization": "Hao explicitly said 下发这个任务 on2026-11-02 after reviewing a one-factor GPT LR ablation: freeze accepted Plain/Historical maps, five paired seeds2027-2031, lr3e-5,1000 updates each, total10000 new GPT steps; reuse lr1e-4 first1000-step trajectories. Update validation only; no additional Future evaluation, codebook changes or automatic next experiment.",
+      "authorized_at": "2026-11-02"
     }
   ],
   "dispatch_history": [
@@ -2165,6 +2273,37 @@
         "request_sha256": "ae966dc7ecb629bba8528cb649db101d01c8d684899ec9570802b96f70f902d1",
         "status": "queued"
       }
+    },
+    {
+      "latest_authorized_dispatch": {
+        "job_id": "cf-letter-gpt-lr-001",
+        "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+        "contract_sha256": "04e5d9e2f2f856f0ccd455b0c949100be81bd8144209610466584fd4bf34349e",
+        "queued_at": "2026-11-02T10:17:25.268Z",
+        "authorization": "Hao explicitly said 下发这个任务 on2026-11-02 after reviewing a one-factor GPT LR ablation: freeze accepted Plain/Historical maps, five paired seeds2027-2031, lr3e-5,1000 updates each, total10000 new GPT steps; reuse lr1e-4 first1000-step trajectories. Update validation only; no additional Future evaluation, codebook changes or automatic next experiment.",
+        "server_claim_observed": false
+      },
+      "latest_task_delivery": {
+        "job_id": "cf-letter-gpt-lr-001",
+        "scope_id": "cf-letter-gpt-lr-v1",
+        "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+        "contract_sha256": "04e5d9e2f2f856f0ccd455b0c949100be81bd8144209610466584fd4bf34349e",
+        "created_at": "2026-11-02T10:16:49.579918+00:00",
+        "max_optimizer_steps": 10000,
+        "seeds": [
+          2027,
+          2028,
+          2029,
+          2030,
+          2031
+        ],
+        "manifest": {
+          "path": "docs/experiments/cf_letter_gpt_lr.json",
+          "sha256": "9a48442ee94244a459e8a1ffe5c0a416e32d3789a20bb2f18cd45e98a038b4bb"
+        },
+        "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
+        "status": "queued"
+      }
     }
   ],
   "web_monitor_paused": {
@@ -2172,5 +2311,12 @@
     "is_enabled": false,
     "paused_at": "2026-11-02T11:42:08.919Z",
     "reason": "Training completed but oversized audit export blocked scientific acceptance; diagnosed and reported, no automatic repair/next task."
+  },
+  "previous_diagnosed_pause": {
+    "active_job_id": "cf-letter-gpt-lr-001",
+    "pause_requested": true,
+    "reason": "Training completed but oversized audit export blocked scientific acceptance; diagnosed and reported, no automatic repair/next task.",
+    "exact_local_reconciliation_required": true,
+    "archive_only_matching_LR_export_failure": true
   }
 }

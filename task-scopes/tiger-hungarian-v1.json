@@ -1,0 +1,18 @@
+{
+  "protocol_version": 1,
+  "scope_id": "tiger-hungarian-v1",
+  "max_optimizer_steps": 6000,
+  "max_parallel": 2,
+  "authorization": "Hao explicitly requested post-codebook Hungarian mapping, downstream fine-tuning and Future evaluation for TIGER first on2026-11-02. Four matched retuned Plain/Historical x unmapped/Hungarian conditions; reuse accepted historical-unmapped, fit other3 arms2000 each (new6000). No RQ/Base fitting, LETTER work or new parameter/seed search.",
+  "new_training_arms": [
+    "plain_unmapped",
+    "plain_hungarian",
+    "historical_hungarian"
+  ],
+  "steps_per_arm": 2000,
+  "reused_control": "historical_unmapped",
+  "future_passes_new": 3,
+  "quantizer_training": false,
+  "seed": 2026,
+  "stop_after_study": true
+}

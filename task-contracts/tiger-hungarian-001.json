@@ -1,0 +1,27 @@
+{
+  "protocol_version": 1,
+  "scope_id": "tiger-hungarian-v1",
+  "job_id": "tiger-hungarian-001",
+  "code_sha": "1f8b7eeae1064339083284e906a13b0a4bcdb76b",
+  "request_sha256": "7b36cb1f7f812ada24ea0bd0ddf624d8a5896ef13a41588fff399dcf04221b15",
+  "scope_path": "task-scopes/tiger-hungarian-v1.json",
+  "scope_sha256": "08e933e4470882fe7ec0d9bf8330aac4947d109dfdc7f6281582ae204b1be57e",
+  "manifest": {
+    "path": "docs/experiments/tiger_hungarian.json",
+    "sha256": "a60ed1fce7b1e328ad61331d6c9cc70c13590e757d64d625d102fcb87537d64c"
+  },
+  "preflight": [
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_tiger_hungarian.py",
+      "--require-torch"
+    ]
+  ],
+  "verifier": "verify_tiger_hungarian.py",
+  "optimizer_step_reservation": 6000,
+  "input_sha256": {
+    "/home/hao/frec/git-lab-buffer/main-deployment.json": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694"
+  }
+}
