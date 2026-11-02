@@ -1,0 +1,25 @@
+{
+  "protocol_version": 1,
+  "scope_id": "cf-letter-gpt-lr-v1",
+  "max_optimizer_steps": 10000,
+  "max_parallel": 2,
+  "authorization": "Hao explicitly said 下发这个任务 on2026-11-02 after reviewing a one-factor GPT LR ablation: freeze accepted Plain/Historical maps, five paired seeds2027-2031, lr3e-5,1000 updates each, total10000 new GPT steps; reuse lr1e-4 first1000-step trajectories. Update validation only; no additional Future evaluation, codebook changes or automatic next experiment.",
+  "seeds": [
+    2027,
+    2028,
+    2029,
+    2030,
+    2031
+  ],
+  "methods": [
+    "plain",
+    "historical"
+  ],
+  "new_lr": 3e-05,
+  "baseline_lr": 0.0001,
+  "source_job_id": "cf-letter-multiseed-resume-001",
+  "source_compact_sha256": "91f2a15c9df6df64fa85c865ba0c4c234f4321f19efa97353984b94fb5456513",
+  "future_passes": 0,
+  "quantizer_training": false,
+  "stop_after_study": true
+}

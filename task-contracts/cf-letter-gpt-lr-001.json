@@ -1,0 +1,41 @@
+{
+  "protocol_version": 1,
+  "scope_id": "cf-letter-gpt-lr-v1",
+  "job_id": "cf-letter-gpt-lr-001",
+  "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+  "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
+  "scope_path": "task-scopes/cf-letter-gpt-lr-v1.json",
+  "scope_sha256": "9a385ae56c321bd9b670ee69c9593aa5c49eeca60ac774cff8249fe813d5c024",
+  "manifest": {
+    "path": "docs/experiments/cf_letter_gpt_lr.json",
+    "sha256": "9a48442ee94244a459e8a1ffe5c0a416e32d3789a20bb2f18cd45e98a038b4bb"
+  },
+  "preflight": [
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_base.py",
+      "--require-torch"
+    ],
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_downstream.py",
+      "--require-torch"
+    ],
+    [
+      "python",
+      "-u",
+      "-B",
+      "tests/incremental/test_cf_letter_gpt_lr.py",
+      "--require-torch"
+    ]
+  ],
+  "verifier": "verify_cf_letter_gpt_lr.py",
+  "optimizer_step_reservation": 10000,
+  "input_sha256": {
+    "/home/hao/frec/git-lab-buffer/main-deployment.json": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694"
+  }
+}

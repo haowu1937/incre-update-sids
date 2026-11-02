@@ -1,15 +1,10 @@
 {
   "schema_version": 1,
   "protocol_id": "sid-main-v1",
-  "mode": "plan_completed",
+  "mode": "queued",
   "pause_requested": false,
-  "active_job_id": "cf-letter-multiseed-resume-001",
-  "lease": {
-    "token": "cf-gpt-lr-dispatch-mvz3sc1r",
-    "owner": "web-cf-gpt-lr-dispatch",
-    "acquired_at": "2026-11-02T10:15:39.519Z",
-    "expires_at_unix": 1793615439.52
-  },
+  "active_job_id": "cf-letter-gpt-lr-001",
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -201,16 +196,16 @@
     }
   },
   "plan": [
-    "five_GPT_Update_adaptations",
-    "lock_all_selections",
-    "five_Future_evaluations",
-    "verify_report_and_stop"
+    "validate_and_copy_accepted_maps_and_baselines",
+    "ten_GPT_lr3e5_1000_step_arms",
+    "Update_validation_comparison",
+    "report_and_stop"
   ],
   "repairs_used": 0,
   "automation_id": "6ad746543320819187a85beaf87af5bd",
   "automation_acceptance": "passed",
-  "code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
-  "request_sha256": "0e5c994031e8390877e549c6681a3376e41342d5ce8248757137b055739b43b9",
+  "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+  "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
   "deployment_sha256": "bdc78822013a4124c9dc10b941dcad6d1f7632c8e3afdf8d10746f5309156694",
   "web_monitor_resumed": {
     "automation_id": "6ad746543320819187a85beaf87af5bd",
@@ -295,6 +290,114 @@
         },
         "evidence_boundary": "Raw mailbox hashes and compact arithmetic checked in cloud; model resets, loss computation, unchanged inputs/teacher and real-model checks are reviewed-source server evidence. No independent cloud checkpoint reload or per-query recomputation.",
         "processed_at": "2026-10-22T16:46:23.586Z",
+        "next_job_id": null
+      }
+    },
+    {
+      "scope_id": "cf-letter-multiseed-resume-v1",
+      "plan": [
+        "five_GPT_Update_adaptations",
+        "lock_all_selections",
+        "five_Future_evaluations",
+        "verify_report_and_stop"
+      ],
+      "completed_job_id": "cf-letter-multiseed-resume-001",
+      "receipt": {
+        "status": "verified_and_reported",
+        "job_id": "cf-letter-multiseed-resume-001",
+        "code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
+        "contract_sha256": "88724c922ed5c63c032d463e21265d657cb683d6a1a5d766b68032ce6e3a42c3",
+        "request_sha256": "0e5c994031e8390877e549c6681a3376e41342d5ce8248757137b055739b43b9",
+        "result_sha256": "f595f89c54cc1757369df5670e73005242d6c3f43ff0f12d78d0df4c215a8abd",
+        "actual_optimizer_steps": 6000,
+        "report_commit_sha": "87cad5a532221c0ec026a90785dd89d14d0819e5",
+        "artifacts_sha256": {
+          "artifacts/cf-letter-multiseed-resume-001/outputs/task-runtime.json": "377b746f2e633b4f95e2c00be23f174b7ba139904f7bb6310766e418cb321829",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/compact.json": "91f2a15c9df6df64fa85c865ba0c4c234f4321f19efa97353984b94fb5456513",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/data_audit.json": "88aa55ac1f9e997b60e30f1bdb1dfe482ec91a26676643a177bf64db7533d653",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/rq_results.json": "96a8fbf0ab169dabe42311fc5fefb0c6bb357da2d9ec8e89fe7b301b76e85bf7",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/runs.json": "81cc0b6bdad290b4ae7f6772f2f9b5fda3e39441e09db0c595d2a54dd21a35c6",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/selections.json": "0480d8c5e3c0d088dd4351e32570a6c12b94ef9b3253890e07df82f16c5373e6",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/future.json": "afa842653c75ecdd8c1b3d90743bfe84262ac5451be704ff74feb28f36d79c73",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/statistics.json": "bd964efaa86d0cb1a49491dbeba9ebbbb8f6617f6745331be9e351f72c17c5af"
+        },
+        "processed_at": "2026-10-30T18:09:23.894519+00:00",
+        "next_job_id": null
+      },
+      "analysis_receipt": {
+        "schema_version": 1,
+        "status": "verified_and_analyzed",
+        "job_id": "cf-letter-multiseed-resume-001",
+        "scope_id": "cf-letter-multiseed-resume-v1",
+        "code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
+        "request_sha256": "0e5c994031e8390877e549c6681a3376e41342d5ce8248757137b055739b43b9",
+        "contract_sha256": "88724c922ed5c63c032d463e21265d657cb683d6a1a5d766b68032ce6e3a42c3",
+        "result_sha256": "f595f89c54cc1757369df5670e73005242d6c3f43ff0f12d78d0df4c215a8abd",
+        "artifacts_sha256": {
+          "artifacts/cf-letter-multiseed-resume-001/outputs/task-runtime.json": "377b746f2e633b4f95e2c00be23f174b7ba139904f7bb6310766e418cb321829",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/compact.json": "91f2a15c9df6df64fa85c865ba0c4c234f4321f19efa97353984b94fb5456513",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/data_audit.json": "88aa55ac1f9e997b60e30f1bdb1dfe482ec91a26676643a177bf64db7533d653",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/rq_results.json": "96a8fbf0ab169dabe42311fc5fefb0c6bb357da2d9ec8e89fe7b301b76e85bf7",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/runs.json": "81cc0b6bdad290b4ae7f6772f2f9b5fda3e39441e09db0c595d2a54dd21a35c6",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/selections.json": "0480d8c5e3c0d088dd4351e32570a6c12b94ef9b3253890e07df82f16c5373e6",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/future.json": "afa842653c75ecdd8c1b3d90743bfe84262ac5451be704ff74feb28f36d79c73",
+          "artifacts/cf-letter-multiseed-resume-001/outputs/cf-multiseed-resume/statistics.json": "bd964efaa86d0cb1a49491dbeba9ebbbb8f6617f6745331be9e351f72c17c5af"
+        },
+        "source_job_id": "cf-letter-multiseed-001",
+        "source_result_sha256": "7cf27480e3f50bb2d64d8b6fe61a0bcaea0e4ac808a968fac18684a6fdf3958b",
+        "actual_optimizer_steps": 6000,
+        "inherited_optimizer_steps": 34000,
+        "family_actual_optimizer_steps": 40000,
+        "real_future_passes": 15,
+        "server_report_commit_sha": "87cad5a532221c0ec026a90785dd89d14d0819e5",
+        "analysis_report_commit_sha": "867682bc0f51aabbcd48d11371a311a3cde733b8",
+        "report_marker": "<!-- cf-letter-multiseed-resume-analysis:91f2a15c9df6df64fa85c865ba0c4c234f4321f19efa97353984b94fb5456513 -->",
+        "checks": [
+          "raw_request_result_contract_scope_manifest_and_eight_artifact_hashes",
+          "original_failed_result_proof_and_receipt_preserved",
+          "twenty_five_counter_sums_and_new_only_six_thousand_accounting",
+          "fifteen_arm_matrix_and_ninety_probe_candidates_earliest_tie",
+          "model_mapping_global_selection_lock_links",
+          "full_served_denominator_arithmetic",
+          "seventy_two_group_paired_mean_sample_sd_student_t_summaries",
+          "server_task_sha_scientific_verifier_and_report_marker_review",
+          "report_readback_equal"
+        ],
+        "primary_paired_ndcg10": {
+          "n": 5,
+          "mean": -0.00014264646070364224,
+          "sd": 0.0015986014138715178,
+          "ci95": [
+            -0.002127572283785545,
+            0.0018422793623782605
+          ],
+          "seed_values": [
+            0.00004972617071619459,
+            0.000032785316127067685,
+            -0.0011062757010549488,
+            -0.0019717316299777857,
+            0.002282263540671261
+          ]
+        },
+        "secondary_paired_recall10": {
+          "n": 5,
+          "mean": -0.00046213694463131396,
+          "sd": 0.003009212647627348,
+          "ci95": [
+            -0.004198567952129629,
+            0.0032742940628670007
+          ],
+          "seed_values": [
+            -0.000029249173710842874,
+            0.00005849834742168575,
+            -0.002164438854602357,
+            -0.004124133493228816,
+            0.00394863845096376
+          ]
+        },
+        "evidence_boundary": "Cloud verified raw returned bytes and summary arithmetic. Production-CUDA RQ checkpoint/hard-code/suffix/H reloading, immutable server source/index/durable counters, complete GPT sampling/reset/lock chronology, saved Future query aggregation/bootstrap and independent CPU GPT NLL are reviewed task-SHA server-verifier evidence; cloud did not load Beauty checkpoints or raw query files or regenerate bootstrap.",
+        "outcome": "no_consistent_paired_historical_future_ranking_gain; no_joint_RQ_H_stability",
+        "processed_at": "2026-10-30T18:28:12+00:00",
         "next_job_id": null
       }
     }
@@ -1171,6 +1274,29 @@
       "actual_optimizer_steps": 10000,
       "analysis_report_commit_sha": "7a5569d94f5064652fb779d2bbb9dd00710f58fc",
       "next_job_id": null
+    },
+    {
+      "scope_id": "cf-letter-multiseed-resume-v1",
+      "status": "completed_and_analyzed",
+      "manifest": "docs/experiments/cf_letter_multiseed_resume.json",
+      "authorization": "Hao said 继续 after reviewing the recovery plan on2026-10-30: preserve34000 completed updates, train only seed2031 three GPT arms(6000 updates), lock all15 models and run the originally authorized15 Future passes. No Runner upgrade, parameter change or budget extension. One continuation; no automatic retry.",
+      "max_optimizer_steps": 6000,
+      "family_actual_step_cap": 40000,
+      "inherited_optimizer_steps": 34000,
+      "missing_gpt_arms": [
+        "s2031_ft_old",
+        "s2031_plain",
+        "s2031_historical"
+      ],
+      "full_future_passes": 15,
+      "max_parallel": 2,
+      "stop_after_study": true,
+      "automatic_retry": false,
+      "server_start_condition": "Exact original local pause reconciliation; existing cron; no Runner upgrade",
+      "next_job_id": null,
+      "actual_optimizer_steps": 6000,
+      "family_actual_optimizer_steps": 40000,
+      "analysis_report_commit_sha": "867682bc0f51aabbcd48d11371a311a3cde733b8"
     }
   ],
   "core_runtime_upgrade": {
@@ -1218,11 +1344,11 @@
       }
     }
   },
-  "active_scope": "cf-letter-multiseed-resume-v1",
+  "active_scope": "cf-letter-gpt-lr-v1",
   "task_dispatch": {
     "protocol_version": 1,
-    "contract_path": "task-contracts/cf-letter-multiseed-resume-001.json",
-    "contract_sha256": "88724c922ed5c63c032d463e21265d657cb683d6a1a5d766b68032ce6e3a42c3"
+    "contract_path": "task-contracts/cf-letter-gpt-lr-001.json",
+    "contract_sha256": "04e5d9e2f2f856f0ccd455b0c949100be81bd8144209610466584fd4bf34349e"
   },
   "task_scope_ledger": {
     "cf-letter-base-v1": {
@@ -1325,38 +1451,64 @@
       "actual_steps": {
         "cf-letter-multiseed-resume-001": 6000
       }
+    },
+    "cf-letter-gpt-lr-v1": {
+      "scope_sha256": "9a385ae56c321bd9b670ee69c9593aa5c49eeca60ac774cff8249fe813d5c024",
+      "reservations": {
+        "cf-letter-gpt-lr-001": 10000
+      },
+      "actual_steps": {}
     }
   },
   "current_scope": {
-    "scope_id": "cf-letter-multiseed-resume-v1",
-    "status": "completed_and_analyzed",
-    "manifest": "docs/experiments/cf_letter_multiseed_resume.json",
-    "authorization": "Hao said 继续 after reviewing the recovery plan on2026-10-30: preserve34000 completed updates, train only seed2031 three GPT arms(6000 updates), lock all15 models and run the originally authorized15 Future passes. No Runner upgrade, parameter change or budget extension. One continuation; no automatic retry.",
-    "max_optimizer_steps": 6000,
-    "family_actual_step_cap": 40000,
-    "inherited_optimizer_steps": 34000,
-    "missing_gpt_arms": [
-      "s2031_ft_old",
-      "s2031_plain",
-      "s2031_historical"
-    ],
-    "full_future_passes": 15,
+    "scope_id": "cf-letter-gpt-lr-v1",
+    "status": "queued",
+    "authorization": "Hao explicitly said 下发这个任务 on2026-11-02 after reviewing a one-factor GPT LR ablation: freeze accepted Plain/Historical maps, five paired seeds2027-2031, lr3e-5,1000 updates each, total10000 new GPT steps; reuse lr1e-4 first1000-step trajectories. Update validation only; no additional Future evaluation, codebook changes or automatic next experiment.",
+    "authorized_at": "2026-11-02",
+    "manifest": "docs/experiments/cf_letter_gpt_lr.json",
+    "max_optimizer_steps": 10000,
     "max_parallel": 2,
+    "components_trained": [
+      "GPT_all_parameters"
+    ],
+    "seeds": [
+      2027,
+      2028,
+      2029,
+      2030,
+      2031
+    ],
+    "methods": [
+      "plain",
+      "historical"
+    ],
+    "steps_per_arm": 1000,
+    "new_lr": 0.00003,
+    "reused_lr": 0.0001,
+    "reused_baseline_prefix_steps": 1000,
+    "full_future_passes": 0,
+    "quantizer_training": false,
+    "selection_steps": [
+      0,
+      100,
+      250,
+      500,
+      1000
+    ],
+    "validation_only": true,
+    "automatic_lr_selection": false,
     "stop_after_study": true,
     "automatic_retry": false,
-    "server_start_condition": "Exact original local pause reconciliation; existing cron; no Runner upgrade",
-    "next_job_id": null,
-    "actual_optimizer_steps": 6000,
-    "family_actual_optimizer_steps": 40000,
-    "analysis_report_commit_sha": "867682bc0f51aabbcd48d11371a311a3cde733b8"
+    "server_start_condition": "Existing generic v1 cron; no Runner upgrade or reconciliation requested",
+    "next_job_id": null
   },
   "latest_task_delivery": {
-    "job_id": "cf-letter-multiseed-001",
-    "scope_id": "cf-letter-multiseed-v1",
-    "code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
-    "contract_sha256": "60174bce637c88e066f0778ff2e5977af18e1c3c6de2c9130d774e9d7d3090cf",
-    "created_at": "2026-10-30T10:19:04.458136+00:00",
-    "max_optimizer_steps": 40000,
+    "job_id": "cf-letter-gpt-lr-001",
+    "scope_id": "cf-letter-gpt-lr-v1",
+    "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+    "contract_sha256": "04e5d9e2f2f856f0ccd455b0c949100be81bd8144209610466584fd4bf34349e",
+    "created_at": "2026-11-02T10:16:49.579918+00:00",
+    "max_optimizer_steps": 10000,
     "seeds": [
       2027,
       2028,
@@ -1365,10 +1517,10 @@
       2031
     ],
     "manifest": {
-      "path": "docs/experiments/cf_letter_multiseed.json",
-      "sha256": "13c1e2244c27806020955f82bbd9e50aaa2cc443c3745760a1d06dc3019a17d1"
+      "path": "docs/experiments/cf_letter_gpt_lr.json",
+      "sha256": "9a48442ee94244a459e8a1ffe5c0a416e32d3789a20bb2f18cd45e98a038b4bb"
     },
-    "request_sha256": "ae966dc7ecb629bba8528cb649db101d01c8d684899ec9570802b96f70f902d1",
+    "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
     "status": "queued"
   },
   "cloud_analysis_receipts": {
@@ -1538,11 +1690,11 @@
     }
   },
   "latest_authorized_dispatch": {
-    "job_id": "cf-letter-multiseed-resume-001",
-    "code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
-    "contract_sha256": "88724c922ed5c63c032d463e21265d657cb683d6a1a5d766b68032ce6e3a42c3",
-    "queued_at": "2026-10-30T15:15:13.375Z",
-    "authorization": "Hao: 继续 after the reviewed same-budget recovery plan",
+    "job_id": "cf-letter-gpt-lr-001",
+    "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+    "contract_sha256": "04e5d9e2f2f856f0ccd455b0c949100be81bd8144209610466584fd4bf34349e",
+    "queued_at": "2026-11-02T10:17:25.268Z",
+    "authorization": "Hao explicitly said 下发这个任务 on2026-11-02 after reviewing a one-factor GPT LR ablation: freeze accepted Plain/Historical maps, five paired seeds2027-2031, lr3e-5,1000 updates each, total10000 new GPT steps; reuse lr1e-4 first1000-step trajectories. Update validation only; no additional Future evaluation, codebook changes or automatic next experiment.",
     "server_claim_observed": false
   },
   "diagnosed_repairs": [
@@ -1707,9 +1859,9 @@
     }
   ],
   "explicit_scope_authorization": {
-    "scope_id": "cf-letter-multiseed-v1",
-    "authorization": "Hao explicitly said 下发任务 on2026-10-30 after reviewing five fresh seeds2027-2031, three paired FT-old/Plain/Historical conditions at codebook beta1=.9,10000 codebook plus30000 GPT steps and15 locked Future passes. Conditional on fixed accepted Base/E1; no seed selection, parameter tuning or retry.",
-    "authorized_at": "2026-10-30"
+    "scope_id": "cf-letter-gpt-lr-v1",
+    "authorization": "Hao explicitly said 下发这个任务 on2026-11-02 after reviewing a one-factor GPT LR ablation: freeze accepted Plain/Historical maps, five paired seeds2027-2031, lr3e-5,1000 updates each, total10000 new GPT steps; reuse lr1e-4 first1000-step trajectories. Update validation only; no additional Future evaluation, codebook changes or automatic next experiment.",
+    "authorized_at": "2026-11-02"
   },
   "web_analysis_receipts": {
     "cf-letter-optimizer-pair-001": {
@@ -1897,5 +2049,45 @@
     "actual_optimizer_steps": 0,
     "exact_cause": "Report formatter requested production@5 from tiny@1/2/4 metrics; configured-cutoff report regression added",
     "local_pause_requires_exact_archival": true
-  }
+  },
+  "scope_authorization_history": [
+    {
+      "scope_id": "cf-letter-multiseed-v1",
+      "authorization": "Hao explicitly said 下发任务 on2026-10-30 after reviewing five fresh seeds2027-2031, three paired FT-old/Plain/Historical conditions at codebook beta1=.9,10000 codebook plus30000 GPT steps and15 locked Future passes. Conditional on fixed accepted Base/E1; no seed selection, parameter tuning or retry.",
+      "authorized_at": "2026-10-30"
+    }
+  ],
+  "dispatch_history": [
+    {
+      "latest_authorized_dispatch": {
+        "job_id": "cf-letter-multiseed-resume-001",
+        "code_sha": "34f1fecb8c62a3481e553ddede22f7686a084843",
+        "contract_sha256": "88724c922ed5c63c032d463e21265d657cb683d6a1a5d766b68032ce6e3a42c3",
+        "queued_at": "2026-10-30T15:15:13.375Z",
+        "authorization": "Hao: 继续 after the reviewed same-budget recovery plan",
+        "server_claim_observed": false
+      },
+      "latest_task_delivery": {
+        "job_id": "cf-letter-multiseed-001",
+        "scope_id": "cf-letter-multiseed-v1",
+        "code_sha": "9f4bebccfa8cc8617b7e4c29ee6e1f4f8dc6e451",
+        "contract_sha256": "60174bce637c88e066f0778ff2e5977af18e1c3c6de2c9130d774e9d7d3090cf",
+        "created_at": "2026-10-30T10:19:04.458136+00:00",
+        "max_optimizer_steps": 40000,
+        "seeds": [
+          2027,
+          2028,
+          2029,
+          2030,
+          2031
+        ],
+        "manifest": {
+          "path": "docs/experiments/cf_letter_multiseed.json",
+          "sha256": "13c1e2244c27806020955f82bbd9e50aaa2cc443c3745760a1d06dc3019a17d1"
+        },
+        "request_sha256": "ae966dc7ecb629bba8528cb649db101d01c8d684899ec9570802b96f70f902d1",
+        "status": "queued"
+      }
+    }
+  ]
 }

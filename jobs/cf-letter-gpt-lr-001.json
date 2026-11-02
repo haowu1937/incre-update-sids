@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "job_id": "cf-letter-gpt-lr-001",
+  "worker_id": "server2",
+  "kind": "experiment",
+  "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+  "created_at": "2026-11-02T10:16:49.579918+00:00",
+  "timeout_seconds": 86400,
+  "argv": [
+    "python",
+    "-u",
+    "-B",
+    "run_cf_letter_gpt_lr.py",
+    "--deployment",
+    "/home/hao/frec/git-lab-buffer/main-deployment.json",
+    "--output",
+    "outputs/cf-gpt-lr"
+  ],
+  "artifacts": [
+    "outputs/task-runtime.json",
+    "outputs/cf-gpt-lr/compact.json",
+    "outputs/cf-gpt-lr/data_audit.json",
+    "outputs/cf-gpt-lr/baseline.json",
+    "outputs/cf-gpt-lr/runs.json",
+    "outputs/cf-gpt-lr/curves.json",
+    "outputs/cf-gpt-lr/comparisons.json"
+  ]
+}
