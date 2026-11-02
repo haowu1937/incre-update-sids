@@ -4,12 +4,7 @@
   "mode": "needs_diagnosis",
   "pause_requested": true,
   "active_job_id": "cf-letter-gpt-lr-001",
-  "lease": {
-    "token": "lr-delivery-diagnosis-mvz6qj7z",
-    "owner": "web-lr-delivery-diagnosis",
-    "acquired_at": "2026-11-02T11:38:14.351Z",
-    "expires_at_unix": 1793620394.351
-  },
+  "lease": null,
   "receipts": {
     "history-future-accept-001": {
       "schema_version": 1,
@@ -1471,12 +1466,15 @@
       "reservations": {
         "cf-letter-gpt-lr-001": 10000
       },
-      "actual_steps": {}
+      "actual_steps": {},
+      "reported_steps": {
+        "cf-letter-gpt-lr-001": 10000
+      }
     }
   },
   "current_scope": {
     "scope_id": "cf-letter-gpt-lr-v1",
-    "status": "queued",
+    "status": "training_complete_export_failed_scientific_acceptance_blocked",
     "authorization": "Hao explicitly said 下发这个任务 on2026-11-02 after reviewing a one-factor GPT LR ablation: freeze accepted Plain/Historical maps, five paired seeds2027-2031, lr3e-5,1000 updates each, total10000 new GPT steps; reuse lr1e-4 first1000-step trajectories. Update validation only; no additional Future evaluation, codebook changes or automatic next experiment.",
     "authorized_at": "2026-11-02",
     "manifest": "docs/experiments/cf_letter_gpt_lr.json",
@@ -1514,7 +1512,11 @@
     "stop_after_study": true,
     "automatic_retry": false,
     "server_start_condition": "Existing generic v1 cron; no Runner upgrade or reconciliation requested",
-    "next_job_id": null
+    "next_job_id": null,
+    "reported_optimizer_steps": 10000,
+    "scientific_acceptance": "not_run",
+    "diagnosis_path": "docs/experiments/cf_letter_gpt_lr_delivery_failure.json",
+    "report_commit_sha": "d7fa88251b300d2ce4f4fb97bd05605c108081cc"
   },
   "latest_task_delivery": {
     "job_id": "cf-letter-gpt-lr-001",
@@ -2053,6 +2055,62 @@
       "outcome": "no_consistent_paired_historical_future_ranking_gain; no_joint_RQ_H_stability",
       "processed_at": "2026-10-30T18:28:12+00:00",
       "next_job_id": null
+    },
+    "cf-letter-gpt-lr-001": {
+      "status": "failure_diagnosed_and_reported",
+      "job_id": "cf-letter-gpt-lr-001",
+      "scope_id": "cf-letter-gpt-lr-v1",
+      "code_sha": "f575295390cbf75502093f9b2878586e28be7963",
+      "request_sha256": "36607fb592de88993cce5795e3162d3c50261712d3af03aa2fc6538e405bb1b7",
+      "contract_sha256": "04e5d9e2f2f856f0ccd455b0c949100be81bd8144209610466584fd4bf34349e",
+      "result_sha256": "db67d4e83575da9a6d73069df23cd4db4d0d8cf03c7b977570b8218ecb3736e8",
+      "compact_sha256": "542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a",
+      "artifacts_sha256": {
+        "artifacts/cf-letter-gpt-lr-001/outputs/task-runtime.json": "3db7b8ba87ab37d564c7aef7cf8059a35436a321108007aa493c62c5f0456203",
+        "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/compact.json": "542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a",
+        "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/baseline.json": "255b11d8a04c3b98b6ab7eb6ce46e63aa4f72df890ecd3d9d59787a36caad336",
+        "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/runs.json": "8e5ba6acd76baa38fc624d01c4725eced3579d1c6b4aa86cac912694282abda8",
+        "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/curves.json": "24865afbe13452cae9b3d0a400f8508926b3bc3d3dbaad92a01a84b044c53125",
+        "artifacts/cf-letter-gpt-lr-001/outputs/cf-gpt-lr/comparisons.json": "4f719996528b0a8bb20bc1947f9b5f6f271cb8a54641a1d5e10ecd099c799713"
+      },
+      "results_head": "41ccab75bd7e5ba6cb9b358ac09068e91b4d6d8f",
+      "report_commit_sha": "d7fa88251b300d2ce4f4fb97bd05605c108081cc",
+      "report_marker": "<!-- cf-letter-gpt-lr-delivery-failure:542db0a1aa901aaee0593d0cef3be373093eb7050e62effd4b650b4ccbe5a74a -->",
+      "diagnosis_path": "docs/experiments/cf_letter_gpt_lr_delivery_failure.json",
+      "reported_optimizer_steps": 10000,
+      "reported_completed_arms": 10,
+      "checks": [
+        "six_returned_raw_artifact_hashes",
+        "request_result_contract_scope_manifest_code_identities",
+        "ten_reported_1000_step_counters_and_no_uncertain_intents",
+        "twenty_arm_mapping_and_selected_probe_summaries",
+        "one_hundred_probe_points_and_two_hundred_loss_bins",
+        "full_servable_denominator_scaling",
+        "ninety_six_recomputed_seed_mean_sd_student_t_summaries",
+        "report_prior_body_preserved_and_readback_equal"
+      ],
+      "scientific_acceptance": "not_run",
+      "provisional_paired_ndcg10": {
+        "n": 5,
+        "mean": 0.00007400842797867859,
+        "sd": 0.0015316531695652666,
+        "ci95": [
+          -0.0018277901704052018,
+          0.001975807026362559
+        ],
+        "seed_values": [
+          0.000007409376386640493,
+          0.00021914949028613902,
+          -0.0020575984594004906,
+          0.0022639536798679622,
+          -0.00006287194724685814
+        ]
+      },
+      "evidence_boundary": "Only returned bytes and summary arithmetic checked in cloud. Missing full data_audit and server raw sampling/query/checkpoint/source/CPU-likelihood checks leave scientific acceptance blocked.",
+      "recovery_optimizer_steps_required": 0,
+      "new_task_dispatched": false,
+      "processed_at": "2026-11-02T11:42:08.919Z",
+      "next_job_id": null
     }
   },
   "next_job_id": null,
@@ -2103,5 +2161,11 @@
         "status": "queued"
       }
     }
-  ]
+  ],
+  "web_monitor_paused": {
+    "automation_id": "6ad746543320819187a85beaf87af5bd",
+    "is_enabled": false,
+    "paused_at": "2026-11-02T11:42:08.919Z",
+    "reason": "Training completed but oversized audit export blocked scientific acceptance; diagnosed and reported, no automatic repair/next task."
+  }
 }
